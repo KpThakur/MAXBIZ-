@@ -1,0 +1,112 @@
+import React, { Fragment, useState } from 'react';
+import { View, StyleSheet, TextInput, Text, Image } from 'react-native';
+import { BLACK_COLOR, BORDERLINE_COLOR, PLACEHOLDER_COLOR, FONT_FAMILY_REGULAR } from '@utils/constants';
+import { scale } from '@utils/utils';
+
+
+const input = (props) => {
+    const [selected, setSelected] = useState(false);
+    const [isFocused, setIsfocused] = useState(false);
+    const handleFocus = () => {
+        setSelected(true)
+        setIsfocused(true)
+    }
+    const _handleBlur = () => {
+        value === "" && setIsfocused(false);
+    };
+    const labelStyle = {
+        position: 'absolute',
+        flexDirection: 'row',
+        bottom: isFocused ? value === "" ? scale(9) : scale(35) : scale(12)
+    };
+    const {
+        imgCntnr, leftImage, value, onChangeText, style, labelTxt, labelStyl,
+        secureTextEntry, inputCntnr, inputDsgn, brdr, rightImage, placeholder, image
+    } = props;
+    const {
+        inputDesign, container, inputContainer, imgContainer, border, labelText,inputDesignnoimg
+    } = styles;
+    return (
+        <Fragment>
+            <View style={[{ marginBottom: isFocused ? scale(15) : scale(0), marginTop: isFocused ? scale(24) : scale(0) }, container, style]}>
+                <View style={[labelStyle, labelStyl]}>
+                    <View style={[inputContainer, inputCntnr]}>
+                        {image == "noNeed" ?
+                            null
+                            :
+                            < Image style={[imgContainer, imgCntnr]}
+                                source={leftImage} />
+                        }
+                        <View>
+                            <Text style={[labelText, labelTxt]}>{placeholder}</Text>
+                        </View>
+                        <Image source={rightImage} />
+                    </View>
+                </View>
+                <TextInput
+                    style={[image == "noNeed" ? inputDesignnoimg : inputDesign , inputDsgn]}
+                    value={value}
+                    onChangeText={(val) => onChangeText(val)}
+                    secureTextEntry={secureTextEntry}
+                    onFocus={handleFocus}
+                    onBlur={_handleBlur}
+                />
+                <View style={[border, { marginLeft: image == "noNeed" ? scale(3) : scale(27) }, brdr]}></View>
+            </View>
+        </Fragment>
+    )
+}
+input.defaultProps = {
+    secureTextEntry: false,
+    value: '',
+    placeholder: "Input"
+}
+
+const styles = StyleSheet.create({
+    container: {
+        height: 45,
+    },
+    inputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    labelText: {
+        fontFamily: FONT_FAMILY_REGULAR,
+        color: PLACEHOLDER_COLOR,
+        fontWeight: '400',
+        marginHorizontal: scale(9),
+        fontSize: scale(15),
+    },
+    imgContainer: {
+        width: scale(18),
+        height: scale(18),
+        bottom: scale(1)
+    },
+    inputDesign: {
+        marginHorizontal: 5,
+        fontFamily: FONT_FAMILY_REGULAR,
+        fontWeight: '400',
+        color: BLACK_COLOR,
+        fontSize: scale(16),
+        top: scale(5),
+        paddingRight: scale(15),
+        left: scale(18)
+    },
+    inputDesignnoimg: {
+        marginHorizontal: 5,
+        fontFamily: FONT_FAMILY_REGULAR,
+        fontWeight: '400',
+        color: BLACK_COLOR,
+        fontSize: scale(16),
+        top: scale(5),
+        paddingRight: scale(15),
+        //left: scale(18)
+    },
+    border: {
+        borderWidth: 1,
+        borderColor: BORDERLINE_COLOR,
+        height: 1,
+        marginRight: scale(3),
+    },
+})
+export default input;
