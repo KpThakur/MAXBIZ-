@@ -51,7 +51,7 @@ const style = StyleSheet.create({
         paddingTop: scale(9)
     },
     button: {
-        paddingVertical: scale(30),
+        paddingVertical: scale(25),
         marginRight: scale(9)
     },
     errorText:{

@@ -12,6 +12,7 @@ import commomstyle from '../../../../common/styles';
 import { Button, Input, Logo } from '@components';
 import { ICONS } from '@utils/imagePath';
 import { Header } from '@components';
+import StringsOfLanguages from '../../../../utils/translations';
 
 
 const forgotPasswordView = (props) => {
@@ -19,8 +20,7 @@ const forgotPasswordView = (props) => {
     return (
         <SafeAreaView style={commomstyle.container}>
             <Header
-                rightImg={true}
-                headerType="other"
+               rightImg={false} headerText={StringsOfLanguages.FORGOT_PASSWORD}
             />
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                 <View style={style.firstFlex}>
@@ -35,8 +35,9 @@ const forgotPasswordView = (props) => {
                                     emailId: val
                                 })}
                                 value={loginData.emailId}
-                                placeholder="Enter your email id"
+                                placeholder={StringsOfLanguages.ENTER_YOUR_EMAIL_ID}
                                 leftImage={ICONS.emailIcon}
+                                image={"noNeed"}
                             />
                             <Text style={style.errorText}>{inputError.emailerror}</Text>
                         </View>
@@ -46,13 +47,13 @@ const forgotPasswordView = (props) => {
 
                             </View>
                             <TouchableOpacity activeOpacity={1} onPress={() => toLogin()} >
-                                <Text style={style.forgotText}>Back To Login ?</Text>
+                                <Text style={style.forgotText}>{StringsOfLanguages.BACKTOLOGIN}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
                     <View style={style.button}>
                         <Button
-                            buttonText={'Send OTP'}
+                            buttonText={StringsOfLanguages.SEND_OTP}
                             onPress={() => sendOTP()}
                         />
                     </View>

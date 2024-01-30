@@ -17,87 +17,50 @@ import { Button, Input, Header } from "@components";
 import Reviews from "../../../components/reviews";
 import { Rating, AirbnbRating } from "react-native-ratings";
 import tickMark from "../../../assets/images/tickMark.png";
-const DATA = [
-  {
-    id:'1',
-    profileImage: require("../../../assets/images/review-img-01.png"),
-    userName: 'John D.',
-    comment: 'One of the best handyman ever hired, very straight forward...',
-    date: 'Aug 27, 2021',
-    Verified: true,
-  },
-  {
-    id:'2',
-    profileImage: require('../../../assets/images/review-img-02.png'),
-    userName: 'John D.',
-    comment: 'One of the best handyman ever hired, very straight forward...',
-    date: 'Aug 27, 2021',
-    Verified: true,
-  },
-  {
-    id:'3',
-    profileImage: require('../../../assets/images/review-img-03.png'),
-    userName: 'John D.',
-    comment: 'One of the best handyman ever hired, very straight forward...',
-    date: 'Aug 27, 2021',
-    Verified: true,
-  },
-  {
-    id:'4',
-    profileImage: require("../../../assets/dummy/profile2.jpg"),
-    userName: 'John D.',
-    comment: 'One of the best handyman ever hired, very straight forward...',
-    date: 'Aug 27, 2021',
-    Verified: true,
-  },
-  {
-    id:'5',
-    profileImage: require("../../../assets/dummy/profile2.jpg"),
-    userName: 'John D.',
-    comment: 'One of the best handyman ever hired, very straight forward...',
-    date: 'Aug 27, 2021',
-    Verified: true,
-  },
-  {
-    id:'6',
-    profileImage: require("../../../assets/dummy/profile2.jpg"),
-    userName: 'John D.',
-    comment: 'One of the best handyman ever hired, very straight forward...',
-    date: 'Aug 27, 2021',
-    Verified: true,
-  },
-];
+import LinearGradient from "react-native-linear-gradient";
+import { WHITE_COLOR,GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW2, GRADIENT_COLOR_NEW3, GRADIENT_COLOR_NEW4, GRAY_COLOR } from "../../../utils/constants";
+import StarRating from "react-native-star-rating";
+import { ICONS } from "../../../utils/imagePath";
+import Notfound from "../../../components/notfound";
+import StringsOfLanguages from "../../../utils/translations";
 
 
-const Review = () => {
-  const ratingCompleted = (rating) => {
-    console.log("Rating is: " + rating);
-  };
+
+const Review = (props) => {
+  const {contentdata} = props
 
   const renderItem = ({ item }) => (
     <View>
       <View style={styles.container}>
-        <View style={styles.leftContainer}>
+        {/* <View style={styles.leftContainer}>
           <Image style={styles.imageDesign} source={item.profileImage} />
-        </View>
+        </View> */}
         <View style={styles.rightContainer}>
           <View style={styles.section1}>
             <View style={styles.section2}>
-              <Text style={styles.titileText}>{item.userName}</Text>
-              <Rating
+              <Text style={styles.titileText}>{item?.fullname}</Text>
+             {/*  <Rating
                 type="custom"
-                ratingColor="#EB9C25"
-                ratingBackgroundColor="#c8c7c8"
+                ratingColor=WHITE_COLOR
                 ratingCount={5}
                 imageSize={20}
                 style={styles.rating}
-              />
+              /> */}
+               <StarRating
+                  disabled={false}
+                  maxStars={5}
+                  rating={item?.ranting}
+                 /*   fullStar={ICONS.starIcon}
+                  emptyStar={ICONS.starBlackIcon} */
+                  starSize={15}
+                  fullStarColor = {GRAY_COLOR}
+                />
             </View>
-            <Text style={styles.detailText}>{item.comment}</Text>
+            <Text style={styles.detailText}>{item?.description}</Text>
             <View style={styles.section3}>
-              <Text style={styles.dateText}>{item.date}</Text>
+              <Text style={styles.dateText}>{item?.createddate}</Text>
               <View style={styles.button}>
-                <Text style={styles.buttonText}>Verified</Text>
+                <Text style={styles.buttonText}>{StringsOfLanguages.VERIFIED}</Text>
                 <Image style={styles.tickMark} source={tickMark} />
               </View>
             </View>
@@ -111,66 +74,28 @@ const Review = () => {
 
   return (
     <SafeAreaView style={commomstyle.container}>
+       
+       {/* <LinearGradient
+        colors={[GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW2, GRADIENT_COLOR_NEW3, GRADIENT_COLOR_NEW4]}
+        angle={83}
+        locations={[0.24, 0.63, 0.87, 0.99]}
+        style={commomstyle.gradientstyle}> */}
       
-        <Header rightImg={true} headerText="Reviews"  />
+        <Header 
+        rightImg={true} 
+        headerText="Reviews" 
+        rightImgStyl={{ tintColor: WHITE_COLOR }}
+         />
           <FlatList
           showsVerticalScrollIndicator={false}
-          data={DATA}
+          data={contentdata}
           renderItem={renderItem}
-          keyExtractor={item => item.id}
+          ListEmptyComponent={<Notfound textnotfound = 'Review'/>}
+          keyExtractor={item => item.contentdata}
         />
+      {/* </LinearGradient> */}
 
-
-        {/* <ScrollView>
-        <Reviews
-          profileImage={profile_img}
-          userName={"John D."}
-          comment={
-            " One of the best handyman ever hired, very straight forward..."
-          }
-          date={"Aug 27, 2021"}
-        />
-        <Reviews
-          profileImage={profile_img2}
-          userName={"R.J.Portales"}
-          comment={
-            " One of the best handyman ever hired, very straight forward..."
-          }
-          date={"Aug 27, 2021"}
-        />
-        <Reviews
-          profileImage={profile_img3}
-          userName={"John D."}
-          comment={
-            " One of the best handyman ever hired, very straight forward..."
-          }
-          date={"Aug 27, 2021"}
-        />
-        <Reviews
-          profileImage={profile_img}
-          userName={"John D."}
-          comment={
-            " One of the best handyman ever hired, very straight forward..."
-          }
-          date={"Aug 27, 2021"}
-        />
-        <Reviews
-          profileImage={profile_img2}
-          userName={"R.J.Portales"}
-          comment={
-            " One of the best handyman ever hired, very straight forward..."
-          }
-          date={"Aug 27, 2021"}
-        />
-        <Reviews
-          profileImage={profile_img3}
-          userName={"Linda Blind"}
-          comment={
-            " One of the best handyman ever hired, very straight forward..."
-          }
-          date={"Aug 27, 2021"}
-        />
-      </ScrollView> */}
+    
     </SafeAreaView>
   );
 };

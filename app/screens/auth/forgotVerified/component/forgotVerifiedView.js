@@ -14,6 +14,7 @@ import { ICONS } from '@utils/imagePath';
 import { Header } from '@components';
 import OTPTextInput from "react-native-otp-textinput";
 import { COMMON_COLOR } from "../../../../utils/constants";
+import StringsOfLanguages from '../../../../utils/translations'
 
 const forgotPasswordView = (props) => {
     const { email,verifiedOTP, resendOTP,setOtp,otp , inputError} = props
@@ -30,8 +31,7 @@ const forgotPasswordView = (props) => {
     return (
         <SafeAreaView style={commomstyle.container}>
             <Header
-                rightImg={true}
-                headerType="other"
+                rightImg={false} headerText={""}
             />
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                 <View style={style.firstFlex}>
@@ -40,7 +40,7 @@ const forgotPasswordView = (props) => {
                 <View style={style.secondFlex}>
                     <View style={style.topContainer}>
                         <View style={style.viewshowmessage}>
-                            <Text style={style.textshowmessage}>We have sent your OTP on your Email {email} Please check your email if not recive click on Resend OTP for recive new OTP!</Text></View>
+                            <Text style={style.textshowmessage}>{StringsOfLanguages.WE_HAVE_SENT_YOUR_OTP_ON_YOUR_EMAIL}{email} {StringsOfLanguages.PLEASE_CHECK_EMAIL}</Text></View>
                         <View>
                             {/* <Input
                                 onChangeText={(val) => props.setLoginData({
@@ -76,7 +76,7 @@ const forgotPasswordView = (props) => {
                     </View>
                     <View style={style.button}>
                         <Button
-                            buttonText={'Verified'}
+                            buttonText={StringsOfLanguages.VERIFIED}
                             onPress={() => verifiedOTP()}
                         />
                     </View>

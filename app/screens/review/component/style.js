@@ -1,6 +1,6 @@
 import { View, StyleSheet } from "react-native";
 import { scale } from "@utils/utils";
-import { FONT_FAMILY_SEMIBOLD, FONT_FAMILY_LIGHT, BORDERLINE_COLOR } from "../../../utils/constants";
+import { FONT_FAMILY_SEMIBOLD, FONT_FAMILY_LIGHT, BORDERLINE_COLOR, GRAY_COLOR, WHITE_COLOR } from "../../../utils/constants";
 
 const style = StyleSheet.create({
     container: {
@@ -20,7 +20,7 @@ const style = StyleSheet.create({
         fontSize: scale(16),
         fontWeight: "400",
         fontFamily: FONT_FAMILY_SEMIBOLD,
-        color: "#666666",
+        color: GRAY_COLOR,
       },
       imageDesign: {
         width: scale(65),
@@ -31,7 +31,7 @@ const style = StyleSheet.create({
         fontFamily: FONT_FAMILY_LIGHT,
         fontSize: scale(12),
         fontWeight: "400",
-        color: "#666666",
+        color: GRAY_COLOR,
       },
       section1: {
         flexDirection: "column",
@@ -49,7 +49,7 @@ const style = StyleSheet.create({
         fontFamily: FONT_FAMILY_LIGHT,
         fontSize: scale(12),
         fontWeight: "400",
-        color: "#666666",
+        color: GRAY_COLOR,
       },
       button: {
         width: scale(96),
@@ -65,7 +65,7 @@ const style = StyleSheet.create({
         height: scale(15),
       },
       buttonText: {
-        color: "white",
+        color: WHITE_COLOR,
         fontFamily: FONT_FAMILY_SEMIBOLD,
         fontSize: scale(12),
         fontWeight: "600",
@@ -74,7 +74,8 @@ const style = StyleSheet.create({
         borderWidth: 1,
         borderColor: BORDERLINE_COLOR,
         height: 1,
-        marginRight: scale(3),
+        marginRight: scale(10),
+        marginLeft: scale(10),
       },
 });
 export default style;

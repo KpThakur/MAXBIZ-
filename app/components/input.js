@@ -1,7 +1,10 @@
 import React, { Fragment, useState } from 'react';
-import { View, StyleSheet, TextInput, Text, Image } from 'react-native';
+import { View, StyleSheet, TextInput, Text, Image, Platform } from 'react-native';
 import { BLACK_COLOR, BORDERLINE_COLOR, PLACEHOLDER_COLOR, FONT_FAMILY_REGULAR } from '@utils/constants';
 import { scale } from '@utils/utils';
+import { color } from 'react-native-elements/dist/helpers';
+import { GRADIENT_COLOR, GRAY_COLOR } from '../utils/constants';
+import { normalize, normalizeHeight, normalizeSpacing } from './scaleFontSize';
 
 
 const input = (props) => {
@@ -21,7 +24,7 @@ const input = (props) => {
     };
     const {
         imgCntnr, leftImage, value, onChangeText, style, labelTxt, labelStyl,
-        secureTextEntry, inputCntnr, inputDsgn, brdr, rightImage, placeholder, image
+        secureTextEntry, inputCntnr, inputDsgn, brdr, rightImage, placeholder, image,keyboardType,maxLength
     } = props;
     const {
         inputDesign, container, inputContainer, imgContainer, border, labelText,inputDesignnoimg
@@ -44,8 +47,10 @@ const input = (props) => {
                     </View>
                 </View>
                 <TextInput
-                    style={[image == "noNeed" ? inputDesignnoimg : inputDesign , inputDsgn]}
+                    style={[image == "noNeed" ? inputDesignnoimg : inputDesign , inputDsgn, {color : GRAY_COLOR}]}
                     value={value}
+                    keyboardType = {keyboardType ? keyboardType : "Text"}
+                    maxLength = {maxLength ? maxLength : 30}
                     onChangeText={(val) => onChangeText(val)}
                     secureTextEntry={secureTextEntry}
                     onFocus={handleFocus}
@@ -72,7 +77,7 @@ const styles = StyleSheet.create({
     },
     labelText: {
         fontFamily: FONT_FAMILY_REGULAR,
-        color: PLACEHOLDER_COLOR,
+        color: GRAY_COLOR,
         fontWeight: '400',
         marginHorizontal: scale(9),
         fontSize: scale(15),
@@ -107,6 +112,8 @@ const styles = StyleSheet.create({
         borderColor: BORDERLINE_COLOR,
         height: 1,
         marginRight: scale(3),
+        marginTop: Platform.OS === 'ios' ? normalizeSpacing(12) : null
+        
     },
 })
 export default input;

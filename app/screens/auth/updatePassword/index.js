@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import UpdatePasswordView from './component/updatePasswordView';
+import StringsOfLanguages from '../../../utils/translations';
 
 const UpdatePassword = ({ navigation }) => {
     const [inputError , setInputError] = useState({})
@@ -14,21 +15,21 @@ const UpdatePassword = ({ navigation }) => {
 
         if(passwordData?.newPassword.length < 6){
             formerror = false
-            error['newPassworderror'] = "Password should be 6 characters" 
+            error['newPassworderror'] = StringsOfLanguages.PASSWORD_SHOULD_BE_6_CHARACTERS 
         } 
         if(passwordData?.newPassword === ''){
             formerror = false
-            error['newPassworderror'] = "Please enter new password" 
+            error['newPassworderror'] = StringsOfLanguages.PLEASE_ENTER_NEW_PASSWORD
         } 
 
         if(passwordData?.confirmpassword !== passwordData?.newPassword){
             formerror = false
-            error['cPassworderror'] = "Password and confirm not match!" 
+            error['cPassworderror'] = StringsOfLanguages.PASSWORD_AND_CONFIRM_NOT_MATCH
         }
         
         if(passwordData?.confirmpassword === ''){
             formerror = false
-            error['cPassworderror'] = "Please enter confirm password" 
+            error['cPassworderror'] = StringsOfLanguages.PLEASE_ENTER_CONFIRM_PASSWORD
         }
         
         setInputError(error)

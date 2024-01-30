@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ForgotPasswordView from './component/forgotPasswordView';
+import StringsOfLanguages from '../../../utils/translations';
 
 const ForgotPassword = ({ navigation }) => {
     const [inputError , setInputError] = useState({})
@@ -16,13 +17,12 @@ const ForgotPassword = ({ navigation }) => {
         let error = {}
         
         let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-        if (!reg.test(loginData?.emailId)) {
+        if (!reg.test(loginData?.emailId)) 
             formerror = false
-            error['emailerror'] = "Please enter correct email address" 
-        }
+            error['emailerror'] = StringsOfLanguages.CORRECT_EMAIL
         if(loginData?.emailId == ""){
             formerror = false
-            error['emailerror'] = "Please enter email address" 
+            error['emailerror'] = StringsOfLanguages.CORRECT_EMAIL 
         }
         setInputError(error)
         return formerror

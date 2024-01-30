@@ -4,6 +4,7 @@ import style from "./style";
 import commomstyle from "../../../../common/styles";
 import { Button, Input, Header } from "@components";
 import ImagePicker from "react-native-image-crop-picker";
+import StringsOfLanguages from '../../../../utils/translations';
 const certifyBusiness = (props) => {
   const [imageData, setimageData] = useState({});
   const openPicker = () => {
@@ -14,17 +15,18 @@ const certifyBusiness = (props) => {
   return (
     <ScrollView style={commomstyle.container}>
       <Header rightImg={false} />
+error listen EADDRINUSE: address already in use :::8081.
       <View style={style.container}>
-        <Text style={style.firstText}>Certify Your Business</Text>
+        <Text style={style.firstText}>{StringsOfLanguages.CERTIFYBUSINESS}</Text>
         <View style={style.firstInput}>
           <Image style={style.images} source={{uri: imageData.path}}/>
         </View>
         <View style={style.secondInput}>
-        <Button buttonText={"Choose Image"} onPress={openPicker} />
+        <Button buttonText={StringsOfLanguages.CHOOSE_IMAGE} onPress={openPicker} />
         </View>
         <View style={style.button}>
           <Button
-            buttonText={"CHECK STATUS"}
+            buttonText={StringsOfLanguages.CHECK_STATUS}
             onPress={() => props.OnSubmit()}
           />
         </View>

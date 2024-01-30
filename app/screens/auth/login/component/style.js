@@ -7,17 +7,32 @@ import {
 
 
 const style = StyleSheet.create({
+    containernew: {
+        flex: 1,
+        
+      },
     firstFlex: {
-        flex: 3,
+        flex: 2.5,
         justifyContent: 'center',
         alignItems: 'center',
-        paddingTop: 5
+        paddingTop: 5,
+        //backgroundColor : "red"
     },
+    leftImg:{
+        width: scale(70), 
+        height: scale(50),
+        marginHorizontal:scale(10)
+      },
     secondFlex: {
-        flex: 3
+        flex: 4,
+      // backgroundColor : "black"
+    },
+    thiredFlex: {
+        flex: 0.8,
+       // backgroundColor : "yellow"
     },
     topContainer: {
-        paddingHorizontal: scale(30)
+        paddingHorizontal: scale(25)
     },
     secondInput: {
         paddingTop: scale(18)
@@ -47,10 +62,9 @@ const style = StyleSheet.create({
     },
     button: {
         paddingTop: scale(25),
-        paddingHorizontal: scale(30)
+        paddingHorizontal: scale(25)
     },
     lastItem: {
-        flex: 0.8,
         alignItems: 'center',
         justifyContent: 'flex-end',
         paddingTop: 5

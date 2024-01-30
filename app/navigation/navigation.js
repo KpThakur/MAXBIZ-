@@ -1,4 +1,4 @@
-import React from "react";
+ import React from "react";
 import { AuthContext } from "../utils/UserContext";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -13,7 +13,9 @@ import validateIdentityScreen from "../screens/auth/validateIdentity";
 import registrationScreen from "../screens/auth/registration";
 import certifyBusinessScreen from "../screens/auth/certifyBusiness";
 import thankyouScreen from "../screens/auth/thankyou";
-
+import serviceDetailScreen from "../screens/serviceDetail";
+import ApiEndPoint from "../utils/apiEndPoints";
+import { apiCall, setDefaultHeader } from '../utils/httpClient';
 
 import findServiceScreen from "../screens/service";
 
@@ -25,11 +27,12 @@ import forgotPasswordScreen from "../screens/auth/forgotPassword";
 import forgotVerifiedScreen from "../screens/auth/forgotVerified";
 import updatePasswordScreen from "../screens/auth/updatePassword";
 
-import accountScreen from "../screens/auth/updatePassword";
-import profileDetailsScreen from "../screens/auth/updatePassword"
+import accountScreen from "../screens/business/accounts/index";
+import profileDetailsScreen from "../screens/business/profileDetails/index"
 
 
 import CustomMenu  from '../components/customMenu';
+import customMenuAuth  from '../components/customMenuAuth';
 const Drawer = createDrawerNavigator();
 const App = createNativeStackNavigator();
 const Auth = createNativeStackNavigator();
@@ -48,13 +51,50 @@ function CustomDrawerNavigation() {
   )
 }
 
+
+function CustomDrawerNavigationauth() {
+  return (
+      <Drawer.Navigator screenOptions={{headerShown: false , drawerPosition: "right"}}     drawerContent={props => <CustomMenu {...props} />} >
+         
+        
+        <Drawer.Screen name="homeScreen" component={HomeScreen} />
+        <Drawer.Screen name="loginScreen" component={loginScreen} /> 
+        <Drawer.Screen name="findServiceScreen" component={findServiceScreen} />
+      
+        <Drawer.Screen name="serviceDetailScreen" component={serviceDetailScreen} />
+        <Drawer.Screen name="reviewScreen" component={reviewScreen} />
+        <Drawer.Screen name="contentListScreen" component={contentListScreen} />
+        
+        
+        <Drawer.Screen name="joinScreen" component={joinScreen} /> 
+        <Drawer.Screen name="validateIdentityScreen" component={validateIdentityScreen} />
+        <Drawer.Screen name="registrationScreen" component={registrationScreen} />
+         <Drawer.Screen name="thankyouScreen" component={thankyouScreen} />
+        
+        <Drawer.Screen name="forgotPasswordScreen" component={forgotPasswordScreen} />
+        <Drawer.Screen name="forgotVerifiedScreen" component={forgotVerifiedScreen} />
+        <Drawer.Screen name="updatePasswordScreen" component={updatePasswordScreen} />
+        
+        <Drawer.Screen name="otpVerifyScreen" component={otpVerifyScreen} />
+        <Drawer.Screen name="certifyBusinessScreen" component={certifyBusinessScreen} />  
+         
+        
+      </Drawer.Navigator >
+  )
+}
+
 const AppStack = () => {
   return (
    
-      <App.Navigator initialRouteName="splashScreen" screenOptions={{ headerShown: false }}>
-         <App.Screen name="splashScreen" component={splashScreen} />
-        <App.Screen name="splashTwoScreen" component={splashTwoScreen} />
-        <App.Screen name="homeScreen" component={CustomDrawerNavigation} />
+      <App.Navigator screenOptions={{ headerShown: false }}>
+        {/*  <App.Screen name="splashScreen" component={splashScreen} />
+        <App.Screen name="splashTwoScreen" component={splashTwoScreen} /> */}
+
+
+        {/* <App.Screen name="splashTwoScreen" component={splashTwoScreen} /> */}
+        <App.Screen name="AppStack" component={CustomDrawerNavigation} />
+
+        
         
       
       </App.Navigator>
@@ -67,14 +107,46 @@ const AppStack = () => {
 
 const AuthStack = () => {
   return (
+    <App.Navigator screenOptions={{ headerShown: false }}>
+         {/* <App.Screen name="splashScreen" component={splashScreen} />
+        <App.Screen name="splashTwoScreen" component={splashTwoScreen} /> */}
+        {/*  <App.Screen name="splashTwoScreen" component={splashTwoScreen} /> 
+         <App.Screen name="homeScreen" component={CustomDrawerNavigationauth} />  */}
+        <App.Screen name="AuthStack" component={CustomDrawerNavigationauth} />
+
+        {/* <App.Screen name="findServiceScreen" component={findServiceScreen} />  
+        <App.Screen name="serviceDetailScreen" component={serviceDetailScreen} />
+        <App.Screen name="reviewScreen" component={reviewScreen} />
+        <App.Screen name="contentListScreen" component={contentListScreen} />
+        
+        <App.Screen name="joinScreen" component={joinScreen} /> 
+        <App.Screen name="validateIdentityScreen" component={validateIdentityScreen} />
+        <App.Screen name="registrationScreen" component={registrationScreen} />
+         <App.Screen name="thankyouScreen" component={thankyouScreen} />
+        
+        <App.Screen name="forgotPasswordScreen" component={forgotPasswordScreen} />
+        <App.Screen name="forgotVerifiedScreen" component={forgotVerifiedScreen} />
+        <App.Screen name="updatePasswordScreen" component={updatePasswordScreen} />
+       
+        <App.Screen name="otpVerifyScreen" component={otpVerifyScreen} />
+        <App.Screen name="certifyBusinessScreen" component={certifyBusinessScreen} /> */}
+        
+      
+      </App.Navigator>
+    
+  );
+};
+const AuthStacknew = () => {
+  return (
    
-      <Auth.Navigator initialRouteName="splashScreen" screenOptions={{ headerShown: false }}>
-        <Auth.Screen name="splashScreen" component={splashScreen} />
+      <Auth.Navigator initialRouteName="splashTwoScreen" screenOptions={{ headerShown: false }}>
+        
+         <Auth.Screen name="splashScreen" component={splashScreen} /> 
         <Auth.Screen name="splashTwoScreen" component={splashTwoScreen} />
         <Auth.Screen name="homeScreen" component={HomeScreen} />
         {/*Service Screens*/}
         <Auth.Screen name="findServiceScreen" component={findServiceScreen} />  
-        {/* <Auth.Screen name="serviceDetailScreen" component={serviceDetailScreen} /> */}  
+         <Auth.Screen name="serviceDetailScreen" component={serviceDetailScreen} />
         <Auth.Screen name="reviewScreen" component={reviewScreen} />
         <Auth.Screen name="contentListScreen" component={contentListScreen} />
         {/*Auth screens Screens*/}
@@ -136,6 +208,15 @@ const AppLoading = () => {
 
       try {
         userToken =  await AsyncStorage.getItem('userToken');
+        console.log("🚀 ~ file: navigation.js:211 ~ bootstrapAsync ~ userToken:", userToken)
+        if (userToken === null) {
+          getPublicToken()
+      }
+      else {
+          const userData = await AsyncStorage.getItem('userData')
+          setUserData(JSON.parse(userData))
+          await setDefaultHeader('token', userToken);
+      }
        
       } catch (e) {
         
@@ -159,6 +240,7 @@ const AppLoading = () => {
       signOut: async () => {
 
         await AsyncStorage.removeItem('userToken');
+        getPublicToken()
         dispatch({ type: 'SIGN_OUT' });
 
       },
@@ -166,6 +248,16 @@ const AppLoading = () => {
     }),
     []
   );
+
+  const getPublicToken = async () => {
+    const response = await apiCall('GET', ApiEndPoint.JWTTOKEN);
+          if (response.status === 200) {
+            console.log("🚀 ~ file: navigation.js:256 ~ getPublicToken ~ response.data.token:", response.data.token)
+              await setDefaultHeader('token', response.data.token);
+          }
+  }
+
+
 
 
  
@@ -180,7 +272,7 @@ const AppLoading = () => {
 
               <AuthContext.Provider value={authContext}>
               <Stack.Navigator screenOptions={{ headerShown: false }}>
-                {state.userToken == null ? (
+                {state.userToken === null ? (
                   <Stack.Screen name="AuthStack" component={AuthStack} />
                 ) : (
                   <Stack.Screen name="AppStack" component={AppStack} />

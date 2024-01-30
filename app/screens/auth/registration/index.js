@@ -3,6 +3,7 @@ import Registration from "./component/registration";
 import ImagePicker from "react-native-image-crop-picker";
 
 import MultiSelect from 'react-native-multiple-select';
+import StringsOfLanguages from "../../../utils/translations";
 
 const items = [{
     id: '92iijs7yta',
@@ -60,15 +61,14 @@ const registrationView = ({ navigation }) => {
     businessusername: "",
     businessname: "",
     address: "",
-    /* intro: "",
-    areas: "",
-    mainservice: "",
-    operation: "",
+     about_us: "",
+    /*areas: "",
+    mainservice: "", */
+    operation_hours: "",
     payment: "",
     phone_no: "",
-    website_url: "", */
-    services: "",
-    industry: "",
+    website_url: "", 
+    services: [],
     city: "",
     head_count: "",
     business_photo_url: "",
@@ -83,21 +83,21 @@ const registrationView = ({ navigation }) => {
     
 
     if (register.businessusername == "") {
-      errorbusinessusername = "Please enter Business UserName";
+      errorbusinessusername = StringsOfLanguages.PLEASE_ENTER_BUSINESS_USERNAME;
     }
     if (register.businessname == "") {
-      errorbusinessname = "Please enter Business Name";
+      errorbusinessname = StringsOfLanguages.PLEASE_ENTER_BUSINESS_NAME;
     }
     if (register.address == "") {
-      erroraddress = "Please enter Address";
+      erroraddress = StringsOfLanguages.PLEASE_ENTER_ADDRESS;
     }
    
     if (servicesData.length  == 0) {
-      errorservices = "Please enter Services";
+      errorservices = StringsOfLanguages.PLEASE_ENTER_SERVICES;
     }
-    if (register.industry == "") {
+    /* if (register.industry == "") {
       errorindustry = "Please enter Industry";
-    }
+    } */
     if (
       errorbusinessusername ||
       errorbusinessname ||
@@ -117,9 +117,11 @@ const registrationView = ({ navigation }) => {
   }
 
   const toNextPage = () => {
+    navigation.navigate("thankyouScreen");
     const valid = validationFrom();
     if (valid) {
-      navigation.navigate("thankyouScreen");
+      console.log("🚀 ~ file: index.js:121 ~ toNextPage ~ valid:", valid)
+      
     }
   };
 /*   const uploaddocument = () => {

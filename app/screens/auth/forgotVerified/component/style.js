@@ -19,7 +19,7 @@ const style = StyleSheet.create({
     },
     topContainer: {
         flex: 3,
-        paddingHorizontal: scale(30),
+        paddingHorizontal: scale(25),
        
     },
     secondInput: {
@@ -51,7 +51,7 @@ const style = StyleSheet.create({
     button: {
         flex:1,
         paddingTop: scale(25),
-        paddingHorizontal: scale(30)
+        paddingHorizontal: scale(25)
     },
     lastItem: {
         flex: 0.8,

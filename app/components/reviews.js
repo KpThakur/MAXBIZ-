@@ -3,6 +3,7 @@ import { Rating, AirbnbRating } from "react-native-ratings";
 import { scale } from "@utils/utils";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import tickMark from "../assets/images/tickMark.png";
+import StringsOfLanguages from "../utils/translations";
 import {
     FONT_FAMILY_LIGHT,
     FONT_FAMILY_SEMIBOLD,
@@ -34,7 +35,7 @@ const reviews = (props) => {
             <View style={styles.section3}>
               <Text style={styles.dateText}>{date}</Text>
               <View style={styles.button}>
-                <Text style={styles.buttonText}>Verified</Text>
+                <Text style={styles.buttonText}>{StringsOfLanguages.VERIFIED}</Text>
                 <Image style={styles.tickMark} source={tickMark} />
               </View>
             </View>

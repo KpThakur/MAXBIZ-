@@ -12,6 +12,7 @@ import commomstyle from '../../../../common/styles';
 import { Button, Input, Logo } from '@components';
 import { ICONS } from '@utils/imagePath';
 import { Header } from '@components';
+import StringsOfLanguages from '../../../../utils/translations';
 
 
 const updatePasswordView = (props) => {
@@ -19,9 +20,7 @@ const updatePasswordView = (props) => {
     return (
         <SafeAreaView style={commomstyle.container}>
              <Header
-                rightImg={true}
-                headerType="other"
-                //headerText={'Login'}
+                rightImg={false} headerText={StringsOfLanguages.UPDATE_PASSWORD}
             />
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                 <View style={style.firstFlex}>
@@ -37,8 +36,9 @@ const updatePasswordView = (props) => {
                                 })}
                                 secureTextEntry={true}
                                 value={props.passwordData.newPassword}
-                                placeholder="Enter your new password"
+                                placeholder={StringsOfLanguages.ENTER_YOUR_PASSWORD}
                                 leftImage={ICONS.passwordIcon}
+                                image={"noNeed"}
                             />
                             <Text style={commomstyle.errorText}>{inputError.newPassworderror}</Text>
                         </View>
@@ -50,8 +50,9 @@ const updatePasswordView = (props) => {
                                 })}
                                 secureTextEntry={true}
                                 value={props.passwordData.confirmpassword}
-                                placeholder="Confirm your password"
+                                placeholder={StringsOfLanguages.CONFIRM_YOUR_PASSWORD}
                                 leftImage={ICONS.passwordIcon}
+                                image={"noNeed"}
                             />
                             <Text style={commomstyle.errorText}>{inputError.cPassworderror}</Text>
                         </View>
@@ -76,7 +77,7 @@ const updatePasswordView = (props) => {
                     </View>
                     <View style={style.button}>
                         <Button
-                            buttonText={'Update Password'}
+                            buttonText={StringsOfLanguages.UPDATE_PASSWORD}
                             onPress={() => props.updatePassword()}
                         />
                     </View>

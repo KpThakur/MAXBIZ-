@@ -15,52 +15,58 @@ import {
 import commomstyle from "../../../common/styles";
 import { Header } from "@components";
 import { ICONS } from "@utils/imagePath";
+import LinearGradient from "react-native-linear-gradient";
+import { WHITE_COLOR,GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW2, GRADIENT_COLOR_NEW3, GRADIENT_COLOR_NEW4 } from "../../../utils/constants";
+import Notfound from "../../../components/notfound";
 
 const DATA = [
   {
     id:'1',
-    profileImage: require("../../../assets/dummy/construction2.jpg"),
+    aws_url: require("../../../assets/dummy/construction2.jpg"),
   
   },
   {
     id:'2',
-    profileImage: require('../../../assets/dummy/construction2.jpg'),
+    aws_url: require('../../../assets/dummy/construction2.jpg'),
   
   },
   {
     id:'3',
-    profileImage: require('../../../assets/dummy/construction2.jpg'),
+    aws_url: require('../../../assets/dummy/construction2.jpg'),
    
   },
   {
     id:'4',
-    profileImage: require("../../../assets/dummy/construction2.jpg"),
+    aws_url: require("../../../assets/dummy/construction2.jpg"),
   
   },
   {
     id:'5',
-    profileImage: require("../../../assets/dummy/profile2.jpg"),
+    aws_url: require("../../../assets/dummy/profile2.jpg"),
     
   },
   {
     id:'6',
-    profileImage: require("../../../assets/dummy/profile2.jpg"),
+    aws_url: require("../../../assets/dummy/profile2.jpg"),
    
   },
 ];
 
 
 const PhotoListView = (props) => {
-  const {type} = props
-  const ratingCompleted = (rating) => {
-    console.log("Rating is: " + rating);
-  };
+  const {type,contentdata} = props
+  console.log("🚀 ~ PhotoListView ~ contentdata:", contentdata)
+  
 
   const renderItem = ({ item }) => (
-    <View>
+    
+    <View >
+      { console.log("🚀 ~ PhotoListView ~ item:", item.aws_url)}
+      
       <View style={styles.container}>
         <View style={styles.leftContainer}>
-          <Image style={styles.imageDesign} source={item.profileImage} />
+        {/* <Image style={styles.imageDesign} source={item?.aws_url ? item?.aws_url : require("../../../assets/dummy/profile2.jpg")} /> */}
+        <Image style={styles.imageDesign} source={require("../../../assets/dummy/no_image.png")} />
         </View>
         
       </View>
@@ -71,13 +77,24 @@ const PhotoListView = (props) => {
 
   return (
     <SafeAreaView style={commomstyle.container}>
-       <Header rightImg={true} headerText={type}  />
+       {/* <LinearGradient
+        colors={[GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW2, GRADIENT_COLOR_NEW3, GRADIENT_COLOR_NEW4]}
+        angle={83}
+        locations={[0.24, 0.63, 0.87, 0.99]}
+        style={commomstyle.gradientstyle}> */}
+       <Header 
+       rightImg={true} 
+       rightImgStyl={{ tintColor: WHITE_COLOR }}
+       headerText={type}  
+       />
           <FlatList
           showsVerticalScrollIndicator={false}
-          data={DATA}
+          data={contentdata}
           renderItem={renderItem}
-          keyExtractor={item => item.id}
+          ListEmptyComponent={<Notfound textnotfound = 'Photo'/>}
+          keyExtractor={item => item.fileid}
         />
+        {/* </LinearGradient> */}
      </SafeAreaView>
   );
 };

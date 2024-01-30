@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/home/administrator/Documents/2022/Projects/SMB2020/smbMarketMobile/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-small-v4/values-small-v4.xml",
+            "outputFile": "com.smb_market.app-mergeDebugResources-29:/values-small-v4/values-small-v4.xml",
             "map": [
                 {
-                    "source": "/home/administrator/.gradle/caches/transforms-3/d9a3ea39a981c7afa2f0112a00415ec8/transformed/material-1.1.0/res/values-small-v4/values-small-v4.xml",
+                    "source": "/home/administrator/.gradle/caches/transforms-3/380fe58bf6c527a4ee00ff107d224565/transformed/material-1.1.0/res/values-small-v4/values-small-v4.xml",
                     "from": {
                         "startLines": "2,3,4,5",
                         "startColumns": "4,4,4,4",

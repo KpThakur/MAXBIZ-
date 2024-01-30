@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/home/administrator/Documents/2022/Projects/SMB2020/smbMarketMobile/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-xlarge-v4/values-xlarge-v4.xml",
+            "outputFile": "com.smb_market.app-mergeDebugResources-29:/values-xlarge-v4/values-xlarge-v4.xml",
             "map": [
                 {
-                    "source": "/home/administrator/.gradle/caches/transforms-3/2a54535c43105d51ac1a1664c84be20a/transformed/appcompat-1.2.0/res/values-xlarge-v4/values-xlarge-v4.xml",
+                    "source": "/home/administrator/.gradle/caches/transforms-3/2df373b9327185da857aa9641682c512/transformed/appcompat-1.4.1/res/values-xlarge-v4/values-xlarge-v4.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7",
                         "startColumns": "4,4,4,4,4,4",

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ForgotVerifiedView from './component/forgotVerifiedView';
+import StringsOfLanguages from '../../../utils/translations';
 
 const ForgotVerified = ({ navigation,route }) => {
 
@@ -17,12 +18,12 @@ const ForgotVerified = ({ navigation,route }) => {
 
         if(otp.length < 4){
             formerror = false
-            error['otperror'] = "OTP should be 4 characters" 
+            error['otperror'] = StringsOfLanguages.OTP_SHOULD_BE4_CHARACTERS
         } 
         
        if(otp == ""){
             formerror = false
-            error['otperror'] = "Please enter OTP" 
+            error['otperror'] = StringsOfLanguages.PLEASE_ENTER_OTP
         }
         
         setInputError(error)

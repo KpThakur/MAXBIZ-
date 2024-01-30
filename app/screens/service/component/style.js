@@ -1,15 +1,17 @@
 import { StyleSheet } from "react-native";
-import {  FONT_FAMILY_SEMIBOLD, COMMON_COLOR, FONT_FAMILY_REGULAR} from './../../../utils/constants';
+import {  WHITE_COLOR,FONT_FAMILY_SEMIBOLD, COMMON_COLOR, FONT_FAMILY_REGULAR, GRADIENT_COLOR_NEW3} from './../../../utils/constants';
 import { scale } from '@utils/utils';
 
 const styles = StyleSheet.create({
     headerTxt:{
         fontFamily: FONT_FAMILY_SEMIBOLD,
+        fontSize:scale(18)
      },
      leftImg:{
         width: scale(20), 
         height: scale(20),
-        marginHorizontal:scale(10)
+        marginHorizontal:scale(10),
+        
       },
     container:{
         paddingHorizontal: scale(18),
@@ -17,7 +19,7 @@ const styles = StyleSheet.create({
         flexGrow:1,
       },
     regisView:{
-        marginVertical:scale(30),
+        marginVertical:scale(25),
         marginHorizontal:scale(20),
       },
     regisViewTxt:{
@@ -39,7 +41,7 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         backgroundColor:'white',
         borderRadius:scale(100),
-        paddingHorizontal:scale(30),
+        paddingHorizontal:scale(25),
         paddingVertical:scale(20),
         position:'absolute',
         bottom:scale(20)
@@ -71,7 +73,7 @@ const styles = StyleSheet.create({
         paddingHorizontal:scale(20)
     },
     serviceImg:{
-        height:scale(30),
+        height:scale(25),
         width:scale(40),
         marginVertical:scale(1),
         resizeMode:'contain'
@@ -88,20 +90,26 @@ const styles = StyleSheet.create({
         marginVertical:scale(15),
         marginHorizontal:scale(20)
     },
+    inputcity:{
+       // marginVertical:scale(15),
+        marginHorizontal:scale(20)
+    },
     inputWrapper:{
         paddingBottom:scale(5),
-        backgroundColor: '#fff',
+        backgroundColor: WHITE_COLOR,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 9 },
         shadowOpacity:  1,
         shadowRadius:4.51,
         elevation: 20,
+        borderBottomLeftRadius : scale(20),
+        borderBottomRightRadius : scale(20)
     },
     inputView:{
     },
        
     inputButton:{
-        padding:scale(30)
+        padding:scale(25)
     },
     inputButtonTxt:{
         textAlign:'center',

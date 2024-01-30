@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { AuthContext } from "../utils/UserContext";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
@@ -11,7 +11,7 @@ import {
   DrawerContentScrollView,
 } from "@react-navigation/drawer";
 import {
-  FONT_FAMILY_SEMIBOLD,
+  FONT_FAMILY_SEMIBOLD, GRADIENT_COLOR_NEW3,
 } from "../utils/constants";
 import { scale } from "@utils/utils";
 import {
@@ -26,29 +26,47 @@ import logOut from "../assets/images/logout.png";
 import { useNavigation } from "@react-navigation/native";
 import { Dimensions } from "react-native";
 import { DrawerActions } from '@react-navigation/native';
+import StringsOfLanguages from "../utils/translations";
 
 const customMenu =  (props) => {
   const { signOut } = React.useContext(AuthContext);
+  const { signIn } = React.useContext(AuthContext);
   const navigation = useNavigation();
   const windowWidth = Dimensions.get("window").width;
+  const [loginStatus, setloginStatus] = useState(false)
+  const [userData, setUserData] = useState({})
+
+  /* const userToken =  JSON.parse(AsyncStorage.getItem('userToken')); */
+  
+  const getuserData = async () => {
+    const userToken  = await AsyncStorage.getItem('userToken');
+    console.log("🚀 ~ file: customMenu.js:41 ~ getuserData ~ userToken:", userToken)
+   
+    if (userToken !== null) {
+      const userData = await AsyncStorage.getItem('userData')
+      setUserData(JSON.parse(userData))
+      setloginStatus(true)
+    }
+  }
+useEffect(() => {
+ getuserData()
+ 
+}, []); 
 
   const logOut = () => {
     signOut()
   } 
   return (
-    <View style={{ flex: 1, backgroundColor: "#847AF0" }}>
+    <View style={{ flex: 1, backgroundColor: GRADIENT_COLOR_NEW3 }}>
       <DrawerContentScrollView {...props}>
-        <View style={{ backgroundColor: "#776EDF" }}>
+        <View style={{ backgroundColor: GRADIENT_COLOR_NEW3 }}>
+          
           <TouchableOpacity style={{ padding: scale(10) }} onPress = {()=> {navigation.dispatch(DrawerActions.closeDrawer())}}>
             <Image source={require("../assets/images/Vector.png")} />
           </TouchableOpacity>
-          <TouchableOpacity onPress = {()=> {navigation.navigate("accountScreen")}}>
-          <View style={{ flexDirection: "row", padding: scale(10) }}>
-            <Avatar.Image
-              source={require("../assets/images/review-img-01.png")}
-              size={60}
-            />
-            <View
+         
+          {loginStatus ?  <View style={{ flexDirection: "row", padding: scale(10) }}>
+             <View
               style={{
                 flexDirection: "column",
                 marginLeft: scale(5),
@@ -63,82 +81,76 @@ const customMenu =  (props) => {
                   fontWeight: "600",
                 }}
               >
-                Welcome!
+               {`Welcome! ${userData.firstname} ${userData.lastname}`}
               </Text>
-              <Text
-                style={{
-                  color: "white",
-                  fontFamily: FONT_FAMILY_SEMIBOLD,
-                  fontSize: scale(14),
-                  fontWeight: "600",
-                }}
-              >
-                John D.
-              </Text>
+              
             </View>
-          </View>
-          </TouchableOpacity>
-        </View>
-        {/* <DrawerItemList {...props}/> */}
+          </View> :  console.log() }
+         </View>
+       
         <View style={{ marginLeft: scale(20), marginTop: scale(20) }}>
-          {/* <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("homeScreen");
-            }}
-          >
-            <View style={{ flexDirection: "row", padding: scale(10) }}>
-              <Image source={home} />
-              <Text
-                style={{
-                  fontSize: scale(14),
-                  fontWeight: "600",
-                  marginLeft: scale(10),
-                  color: "white",
-                  fontFamily: FONT_FAMILY_SEMIBOLD,
-                }}
-              >
-                Home
-              </Text>
-            </View>
-          </TouchableOpacity> */}
-          <View
-            style={{
-              borderStyle: "dashed",
-              borderWidth: 0.5,
-              borderColor: "white",
-              marginLeft: scale(10),
-              width: windowWidth / 1.7,
-            }}
-          />
-         {/*  <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("joinScreen");
-            }}
-          >
-            <View style={{ flexDirection: "row", padding: scale(10) }}>
-              <Image source={user} />
-              <Text
-                style={{
-                  fontSize: scale(14),
-                  fontWeight: "600",
-                  marginLeft: scale(10),
-                  color: "white",
-                  fontFamily: FONT_FAMILY_SEMIBOLD,
-                }}
-              >
-                Join as SMB
-              </Text>
-            </View>
-          </TouchableOpacity> */}
-          <View
-            style={{
-              borderStyle:"dashed",
-              borderWidth: 0.5,
-              borderColor: "white",
-              marginLeft: scale(10),
-              width: windowWidth / 1.7,
-            }}
-          />
+
+        {!loginStatus ? 
+            <>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("homeScreen");
+              }}
+            >
+              <View style={{ flexDirection: "row", padding: scale(10) }}>
+                <Image source={home} />
+                <Text
+                  style={{
+                    fontSize: scale(14),
+                    fontWeight: "600",
+                    marginLeft: scale(10),
+                    color: "white",
+                    fontFamily: FONT_FAMILY_SEMIBOLD,
+                  }}
+                >
+                  {StringsOfLanguages.HOME}
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <View style={{
+                borderStyle: "dashed",
+                borderWidth: 0.5,
+                borderColor: "white",
+                marginLeft: scale(10),
+                width: windowWidth / 1.7,
+              }}
+            />
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("loginScreen");
+              }}
+            >
+              <View style={{ flexDirection: "row", padding: scale(10) }}>
+                <Image source={user} />
+                <Text
+                  style={{
+                    fontSize: scale(14),
+                    fontWeight: "600",
+                    marginLeft: scale(10),
+                    color: "white",
+                    fontFamily: FONT_FAMILY_SEMIBOLD,
+                  }}
+                >
+                  {StringsOfLanguages.JOIN_US}
+                </Text>
+              </View>
+            </TouchableOpacity> 
+            <View  style={{
+                borderStyle:"dashed",
+                borderWidth: 0.5,
+                borderColor: "white",
+                marginLeft: scale(10),
+                width: windowWidth / 1.7,
+              }}
+            /> 
+          </> :  console.log() }
+
+        {loginStatus ? <>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("profileDetailsScreen");
@@ -155,7 +167,7 @@ const customMenu =  (props) => {
                   fontFamily: FONT_FAMILY_SEMIBOLD,
                 }}
               >
-               Business Detail
+               {StringsOfLanguages.BUSINESS_DETAIL}
               </Text>
             </View>
           </TouchableOpacity>
@@ -184,12 +196,15 @@ const customMenu =  (props) => {
                   fontFamily: FONT_FAMILY_SEMIBOLD,
                 }}
               >
-                Profile Detail
+                {StringsOfLanguages.PROFILE_DETAIL}
               </Text>
             </View>
           </TouchableOpacity>
+          </> :  console.log() }
+
         </View>
       </DrawerContentScrollView>
+      {loginStatus ? <>
       <TouchableOpacity onPress={() => logOut()}>
         <View style={{ flexDirection: "row", padding: scale(30) }}>
           <Image source={logOut} />
@@ -202,10 +217,11 @@ const customMenu =  (props) => {
               fontFamily: FONT_FAMILY_SEMIBOLD,
             }}
           >
-            Logout
+          {StringsOfLanguages.LOGOUT}
           </Text>
         </View>
       </TouchableOpacity>
+      </> :  console.log() }
     </View>
   );
 };

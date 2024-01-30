@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { scale } from '@utils/utils';
-import { BLACK_COLOR, FONT_FAMILY_SEMIBOLD,FONT_FAMILY_REGULAR } from '@utils/constants';
+import { BLACK_COLOR, GRAY_COLOR,FONT_FAMILY_SEMIBOLD,FONT_FAMILY_REGULAR } from '@utils/constants';
 
 const style = StyleSheet.create({
     container: {
@@ -20,12 +20,12 @@ const style = StyleSheet.create({
     },
     firstText: {
         fontSize: scale(24),
-        color: BLACK_COLOR,
+        color: GRAY_COLOR,
         fontWeight: '600',
         fontFamily: FONT_FAMILY_SEMIBOLD
     },
     inputContainer: {
-        marginRight: scale(12)
+        marginRight: scale(0)
     },
     inputDesign: {
         left: scale(0),
@@ -36,8 +36,8 @@ const style = StyleSheet.create({
     },
     button: {
         flex:0.5,
-        paddingVertical: scale(24),
-        marginRight: scale(9)
+      
+       
     },
     firstInput: {
         paddingVertical: scale(9)

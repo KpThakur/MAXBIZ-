@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Text, Image, Dimensions, TouchableOpacity } from 'react-native';
-import { FONT_FAMILY_MEDIUM, GRADIENT_COLOR, LINEAR_GRAD_COLOR, WHITE_COLOR } from '../utils/constants';
+import { COMMON_COLOR, FONT_FAMILY_MEDIUM, GRADIENT_COLOR, LINEAR_GRAD_COLOR, WHITE_COLOR } from '../utils/constants';
 import LinearGradient from 'react-native-linear-gradient';
 import { scale } from '@utils/utils';
 
@@ -12,7 +12,9 @@ const button = (props) => {
     return (
         <TouchableOpacity onPress={onPress}
             style={{ paddingHorizontal: scale(5)}}>
-            <LinearGradient colors={[LINEAR_GRAD_COLOR, GRADIENT_COLOR]}
+            <LinearGradient
+             colors={['rgba(135, 125, 242, 1)', 'rgba(67, 55, 190, 1)']}
+           // colors={[ COMMON_COLOR,  LINEAR_GRAD_COLOR]}
                 style={[container, style]}>
                 <Image source={leftImg} />
                 <Text style={[btnText, buttontxt]}>{buttonText}</Text>

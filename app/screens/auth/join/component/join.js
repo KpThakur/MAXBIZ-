@@ -13,7 +13,7 @@ import { WHITE_COLOR } from '@utils/constants';
 import { Header } from '@components';
 import { scale } from '@utils/utils';
 import { ICONS } from '@utils/imagePath';
-
+import StringsOfLanguages from '../../../../utils/translations';
 
 const join = (props) => {
     return (
@@ -26,9 +26,9 @@ const join = (props) => {
             />
             <ScrollView>
                 <View style={style.firstContainer}>
-                    <Text style={style.firstText}>Join SMB Market &</Text>
-                    <Text style={[style.firstText, { bottom: scale(12) }]}>get FREE local</Text>
-                    <Text style={[style.firstText, { bottom: scale(20) }]}>leads</Text>
+                    <Text style={style.firstText}>{StringsOfLanguages.JOIN_SMB_MARKET}</Text>
+                    <Text style={[style.firstText, { bottom: scale(12) }]}>{StringsOfLanguages.GET_FREE_LOCAL}</Text>
+                    <Text style={[style.firstText, { bottom: scale(20) }]}>{StringsOfLanguages.LEADS}</Text>
                 </View>
                 <View style={style.inContainer}>
                     <TouchableOpacity style={style.buttons}
@@ -43,8 +43,8 @@ const join = (props) => {
                                     <Image style={{ tintColor: WHITE_COLOR }}
                                         source={ICONS.validateIcon} />
                                     <View style={style.selectedTxt}>
-                                        <Text style={style.selectText}>Validate your</Text>
-                                        <Text style={[style.selectText, style.bottom]}>identity</Text>
+                                        <Text style={style.selectText}>{StringsOfLanguages.VALIDATE_YOUR}</Text>
+                                        <Text style={[style.selectText, style.bottom]}>{StringsOfLanguages.IDENTITY}</Text>
                                     </View>
                                 </View>
                             </View>
@@ -53,8 +53,8 @@ const join = (props) => {
                                 <Image resizeMode="cover"
                                     source={ICONS.validateIcon} />
                                 <View style={style.nonSelectdTxt}>
-                                    <Text style={style.nonSelectText}>Validate your</Text>
-                                    <Text style={[style.nonSelectText, style.bottom]}>identity</Text>
+                                    <Text style={style.nonSelectText}>{StringsOfLanguages.VALIDATE_YOUR}</Text>
+                                    <Text style={[style.nonSelectText, style.bottom]}>{StringsOfLanguages.IDENTITY}</Text>
                                 </View>
                             </View>
                         }

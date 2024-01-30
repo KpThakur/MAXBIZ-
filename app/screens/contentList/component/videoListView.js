@@ -3,6 +3,7 @@ import styles from "./style";
 import profile_img from "../../../assets/images/review-img-01.png";
 import profile_img2 from "../../../assets/images/review-img-02.png";
 import profile_img3 from "../../../assets/images/review-img-03.png";
+import StringsOfLanguages from "../../../utils/translations";
 import {
   View,
   Text,
@@ -15,6 +16,8 @@ import {
 import commomstyle from "../../../common/styles";
 import { Header } from "@components";
 import { ICONS } from "@utils/imagePath";
+import { WHITE_COLOR,GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW2, GRADIENT_COLOR_NEW3, GRADIENT_COLOR_NEW4 } from "../../../utils/constants";
+import LinearGradient from "react-native-linear-gradient";
 
 const DATA = [
   {
@@ -50,9 +53,11 @@ const DATA = [
 ];
 
 
-const VideoListView = () => {
+const VideoListView = (props) => {
+
+  const {type} = props
   const ratingCompleted = (rating) => {
-    console.log("Rating is: " + rating);
+    console.log(StringsOfLanguages.RATING_IS + rating);
   };
 
   const renderItem = ({ item }) => (
@@ -71,13 +76,18 @@ const VideoListView = () => {
 
   return (
     <SafeAreaView style={commomstyle.container}>
-       <Header rightImg={true} headerText="Content List"  />
+     
+       <Header 
+       rightImgStyl={{ tintColor: WHITE_COLOR }}
+       rightImg={true} 
+       headerText= {type}  />
           <FlatList
           showsVerticalScrollIndicator={false}
           data={DATA}
           renderItem={renderItem}
           keyExtractor={item => item.id}
         />
+       
      </SafeAreaView>
   );
 };

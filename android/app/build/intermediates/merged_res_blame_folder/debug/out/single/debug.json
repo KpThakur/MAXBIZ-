@@ -1,62 +1,66 @@
 [
     {
-        "merged": "/home/administrator/Documents/2022/Projects/SMB2020/smbMarketMobile/android/app/build/intermediates/res/merged/debug/mipmap-xxxhdpi_ic_launcher.png.flat",
-        "source": "/home/administrator/Documents/2022/Projects/SMB2020/smbMarketMobile/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png"
+        "merged": "com.smb_market.app-merged_res-31:/mipmap-mdpi_ic_launcher_round.png.flat",
+        "source": "com.smb_market.app-main-33:/mipmap-mdpi/ic_launcher_round.png"
     },
     {
-        "merged": "/home/administrator/Documents/2022/Projects/SMB2020/smbMarketMobile/android/app/build/intermediates/res/merged/debug/mipmap-hdpi_ic_launcher_round.png.flat",
-        "source": "/home/administrator/Documents/2022/Projects/SMB2020/smbMarketMobile/android/app/src/main/res/mipmap-hdpi/ic_launcher_round.png"
+        "merged": "com.smb_market.app-merged_res-31:/mipmap-xxhdpi_ic_launcher_foreground.png.flat",
+        "source": "com.smb_market.app-main-33:/mipmap-xxhdpi/ic_launcher_foreground.png"
     },
     {
-        "merged": "/home/administrator/Documents/2022/Projects/SMB2020/smbMarketMobile/android/app/build/intermediates/res/merged/debug/mipmap-mdpi_ic_launcher_round.png.flat",
-        "source": "/home/administrator/Documents/2022/Projects/SMB2020/smbMarketMobile/android/app/src/main/res/mipmap-mdpi/ic_launcher_round.png"
+        "merged": "com.smb_market.app-merged_res-31:/mipmap-xxxhdpi_ic_launcher_round.png.flat",
+        "source": "com.smb_market.app-main-33:/mipmap-xxxhdpi/ic_launcher_round.png"
     },
     {
-        "merged": "/home/administrator/Documents/2022/Projects/SMB2020/smbMarketMobile/android/app/build/intermediates/res/merged/debug/mipmap-xxxhdpi_ic_launcher_round.png.flat",
-        "source": "/home/administrator/Documents/2022/Projects/SMB2020/smbMarketMobile/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png"
+        "merged": "com.smb_market.app-merged_res-31:/mipmap-xhdpi_ic_launcher_round.png.flat",
+        "source": "com.smb_market.app-main-33:/mipmap-xhdpi/ic_launcher_round.png"
     },
     {
-        "merged": "/home/administrator/Documents/2022/Projects/SMB2020/smbMarketMobile/android/app/build/intermediates/res/merged/debug/mipmap-xhdpi_ic_launcher_round.png.flat",
-        "source": "/home/administrator/Documents/2022/Projects/SMB2020/smbMarketMobile/android/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png"
+        "merged": "com.smb_market.app-merged_res-31:/mipmap-hdpi_ic_launcher_foreground.png.flat",
+        "source": "com.smb_market.app-main-33:/mipmap-hdpi/ic_launcher_foreground.png"
     },
     {
-        "merged": "/home/administrator/Documents/2022/Projects/SMB2020/smbMarketMobile/android/app/build/intermediates/res/merged/debug/mipmap-xhdpi_ic_launcher.png.flat",
-        "source": "/home/administrator/Documents/2022/Projects/SMB2020/smbMarketMobile/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png"
+        "merged": "com.smb_market.app-merged_res-31:/mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "com.smb_market.app-main-33:/mipmap-xxxhdpi/ic_launcher.png"
     },
     {
-        "merged": "/home/administrator/Documents/2022/Projects/SMB2020/smbMarketMobile/android/app/build/intermediates/res/merged/debug/mipmap-xxxhdpi_ic_launcher_foreground.png.flat",
-        "source": "/home/administrator/Documents/2022/Projects/SMB2020/smbMarketMobile/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_foreground.png"
+        "merged": "com.smb_market.app-merged_res-31:/mipmap-hdpi_ic_launcher.png.flat",
+        "source": "com.smb_market.app-main-33:/mipmap-hdpi/ic_launcher.png"
     },
     {
-        "merged": "/home/administrator/Documents/2022/Projects/SMB2020/smbMarketMobile/android/app/build/intermediates/res/merged/debug/mipmap-xxhdpi_ic_launcher_round.png.flat",
-        "source": "/home/administrator/Documents/2022/Projects/SMB2020/smbMarketMobile/android/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png"
+        "merged": "com.smb_market.app-merged_res-31:/mipmap-xxxhdpi_ic_launcher_foreground.png.flat",
+        "source": "com.smb_market.app-main-33:/mipmap-xxxhdpi/ic_launcher_foreground.png"
     },
     {
-        "merged": "/home/administrator/Documents/2022/Projects/SMB2020/smbMarketMobile/android/app/build/intermediates/res/merged/debug/mipmap-hdpi_ic_launcher.png.flat",
-        "source": "/home/administrator/Documents/2022/Projects/SMB2020/smbMarketMobile/android/app/src/main/res/mipmap-hdpi/ic_launcher.png"
+        "merged": "com.smb_market.app-merged_res-31:/mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "com.smb_market.app-main-33:/mipmap-xxhdpi/ic_launcher.png"
     },
     {
-        "merged": "/home/administrator/Documents/2022/Projects/SMB2020/smbMarketMobile/android/app/build/intermediates/res/merged/debug/mipmap-xhdpi_ic_launcher_foreground.png.flat",
-        "source": "/home/administrator/Documents/2022/Projects/SMB2020/smbMarketMobile/android/app/src/main/res/mipmap-xhdpi/ic_launcher_foreground.png"
+        "merged": "com.smb_market.app-merged_res-31:/drawable_rn_edit_text_material.xml.flat",
+        "source": "com.smb_market.app-main-33:/drawable/rn_edit_text_material.xml"
     },
     {
-        "merged": "/home/administrator/Documents/2022/Projects/SMB2020/smbMarketMobile/android/app/build/intermediates/res/merged/debug/mipmap-xxhdpi_ic_launcher_foreground.png.flat",
-        "source": "/home/administrator/Documents/2022/Projects/SMB2020/smbMarketMobile/android/app/src/main/res/mipmap-xxhdpi/ic_launcher_foreground.png"
+        "merged": "com.smb_market.app-merged_res-31:/mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "com.smb_market.app-main-33:/mipmap-xhdpi/ic_launcher.png"
     },
     {
-        "merged": "/home/administrator/Documents/2022/Projects/SMB2020/smbMarketMobile/android/app/build/intermediates/res/merged/debug/mipmap-mdpi_ic_launcher_foreground.png.flat",
-        "source": "/home/administrator/Documents/2022/Projects/SMB2020/smbMarketMobile/android/app/src/main/res/mipmap-mdpi/ic_launcher_foreground.png"
+        "merged": "com.smb_market.app-merged_res-31:/mipmap-xxhdpi_ic_launcher_round.png.flat",
+        "source": "com.smb_market.app-main-33:/mipmap-xxhdpi/ic_launcher_round.png"
     },
     {
-        "merged": "/home/administrator/Documents/2022/Projects/SMB2020/smbMarketMobile/android/app/build/intermediates/res/merged/debug/mipmap-hdpi_ic_launcher_foreground.png.flat",
-        "source": "/home/administrator/Documents/2022/Projects/SMB2020/smbMarketMobile/android/app/src/main/res/mipmap-hdpi/ic_launcher_foreground.png"
+        "merged": "com.smb_market.app-merged_res-31:/mipmap-xhdpi_ic_launcher_foreground.png.flat",
+        "source": "com.smb_market.app-main-33:/mipmap-xhdpi/ic_launcher_foreground.png"
     },
     {
-        "merged": "/home/administrator/Documents/2022/Projects/SMB2020/smbMarketMobile/android/app/build/intermediates/res/merged/debug/mipmap-xxhdpi_ic_launcher.png.flat",
-        "source": "/home/administrator/Documents/2022/Projects/SMB2020/smbMarketMobile/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png"
+        "merged": "com.smb_market.app-merged_res-31:/mipmap-mdpi_ic_launcher_foreground.png.flat",
+        "source": "com.smb_market.app-main-33:/mipmap-mdpi/ic_launcher_foreground.png"
     },
     {
-        "merged": "/home/administrator/Documents/2022/Projects/SMB2020/smbMarketMobile/android/app/build/intermediates/res/merged/debug/mipmap-mdpi_ic_launcher.png.flat",
-        "source": "/home/administrator/Documents/2022/Projects/SMB2020/smbMarketMobile/android/app/src/main/res/mipmap-mdpi/ic_launcher.png"
+        "merged": "com.smb_market.app-merged_res-31:/mipmap-hdpi_ic_launcher_round.png.flat",
+        "source": "com.smb_market.app-main-33:/mipmap-hdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.smb_market.app-merged_res-31:/mipmap-mdpi_ic_launcher.png.flat",
+        "source": "com.smb_market.app-main-33:/mipmap-mdpi/ic_launcher.png"
     }
 ]

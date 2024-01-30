@@ -2,13 +2,19 @@ import React, { useState } from 'react';
 import Login from './component/login';
 import { AuthContext } from "../../../utils/UserContext";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import apiEndPoints from '../../../utils/apiEndPoints';
+import { apiCall, setDefaultHeader } from '../../../utils/httpClient';
+import Loader from '../../../components/loader';
+import { showMessage, hideMessage } from "react-native-flash-message";
+import StringsOfLanguages from '../../../utils/translations';
 //const AuthContext = React.createContext();
 const LoginView = ({ navigation }) => {
     const { signIn } = React.useContext(AuthContext);
+    const [isLoading, setIsLoading] = useState(false)
     const [check, setCheck] = useState()
-    const [inputError , setInputError] = useState({})
+    const [inputError, setInputError] = useState({})
     const [loginData, setLoginData] = useState({
-        "emailId": '',
+        "email": '',
         "password": '',
         "token": '123'
     })
@@ -17,55 +23,84 @@ const LoginView = ({ navigation }) => {
         setCheck(!check)
     }
 
+   /*  const curlang = StringsOfLanguages.getLanguage();
+
+    console.log('----',curlang) */
+
     const validationFrom = () => {
         let formerror = true
         let error = {}
-        
+
         let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-        if (!reg.test(loginData?.emailId)) {
+        if (!reg.test(loginData?.email)) {
             formerror = false
-            error['emailerror'] = "Please enter correct email address" 
+            error['emailerror'] = StringsOfLanguages.CORRECT_EMAIL
         }
-        if(loginData?.emailId == ""){
+        if (loginData?.email == "") {
             formerror = false
-            error['emailerror'] = "Please enter email address" 
-        }
-       
-        if(loginData?.password.length <= 5){
-            formerror = false
-            error['passworderror'] = "Password should be 6 characters" 
-        }
-        if(loginData?.password == ""){
-            formerror = false
-            error['passworderror'] = "Please enter your password" 
+            error['emailerror'] = StringsOfLanguages.PLEASE_ENTER_EMAIL
         }
 
-        
+        if (loginData?.password.length <= 5) {
+            formerror = false
+            error['passworderror'] = StringsOfLanguages.PASSWORD_SHOULD_BE_6_CHARACTERS
+        }
+        if (loginData?.password == "") {
+            formerror = false
+            error['passworderror'] = StringsOfLanguages.PLEASE_ENTER_YOUR_PASSWORD
+        }
+
         setInputError(error)
         return formerror
     }
-    const toJoin =  async() => {
+    const toJoin = async () => {
 
         const validation = validationFrom()
-        if(validation){
-            alert('Success!')
+        if (validation) {
+            try {
+                setIsLoading(true)
+                const response = await apiCall('POST', apiEndPoints.BUSINESSLOGIN, loginData);
+                console.log("🚀 ~ toJoin ~ response:", response.data.message)
 
-            /* await AsyncStorage.setItem('userToken',loginData.emailId);
-         signIn(loginData) */
+                if (response.status === 200) {
+                    await AsyncStorage.setItem('userToken', response.data.token);
+                    await AsyncStorage.setItem('userData', JSON.stringify(response.data.data));
+                    await setDefaultHeader('token', response.data.token);
+                    signIn(response.data.data)
+                    setIsLoading(false)
+                } else {
+                    setIsLoading(false)
+                    
+                   var msg = (response.data.message.email) ? 
+                     response.data.message.email : 
+                    (response.data.message.password) ?  
+                    response.data.message.password :  
+                    response.data.message.messageTost
+                    console.log("🚀 ~ toJoin ~ msg:", msg)
+                     showMessage({
+                        message: msg,
+                        type: "danger",
+                    }); 
+                }
+            } catch (error) {
+                console.log("🚀 ~ file: index.js:71 ~ toJoin ~ error:", error)
+                setIsLoading(false)
+
+            }
+
+
         }
-        
 
-        //signIn(loginData)
-        //navigation.navigate('forgotPasswordScreen')
     }
     const forgotPassword = () => {
-        navigation.navigate('forgotPasswordScreen')
+        //navigation.navigate('forgotPasswordScreen')
     }
     const toRegistration = () => {
         //navigation.navigate('joinScreen')
         navigation.navigate('validateIdentityScreen')
     }
-    return (
+    return (<>
+        {isLoading && <Loader />}
         <Login
             check={!check}
             Remember={Remember}
@@ -76,6 +111,7 @@ const LoginView = ({ navigation }) => {
             forgotPassword={forgotPassword}
             inputError={inputError}
         />
+    </>
     )
 }
 export default LoginView;

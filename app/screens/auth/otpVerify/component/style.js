@@ -4,6 +4,9 @@ import {
   FONT_FAMILY_BOLD,
   FONT_FAMILY_REGULAR,
   FONT_FAMILY_SEMIBOLD,
+  GRADIENT_COLOR_NEW2,
+  GRAY_COLOR,
+  WHITE_COLOR,
 } from "../../../../utils/constants";
 import { scale } from "@utils/utils";
 
@@ -31,7 +34,7 @@ button: {
   },
   otpInputContainer: {
     // marginHorizontal: scale(60),
-    paddingHorizontal: scale(30),
+    paddingHorizontal: scale(25),
     paddingVertical: scale(10),
    
   },
@@ -45,6 +48,7 @@ button: {
   enterOtptxt: {
     fontFamily: FONT_FAMILY_SEMIBOLD,
     fontSize: scale(18),
+    color : WHITE_COLOR
   },
   resendView: {
     flexDirection: "row",
@@ -53,6 +57,7 @@ button: {
   },
   resendTxt: {
     fontSize: scale(15),
+    color : GRAY_COLOR
   },
   resendTxtCommon: {
     fontSize: scale(14),

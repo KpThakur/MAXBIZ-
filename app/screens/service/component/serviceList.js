@@ -1,67 +1,35 @@
 import React, { useState } from "react";
-import { FlatList } from "react-native";
+import { FlatList, View,Text } from "react-native";
 import ServiceItem from "../../../components/serviceItem";
 import { ICONS } from "../../../../utils/imagePath";
+import Notfound from '../../../components/notfound'
 
-const DATA = [
-  {
-    img: require("./../../../assets/dummy/profile.jpg"),
-    name: "Peter Wilson",
-    reviews: 30,
-    rating: 3,
-    dollar: 20,
-    addrs: "Palm Beach Country FL",
-    best: "Accountent | Accountent | Accountent | Accountent",
-  },
-  {
-    img: require("./../../../assets/dummy/profile2.jpg"),
-    name: "Garry hilrt",
-    reviews: 30,
-    rating: 3,
-    dollar: 20,
-    addrs: "Palm Beach Country FL",
-    best: "Accountent | Accountent | Accountent | Accountent",
-  },
-  {
-    img: require("./../../../assets/dummy/profile2.jpg"),
-    name: "Garry hlbert",
-    reviews: 30,
-    rating: 3,
-    dollar: 20,
-    addrs: "Palm Beach Country FL",
-    best: "Accountent | Accountent | Accountent | Accountent",
-  },
-  {
-    img: require("./../../../assets/dummy/profile2.jpg"),
-    name: "Garry hilbet",
-    reviews: 30,
-    rating: 3,
-    dollar: 20,
-    addrs: "Palm Beach Country FL",
-    best: "Accountent | Accountent | Accountent | Accountent",
-  },
-];
 
 
 const ServiceList = (props) => {
+  const { serviceList } = props
+ 
   const [serviceData, setServiceData] = useState([]);
 
   const renderItem = ({ item }) => {
  
-    const showDetail = (Serviceid) => {
-       props.showDetail(Serviceid);
+    const showDetail = (serviceDetail) => {
+       props.showDetail(serviceDetail);
    }
    
     return (
       <ServiceItem
         img={item.img}
-        name={item.name}
-        reviews={item.reviews}
-        rating={item.rating}
-        dollar={item.dollar}
-        addrs={item.addrs}
-        best={item.best}
-        showDetail={(Serviceid)=>showDetail(Serviceid)}
+        name={item.business_name}
+        hours={item.hours}
+        rating={item.ranting}
+        pricemodel={item.pricemodel}
+        address={item.address}
+        phone={item.phone}
+        email={item.email}
+        service_name={item.service_name}
+        serviceDetail={item}
+        showDetail={(serviceDetail)=>showDetail(serviceDetail)}
       />
     );
   };
@@ -72,11 +40,11 @@ const ServiceList = (props) => {
     <>
       <FlatList
         showsVerticalScrollIndicator={false}
-        data={DATA}
+        data={serviceList}
         renderItem={renderItem}
-        keyExtractor={DATA.name}
+        keyExtractor={serviceList.name}
         //ListHeaderComponent={props.header}
-        ListEmptyComponent={props.smb}
+        ListEmptyComponent={<Notfound textnotfound = 'Service'/>}
         extraData={props}
       />
     </>
