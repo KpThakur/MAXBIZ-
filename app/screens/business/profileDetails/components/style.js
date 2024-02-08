@@ -25,14 +25,19 @@ const style = StyleSheet.create({
   },
   commingsoonsec:{
     flex:1,
-    width : 500,
-    height:200,
+    width : scale(500),
+    height:scale(200),
     justifyContent: 'center',
     alignItems: 'center'
   },
   commingsoonImg:{
-    width : 300,
-    height:200,
+    width : scale(300),
+    height:scale(200),
+   
+  },
+  button:{
+    width : scale(300),
+    
    
   },
   section1: {

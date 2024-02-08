@@ -37,4 +37,11 @@ export const ICONS = {
     trashIcon: require('../assets/images/trash.png'),
     plusIcon: require('../assets/images/plus.png'),
     playIcon: require('../assets/images/PlayIcon.png'),
+    pause_Icon48dp: require('../assets/images/pause__white_48dp.png'),
+    pause_Icon_2x: require('../assets/images/pause_Icon_2x.png'),
+    website_Icon: require('../assets/images/website_Icon.png'),
+    pause_Icon_new: require('../assets/images/pause_Icon_new.png'),
+    mic_On_Icon: require('../assets/images/mic_Onicon.png'),
+    mic_Off_Icon: require('../assets/images/mic_off_ICON.png'),
+
 }

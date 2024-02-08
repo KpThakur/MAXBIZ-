@@ -26,7 +26,7 @@ const join = (props) => {
             />
             <ScrollView>
                 <View style={style.firstContainer}>
-                    <Text style={style.firstText}>{StringsOfLanguages.JOIN_SMB_MARKET}</Text>
+                    <Text style={style.firstText}>{StringsOfLanguages.JOIN_SmbMarket}</Text>
                     <Text style={[style.firstText, { bottom: scale(12) }]}>{StringsOfLanguages.GET_FREE_LOCAL}</Text>
                     <Text style={[style.firstText, { bottom: scale(20) }]}>{StringsOfLanguages.LEADS}</Text>
                 </View>

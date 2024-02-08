@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
     View,
     Text,
@@ -16,10 +16,23 @@ import { Header } from '@components';
 import { WHITE_COLOR, GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW2, GRADIENT_COLOR_NEW3, GRADIENT_COLOR_NEW4 } from '../../../../utils/constants';
 import LinearGradient from 'react-native-linear-gradient';
 import StringsOfLanguages from '../../../../utils/translations';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 const login = (props) => {
     const { inputError } = props
+
+    useFocusEffect(
+        useCallback(() => {
+            
+            props.setLoginData({
+                ...props.loginData,
+                email: '',
+                password: '',
+            });
+        }, [])
+    );
+
     return (
         <SafeAreaView style={commomstyle.container}>
           {/*  <LinearGradient

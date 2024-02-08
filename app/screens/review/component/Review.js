@@ -27,7 +27,7 @@ import StringsOfLanguages from "../../../utils/translations";
 
 
 const Review = (props) => {
-  const {contentdata} = props
+  const {contentdata, backscreen} = props
 
   const renderItem = ({ item }) => (
     <View>
@@ -85,6 +85,8 @@ const Review = (props) => {
         rightImg={true} 
         headerText="Reviews" 
         rightImgStyl={{ tintColor: WHITE_COLOR }}
+        backscreen={backscreen}
+        showFindServiceOnBack={true}
          />
           <FlatList
           showsVerticalScrollIndicator={false}

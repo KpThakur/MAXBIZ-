@@ -98,10 +98,10 @@ const styles = StyleSheet.create({
         paddingBottom:scale(5),
         backgroundColor: WHITE_COLOR,
         shadowColor: '#000',
-        shadowOffset: { width: 0, height: 9 },
-        shadowOpacity:  1,
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity:  0.3,
         shadowRadius:4.51,
-        elevation: 20,
+        elevation: 10,
         borderBottomLeftRadius : scale(20),
         borderBottomRightRadius : scale(20)
     },

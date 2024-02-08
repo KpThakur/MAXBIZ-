@@ -8,6 +8,7 @@ import Notfound from '../../../components/notfound'
 
 const ServiceList = (props) => {
   const { serviceList } = props
+  console.log('serviceList<<<<<<<<<<<<<<<<<<<<<<<<: ', serviceList);
  
   const [serviceData, setServiceData] = useState([]);
 
@@ -19,7 +20,7 @@ const ServiceList = (props) => {
    
     return (
       <ServiceItem
-        img={item.img}
+        img={item.aws_url}
         name={item.business_name}
         hours={item.hours}
         rating={item.ranting}

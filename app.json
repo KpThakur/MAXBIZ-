@@ -1,4 +1,5 @@
 {
   "name": "SmbMarket",
-  "displayName": "SmbMarket"
+  "displayName": "SmbMarket",
+  "package": "SmbMarket"
 }

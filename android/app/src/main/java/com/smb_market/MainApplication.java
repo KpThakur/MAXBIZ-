@@ -1,4 +1,4 @@
-package com.smb_market;
+package com.SmbMarket;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

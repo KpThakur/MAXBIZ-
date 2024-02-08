@@ -16,7 +16,8 @@ const Home = ({ navigation }) => {
         "serviceid": '',
         "servicename": '',
         "cityid": '',
-        "cityname": ''
+        "cityname": '',
+        
     })
 
 
@@ -44,11 +45,18 @@ const Home = ({ navigation }) => {
         if (val.length >= 3) {
             try {
                 const parms = {
-                    cityname: val
+                    cityname: val,
+
                 }
                 const response = await apiCall('POST', apiEndPoints.GETCITY, parms);
                 if (response.status === 200) {
-                    setAllCity(response.data.data)
+                    const formattedCityData = response.data.data.map(city => ({
+                        ...city,
+                        formattedLabel: `${city.city || ''}, ${city.state_id || ''}`
+                    }));
+                   // setAllCity(response.data.data)
+                    setAllCity(formattedCityData);
+                    console.log('response_City===========<<<<>>>>>>', formattedCityData)
                 }
             } catch (error) {
                 setIsLoading(false)
@@ -57,6 +65,9 @@ const Home = ({ navigation }) => {
         }
 
     }
+
+   
+    
     const toggleLanguage = (val) => {
         setCurrLang(val)
         StringsOfLanguages.setLanguage(val);
@@ -105,3 +116,4 @@ const Home = ({ navigation }) => {
     )
 }
 export default Home;
+

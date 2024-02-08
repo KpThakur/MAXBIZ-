@@ -13,8 +13,8 @@ const button = (props) => {
         <TouchableOpacity onPress={onPress}
             style={{ paddingHorizontal: scale(5)}}>
             <LinearGradient
-             colors={['rgba(135, 125, 242, 1)', 'rgba(67, 55, 190, 1)']}
-           // colors={[ COMMON_COLOR,  LINEAR_GRAD_COLOR]}
+            //  colors={['rgba(135, 125, 242, 1)', 'rgba(67, 55, 190, 1)']}
+             colors={[ GRADIENT_COLOR,  LINEAR_GRAD_COLOR]}
                 style={[container, style]}>
                 <Image source={leftImg} />
                 <Text style={[btnText, buttontxt]}>{buttonText}</Text>

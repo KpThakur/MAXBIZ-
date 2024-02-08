@@ -7,6 +7,7 @@ import {
   Image,
   StyleSheet,
   Platform,
+  Linking,
 } from "react-native";
 import StarRating from "react-native-star-rating";
 import StringsOfLanguages from "../utils/translations";
@@ -21,7 +22,8 @@ import {
   WHITE_COLOR,
   BLACK_COLOR,
 } from "@utils/constants";
-import { ICONS } from "@utils/imagePath";
+//import { ICONS } from "@utils/imagePath";
+import { ICONS } from "../utils/imagePath";
 import {
   GRADIENT_COLOR_NEW2,
   GRADIENT_COLOR_NEW3,
@@ -44,6 +46,8 @@ const ServiceItem = (props) => {
   } = props;
   console.log("🚀 ~ ServiceItem ~ service_name:", rating);
 
+  console.log("service_____item___________________:", serviceDetail);
+
   return (
     <>
       <View style={styles.container}>
@@ -52,7 +56,8 @@ const ServiceItem = (props) => {
           style={styles.top}
         >
           <Image
-            source={require("../assets/dummy/no_image.png")}
+            // source={require("../assets/dummy/no_image.png")}
+            source={{ uri: `${img}` }}
             style={styles.serviceImg}
           />
           <View style={styles.dataView}>
@@ -109,7 +114,10 @@ const ServiceItem = (props) => {
         <View style={styles.contactView}>
           {serviceDetail?.showcall === 1 ? (
             <>
-              <TouchableOpacity style={styles.contact}>
+              <TouchableOpacity
+                style={styles.contact}
+                onPress={() => Linking.openURL(`tel:${serviceDetail?.phone}`)}
+              >
                 <Image source={ICONS.dialIcon} style={styles.contactImg} />
               </TouchableOpacity>
             </>
@@ -117,21 +125,32 @@ const ServiceItem = (props) => {
 
           {serviceDetail?.showemail === 1 ? (
             <>
-              <TouchableOpacity style={styles.contact}>
+              <TouchableOpacity
+                style={styles.contact}
+                onPress={() =>
+                  Linking.openURL(`mailto:${serviceDetail?.email}`)
+                }
+              >
                 <Image source={ICONS.emailIcon} style={styles.contactImg} />
               </TouchableOpacity>
             </>
           ) : null}
           {serviceDetail?.showtext === 1 ? (
             <>
-              <TouchableOpacity style={styles.contact}>
+              <TouchableOpacity
+                style={styles.contact}
+                onPress={() => Linking.openURL(`sms:${serviceDetail?.phone}`)}
+              >
                 <Image source={ICONS.adthereIcon} style={styles.contactImg} />
               </TouchableOpacity>
             </>
           ) : null}
 
-          <TouchableOpacity style={styles.contact}>
-            <Image source={ICONS.certifyIcon} style={styles.contactImg} />
+          <TouchableOpacity
+            style={styles.contact}
+            onPress={() => Linking.openURL(`${serviceDetail?.websiteurl}`)}
+          >
+            <Image source={ICONS.website_Icon} style={styles.contactImg} />
           </TouchableOpacity>
         </View>
       </View>
@@ -151,8 +170,8 @@ const styles = StyleSheet.create({
     borderRadius: scale(10),
     backgroundColor: WHITE_COLOR,
     shadowColor: BLACK_COLOR,
-    shadowOffset: { width: 0, height: 9 },
-    shadowOpacity: 1,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.3,
     shadowRadius: 3,
     elevation: 10,
   },
@@ -190,7 +209,7 @@ const styles = StyleSheet.create({
   addView: {
     flexDirection: "row",
     marginBottom: scale(5),
-    paddingVertical: Platform.OS === 'ios' ? normalize(2) : null
+    paddingVertical: Platform.OS === "ios" ? normalize(2) : null,
     // alignItems:'center'
     //paddingBottom:0,
   },
@@ -198,7 +217,7 @@ const styles = StyleSheet.create({
     fontSize: scale(15),
     fontFamily: FONT_FAMILY_SEMIBOLD,
     color: GRAY_COLOR,
-    marginTop: Platform.OS === "ios" ? normalize(-2) : (3),
+    marginTop: Platform.OS === "ios" ? normalize(-2) : 3,
     marginLeft: 8,
   },
   serviceImgicon: {
@@ -215,7 +234,7 @@ const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY_REGULAR,
     color: GRAY_COLOR,
     flex: 1,
-   // marginLeft: normalize(3)
+    // marginLeft: normalize(3)
   },
   bestReview: {
     fontFamily: FONT_FAMILY_REGULAR,
@@ -237,8 +256,8 @@ const styles = StyleSheet.create({
     borderRadius: scale(8),
     backgroundColor: GRADIENT_COLOR_NEW2,
     shadowColor: BLACK_COLOR,
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.3,
     shadowRadius: 1,
     elevation: 10,
   },

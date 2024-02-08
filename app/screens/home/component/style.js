@@ -9,6 +9,7 @@ import {
   GRADIENT_COLOR_NEW2,
   GRAY_COLOR,
   BORDERLINE_COLOR,
+  FONT_FAMILY_MEDIUM,
 } from "./../../../utils/constants";
 import { scale } from "@utils/utils";
 import {
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
     /*  paddingHorizontal: scale(18),
         paddingVertical: scale(5), */
     //flexGrow:1,
-    paddingVertical: scale(15),
+    //paddingVertical: scale(15),
     paddingHorizontal: scale(15),
    
   },
@@ -44,12 +45,12 @@ const styles = StyleSheet.create({
   },
 
   topview: {
-    flex: 2,
+    flex: 2.5,
     shadowColor: '#000',
-    shadowOffset: { width: 1, height: 9 },
-    shadowOpacity: 1,
+    shadowOffset: { width: 0, height: 1},
+    shadowOpacity: 0.3,
     shadowRadius: 4,
-    elevation: 20,
+    elevation: 10,
     //marginVertical:scale(25),
     borderRadius: 20,
    // backgroundColor:GRADIENT_COLOR_NEW3,
@@ -103,16 +104,18 @@ const styles = StyleSheet.create({
     //backgroundColor:'red',
   },
   imgView: {
+    width:'100%',
+    height:200,
     alignItems: "center",
     marginTop: normalize(20),
     marginBottom: normalize(50),
     //flex:2,
-    // backgroundColor:'red',
+     //backgroundColor:'red',
   },
   maskImg: {
     //alignItems:'center',
     width: scale(320),
-    //resizeMode:'contain',
+    resizeMode:'cover',
     borderRadius: 15,
   },
   toggleView: {
@@ -147,10 +150,10 @@ const styles = StyleSheet.create({
     paddingBottom: scale(5),
     backgroundColor: WHITE_COLOR,
     shadowColor: BLACK_COLOR,
-    shadowOffset: { width: 0, height: 9 },
-    shadowOpacity: 1,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.3,
     shadowRadius: 4.51,
-    elevation: 20,
+    elevation: 10,
   },
 
   inputView: {},
@@ -205,6 +208,49 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     backgroundColor: GRADIENT_COLOR_NEW2,
   },
+   backgroundVideo: {
+    width : '100%',
+    height:'98%'
+    /* position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0, */
+  }, 
+  imageDesignplayicon:{
+    position:'absolute',
+    alignSelf:'center',
+   // top:scale(100),
+    width:scale(50),
+    height:scale(50),
+    bottom: scale(70)
+    
+  },
+  timeView:{
+    display:'flex',
+    flexDirection:'row',
+    position:'absolute',
+    bottom: scale(15),
+  },
+  timeStyle:{
+   color:WHITE_COLOR,
+   alignSelf:'flex-start',
+   marginRight: scale(220),
+   fontFamily: FONT_FAMILY_REGULAR
+  },
+  muteICON:{
+    tintColor: WHITE_COLOR,
+  },
+  sliderStyle:{
+   position:'absolute',
+   width: '100%',
+   bottom: scale(-11)
+  },
+  thumbStyle:{
+    width: scale(10),
+    height: scale(10),
+    
+  }
 });
 
 export default styles;
