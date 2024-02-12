@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 
 import {
   Text,
@@ -8,6 +8,9 @@ import {
   StyleSheet,
   Platform,
   Linking,
+  ActivityIndicator,
+  SafeAreaView,
+  ScrollView,
 } from "react-native";
 import StarRating from "react-native-star-rating";
 import StringsOfLanguages from "../utils/translations";
@@ -44,25 +47,59 @@ const ServiceItem = (props) => {
     service_name,
     serviceDetail,
   } = props;
-  console.log("🚀 ~ ServiceItem ~ service_name:", rating);
+  // console.log("🚀 ~ ServiceItem ~ service_name:", rating);
 
-  console.log("service_____item___________________:", serviceDetail);
+  // console.log("service_____item___________________:", serviceDetail);
 
+  const [isLoading, setIsLoading] = useState(false);
+
+  const initialLoadRef = useRef(true);
+
+  const onLoadStarts = () => {
+    if (!initialLoadRef.current) {
+      return;
+    }
+    setIsLoading(true);
+    console.log("onLoadStart===============");
+  };
+
+  const onLoadEnds = () => {
+    if (!initialLoadRef.current) {
+      return;
+    }
+    setIsLoading(false);
+    initialLoadRef.current = false;
+    console.log("onLoadEnd>>>>>>>>>>>");
+  };
+  
   return (
     <>
+      {/* <ScrollView showsVerticalScrollIndicator={false}> */}
       <View style={styles.container}>
+        
         <TouchableOpacity
           onPress={() => props.showDetail(serviceDetail)}
           style={styles.top}
         >
-          <Image
-            // source={require("../assets/dummy/no_image.png")}
-            source={{ uri: `${img}` }}
-            style={styles.serviceImg}
-          />
+          <View style={styles.activeView}>
+          {isLoading && (
+            <ActivityIndicator size={"large"} style={styles.activityIndicator}  />
+          )}
+          {
+            <Image
+              // source={require("../assets/dummy/no_image.png")}
+              source={{ uri: `${img}` }}
+              style={styles.serviceImg}
+              onLoadStart={onLoadStarts}
+              onLoadEnd={onLoadEnds}
+            />
+          }
+          </View>
+     
+
           <View style={styles.dataView}>
             <Text style={styles.name}>{name}</Text>
-            <Text style={styles.review}>{hours}</Text>
+            {/* <Text style={styles.review}>{hours}</Text> */}
             <View style={{ width: 130 }}>
               <StarRating
                 disabled={false}
@@ -77,6 +114,7 @@ const ServiceItem = (props) => {
             <Text style={styles.hour}>{pricemodel}</Text>
           </View>
         </TouchableOpacity>
+        
         <View style={styles.bottom}>
           <View style={styles.addView}>
             <Text style={styles.serveTxticon}>
@@ -154,6 +192,7 @@ const ServiceItem = (props) => {
           </TouchableOpacity>
         </View>
       </View>
+      {/* </ScrollView> */}
     </>
   );
 };
@@ -182,7 +221,7 @@ const styles = StyleSheet.create({
     height: 100,
     width: 100,
     borderRadius: 10,
-    marginTop: 8,
+   // marginTop: 8,
   },
   dataView: {
     marginLeft: scale(15),
@@ -205,6 +244,7 @@ const styles = StyleSheet.create({
   },
   bottom: {
     marginVertical: scale(10),
+    
   },
   addView: {
     flexDirection: "row",
@@ -234,7 +274,9 @@ const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY_REGULAR,
     color: GRAY_COLOR,
     flex: 1,
-    // marginLeft: normalize(3)
+    marginLeft: normalize(3),
+    top: 2,
+    
   },
   bestReview: {
     fontFamily: FONT_FAMILY_REGULAR,
@@ -265,5 +307,14 @@ const styles = StyleSheet.create({
     width: scale(20),
     height: scale(20),
     tintColor: WHITE_COLOR,
+  },
+  activeView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  activityIndicator: {
+    position: 'absolute',
+    zIndex: 1,
   },
 });

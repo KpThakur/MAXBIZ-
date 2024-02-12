@@ -47,6 +47,7 @@ const ServiceDetail = ({ route, navigation }) => {
                     console.log("🚀 ~ getServicesDetails ~ response.data.data:", response.data.data)
                     setIsLoadingh(false)
                     setServiceDetail(response.data.data)
+                   
                 } else {
                     setIsLoadingh(false)
                     setServiceDetail([]);

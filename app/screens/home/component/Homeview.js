@@ -254,7 +254,7 @@ const HomeView = (props) => {
         <View style={styles.maskView}>
           <View style={styles.imgView}>
             {/* <Image style={styles.maskImg} source={require('./../../../assets/dummy/construction1.jpeg')} /> */}
-            <Video
+            {/* <Video
               source={require("../../../assets/video/FinalVideo2.mp4")}
               ref={(ref) => {
                 this.player = ref;
@@ -270,9 +270,9 @@ const HomeView = (props) => {
              // onLoad={load}
             //  muted={isMuted}
              // currentTime={currentTime}
-            />
+            /> */}
 
-            {pausedvideo ? (
+            {/* {pausedvideo ? (
               <TouchableOpacity onPress={() => playvideo()}>
                 <Image
                   style={styles.imageDesignplayicon}
@@ -290,7 +290,7 @@ const HomeView = (props) => {
                   source={ICONS.pause_Icon48dp}
                 />
               </TouchableOpacity>
-            )}
+            )} */}
 
             {/* {pausedvideo && currentTime > 0 ? (
               <TouchableOpacity onPress={() => playvideo()}>

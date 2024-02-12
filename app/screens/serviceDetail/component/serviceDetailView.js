@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   SafeAreaView,
   Text,
@@ -8,6 +8,7 @@ import {
   FlatList,
   ScrollView,
   Linking,
+  ActivityIndicator,
 } from "react-native";
 import {
   GRADIENT_COLOR_NEW1,
@@ -34,7 +35,51 @@ const ServiceDetailView = (props) => {
   const { toggleShowSearch, serviceDetail, showDetailContent, backscreen } =
     props;
 
-  console.log("___________serviceDetail:_________________ ", serviceDetail?.aws_url);
+  console.log("serviceDetail:_______ ", serviceDetail);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const initialLoadRef = useRef(true);
+
+  const onLoadStarts = () => {
+    if (!initialLoadRef.current) {
+      return;
+    }
+    setIsLoading(true);
+    console.log("onLoadStart===============");
+  };
+
+  const onLoadEnds = () => {
+    if (!initialLoadRef.current) {
+      return;
+    }
+    setIsLoading(false);
+    initialLoadRef.current = false;
+    console.log("onLoadEnd>>>>>>>>>>>");
+  };
+
+  // if (serviceDetail.payments) {
+  //   const paymentsObject = JSON.parse(serviceDetail.payments);
+  //   console.log("Payments as JavaScript object:", paymentsObject);
+  
+  //   // Use Object.entries to get the first (and only) entry
+  //   const cashName = Object.entries(paymentsObject);
+  //   const cashName1 = cashName[0];
+  
+  //   // Log the cash payment value
+  //   console.log("Cash payment value:", cashName1[0]);
+  // } else {
+  //   console.log("serviceDetail.payments is undefined");
+  // }
+ 
+  //  // const paymentsObject = (JSON.parse(serviceDetail.payments));
+  //   const paymentsObject = JSON.parse(serviceDetail?.payments);
+  //   console.log("Payments as JavaScript object:", paymentsObject);
+  //   const cashName = Object.entries(paymentsObject);
+  //   const cashName1 = cashName[0];
+
+  //  // const cashPayment = paymentsObject.cash;
+  //   console.log("Cash payment value:", cashName1[0]);
 
   return (
     <SafeAreaView style={commomstyle.container}>
@@ -54,14 +99,26 @@ const ServiceDetailView = (props) => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <TouchableOpacity style={styles.top}>
-            <Image
-              source={require("../../../assets/dummy/no_image.png")}
-              style={styles.serviceImg}
-             // source={{ uri: `${serviceDetail?.aws_url}` }}
-            />
+            <View style={styles.activeView}>
+              {isLoading && (
+                <ActivityIndicator
+                  size={"large"}
+                  style={styles.activityIndicator}
+                />
+              )}
+              {
+                <Image
+                  source={require("../../../assets/dummy/no_image.png")}
+                  // source={{ uri: `${serviceDetail?.aws_url}` }}
+                  style={styles.serviceImg}
+                  onLoadStart={onLoadStarts}
+                  onLoadEnd={onLoadEnds}
+                />
+              }
+            </View>
             <View style={styles.dataView}>
               <Text style={styles.name}>{serviceDetail?.fullname}</Text>
-              <Text style={styles.review}>{serviceDetail?.hours}</Text>
+              {/* <Text style={styles.review}>{serviceDetail?.hours}</Text> */}
               <View style={{ width: 130 }}>
                 <StarRating
                   disabled={false}
@@ -129,11 +186,14 @@ const ServiceDetailView = (props) => {
             </View>
 
             <View style={styles.addView}>
-              <Text style={styles.serveTxt}>
-                {StringsOfLanguages.HEAD_COUNT}
-              </Text>
-
-              <Text style={styles.addrsTxt}>{serviceDetail?.numemps}</Text>
+              <View style={styles.addViewtext}>
+                <Text style={styles.serveTxt}>
+                  {StringsOfLanguages.HEAD_COUNT}
+                </Text>
+              </View>
+              <View style={styles.addViewcontent}>
+                <Text style={styles.addrsTxt}>{serviceDetail?.numemps}</Text>
+              </View>
             </View>
 
             <View style={styles.addView}>
@@ -145,7 +205,9 @@ const ServiceDetailView = (props) => {
               <View style={styles.addViewcontent}>
                 <Text style={styles.addrsTxt}>
                   {"Cash | Credit card | Cash app | Paypal"}
+                  {/* {cashName1[0]} */}
                 </Text>
+                
               </View>
             </View>
 
@@ -169,11 +231,15 @@ const ServiceDetailView = (props) => {
               </View>
             </View>
             <View style={styles.addView}>
-              <Text style={styles.serveTxt}>{StringsOfLanguages.ABOUT}</Text>
-              <Text style={[styles.addrsTxt, { flex: 1 }]}>
-                {"  "}
-                {serviceDetail?.about}
-              </Text>
+              <View style={styles.addViewtext}>
+                <Text style={styles.serveTxt}>{StringsOfLanguages.ABOUT}</Text>
+              </View>
+              <View style={styles.addViewcontent}>
+                <Text style={[styles.addrsTxt, { flex: 1 }]}>
+                  {""}
+                  {serviceDetail?.about}
+                </Text>
+              </View>
             </View>
             {/*  <View>
                         <Text style={styles.bestReview}>"{'best'}"</Text>
@@ -300,9 +366,11 @@ const ServiceDetailView = (props) => {
 
             {serviceDetail?.showemail == 1 ? (
               <>
-                <TouchableOpacity style={styles.contact}
-                onPress={() => Linking.openURL(`mailto:${serviceDetail?.email}`)}
-                
+                <TouchableOpacity
+                  style={styles.contact}
+                  onPress={() =>
+                    Linking.openURL(`mailto:${serviceDetail?.email}`)
+                  }
                 >
                   <Image source={ICONS.emailIcon} style={styles.contactImg} />
                 </TouchableOpacity>
@@ -310,16 +378,18 @@ const ServiceDetailView = (props) => {
             ) : null}
             {serviceDetail?.showtext == 1 ? (
               <>
-                <TouchableOpacity style={styles.contact}
-                onPress={() => Linking.openURL(`sms:${serviceDetail?.phone}`)}
+                <TouchableOpacity
+                  style={styles.contact}
+                  onPress={() => Linking.openURL(`sms:${serviceDetail?.phone}`)}
                 >
                   <Image source={ICONS.adthereIcon} style={styles.contactImg} />
                 </TouchableOpacity>
               </>
             ) : null}
 
-            <TouchableOpacity style={styles.contact}
-            onPress={() => Linking.openURL(`${serviceDetail?.websiteurl}`)}
+            <TouchableOpacity
+              style={styles.contact}
+              onPress={() => Linking.openURL(`${serviceDetail?.websiteurl}`)}
             >
               <Image source={ICONS.website_Icon} style={styles.contactImg} />
             </TouchableOpacity>

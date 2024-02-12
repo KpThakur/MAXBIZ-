@@ -184,6 +184,13 @@ const style = StyleSheet.create({
         flex:1,
         width:Dimensions.get('window').width,
         height:Dimensions.get('window').height,
-    }
+    },
+    activityIndicator: {
+      position: 'absolute',
+      zIndex: 1,
+      top: scale(25)
+    
+    },
+
 });
 export default style;

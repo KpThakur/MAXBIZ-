@@ -59,6 +59,25 @@ const FindServiceView = ({ route, navigation }) => {
     "cityname": cityname
   })
 
+  const [filteredData, setFilteredData] = useState([]);
+
+  // useEffect(() => {
+  //   setFilteredData(serviceList);
+  // }, [serviceList]);
+ 
+
+  const handlefilter = (text) => {
+    
+    const filteredResults = serviceList.filter(item =>
+      item?.cityid?.toLowerCase()?.includes(text.toLowerCase())
+      );
+      console.log('cityyyyyyyyyyyyyyyyy',cityid )
+      setFilteredData(filteredResults)
+  }
+
+ 
+
+
   useEffect(() => {
     setSearchdata({
       ...searchdata,
@@ -68,8 +87,9 @@ const FindServiceView = ({ route, navigation }) => {
       cityname: cityname,
     })
     getAllservices(serviceid, cityid)
-
   }, [serviceid, cityid]);
+
+ 
 
   useEffect(() => {
     getcitylist(cityname)
@@ -95,6 +115,7 @@ const FindServiceView = ({ route, navigation }) => {
 
 
   const getAllservices = async (serviceid, cityid) => {
+    console.log('serviceid, cityid', serviceid, cityid)
     if (serviceid !== "" && cityid !== "") {
       const parms = {
         "serviceid": serviceid,
@@ -103,15 +124,13 @@ const FindServiceView = ({ route, navigation }) => {
         "offset": "0",
       }
       try {
+
+        console.log('====',parms)
         setIsLoadingh(true)
-        const response = await apiCall(
-          "POST",
-          apiEndPoints.GETALLSERVICES,
-          parms
-        );
+        const response = await apiCall("POST",apiEndPoints.GETALLSERVICES,parms);
         //console.log("🚀 ~ file: index.js:69 ~ getAllservices ~ response:", response.status)
 
-        console.log("🚀 ~ getAllservices ~ response.data.data.services:", response.data.data.services)
+        console.log("🚀 ~ getAllservices ~ response.data.data.services:", response)
         if (response.status === 200) {
           setIsLoadingh(false)
           setShowSearch(false)
@@ -123,11 +142,16 @@ const FindServiceView = ({ route, navigation }) => {
 
         }
       } catch (error) {
+        console.log('errorerror',error)
         setIsLoadingh(false)
         setShowSearch(false)
       }
+    }else{
+      console.log('go to else')
     }
   }
+  
+  
 
   const searchServicebyname = async (val) => {
     if (val.length >= 3) {
@@ -154,7 +178,12 @@ const FindServiceView = ({ route, navigation }) => {
         }
         const response = await apiCall('POST', apiEndPoints.GETCITY, parms);
         if (response.status === 200) {
-          setAllCity(response.data.data)
+          const formattedCityData = response.data.data.map(city => ({
+            ...city,
+            formattedLabel: `${city.city || ''}, ${city.state_id || ''}`
+        }));
+         // setAllCity(response.data.data)
+          setAllCity(formattedCityData);
         }
 
       } catch (error) {
@@ -190,7 +219,9 @@ const FindServiceView = ({ route, navigation }) => {
         allServices={allServices}
         getcitylist={getcitylist}
         allCity={allCity}
-
+        filteredData={filteredData}
+        handlefilter={handlefilter}
+        setServiceList={setServiceList}
       />
     </>
   )

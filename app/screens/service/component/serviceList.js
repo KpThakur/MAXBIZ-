@@ -7,15 +7,16 @@ import Notfound from '../../../components/notfound'
 
 
 const ServiceList = (props) => {
-  const { serviceList } = props
+  const { serviceList, filteredData } = props
   console.log('serviceList<<<<<<<<<<<<<<<<<<<<<<<<: ', serviceList);
- 
+ // console.log('>>>>>filteredData<<<<<: ', filteredData);
+
   const [serviceData, setServiceData] = useState([]);
 
   const renderItem = ({ item }) => {
  
-    const showDetail = (serviceDetail) => {
-       props.showDetail(serviceDetail);
+    const showDetail = (serviceDetail, searchdata) => {
+       props.showDetail(serviceDetail, searchdata);
    }
    
     return (
@@ -42,9 +43,10 @@ const ServiceList = (props) => {
       <FlatList
         showsVerticalScrollIndicator={false}
         data={serviceList}
+      //  data={filteredData > 0 ? filteredData : serviceList}
         renderItem={renderItem}
         keyExtractor={serviceList.name}
-        //ListHeaderComponent={props.header}
+       // ListHeaderComponent={props.header}
         ListEmptyComponent={<Notfound textnotfound = 'Service'/>}
         extraData={props}
       />

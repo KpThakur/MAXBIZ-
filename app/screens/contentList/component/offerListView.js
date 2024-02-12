@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useRef, useState } from "react";
 import styles from "./style";
 import profile_img from "../../../assets/images/review-img-01.png";
 import profile_img2 from "../../../assets/images/review-img-02.png";
@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
+  ActivityIndicator,
 } from "react-native";
 import commomstyle from "../../../common/styles";
 import { Header } from "@components";
@@ -29,18 +30,47 @@ const offerListView = (props) => {
   const { type, contentdata, backscreen } = props;
   console.log("🚀 ~ PhotoListView ~ contentdata:", contentdata);
 
+  const [isLoading, setIsLoading] = useState(false);
+
+  const initialLoadRef = useRef(true);
+
+  const onLoadStarts = () => {
+    if (!initialLoadRef.current) {
+      return;
+    }
+    setIsLoading(true);
+    console.log("onLoadStart===============");
+  };
+
+  const onLoadEnds = () => {
+    if (!initialLoadRef.current) {
+      return;
+    }
+    setIsLoading(false);
+    initialLoadRef.current = false;
+    console.log("onLoadEnd>>>>>>>>>>>");
+  };
+
   const renderItem = ({ item }) => (
     <View style={{ padding: 15 }}>
       {console.log("🚀 ~ PhotoListView ~ item:", item)}
 
       <View style={styles.containerjob}>
         <View style={styles.offerimgcont}>
+          {isLoading && (
+            <ActivityIndicator size={'large'} style={styles.activityIndicator}/>
+          )}
+          {
           <Image
             style={styles.imageDesignoffer}
             //source={require("../../../assets/dummy/profile2.jpg")}
             source={{ uri: `${item?.aws_url}` }}
+            onLoadStart={onLoadStarts}
+            onLoadEnd={onLoadEnds}
           />
+         }
         </View>
+        
         <View style={styles.leftContainerjob}>
           <View style={styles.jobcont}>
             <Text style={styles.jobtxt}>{"Offer Title : "}</Text>

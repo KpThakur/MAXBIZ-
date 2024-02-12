@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     marginTop: normalize(20),
     marginBottom: normalize(50),
     //flex:2,
-     //backgroundColor:'red',
+    //backgroundColor:'red',
   },
   maskImg: {
     //alignItems:'center',

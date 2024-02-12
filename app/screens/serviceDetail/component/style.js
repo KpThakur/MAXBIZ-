@@ -65,11 +65,13 @@ const styles = StyleSheet.create({
         marginVertical:scale(10)
     },
     addViewtext:{
-        flex:1.8,
-       
+        flex:2,
+       // backgroundColor:'yellow',
     },
     addViewcontent:{
         flex:4.2,
+        //backgroundColor:'red',
+        marginLeft:scale(2)
     },
     addView:{
         flexDirection:'row',
@@ -97,7 +99,7 @@ const styles = StyleSheet.create({
         fontFamily:FONT_FAMILY_SEMIBOLD,
         fontSize:scale(15),
         color: GRAY_COLOR, 
-        marginBottom:scale(10)     
+        marginBottom:scale(10),     
     },
     addrsTxtadd:{
         fontSize:scale(15),
@@ -161,7 +163,16 @@ const styles = StyleSheet.create({
         height:scale(20),
         tintColor : WHITE_COLOR
 
-     } 
+     },
+     activeView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+      activityIndicator: {
+        position: 'absolute',
+        zIndex: 1,
+      },
     
 })
 

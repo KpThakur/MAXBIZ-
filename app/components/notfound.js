@@ -30,7 +30,7 @@ import { View ,Text,ActivityIndicator,StyleSheet} from 'react-native';
 import {normalize, normalizeHeight, normalizeSpacing, normalizeWidth} from './scaleFontSize';
 import StringsOfLanguages from '../utils/translations';
 
-import { FONT_FAMILY_SEMIBOLD, GRADIENT_COLOR_NEW3, WHITE_COLOR } from '../utils/constants'
+import { BLACK_COLOR, COMMON_COLOR, FONT_FAMILY_SEMIBOLD, GRADIENT_COLOR_NEW3, WHITE_COLOR } from '../utils/constants'
 
 const Notfound = (props) => {
     const {
@@ -51,14 +51,14 @@ const styles = StyleSheet.create({
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
-            marginTop: '70%'
+            marginTop: '70%',
          
       },
       title: {
         fontSize: 20,
         marginVertical: 2,
         fontFamily:FONT_FAMILY_SEMIBOLD,
-        color:WHITE_COLOR
+        color:COMMON_COLOR
       },
       /* indicatorViewStyle: {
         alignItems: 'center',
