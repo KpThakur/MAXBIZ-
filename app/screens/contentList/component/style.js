@@ -54,7 +54,7 @@ const style = StyleSheet.create({
       jobtxt:{
         fontSize:15,
         fontWeight:'bold',
-        color : GRAY_COLOR
+        color : GRAY_COLOR,
       },
       rightContainer: {
         flex: 5,

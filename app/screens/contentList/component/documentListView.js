@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useRef, useState } from "react";
 import styles from "./style";
 import profile_img from "../../../assets/images/review-img-01.png";
 import profile_img2 from "../../../assets/images/review-img-02.png";
@@ -12,6 +12,7 @@ import {
   Image,
   FlatList,
   Linking,
+  ActivityIndicator,
 } from "react-native";
 import commomstyle from "../../../common/styles";
 import { Header } from "@components";
@@ -56,6 +57,28 @@ const DATA = [
 const DocumentListView = (props) => {
   const { type, contentdata, backscreen } = props;
   console.log("🚀 ~ DocumentListView ~ contentdata:", contentdata);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const initialLoadRef = useRef(true);
+
+  const onLoadStarts = () => {
+    if (!initialLoadRef.current) {
+      return;
+    }
+    setIsLoading(true);
+    console.log("onLoadStart===============");
+  };
+
+  const onLoadEnds = () => {
+    if (!initialLoadRef.current) {
+      return;
+    }
+    setIsLoading(false);
+    initialLoadRef.current = false;
+    console.log("onLoadEnd>>>>>>>>>>>");
+  };
+
 
   // const documentView = (item) => {
   //   const source = {
@@ -104,10 +127,21 @@ const DocumentListView = (props) => {
             onPress={() => Linking.openURL(item?.aws_url)}
             //onPress={() => documentView(item?.aws_url)}
           >
-            <Image
-              style={styles.imageDesign}
-              source={require("../../../assets/images/pdffile.png")}
-            />
+            {isLoading && (
+              <ActivityIndicator
+                size={"large"}
+                style={[styles.activityIndicator, {alignSelf:'center', bottom:10}]}
+              />
+            )}
+            {
+              <Image
+                style={styles.imageDesign}
+                source={require("../../../assets/images/pdffile.png")}
+                //source={require("../../../assets/dummy/profile2.jpg")}
+                onLoadStart={onLoadStarts}
+                onLoadEnd={onLoadEnds}
+              />
+            }
           </TouchableOpacity>
         </View>
       </View>

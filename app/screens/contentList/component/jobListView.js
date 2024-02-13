@@ -1,4 +1,10 @@
-import React, { Fragment, useCallback, useState } from "react";
+import React, {
+  Fragment,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import styles from "./style";
 import profile_img from "../../../assets/images/review-img-01.png";
 import profile_img2 from "../../../assets/images/review-img-02.png";
@@ -22,6 +28,8 @@ import {
   GRADIENT_COLOR_NEW2,
   GRADIENT_COLOR_NEW3,
   GRADIENT_COLOR_NEW4,
+  FONT_FAMILY_REGULAR,
+  FONT_FAMILY_MEDIUM,
 } from "../../../utils/constants";
 import Notfound from "../../../components/notfound";
 
@@ -37,25 +45,51 @@ const JobListView = (props) => {
       // console.log('read__________more', showAll)
     };
 
-    const handleTextLayout = (e) => {
-      setNumberOfLines(e.nativeEvent.lines.length);
-    };
+    // const handleTextLayout = (e) => {
+    //   setNumberOfLines(e.nativeEvent.lines.length);
+    //   console.log('e.nativeEvent.lines.length',e.nativeEvent.lines.length)
+    // };
+
+    const handleTextLayout = useCallback((e) => {
+      setNumberOfLines(e.nativeEvent.lines.length >= 3); 
+     // console.log("e.nativeEvent", e.nativeEvent);
+    }, []);
 
     return (
       <View>
-        <Text
+        {/* <Text
           numberOfLines={showAll ? undefined : maxLines}
           onTextLayout={handleTextLayout}
+          style={{ fontFamily:FONT_FAMILY_REGULAR}}
         >
           {content}
         </Text>
         {numberOfLines > maxLines && (
-          <TouchableOpacity onPress={toggleReadMore}>
-            <Text style={{ color: "blue", marginTop: 3 }}>
+          
+          <TouchableOpacity onPress={()=> toggleReadMore()}>
+            <Text style={{ color: "blue", marginTop: 3, }}>
               {showAll ? "Less" : "See More"}
             </Text>
           </TouchableOpacity>
-        )}
+          
+        )} */}
+
+        <Text
+          onTextLayout={handleTextLayout}
+          numberOfLines={showAll ? undefined : 3}
+          style={{ lineHeight: 21, fontFamily:FONT_FAMILY_REGULAR }}
+        >
+          {content}
+        </Text>
+
+        {numberOfLines ? (
+          <Text
+            onPress={toggleReadMore}
+            style={{ lineHeight: 21, marginTop: 3, color:'blue', fontFamily:FONT_FAMILY_MEDIUM }}
+          >
+            {showAll ? "Less" : "See More"}
+          </Text>
+        ) : null}
       </View>
     );
   };
