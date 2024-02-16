@@ -11,7 +11,7 @@ import validateIdentityScreen from "../screens/auth/validateIdentity";
 import registrationScreen from "../screens/auth/registration";
 import certifyBusinessScreen from "../screens/auth/certifyBusiness";
 import thankyouScreen from "../screens/auth/thankyou";
-
+import Thankyou from "../screens/auth/thankyou";
 
 import findServiceScreen from "../screens/service";
 import serviceDetailScreen from "../screens/serviceDetail";
@@ -67,7 +67,7 @@ const AppStack = () => {
         <Stack.Screen name="joinScreen" component={joinScreen} /> 
         <Stack.Screen name="validateIdentityScreen" component={validateIdentityScreen} />
         <Stack.Screen name="registrationScreen" component={registrationScreen} />
-         <Stack.Screen name="thankyouScreen" component={thankyouScreen} />
+         <Stack.Screen name="thankyouScreen" component={Thankyou} />
         
         <Stack.Screen name="forgotPasswordScreen" component={forgotPasswordScreen} />
         <Stack.Screen name="forgotVerifiedScreen" component={forgotVerifiedScreen} />

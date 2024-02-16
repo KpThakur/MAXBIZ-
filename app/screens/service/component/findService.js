@@ -156,9 +156,8 @@ const FindService = (props) => {
                 <TouchableOpacity>
                   <Button
                     onPress={() => {
-                      console.log("button pressed");
-
                       getAllservices(searchdata.serviceid, searchdata.cityid);
+                      console.log('search service in searchBar', searchdata)
                      // handlefilter(searchdata.cityid)
                     }}
                     buttonText={StringsOfLanguages.SEARCHSERVICE}

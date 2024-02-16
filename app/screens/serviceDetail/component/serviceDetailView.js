@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   SafeAreaView,
   Text,
@@ -35,7 +35,7 @@ const ServiceDetailView = (props) => {
   const { toggleShowSearch, serviceDetail, showDetailContent, backscreen } =
     props;
 
-  console.log("serviceDetail:_______ ", serviceDetail);
+  // console.log("serviceDetail:_______ ", serviceDetail);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -46,7 +46,7 @@ const ServiceDetailView = (props) => {
       return;
     }
     setIsLoading(true);
-    console.log("onLoadStart===============");
+    // console.log("onLoadStart===============");
   };
 
   const onLoadEnds = () => {
@@ -55,23 +55,23 @@ const ServiceDetailView = (props) => {
     }
     setIsLoading(false);
     initialLoadRef.current = false;
-    console.log("onLoadEnd>>>>>>>>>>>");
+    // console.log("onLoadEnd>>>>>>>>>>>");
   };
 
   // if (serviceDetail.payments) {
   //   const paymentsObject = JSON.parse(serviceDetail.payments);
   //   console.log("Payments as JavaScript object:", paymentsObject);
-  
+
   //   // Use Object.entries to get the first (and only) entry
   //   const cashName = Object.entries(paymentsObject);
   //   const cashName1 = cashName[0];
-  
+
   //   // Log the cash payment value
   //   console.log("Cash payment value:", cashName1[0]);
   // } else {
   //   console.log("serviceDetail.payments is undefined");
   // }
- 
+
   //  // const paymentsObject = (JSON.parse(serviceDetail.payments));
   //   const paymentsObject = JSON.parse(serviceDetail?.payments);
   //   console.log("Payments as JavaScript object:", paymentsObject);
@@ -80,6 +80,35 @@ const ServiceDetailView = (props) => {
 
   //  // const cashPayment = paymentsObject.cash;
   //   console.log("Cash payment value:", cashName1[0]);
+
+  // const paymentsObject = JSON.parse(serviceDetail?.payments);
+
+  // const cash = paymentsObject?.cash;
+  // const res = cash === 1 ? "Cash" : "";
+
+  // console.log("output", res);
+
+  //   const [cashText, setCashText] = useState(null);
+  // console.log('cashText>>>>>>>', cashText)
+  //   useEffect(() => {
+  //     try {
+  //       if (serviceDetail?.payments) {
+  //         // Parse the JSON string in the payments property
+  //         const paymentsObject = JSON.parse(serviceDetail.payments);
+
+  //         // Access the value of the "cash" key
+  //         const cash = paymentsObject?.cash;
+  //         const cashName = Object.entries(paymentsObject);
+  //         const cashName1 = cashName[0];
+  //         setCashText(cashName1)
+  //         console.log("output" , cashName1)
+  //       } else {
+  //         console.error("The 'payments' property is undefined or null.");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error parsing JSON:", error);
+  //     }
+  //   }, [serviceDetail?.payments, cashText]);
 
   return (
     <SafeAreaView style={commomstyle.container}>
@@ -205,9 +234,8 @@ const ServiceDetailView = (props) => {
               <View style={styles.addViewcontent}>
                 <Text style={styles.addrsTxt}>
                   {"Cash | Credit card | Cash app | Paypal"}
-                  {/* {cashName1[0]} */}
+                  {/* {cashText} */}
                 </Text>
-                
               </View>
             </View>
 

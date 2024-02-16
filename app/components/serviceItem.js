@@ -60,7 +60,7 @@ const ServiceItem = (props) => {
       return;
     }
     setIsLoading(true);
-    console.log("onLoadStart===============");
+   // console.log("onLoadStart===============");
   };
 
   const onLoadEnds = () => {
@@ -69,7 +69,7 @@ const ServiceItem = (props) => {
     }
     setIsLoading(false);
     initialLoadRef.current = false;
-    console.log("onLoadEnd>>>>>>>>>>>");
+   // console.log("onLoadEnd>>>>>>>>>>>");
   };
   
   return (
@@ -78,7 +78,10 @@ const ServiceItem = (props) => {
       <View style={styles.container}>
         
         <TouchableOpacity
-          onPress={() => props.showDetail(serviceDetail)}
+          onPress={() => {
+            props.showDetail(serviceDetail)
+            console.log('in serviceDetails>>>>', serviceDetail)
+          }}
           style={styles.top}
         >
           <View style={styles.activeView}>

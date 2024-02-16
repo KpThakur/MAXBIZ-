@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import CertifyBusiness from './component/certifyBusiness';
 
-const crtfyBusinessView = ({navigation}) => {
+const CrtfyBusinessView = ({navigation}) => {
     const [loginData, setLoginData] = useState({
         "mobileNo": '',
         "emailaddr": ''
@@ -18,4 +18,4 @@ const crtfyBusinessView = ({navigation}) => {
         />
     )
 }
-export default crtfyBusinessView;
+export default CrtfyBusinessView;

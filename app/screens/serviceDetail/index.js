@@ -44,7 +44,7 @@ const ServiceDetail = ({ route, navigation }) => {
                 );
 
                 if (response.status === 200) {
-                    console.log("🚀 ~ getServicesDetails ~ response.data.data:", response.data.data)
+                   // console.log("🚀 ~ getServicesDetails ~ response.data.data:", response.data.data)
                     setIsLoadingh(false)
                     setServiceDetail(response.data.data)
                    
@@ -64,13 +64,16 @@ const ServiceDetail = ({ route, navigation }) => {
    
     const backscreen = () => {
         navigation.navigate("findServiceScreen", searchdata);
+        console.log("back in findServiceScreen<<<<", searchdata)
     }
     const drawerOpen = () => {
         //navigation.navigate("drawerNavigation");
     }
     const showDetailContent = (screenName, type = '', data) => {
-        console.log("🚀 ~ file: index.js:58 ~ showDetailContent ~ data:", data)
+       // console.log("🚀 ~ file: index.js:58 ~ showDetailContent ~ data:", data)
         navigation.navigate(screenName, { type: type, contentdata: data });
+        // navigation.navigate(screenName, { type: type, contentdata: data ,searchdata: searchdata,});
+
     }
     return (
         <>

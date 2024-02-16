@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ThankyouView from './component/thankyouView';
 
-const thankyou = ({navigation}) => {
+const Thankyou = ({navigation}) => {
     const [loginData, setLoginData] = useState({
         "mobileNo": '',
         "emailaddr": ''
@@ -18,4 +18,4 @@ const thankyou = ({navigation}) => {
         />
     )
 }
-export default thankyou;
+export default Thankyou;

@@ -1,8 +1,8 @@
 import React, { Fragment, useState } from "react";
 import Review from "./component/Review";
-const index = ({route,navigation}) => {
+const Index = ({route,navigation}) => {
   const {contentdata , type, serviceid, cityid, servicename, cityname} = route.params
-  console.log("🚀 ~ file: index.js:4 ~ index ~ route:", contentdata)
+  // console.log("🚀 ~ file: index.js:4 ~ index ~ route:", contentdata)
   const [searchdata, setSearchdata] = useState({
     "serviceid": serviceid,
     "servicename": servicename,
@@ -20,4 +20,4 @@ const index = ({route,navigation}) => {
     </Fragment>
   );
 };
-export default index;
+export default Index;

@@ -86,7 +86,7 @@ const PhotoListView = (props) => {
       return;
     }
     setLoading(true);
-    console.log("onLoadStart===============");
+   // console.log("onLoadStart===============");
   };
 
 
@@ -96,7 +96,7 @@ const PhotoListView = (props) => {
     }
     setLoading(false);
     initialLoadRef.current = false;
-    console.log("onLoadEnd>>>>>>>>>>>");
+   // console.log("onLoadEnd>>>>>>>>>>>");
   };
 
   const renderItem = ({ item }) => (

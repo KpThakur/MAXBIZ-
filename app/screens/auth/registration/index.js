@@ -38,7 +38,7 @@ const items = [{
 
 
 
-const registrationView = ({ navigation }) => {
+const RegistrationView = ({ navigation }) => {
   const [inputError, setinputError] = useState({});
   const [imageData, setimageData] = useState({});
   const [servicesData, setServicesData] = useState([]);
@@ -141,4 +141,4 @@ const registrationView = ({ navigation }) => {
     />
   );
 };
-export default registrationView;
+export default RegistrationView;

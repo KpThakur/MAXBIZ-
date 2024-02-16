@@ -28,7 +28,7 @@ import Notfound from "../../../components/notfound";
 
 const offerListView = (props) => {
   const { type, contentdata, backscreen } = props;
-  console.log("🚀 ~ PhotoListView ~ contentdata:", contentdata);
+ // console.log("🚀 ~ PhotoListView ~ contentdata:", contentdata);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -39,7 +39,7 @@ const offerListView = (props) => {
       return;
     }
     setIsLoading(true);
-    console.log("onLoadStart===============");
+   // console.log("onLoadStart===============");
   };
 
   const onLoadEnds = () => {
@@ -48,12 +48,12 @@ const offerListView = (props) => {
     }
     setIsLoading(false);
     initialLoadRef.current = false;
-    console.log("onLoadEnd>>>>>>>>>>>");
+   // console.log("onLoadEnd>>>>>>>>>>>");
   };
 
   const renderItem = ({ item }) => (
     <View style={{ padding: 15 }}>
-      {console.log("🚀 ~ PhotoListView ~ item:", item)}
+      {/* {console.log("🚀 ~ PhotoListView ~ item:", item)} */}
 
       <View style={styles.containerjob}>
         <View style={styles.offerimgcont}>

@@ -46,7 +46,7 @@ import Loader from '../../components/loader'
 const FindServiceView = ({ route, navigation }) => {
 
   const { serviceid, cityid, servicename, cityname } = route?.params
-  console.log("🚀 ~ file: index.js:49 ~ FindServiceView ~ servicename:", servicename)
+ // console.log("🚀 ~ file: index.js:49 ~ FindServiceView ~ servicename:", servicename)
   const [showSearch, setShowSearch] = useState(false)
   const [isLoading, setIsLoadingh] = useState(false)
   const [allCity, setAllCity] = useState([])
@@ -71,7 +71,7 @@ const FindServiceView = ({ route, navigation }) => {
     const filteredResults = serviceList.filter(item =>
       item?.cityid?.toLowerCase()?.includes(text.toLowerCase())
       );
-      console.log('cityyyyyyyyyyyyyyyyy',cityid )
+     // console.log('cityyyyyyyyyyyyyyyyy',cityid )
       setFilteredData(filteredResults)
   }
 
@@ -115,7 +115,7 @@ const FindServiceView = ({ route, navigation }) => {
 
 
   const getAllservices = async (serviceid, cityid) => {
-    console.log('serviceid, cityid', serviceid, cityid)
+   // console.log('serviceid, cityid', serviceid, cityid)
     if (serviceid !== "" && cityid !== "") {
       const parms = {
         "serviceid": serviceid,
@@ -125,12 +125,12 @@ const FindServiceView = ({ route, navigation }) => {
       }
       try {
 
-        console.log('====',parms)
+       // console.log('====',parms)
         setIsLoadingh(true)
         const response = await apiCall("POST",apiEndPoints.GETALLSERVICES,parms);
         //console.log("🚀 ~ file: index.js:69 ~ getAllservices ~ response:", response.status)
 
-        console.log("🚀 ~ getAllservices ~ response.data.data.services:", response)
+       // console.log("🚀 ~ getAllservices ~ response.data.data.services:", response)
         if (response.status === 200) {
           setIsLoadingh(false)
           setShowSearch(false)

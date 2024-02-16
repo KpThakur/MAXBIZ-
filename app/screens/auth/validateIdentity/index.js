@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ValidateIdentity from './component/validateIdentity';
 import StringsOfLanguages from '../../../utils/translations';
-const validtIdntyView = ({navigation}) => {
+const ValidtIdntyView = ({navigation}) => {
     const [inputError, setinputError] = useState({})
     const [loginData, setLoginData] = useState({
         "mobileNo": '',
@@ -54,4 +54,4 @@ const validtIdntyView = ({navigation}) => {
         />
     )
 }
-export default validtIdntyView;
+export default ValidtIdntyView;

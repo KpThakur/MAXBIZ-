@@ -35,7 +35,7 @@ import Notfound from "../../../components/notfound";
 
 const JobListView = (props) => {
   const { type, contentdata, backscreen } = props;
-  console.log("🚀 ~ PhotoListView ~ contentdata:", contentdata);
+ // console.log("🚀 ~ PhotoListView ~ contentdata:", contentdata);
 
   const ReadMoreText = ({ content, maxLines = 3 }) => {
     const [showAll, setShowAll] = useState(false);
@@ -96,7 +96,7 @@ const JobListView = (props) => {
 
   const renderItem = ({ item }) => (
     <View style={{ padding: 15 }}>
-      {console.log("🚀 ~ PhotoListView ~ item:", item)}
+      {/* {console.log("🚀 ~ PhotoListView ~ item:", item)} */}
 
       <View style={styles.containerjob}>
         <View style={styles.leftContainerjob}>

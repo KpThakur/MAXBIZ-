@@ -56,7 +56,7 @@ const DATA = [
 
 const DocumentListView = (props) => {
   const { type, contentdata, backscreen } = props;
-  console.log("🚀 ~ DocumentListView ~ contentdata:", contentdata);
+ // console.log("🚀 ~ DocumentListView ~ contentdata:", contentdata);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -67,7 +67,7 @@ const DocumentListView = (props) => {
       return;
     }
     setIsLoading(true);
-    console.log("onLoadStart===============");
+   // console.log("onLoadStart===============");
   };
 
   const onLoadEnds = () => {
@@ -76,7 +76,7 @@ const DocumentListView = (props) => {
     }
     setIsLoading(false);
     initialLoadRef.current = false;
-    console.log("onLoadEnd>>>>>>>>>>>");
+   // console.log("onLoadEnd>>>>>>>>>>>");
   };
 
 
@@ -119,7 +119,7 @@ const DocumentListView = (props) => {
 
   const renderItem = ({ item }) => (
     <View>
-      {console.log("🚀 ~ PhotoListView ~ item:", item.aws_url)}
+      {/* {console.log("🚀 ~ PhotoListView ~ item:", item.aws_url)} */}
 
       <View style={styles.container}>
         <View style={styles.leftContainer}>
