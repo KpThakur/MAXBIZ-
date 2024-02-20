@@ -7,6 +7,6 @@ export default {
     BUSINESSLOGIN: "userAuth/userLogin",
     BUSINESSDETAIL: "userAuth/getBusinessDetails",
     LOGOUT: "userlogout/userLogout",
-   
+    GETIMAGE: "business/getImage"
   };
   

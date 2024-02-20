@@ -111,7 +111,9 @@ const offerListView = (props) => {
         data={contentdata}
         renderItem={renderItem}
         ListEmptyComponent={<Notfound textnotfound="Photo" />}
-        keyExtractor={(item) => item.fileid}
+       // keyExtractor={(item) => item.fileid}
+        keyExtractor={(item, index, ) => item.id || index.toString()}
+
       />
       {/* </LinearGradient> */}
     </SafeAreaView>

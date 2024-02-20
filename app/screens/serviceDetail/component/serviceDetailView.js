@@ -32,10 +32,16 @@ import {
 import { scale } from "@utils/utils";
 import StringsOfLanguages from "../../../utils/translations";
 const ServiceDetailView = (props) => {
-  const { toggleShowSearch, serviceDetail, showDetailContent, backscreen } =
-    props;
+  const {
+    toggleShowSearch,
+    serviceDetail,
+    showDetailContent,
+    backscreen,
+    paymentList,
+    image,
+  } = props;
 
-  // console.log("serviceDetail:_______ ", serviceDetail);
+  // console.log("serviceDetail:_______ ", serviceDetail?.servicedata);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -57,58 +63,6 @@ const ServiceDetailView = (props) => {
     initialLoadRef.current = false;
     // console.log("onLoadEnd>>>>>>>>>>>");
   };
-
-  // if (serviceDetail.payments) {
-  //   const paymentsObject = JSON.parse(serviceDetail.payments);
-  //   console.log("Payments as JavaScript object:", paymentsObject);
-
-  //   // Use Object.entries to get the first (and only) entry
-  //   const cashName = Object.entries(paymentsObject);
-  //   const cashName1 = cashName[0];
-
-  //   // Log the cash payment value
-  //   console.log("Cash payment value:", cashName1[0]);
-  // } else {
-  //   console.log("serviceDetail.payments is undefined");
-  // }
-
-  //  // const paymentsObject = (JSON.parse(serviceDetail.payments));
-  //   const paymentsObject = JSON.parse(serviceDetail?.payments);
-  //   console.log("Payments as JavaScript object:", paymentsObject);
-  //   const cashName = Object.entries(paymentsObject);
-  //   const cashName1 = cashName[0];
-
-  //  // const cashPayment = paymentsObject.cash;
-  //   console.log("Cash payment value:", cashName1[0]);
-
-  // const paymentsObject = JSON.parse(serviceDetail?.payments);
-
-  // const cash = paymentsObject?.cash;
-  // const res = cash === 1 ? "Cash" : "";
-
-  // console.log("output", res);
-
-  //   const [cashText, setCashText] = useState(null);
-  // console.log('cashText>>>>>>>', cashText)
-  //   useEffect(() => {
-  //     try {
-  //       if (serviceDetail?.payments) {
-  //         // Parse the JSON string in the payments property
-  //         const paymentsObject = JSON.parse(serviceDetail.payments);
-
-  //         // Access the value of the "cash" key
-  //         const cash = paymentsObject?.cash;
-  //         const cashName = Object.entries(paymentsObject);
-  //         const cashName1 = cashName[0];
-  //         setCashText(cashName1)
-  //         console.log("output" , cashName1)
-  //       } else {
-  //         console.error("The 'payments' property is undefined or null.");
-  //       }
-  //     } catch (error) {
-  //       console.error("Error parsing JSON:", error);
-  //     }
-  //   }, [serviceDetail?.payments, cashText]);
 
   return (
     <SafeAreaView style={commomstyle.container}>
@@ -137,11 +91,13 @@ const ServiceDetailView = (props) => {
               )}
               {
                 <Image
-                  source={require("../../../assets/dummy/no_image.png")}
-                  // source={{ uri: `${serviceDetail?.aws_url}` }}
+                 // source={require("../../../assets/dummy/no_image.png")}
+                 // source={{uri: `${image}`}}
+                  source={{uri: image ? image : null}}
                   style={styles.serviceImg}
                   onLoadStart={onLoadStarts}
                   onLoadEnd={onLoadEnds}
+                 
                 />
               }
             </View>
@@ -233,8 +189,12 @@ const ServiceDetailView = (props) => {
               </View>
               <View style={styles.addViewcontent}>
                 <Text style={styles.addrsTxt}>
-                  {"Cash | Credit card | Cash app | Paypal"}
-                  {/* {cashText} */}
+                  {/* {"Cash | Credit card | Cash app | Paypal"} */}
+                  {paymentList?.cash == 1 ? "Cash, " : null}
+                  {paymentList?.creditcard == 1 ? "Credit card, " : null}
+                  {paymentList?.cashapp == 1 ? "Cash app, " : null}
+                  {paymentList?.paypal == 1 ? "Paypal, " : null}
+                  {paymentList?.zelle == 1 ? "Zelle" : null}
                 </Text>
               </View>
             </View>

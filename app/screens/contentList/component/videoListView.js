@@ -165,7 +165,8 @@ const VideoListView = (props) => {
         showsVerticalScrollIndicator={false}
         data={contentdata}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+       // keyExtractor={(item) => item.id}
+        keyExtractor={(item, index) => item.id || index.toString()}
       />
 
       <Modal

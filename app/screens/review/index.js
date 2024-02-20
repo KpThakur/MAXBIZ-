@@ -1,17 +1,16 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useContext, useState } from "react";
+import { SearchContext } from "../../utils/searchContext";
 import Review from "./component/Review";
 const Index = ({route,navigation}) => {
-  const {contentdata , type, serviceid, cityid, servicename, cityname} = route.params
+  const { contentdata , type } = route.params
   // console.log("🚀 ~ file: index.js:4 ~ index ~ route:", contentdata)
-  const [searchdata, setSearchdata] = useState({
-    "serviceid": serviceid,
-    "servicename": servicename,
-    "cityid": cityid,
-    "cityname": cityname
-  })
+  
+  const [searchdata, setSearchdata] = useContext(SearchContext);
 
   const backscreen = () => {
     navigation.navigate("serviceDetailScreen",{searchdata: searchdata} );
+    console.log('backinTypeScreen<<<<<<<<', searchdata)
+
 }
   return (
     <Fragment>

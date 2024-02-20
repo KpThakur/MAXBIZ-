@@ -1,12 +1,17 @@
-import React, {useState, createContext} from 'react';
+import React, { useState, createContext } from "react";
+
 export const SearchContext = createContext();
-export const SearchProvider = props => {
- const [data, setData] = useState({})
- 
+
+export const SearchProvider = (props) => {
+  const [searchdata, setSearchdata] = useState({
+    serviceid: "",
+    servicename: "",
+    cityid: "",
+    cityname: "",
+  });
   return (
-    <SearchContext.Provider value={[data, setData]}>
+    <SearchContext.Provider value={[searchdata, setSearchdata]}>
       {props.children}
     </SearchContext.Provider>
   );
 };
-

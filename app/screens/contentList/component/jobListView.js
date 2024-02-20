@@ -96,7 +96,7 @@ const JobListView = (props) => {
 
   const renderItem = ({ item }) => (
     <View style={{ padding: 15 }}>
-      {/* {console.log("🚀 ~ PhotoListView ~ item:", item)} */}
+      {/* {console.log("🚀 ~ PhotoListView ~ item:", item.fileid)} */}
 
       <View style={styles.containerjob}>
         <View style={styles.leftContainerjob}>
@@ -140,7 +140,8 @@ const JobListView = (props) => {
         data={contentdata}
         renderItem={renderItem}
         ListEmptyComponent={<Notfound textnotfound="Photo" />}
-        keyExtractor={(item) => item.fileid}
+       // keyExtractor={(item) => item.fileid}
+        keyExtractor={(item, index) => index.toString()}
       />
       {/* </LinearGradient> */}
     </SafeAreaView>

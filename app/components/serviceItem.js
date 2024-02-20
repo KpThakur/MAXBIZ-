@@ -80,7 +80,7 @@ const ServiceItem = (props) => {
         <TouchableOpacity
           onPress={() => {
             props.showDetail(serviceDetail)
-            console.log('in serviceDetails>>>>', serviceDetail)
+           // console.log('in serviceDetails>>>>', serviceDetail)
           }}
           style={styles.top}
         >
@@ -107,7 +107,8 @@ const ServiceItem = (props) => {
               <StarRating
                 disabled={false}
                 maxStars={5}
-                rating={rating}
+               // rating={rating}
+                rating={parseFloat(rating)}
                 //fullStar={ICONS.starIcon}
                 //emptyStar={ICONS.starBlackIcon}
                 starSize={20}

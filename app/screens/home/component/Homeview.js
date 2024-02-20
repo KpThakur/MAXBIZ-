@@ -8,6 +8,7 @@ import {
   FlatList,
   ScrollView,
   StatusBar,
+  ActivityIndicator,
 } from "react-native";
 import {
   FONT_FAMILY_SEMIBOLD,
@@ -55,6 +56,8 @@ const HomeView = (props) => {
     searchService,
     searchServicebyname,
     getcitylist,
+    isFetchingServices,
+    isFetchingCities,
   } = props;
   const [pausedvideo, SetPausedVideo] = useState(false);
 
@@ -81,8 +84,6 @@ const HomeView = (props) => {
     clearTimeout(overlayTimer.current);
     overlayTimer.current = setTimeout(() => setoverlay(false), 3000);
   };
-
- 
 
   const load = ({ duration }) => {
     setTotalDuration(duration);
@@ -111,6 +112,8 @@ const HomeView = (props) => {
     const remainingSeconds = Math.floor(seconds % 60);
     return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
   };
+  //  console.log("allservice>>>>>>>>>>", allServices);
+
 
   return (
     <SafeAreaView style={commomstyle.container}>
@@ -160,6 +163,27 @@ const HomeView = (props) => {
                     servicename: val.title,
                   })
                 }
+
+                // renderRightIcon={() =>
+                //   isFetchingServices && (
+                //     <ActivityIndicator
+                //       size={"large"}
+                //       style={styles.placeholderStyle}
+                //       color={GRADIENT_COLOR_NEW1}
+                //     />
+
+                //   )
+                // }
+                // renderRightIcon={() => {
+                //   if (isFetchingServices) {
+                //     return <ActivityIndicator size={'large'} color={GRADIENT_COLOR_NEW1} style={styles.placeholderStyle} />;
+                //   } else if (!allServices || allServices.length === 0) {
+                //     return null;
+                //   } else {
+                //     return null;
+                //   }
+                // }}
+
                 /*  renderLeftIcon={() => (
                              <AntDesign style={style.icon} color="black" name="Safety" size={20} />
                             )} */
@@ -206,6 +230,25 @@ const HomeView = (props) => {
                   })
                 }
                 textColor="#FFF"
+                // renderRightIcon={() =>
+                //   isFetchingCities && (
+                //     <ActivityIndicator
+                //       size={"large"}
+                //       style={styles.placeholderStyle}
+                //       color={GRADIENT_COLOR_NEW1}
+                //     />
+                //   )
+                // }
+
+                // renderRightIcon={() => {
+                //   if (isFetchingCities) {
+                //     return <ActivityIndicator size={'large'} color={GRADIENT_COLOR_NEW1} style={styles.placeholderStyle} />;
+                //   } else if (!allCity || allCity.length === 0) {
+                //     return null;
+                //   } else {
+                //     return null;
+                //   }
+                // }}
                 /*  renderLeftIcon={() => (
                              <AntDesign style={style.icon} color="black" name="Safety" size={20} />
                             )} */
