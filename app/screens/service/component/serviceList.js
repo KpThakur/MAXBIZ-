@@ -7,9 +7,8 @@ import Notfound from '../../../components/notfound'
 
 
 const ServiceList = (props) => {
-  const { serviceList, filteredData } = props
+  const { serviceList } = props
  // console.log('serviceList<<<<<<<<<<<<<<<<<<<<<<<<: ', serviceList);
- // console.log('>>>>>filteredData<<<<<: ', filteredData);
 
   const [serviceData, setServiceData] = useState([]);
 

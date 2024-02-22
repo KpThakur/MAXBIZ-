@@ -6,6 +6,7 @@ import {
     TouchableOpacity,
     ScrollView,
     SafeAreaView,
+    StatusBar,
 } from 'react-native';
 import style from './style';
 import commomstyle from '../../../../common/styles';
@@ -13,12 +14,18 @@ import { Button, Input, Logo } from '@components';
 import { ICONS } from '@utils/imagePath';
 import { Header } from '@components';
 import StringsOfLanguages from '../../../../utils/translations';
+import { WHITE_COLOR } from '../../../../utils/constants';
 
 
 const forgotPasswordView = (props) => {
     const {inputError,loginData,setLoginData,toLogin,sendOTP} = props
     return (
         <SafeAreaView style={commomstyle.container}>
+            <StatusBar
+          animated={true}
+          backgroundColor={WHITE_COLOR}
+          barStyle="dark-content"
+        />
             <Header
                rightImg={false} headerText={StringsOfLanguages.FORGOT_PASSWORD}
             />

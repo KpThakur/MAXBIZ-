@@ -1,13 +1,13 @@
 import React from 'react';
 import SplashTwo from './component/splashTwo';
 
-const splashTwoView = ({ navigation }) => {
+const SplashTwoView = ({ navigation }) => {
     setTimeout(() => {
         //navigation.navigate('findServiceScreen')
-        navigation.navigate('homeScreen')
+        navigation.navigate('customDrawer')
     }, 2000);
     return (
         <SplashTwo />
     )
 }
-export default splashTwoView;
+export default SplashTwoView;

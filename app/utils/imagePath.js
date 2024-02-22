@@ -43,5 +43,5 @@ export const ICONS = {
     pause_Icon_new: require('../assets/images/pause_Icon_new.png'),
     mic_On_Icon: require('../assets/images/mic_Onicon.png'),
     mic_Off_Icon: require('../assets/images/mic_off_ICON.png'),
-
+    city_Icon: require('../assets/images/city_ICON.png'),
 }

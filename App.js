@@ -13,13 +13,13 @@ const App = () => {
           flex: 1,
         }}
       >
-        <StatusBar
+        {/* <StatusBar
           animated={true}
           backgroundColor="#ffff"
           barStyle="dark-content"
-          /*showHideTransition={statusBarTransition}
-            hidden={hidden}  */
-        />
+          showHideTransition={statusBarTransition}
+            hidden={hidden} 
+        /> */}
         <Main />
         <FlashMessage position="bottom" />
       </View>

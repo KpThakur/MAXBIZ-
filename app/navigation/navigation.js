@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from "@react-navigation/native";
-import { View } from 'react-native';
+import { StatusBar, View } from 'react-native';
 import splashScreen from "../screens/auth/splash";
 import splashTwoScreen from "../screens/auth/splashTwo";
 import loginScreen from "../screens/auth/login";
@@ -35,6 +35,7 @@ import profileDetailsScreen from "../screens/business/profileDetails/index"
 
 import CustomMenu  from '../components/customMenu';
 import customMenuAuth  from '../components/customMenuAuth';
+import { WHITE_COLOR } from "../utils/constants";
 const Drawer = createDrawerNavigator();
 const App = createNativeStackNavigator();
 const Auth = createNativeStackNavigator();
@@ -56,6 +57,7 @@ function CustomDrawerNavigation() {
 
 function CustomDrawerNavigationauth() {
   return (
+    
       <Drawer.Navigator screenOptions={{headerShown: false , drawerPosition: "right"}}     drawerContent={props => <CustomMenu {...props} />} >
          
         
@@ -109,12 +111,13 @@ const AppStack = () => {
 
 const AuthStack = () => {
   return (
-    <App.Navigator screenOptions={{ headerShown: false }}>
+    <App.Navigator screenOptions={{ headerShown: false }} >
          {/* <App.Screen name="splashScreen" component={splashScreen} />
         <App.Screen name="splashTwoScreen" component={splashTwoScreen} /> */}
-        {/*  <App.Screen name="splashTwoScreen" component={splashTwoScreen} /> 
-         <App.Screen name="homeScreen" component={CustomDrawerNavigationauth} />  */}
-        <App.Screen name="AuthStack" component={CustomDrawerNavigationauth} />
+         <App.Screen name="splashTwoScreen" component={splashTwoScreen}  /> 
+
+         <App.Screen name="customDrawer" component={CustomDrawerNavigationauth} /> 
+        {/* <App.Screen name="AuthStack" component={CustomDrawerNavigationauth} /> */}
 
         {/* <App.Screen name="findServiceScreen" component={findServiceScreen} />  
         <App.Screen name="serviceDetailScreen" component={serviceDetailScreen} />

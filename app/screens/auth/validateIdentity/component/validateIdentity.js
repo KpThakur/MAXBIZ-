@@ -1,15 +1,20 @@
 import React from 'react';
-import { View, Text, SafeAreaView, ScrollView } from 'react-native';
+import { View, Text, SafeAreaView, ScrollView, StatusBar } from 'react-native';
 import style from './style';
 import commomstyle from '../../../../common/styles';
 import { Button, Input, Header } from '@components';
-import { GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW3,GRADIENT_COLOR_NEW2 } from '../../../../utils/constants';
+import { GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW3,GRADIENT_COLOR_NEW2, WHITE_COLOR } from '../../../../utils/constants';
 import LinearGradient from 'react-native-linear-gradient';
 import StringsOfLanguages from '../../../../utils/translations';
 
 const validateIdentity = (props) => {
     return (
         <SafeAreaView style={commomstyle.container}>
+            <StatusBar
+          animated={true}
+          backgroundColor={WHITE_COLOR}
+          barStyle="dark-content"
+        />
 
             <LinearGradient 
              colors={[GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW3,GRADIENT_COLOR_NEW2]}

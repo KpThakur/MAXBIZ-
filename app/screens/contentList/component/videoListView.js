@@ -18,6 +18,7 @@ import {
   FlatList,
   Linking,
   Modal,
+  StatusBar,
 } from "react-native";
 
 import commomstyles from "../../../common/styles";
@@ -154,6 +155,11 @@ const VideoListView = (props) => {
 
   return (
     <SafeAreaView style={commomstyles.container}>
+      <StatusBar
+          animated={true}
+          backgroundColor={WHITE_COLOR}
+          barStyle="dark-content"
+        />
       <Header
         rightImgStyl={{ tintColor: WHITE_COLOR }}
         rightImg={true}

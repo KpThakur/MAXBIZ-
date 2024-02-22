@@ -141,6 +141,14 @@ const ServiceItem = (props) => {
             </Text>
             <Text style={styles.addrsTxtadd}>{address}</Text>
           </View>
+
+          <View style={styles.addView}>
+            <Text style={styles.serveTxt}>{StringsOfLanguages.CITY}</Text>
+            <Text style={[styles.addrsTxtadd, {bottom: scale(2.5)}]}>
+              {serviceDetail?.city}, {serviceDetail?.state_id}
+            </Text>
+          </View>
+          
           <View style={styles.addView}>
             <Text style={styles.serveTxt}>{StringsOfLanguages.SERVES}</Text>
             <Text style={styles.addrsTxt}>

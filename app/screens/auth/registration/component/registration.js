@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, ScrollView, SafeAreaView } from "react-native";
+import { View, Text, ScrollView, SafeAreaView, StatusBar } from "react-native";
 import style from "./style";
 import commomstyle from "../../../../common/styles";
 import { Button, Input, Header } from "@components";
@@ -7,7 +7,7 @@ import Picker from "@components/picker";
 //import MultiSelect from 'react-native-multiple-select';
 import { Dropdown } from 'react-native-element-dropdown';
 import { MultiSelect } from 'react-native-element-dropdown';
-import { GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW3,GRADIENT_COLOR_NEW2, GRAY_COLOR } from '../../../../utils/constants';
+import { GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW3,GRADIENT_COLOR_NEW2, GRAY_COLOR, WHITE_COLOR } from '../../../../utils/constants';
 import LinearGradient from "react-native-linear-gradient";
 import StringsOfLanguages from "../../../../utils/translations";
 
@@ -25,6 +25,11 @@ const data = [
 const registration = (props) => {
   return (
     <SafeAreaView style={commomstyle.container}>
+      <StatusBar
+          animated={true}
+          backgroundColor={WHITE_COLOR}
+          barStyle="dark-content"
+        />
     <LinearGradient 
            colors={[GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW3, GRADIENT_COLOR_NEW2]}
            locations={[0.24, 0.63, 0.87]} // Make sure the length matches the colors array

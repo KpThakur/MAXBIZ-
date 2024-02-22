@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { View, Text, SafeAreaView, Image, ScrollView } from "react-native";
+import { View, Text, SafeAreaView, Image, ScrollView, StatusBar } from "react-native";
 import style from "./style";
 import commomstyle from "../../../../common/styles";
 import { Button, Input, Header } from "@components";
 import ImagePicker from "react-native-image-crop-picker";
 import StringsOfLanguages from '../../../../utils/translations';
+import { WHITE_COLOR } from "../../../../utils/constants";
 const certifyBusiness = (props) => {
   const [imageData, setimageData] = useState({});
   const openPicker = () => {
@@ -14,6 +15,11 @@ const certifyBusiness = (props) => {
   };
   return (
     <ScrollView style={commomstyle.container}>
+      <StatusBar
+          animated={true}
+          backgroundColor={WHITE_COLOR}
+          barStyle="dark-content"
+        />
       <Header rightImg={false} />
 error listen EADDRINUSE: address already in use :::8081.
       <View style={style.container}>

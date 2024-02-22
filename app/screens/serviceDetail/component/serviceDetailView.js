@@ -9,6 +9,7 @@ import {
   ScrollView,
   Linking,
   ActivityIndicator,
+  StatusBar,
 } from "react-native";
 import {
   GRADIENT_COLOR_NEW1,
@@ -41,7 +42,7 @@ const ServiceDetailView = (props) => {
     image,
   } = props;
 
-  // console.log("serviceDetail:_______ ", serviceDetail?.servicedata);
+  // console.log("serviceDetail_paymentList?.creditcard_:-", serviceDetail);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -66,6 +67,11 @@ const ServiceDetailView = (props) => {
 
   return (
     <SafeAreaView style={commomstyle.container}>
+      <StatusBar
+          animated={true}
+          backgroundColor={WHITE_COLOR}
+          barStyle="dark-content"
+        />
       <Header
         onPressLeft={toggleShowSearch}
         onPressRight={props.drawerOpen()}
@@ -166,7 +172,7 @@ const ServiceDetailView = (props) => {
                 <Text style={styles.serveTxt}>{StringsOfLanguages.CITY}</Text>
               </View>
               <View style={styles.addViewcontent}>
-                <Text style={styles.addrsTxt}>{serviceDetail?.city}</Text>
+                <Text style={styles.addrsTxt}>{serviceDetail?.city}, {serviceDetail?.state_id}</Text>
               </View>
             </View>
 

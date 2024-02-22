@@ -13,6 +13,7 @@ import {
   FlatList,
   Linking,
   ActivityIndicator,
+  StatusBar,
 } from "react-native";
 import commomstyle from "../../../common/styles";
 import { Header } from "@components";
@@ -151,6 +152,11 @@ const DocumentListView = (props) => {
 
   return (
     <SafeAreaView style={commomstyle.container}>
+      <StatusBar
+          animated={true}
+          backgroundColor={WHITE_COLOR}
+          barStyle="dark-content"
+        />
       {/* <LinearGradient
         colors={[GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW2, GRADIENT_COLOR_NEW3, GRADIENT_COLOR_NEW4]}
         angle={83}

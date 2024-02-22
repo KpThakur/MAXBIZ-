@@ -6,6 +6,7 @@ import {
     TouchableOpacity,
     ScrollView,
     SafeAreaView,
+    StatusBar,
 } from 'react-native';
 import style from './style';
 import commomstyle from '../../../../common/styles';
@@ -18,6 +19,11 @@ import StringsOfLanguages from '../../../../utils/translations';
 const join = (props) => {
     return (
         <SafeAreaView style={commomstyle.container}>
+            <StatusBar
+          animated={true}
+          backgroundColor={WHITE_COLOR}
+          barStyle="dark-content"
+        />
             <Header
                 rightImg={true}
                 headerType="other"

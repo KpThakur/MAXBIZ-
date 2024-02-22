@@ -94,6 +94,7 @@ useEffect(() => {
             <>
             <TouchableOpacity
               onPress={() => {
+               // console.log("Navigate to home screen");
                 navigation.navigate("homeScreen");
               }}
             >

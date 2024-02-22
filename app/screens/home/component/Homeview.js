@@ -9,6 +9,9 @@ import {
   ScrollView,
   StatusBar,
   ActivityIndicator,
+  Alert,
+  BackHandler,
+  Modal,
 } from "react-native";
 import {
   FONT_FAMILY_SEMIBOLD,
@@ -33,6 +36,7 @@ import StringsOfLanguages from "../../../utils/translations";
 import { Dropdown } from "react-native-element-dropdown";
 import Video from "react-native-video";
 import { Slider } from "react-native-elements";
+import { useFocusEffect } from "@react-navigation/native";
 const colors = [
   GRADIENT_COLOR_NEW1,
   GRADIENT_COLOR_NEW2,
@@ -115,8 +119,37 @@ const HomeView = (props) => {
   //  console.log("allservice>>>>>>>>>>", allServices);
 
 
+  const [isModalVisible, setModalVisible] = useState(false);
+
+
+
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        Alert.alert("Hold on!", "Are you sure you want to close this app ?", [
+          {
+            text: "Cancel",
+            onPress: () => null,
+            style: "cancel",
+          },
+          { text: "YES", onPress: () => BackHandler.exitApp() },
+        ]);
+        return true;
+      };
+      BackHandler.addEventListener("hardwareBackPress", onBackPress);
+      return () =>
+        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+    }, [])
+  );
+
   return (
     <SafeAreaView style={commomstyle.container}>
+      <StatusBar
+          animated={true}
+          backgroundColor={WHITE_COLOR}
+          barStyle="dark-content"
+        />
       <Header
         onPressLeft={toggleShowSearch}
         //onPressRight={props.drawerOpen()}

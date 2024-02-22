@@ -6,6 +6,7 @@ import {
     TouchableOpacity,
     ScrollView,
     SafeAreaView,
+    StatusBar,
 } from 'react-native';
 import style from './style';
 import commomstyle from '../../../../common/styles';
@@ -35,6 +36,11 @@ const login = (props) => {
 
     return (
         <SafeAreaView style={commomstyle.container}>
+            <StatusBar
+          animated={true}
+          backgroundColor={WHITE_COLOR}
+          barStyle="dark-content"
+        />
           {/*  <LinearGradient
                 colors={[GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW3, GRADIENT_COLOR_NEW2]}
                 locations={[0.24, 0.63, 0.87, 0.99]}

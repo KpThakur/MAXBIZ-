@@ -135,7 +135,7 @@ const FindServiceView = ({ route, navigation }) => {
         const response = await apiCall("POST",apiEndPoints.GETALLSERVICES,parms);
         //console.log("🚀 ~ file: index.js:69 ~ getAllservices ~ response:", response.status)
 
-       // console.log("🚀 ~ getAllservices ~ response.data.data.services:", response)
+       // console.log("🚀 ~ getAllservices ~ response.data.data.services:", response.data.data)
         if (response.status === 200) {
           setIsLoadingh(false)
           setShowSearch(false)

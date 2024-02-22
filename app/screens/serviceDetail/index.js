@@ -12,36 +12,41 @@ const ServiceDetail = ({ route, navigation }) => {
   const toggleShowSearch = () => {
     setShowSearch(!showSearch);
   };
-  const [paymentList, setPaymentList] = useState("");
+
+  const [servicelist, setServicelist] = useState({});
+
+  const [paymentList, setPaymentList] = useState({});
   const [image, setImage] = useState("");
 
-  // console.log("serviceDetaildata>>>", serviceDetaildata?.photofile);
-
-  // useEffect(() => {
-  //     const stringData =
-  //     serviceDetaildata?.payments &&
-  //     serviceDetaildata?.payments.reduce((result, item) => {
-  //         return `${result}${item.title},`;
-  //       }, "");
-
-  //     setServiceDetail(stringData);
-
-  //     const paydata = serviceDetaildata?.payments
-  //       ? JSON.parse(serviceDetaildata?.payments)
-  //       : {};
-  //     setPaymentList(paydata);
-  //   }, []);
+  //  console.log("serviceDetaildata?.servicedata:-", serviceDetaildata?.servicedata);
+    console.log("paymentList:-", paymentList);
+  
+  
 
   useEffect(() => {
-    if (serviceDetaildata?.payments) {
-      try {
-        const paydata = JSON.parse(serviceDetaildata?.payments);
-        setPaymentList(paydata);
-      } catch (error) {
-        console.error("Error parsing payments JSON:", error);
-      }
-    }
-  }, [serviceDetaildata]);
+    const stringData =
+      serviceDetaildata?.servicedata &&
+      serviceDetaildata?.servicedata.reduce((result, item) => {
+        return `${result}${item.title},`;
+      }, "");
+    setServiceDetail(stringData);
+
+    const paydata = serviceDetaildata?.payments
+      ? JSON.parse(serviceDetaildata?.payments)
+      : {};
+    setPaymentList(paydata);
+  }, []);
+
+  // useEffect(() => {
+  //   if (serviceDetaildata?.payments) {
+  //     try {
+  //       const paydata = JSON.parse(serviceDetaildata?.payments);
+  //       setPaymentList(paydata);
+  //     } catch (error) {
+  //       console.error("Error parsing payments JSON:", error);
+  //     }
+  //   }
+  // }, [serviceDetaildata]);
 
   /*  const [searchdata, setSearchdata] = useState({
         "businessid": serviceDetaildata.businessid,
