@@ -25,42 +25,60 @@ const Loader = (props) => {
 }
 export default Loader; */
 
-import React from 'react'
-import { View ,Text,ActivityIndicator,StyleSheet} from 'react-native';
-import {normalize, normalizeHeight, normalizeSpacing, normalizeWidth} from './scaleFontSize';
+import React from "react";
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  StyleSheet,
+  Platform,
+} from "react-native";
+import {
+  normalize,
+  normalizeHeight,
+  normalizeSpacing,
+  normalizeWidth,
+} from "./scaleFontSize";
 
-import { GRADIENT_COLOR_NEW3 } from '../utils/constants'
+import { GRADIENT_COLOR_NEW3 } from "../utils/constants";
 
-const Loader = () => {
- return (
-  <View style={styles.containerStyle}>
-    <View style={styles.indicatorViewStyle}>
-      {<ActivityIndicator size={'large'} color={GRADIENT_COLOR_NEW3} />}
+const Loader = (props) => {
+  const { isHomeDesign } = props;
+
+  const HomeDesign = isHomeDesign ? styles.forHomeDesign : null;
+
+  return (
+    <View style={[styles.containerStyle]}>
+      <View style={[styles.indicatorViewStyle, HomeDesign]}>
+        {<ActivityIndicator size={"large"} color={GRADIENT_COLOR_NEW3} />}
+      </View>
     </View>
-  </View>
- )
-
+  );
 };
 const styles = StyleSheet.create({
-    containerStyle: {
-        backgroundColor: 'rgba(0,0,0,0.6)',
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        left: 0,
-        bottom: 0,
-        zIndex: 999,
-        // elevation: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-      },
-      indicatorViewStyle: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'white',
-        borderRadius: normalize(5),
-        height: normalizeHeight(75),
-        width: normalizeWidth(75)
-      },
-  });
+  containerStyle: {
+    backgroundColor: "rgba(0,0,0,0.6)",
+    position: "absolute",
+    top: 0,
+    right: 0,
+    left: 0,
+    bottom: 0,
+    zIndex: 999,
+    // elevation: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  indicatorViewStyle: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "white",
+    borderRadius: normalize(5),
+    height: normalizeHeight(75),
+    width: normalizeWidth(75),
+  },
+  forHomeDesign: {
+    // bottom: 70,
+    bottom: Platform.OS === "ios" ? normalize(170) : normalize(58),
+  },
+});
 export default Loader;

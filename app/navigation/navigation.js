@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from "@react-navigation/native";
-import { View } from 'react-native';
+import { StatusBar, View } from 'react-native';
 import splashScreen from "../screens/auth/splash";
 import splashTwoScreen from "../screens/auth/splashTwo";
 import loginScreen from "../screens/auth/login";
@@ -13,6 +13,7 @@ import validateIdentityScreen from "../screens/auth/validateIdentity";
 import registrationScreen from "../screens/auth/registration";
 import certifyBusinessScreen from "../screens/auth/certifyBusiness";
 import thankyouScreen from "../screens/auth/thankyou";
+import Thankyou from "../screens/auth/thankyou";
 import serviceDetailScreen from "../screens/serviceDetail";
 import ApiEndPoint from "../utils/apiEndPoints";
 import { apiCall, setDefaultHeader } from '../utils/httpClient';
@@ -21,6 +22,7 @@ import findServiceScreen from "../screens/service";
 
 import reviewScreen from "../screens/review";
 import contentListScreen from "../screens/contentList";
+import ContentList from "../screens/contentList";
 import HomeScreen from "../screens/home";
 import otpVerifyScreen from "../screens/auth/otpVerify";
 import forgotPasswordScreen from "../screens/auth/forgotPassword";
@@ -33,6 +35,7 @@ import profileDetailsScreen from "../screens/business/profileDetails/index"
 
 import CustomMenu  from '../components/customMenu';
 import customMenuAuth  from '../components/customMenuAuth';
+import { WHITE_COLOR } from "../utils/constants";
 const Drawer = createDrawerNavigator();
 const App = createNativeStackNavigator();
 const Auth = createNativeStackNavigator();
@@ -54,6 +57,7 @@ function CustomDrawerNavigation() {
 
 function CustomDrawerNavigationauth() {
   return (
+    
       <Drawer.Navigator screenOptions={{headerShown: false , drawerPosition: "right"}}     drawerContent={props => <CustomMenu {...props} />} >
          
         
@@ -63,13 +67,13 @@ function CustomDrawerNavigationauth() {
       
         <Drawer.Screen name="serviceDetailScreen" component={serviceDetailScreen} />
         <Drawer.Screen name="reviewScreen" component={reviewScreen} />
-        <Drawer.Screen name="contentListScreen" component={contentListScreen} />
+        <Drawer.Screen name="contentListScreen" component={ContentList} />
         
         
         <Drawer.Screen name="joinScreen" component={joinScreen} /> 
         <Drawer.Screen name="validateIdentityScreen" component={validateIdentityScreen} />
         <Drawer.Screen name="registrationScreen" component={registrationScreen} />
-         <Drawer.Screen name="thankyouScreen" component={thankyouScreen} />
+         <Drawer.Screen name="thankyouScreen" component={Thankyou} />
         
         <Drawer.Screen name="forgotPasswordScreen" component={forgotPasswordScreen} />
         <Drawer.Screen name="forgotVerifiedScreen" component={forgotVerifiedScreen} />
@@ -107,12 +111,13 @@ const AppStack = () => {
 
 const AuthStack = () => {
   return (
-    <App.Navigator screenOptions={{ headerShown: false }}>
+    <App.Navigator screenOptions={{ headerShown: false }} >
          {/* <App.Screen name="splashScreen" component={splashScreen} />
         <App.Screen name="splashTwoScreen" component={splashTwoScreen} /> */}
-        {/*  <App.Screen name="splashTwoScreen" component={splashTwoScreen} /> 
-         <App.Screen name="homeScreen" component={CustomDrawerNavigationauth} />  */}
-        <App.Screen name="AuthStack" component={CustomDrawerNavigationauth} />
+         <App.Screen name="splashTwoScreen" component={splashTwoScreen}  /> 
+
+         <App.Screen name="customDrawer" component={CustomDrawerNavigationauth} /> 
+        {/* <App.Screen name="AuthStack" component={CustomDrawerNavigationauth} /> */}
 
         {/* <App.Screen name="findServiceScreen" component={findServiceScreen} />  
         <App.Screen name="serviceDetailScreen" component={serviceDetailScreen} />
@@ -148,13 +153,13 @@ const AuthStacknew = () => {
         <Auth.Screen name="findServiceScreen" component={findServiceScreen} />  
          <Auth.Screen name="serviceDetailScreen" component={serviceDetailScreen} />
         <Auth.Screen name="reviewScreen" component={reviewScreen} />
-        <Auth.Screen name="contentListScreen" component={contentListScreen} />
+        <Auth.Screen name="contentListScreen" component={ContentList} />
         {/*Auth screens Screens*/}
         <Auth.Screen name="loginScreen" component={loginScreen} /> 
         <Auth.Screen name="joinScreen" component={joinScreen} /> 
         <Auth.Screen name="validateIdentityScreen" component={validateIdentityScreen} />
         <Auth.Screen name="registrationScreen" component={registrationScreen} />
-         <Auth.Screen name="thankyouScreen" component={thankyouScreen} />
+         <Auth.Screen name="thankyouScreen" component={Thankyou} />
         
         <Auth.Screen name="forgotPasswordScreen" component={forgotPasswordScreen} />
         <Auth.Screen name="forgotVerifiedScreen" component={forgotVerifiedScreen} />

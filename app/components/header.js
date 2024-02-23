@@ -36,6 +36,7 @@ const header = (props) => {
     onPressRight,
   } = props;
   const { container, hdrText, drawerStyle } = styles;
+  
   return (
     <View style={[container, style]}>
       {headerType == "other" ? (

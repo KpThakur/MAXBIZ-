@@ -60,7 +60,7 @@ const ServiceItem = (props) => {
       return;
     }
     setIsLoading(true);
-    console.log("onLoadStart===============");
+   // console.log("onLoadStart===============");
   };
 
   const onLoadEnds = () => {
@@ -69,7 +69,7 @@ const ServiceItem = (props) => {
     }
     setIsLoading(false);
     initialLoadRef.current = false;
-    console.log("onLoadEnd>>>>>>>>>>>");
+   // console.log("onLoadEnd>>>>>>>>>>>");
   };
   
   return (
@@ -78,7 +78,10 @@ const ServiceItem = (props) => {
       <View style={styles.container}>
         
         <TouchableOpacity
-          onPress={() => props.showDetail(serviceDetail)}
+          onPress={() => {
+            props.showDetail(serviceDetail)
+           // console.log('in serviceDetails>>>>', serviceDetail)
+          }}
           style={styles.top}
         >
           <View style={styles.activeView}>
@@ -104,7 +107,8 @@ const ServiceItem = (props) => {
               <StarRating
                 disabled={false}
                 maxStars={5}
-                rating={rating}
+               // rating={rating}
+                rating={parseFloat(rating)}
                 //fullStar={ICONS.starIcon}
                 //emptyStar={ICONS.starBlackIcon}
                 starSize={20}
@@ -137,6 +141,14 @@ const ServiceItem = (props) => {
             </Text>
             <Text style={styles.addrsTxtadd}>{address}</Text>
           </View>
+
+          <View style={styles.addView}>
+            <Text style={styles.serveTxt}>{StringsOfLanguages.CITY}</Text>
+            <Text style={[styles.addrsTxtadd, {bottom: scale(2.5)}]}>
+              {serviceDetail?.city}, {serviceDetail?.state_id}
+            </Text>
+          </View>
+          
           <View style={styles.addView}>
             <Text style={styles.serveTxt}>{StringsOfLanguages.SERVES}</Text>
             <Text style={styles.addrsTxt}>

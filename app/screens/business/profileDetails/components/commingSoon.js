@@ -19,7 +19,11 @@ const commingSoon = () => {
   return (
     
     <SafeAreaView style={commomstyle.container}>
-     
+     <StatusBar
+          animated={true}
+          backgroundColor={WHITE_COLOR}
+          barStyle="dark-content"
+        />
       <Header
         headertxt={styles.headerTxt}
         headerType='none'

@@ -1,23 +1,25 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useContext, useState } from "react";
 import VideoListView from "./component/videoListView";
 import PhotoListView from "./component/photoListView";
 import DocumentListView from "./component/documentListView";
 import JobListView from "./component/jobListView";
 import OfferListView from "./component/offerListView";
 import StringsOfLanguages from "../../utils/translations";
-const contentList = ({route , navigation}) => {
+import { SearchContext } from "../../utils/searchContext";
+const ContentList = ({route , navigation}) => {
 
-  const {type , contentdata,serviceid, cityid, servicename, cityname } = route?.params
-  console.log("🚀 ~ file: index.js:7 ~ contentList ~ contentdata:", contentdata)
-  const [searchdata, setSearchdata] = useState({
-    "serviceid": serviceid,
-    "servicename": servicename,
-    "cityid": cityid,
-    "cityname": cityname
-  })
+  const { type , contentdata  } = route?.params
+  
+  // console.log("🚀 ~ file: index.js:7 ~ contentList ~ contentdata:", contentdata)
+  
   //console.log("contentList -> type", type)
+
+  const [searchdata, setSearchdata] = useContext(SearchContext);
+
+
   const backscreen = () => {
     navigation.navigate("serviceDetailScreen",{searchdata: searchdata} );
+    console.log('backinTypeScreen<<<<<<<<', searchdata)
 }
   return (
     <Fragment>
@@ -34,4 +36,4 @@ const contentList = ({route , navigation}) => {
     </Fragment>
   );
 };
-export default contentList;
+export default ContentList;

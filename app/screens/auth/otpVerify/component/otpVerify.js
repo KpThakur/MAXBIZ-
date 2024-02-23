@@ -1,12 +1,12 @@
 import React from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, StatusBar, Text, TouchableOpacity, View } from "react-native";
 import OTPTextInput from "react-native-otp-textinput";
 
 import { ICONS } from "./../../../../utils/imagePath";
 
 import styles from "./style";
 import { Header, Button } from "@components";
-import { COMMON_COLOR,GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW3,GRADIENT_COLOR_NEW2 } from "../../../../utils/constants";
+import { COMMON_COLOR,GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW3,GRADIENT_COLOR_NEW2, WHITE_COLOR } from "../../../../utils/constants";
 import { SafeAreaView } from 'react-native';
 import commomstyle from '../../../../common/styles';
 import LinearGradient from "react-native-linear-gradient";
@@ -14,6 +14,11 @@ import StringsOfLanguages from "../../../../utils/translations";
 const OtpVerify = (props) => {
   return (
     <SafeAreaView style={commomstyle.container}>
+      <StatusBar
+          animated={true}
+          backgroundColor={WHITE_COLOR}
+          barStyle="dark-content"
+        />
        <LinearGradient 
              colors={[GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW3,GRADIENT_COLOR_NEW2]}
              locations={[0.24, 0.63, 0.87, 0.99]}

@@ -1,9 +1,10 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { useFocusEffect } from "@react-navigation/native";
 import FindService from './component/findService';
 import { apiCall } from '../../utils/httpClient';
 import apiEndPoints from '../../utils/apiEndPoints';
 import Loader from '../../components/loader'
+import { SearchContext } from '../../utils/searchContext';
 /* const DATA = [
     {
       img: require("../../assets/dummy/no_image.png"),
@@ -46,18 +47,22 @@ import Loader from '../../components/loader'
 const FindServiceView = ({ route, navigation }) => {
 
   const { serviceid, cityid, servicename, cityname } = route?.params
-  console.log("🚀 ~ file: index.js:49 ~ FindServiceView ~ servicename:", servicename)
+ // console.log("🚀 ~ file: index.js:49 ~ FindServiceView ~ servicename:", servicename)
   const [showSearch, setShowSearch] = useState(false)
   const [isLoading, setIsLoadingh] = useState(false)
   const [allCity, setAllCity] = useState([])
   const [serviceList, setServiceList] = useState([])
   const [allServices, setAllServices] = useState([])
-  const [searchdata, setSearchdata] = useState({
-    "serviceid": serviceid,
-    "servicename": servicename,
-    "cityid": cityid,
-    "cityname": cityname
-  })
+  // const [searchdata, setSearchdata] = useState({
+  //   "serviceid": serviceid,
+  //   "servicename": servicename,
+  //   "cityid": cityid,
+  //   "cityname": cityname
+  // })
+
+   const [searchdata, setSearchdata] = useContext(SearchContext);
+
+  
 
   const [filteredData, setFilteredData] = useState([]);
 
@@ -71,7 +76,7 @@ const FindServiceView = ({ route, navigation }) => {
     const filteredResults = serviceList.filter(item =>
       item?.cityid?.toLowerCase()?.includes(text.toLowerCase())
       );
-      console.log('cityyyyyyyyyyyyyyyyy',cityid )
+     // console.log('cityyyyyyyyyyyyyyyyy',cityid )
       setFilteredData(filteredResults)
   }
 
@@ -115,7 +120,7 @@ const FindServiceView = ({ route, navigation }) => {
 
 
   const getAllservices = async (serviceid, cityid) => {
-    console.log('serviceid, cityid', serviceid, cityid)
+   // console.log('serviceid, cityid', serviceid, cityid)
     if (serviceid !== "" && cityid !== "") {
       const parms = {
         "serviceid": serviceid,
@@ -125,12 +130,12 @@ const FindServiceView = ({ route, navigation }) => {
       }
       try {
 
-        console.log('====',parms)
+       // console.log('====',parms)
         setIsLoadingh(true)
         const response = await apiCall("POST",apiEndPoints.GETALLSERVICES,parms);
         //console.log("🚀 ~ file: index.js:69 ~ getAllservices ~ response:", response.status)
 
-        console.log("🚀 ~ getAllservices ~ response.data.data.services:", response)
+       // console.log("🚀 ~ getAllservices ~ response.data.data.services:", response.data.data)
         if (response.status === 200) {
           setIsLoadingh(false)
           setShowSearch(false)

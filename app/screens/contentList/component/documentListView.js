@@ -13,6 +13,7 @@ import {
   FlatList,
   Linking,
   ActivityIndicator,
+  StatusBar,
 } from "react-native";
 import commomstyle from "../../../common/styles";
 import { Header } from "@components";
@@ -56,7 +57,7 @@ const DATA = [
 
 const DocumentListView = (props) => {
   const { type, contentdata, backscreen } = props;
-  console.log("🚀 ~ DocumentListView ~ contentdata:", contentdata);
+ // console.log("🚀 ~ DocumentListView ~ contentdata:", contentdata);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -67,7 +68,7 @@ const DocumentListView = (props) => {
       return;
     }
     setIsLoading(true);
-    console.log("onLoadStart===============");
+   // console.log("onLoadStart===============");
   };
 
   const onLoadEnds = () => {
@@ -76,7 +77,7 @@ const DocumentListView = (props) => {
     }
     setIsLoading(false);
     initialLoadRef.current = false;
-    console.log("onLoadEnd>>>>>>>>>>>");
+   // console.log("onLoadEnd>>>>>>>>>>>");
   };
 
 
@@ -119,7 +120,7 @@ const DocumentListView = (props) => {
 
   const renderItem = ({ item }) => (
     <View>
-      {console.log("🚀 ~ PhotoListView ~ item:", item.aws_url)}
+      {/* {console.log("🚀 ~ PhotoListView ~ item:", item.aws_url)} */}
 
       <View style={styles.container}>
         <View style={styles.leftContainer}>
@@ -151,6 +152,11 @@ const DocumentListView = (props) => {
 
   return (
     <SafeAreaView style={commomstyle.container}>
+      <StatusBar
+          animated={true}
+          backgroundColor={WHITE_COLOR}
+          barStyle="dark-content"
+        />
       {/* <LinearGradient
         colors={[GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW2, GRADIENT_COLOR_NEW3, GRADIENT_COLOR_NEW4]}
         angle={83}

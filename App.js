@@ -3,23 +3,28 @@ import { StatusBar, Text, View } from "react-native";
 import { normalizeHeight } from "./app/components/scaleFontSize";
 import FlashMessage from "react-native-flash-message";
 import Main from "./app/navigation/index";
+import { SearchProvider } from "./app/utils/searchContext";
+
 const App = () => {
   return (
-    <View
-      style={{
-        flex: 1,
-      }}
-    >
-      <StatusBar
-        animated={true}
-        backgroundColor="#ffff"
-        barStyle="dark-content"
-        /*showHideTransition={statusBarTransition}
-            hidden={hidden}  */
-      />
-      <Main />
-      <FlashMessage position="bottom" />
-    </View>
+    <SearchProvider>
+      <View
+        style={{
+          flex: 1,
+        }}
+      >
+        {/* <StatusBar
+          animated={true}
+          backgroundColor="#ffff"
+          barStyle="dark-content"
+          showHideTransition={statusBarTransition}
+            hidden={hidden} 
+        /> */}
+        <Main />
+        <FlashMessage position="bottom" />
+      </View>
+    </SearchProvider>
   );
 };
+
 export default App;

@@ -17,6 +17,7 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
+  StatusBar,
 } from "react-native";
 import commomstyle from "../../../common/styles";
 import { Header } from "@components";
@@ -35,7 +36,7 @@ import Notfound from "../../../components/notfound";
 
 const JobListView = (props) => {
   const { type, contentdata, backscreen } = props;
-  console.log("🚀 ~ PhotoListView ~ contentdata:", contentdata);
+ // console.log("🚀 ~ PhotoListView ~ contentdata:", contentdata);
 
   const ReadMoreText = ({ content, maxLines = 3 }) => {
     const [showAll, setShowAll] = useState(false);
@@ -96,7 +97,7 @@ const JobListView = (props) => {
 
   const renderItem = ({ item }) => (
     <View style={{ padding: 15 }}>
-      {console.log("🚀 ~ PhotoListView ~ item:", item)}
+      {/* {console.log("🚀 ~ PhotoListView ~ item:", item.fileid)} */}
 
       <View style={styles.containerjob}>
         <View style={styles.leftContainerjob}>
@@ -123,6 +124,11 @@ const JobListView = (props) => {
 
   return (
     <SafeAreaView style={commomstyle.container}>
+      <StatusBar
+          animated={true}
+          backgroundColor={WHITE_COLOR}
+          barStyle="dark-content"
+        />
       {/* <LinearGradient
         colors={[GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW2, GRADIENT_COLOR_NEW3, GRADIENT_COLOR_NEW4]}
         angle={83}
@@ -140,7 +146,8 @@ const JobListView = (props) => {
         data={contentdata}
         renderItem={renderItem}
         ListEmptyComponent={<Notfound textnotfound="Photo" />}
-        keyExtractor={(item) => item.fileid}
+       // keyExtractor={(item) => item.fileid}
+        keyExtractor={(item, index) => index.toString()}
       />
       {/* </LinearGradient> */}
     </SafeAreaView>

@@ -14,6 +14,7 @@ import {
   Modal,
   Platform,
   ActivityIndicator,
+  StatusBar,
 } from "react-native";
 import commomstyle from "../../../common/styles";
 import { Header } from "@components";
@@ -86,7 +87,7 @@ const PhotoListView = (props) => {
       return;
     }
     setLoading(true);
-    console.log("onLoadStart===============");
+   // console.log("onLoadStart===============");
   };
 
 
@@ -96,7 +97,7 @@ const PhotoListView = (props) => {
     }
     setLoading(false);
     initialLoadRef.current = false;
-    console.log("onLoadEnd>>>>>>>>>>>");
+   // console.log("onLoadEnd>>>>>>>>>>>");
   };
 
   const renderItem = ({ item }) => (
@@ -166,6 +167,11 @@ const PhotoListView = (props) => {
 
   return (
     <SafeAreaView style={commomstyle.container}>
+      <StatusBar
+          animated={true}
+          backgroundColor={WHITE_COLOR}
+          barStyle="dark-content"
+        />
       {/* <LinearGradient
         colors={[GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW2, GRADIENT_COLOR_NEW3, GRADIENT_COLOR_NEW4]}
         angle={83}

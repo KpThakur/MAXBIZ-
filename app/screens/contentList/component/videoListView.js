@@ -18,6 +18,7 @@ import {
   FlatList,
   Linking,
   Modal,
+  StatusBar,
 } from "react-native";
 
 import commomstyles from "../../../common/styles";
@@ -84,7 +85,7 @@ const VideoListView = (props) => {
 
   const { type, contentdata, backscreen } = props;
   const ratingCompleted = (rating) => {
-    console.log(StringsOfLanguages.RATING_IS + rating);
+   // console.log(StringsOfLanguages.RATING_IS + rating);
   };
 
   /* const onStateChange = useCallback((state) => {
@@ -102,14 +103,14 @@ const VideoListView = (props) => {
     setLoading(true);
     const videoId = extractVideoId(videolink);
     setPlayvideoId(videoId);
-    console.log("🚀 ~ videoPlay ~ videolink:", videolink);
+   // console.log("🚀 ~ videoPlay ~ videolink:", videolink);
     setVideoModel(!videoModel);
   };
 
   const onReady = () => {
     setLoading(false);
     clearLoadingTimeout();
-    console.log("onReady>>>>>>>>>>>");
+   // console.log("onReady>>>>>>>>>>>");
   };
 
   const loadingTimeout = setTimeout(() => {
@@ -154,6 +155,11 @@ const VideoListView = (props) => {
 
   return (
     <SafeAreaView style={commomstyles.container}>
+      <StatusBar
+          animated={true}
+          backgroundColor={WHITE_COLOR}
+          barStyle="dark-content"
+        />
       <Header
         rightImgStyl={{ tintColor: WHITE_COLOR }}
         rightImg={true}
@@ -165,7 +171,8 @@ const VideoListView = (props) => {
         showsVerticalScrollIndicator={false}
         data={contentdata}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+       // keyExtractor={(item) => item.id}
+        keyExtractor={(item, index) => item.id || index.toString()}
       />
 
       <Modal

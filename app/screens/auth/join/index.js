@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Join from './component/join';
 
-const joinView = ({ navigation }) => {
+const JoinView = ({ navigation }) => {
     const [select, setSelect] = useState()
     const toValidtIdentity = () => {
         setSelect(1)
@@ -17,4 +17,4 @@ const joinView = ({ navigation }) => {
         />
     )
 }
-export default joinView;
+export default JoinView;

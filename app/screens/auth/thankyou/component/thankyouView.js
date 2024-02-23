@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { View, Text, SafeAreaView, Image, ScrollView } from "react-native";
+import { View, Text, SafeAreaView, Image, ScrollView, StatusBar } from "react-native";
 import style from "./style";
 import commomstyle from "../../../../common/styles";
 import { Button, Input, Header } from "@components";
 import ImagePicker from "react-native-image-crop-picker";
 import LinearGradient from "react-native-linear-gradient";
-import { GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW3, GRADIENT_COLOR_NEW2 } from "../../../../utils/constants";
+import { GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW3, GRADIENT_COLOR_NEW2, WHITE_COLOR } from "../../../../utils/constants";
 import StringsOfLanguages from "../../../../utils/translations";
 
 const thankyouView = (props) => {
@@ -14,6 +14,11 @@ const thankyouView = (props) => {
     <View style={[style.container, {
     /*  flexDirection: "column", */
     }]}>
+      <StatusBar
+          animated={true}
+          backgroundColor={WHITE_COLOR}
+          barStyle="dark-content"
+        />
       {/* <Header /> */}
       <LinearGradient 
            colors={[GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW3, GRADIENT_COLOR_NEW2]}

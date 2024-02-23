@@ -1,7 +1,7 @@
 import React from 'react';
 import Splash from './component/splash';
 
-const splashView = ({ navigation }) => {
+const SplashView = ({ navigation }) => {
     setTimeout(() => {
         navigation.navigate('splashTwoScreen')
     }, 2000);
@@ -9,4 +9,4 @@ const splashView = ({ navigation }) => {
         <Splash />
     )
 }
-export default splashView;
+export default SplashView;

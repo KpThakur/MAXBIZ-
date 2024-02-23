@@ -12,6 +12,7 @@ import {
   Image,
   FlatList,
   ActivityIndicator,
+  StatusBar,
 } from "react-native";
 import commomstyle from "../../../common/styles";
 import { Header } from "@components";
@@ -28,7 +29,7 @@ import Notfound from "../../../components/notfound";
 
 const offerListView = (props) => {
   const { type, contentdata, backscreen } = props;
-  console.log("🚀 ~ PhotoListView ~ contentdata:", contentdata);
+ // console.log("🚀 ~ PhotoListView ~ contentdata:", contentdata);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -39,7 +40,7 @@ const offerListView = (props) => {
       return;
     }
     setIsLoading(true);
-    console.log("onLoadStart===============");
+   // console.log("onLoadStart===============");
   };
 
   const onLoadEnds = () => {
@@ -48,12 +49,12 @@ const offerListView = (props) => {
     }
     setIsLoading(false);
     initialLoadRef.current = false;
-    console.log("onLoadEnd>>>>>>>>>>>");
+   // console.log("onLoadEnd>>>>>>>>>>>");
   };
 
   const renderItem = ({ item }) => (
     <View style={{ padding: 15 }}>
-      {console.log("🚀 ~ PhotoListView ~ item:", item)}
+      {/* {console.log("🚀 ~ PhotoListView ~ item:", item)} */}
 
       <View style={styles.containerjob}>
         <View style={styles.offerimgcont}>
@@ -94,6 +95,11 @@ const offerListView = (props) => {
 
   return (
     <SafeAreaView style={commomstyle.container}>
+      <StatusBar
+          animated={true}
+          backgroundColor={WHITE_COLOR}
+          barStyle="dark-content"
+        />
       {/* <LinearGradient
         colors={[GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW2, GRADIENT_COLOR_NEW3, GRADIENT_COLOR_NEW4]}
         angle={83}
@@ -111,7 +117,9 @@ const offerListView = (props) => {
         data={contentdata}
         renderItem={renderItem}
         ListEmptyComponent={<Notfound textnotfound="Photo" />}
-        keyExtractor={(item) => item.fileid}
+       // keyExtractor={(item) => item.fileid}
+        keyExtractor={(item, index, ) => item.id || index.toString()}
+
       />
       {/* </LinearGradient> */}
     </SafeAreaView>
