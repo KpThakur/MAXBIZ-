@@ -1,4 +1,4 @@
-package com.SmbMarket;
+package com.MaxBiz;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
@@ -13,7 +13,7 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "SmbMarket";
+    return "MAXBIZ";
   }
     /**
    * Returns the instance of the {@link ReactActivityDelegate}. Here we use a util class {@link

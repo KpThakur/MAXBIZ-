@@ -14,7 +14,7 @@ const StringsOfLanguages = new LocalizedStrings({
         BACKTOLOGIN : 'Back To Login ?',
         WE_HAVE_SENT_YOUR_OTP_ON_YOUR_EMAIL : 'We have sent your OTP on your Email ',
         PLEASE_CHECK_EMAIL : 'Please check your email if not recive click on Resend OTP for recive new OTP!',
-        JOIN_SmbMarket : 'Join SMB Market &',
+        JOIN_SmbMarket : 'Join MAXBIZ &',
         GET_FREE_LOCAL : 'get FREE local',
         LEADS : 'leads',
         VALIDATE_YOUR : 'Validate your',
