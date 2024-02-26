@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   SafeAreaView,
   Text,
@@ -36,7 +36,7 @@ import StringsOfLanguages from "../../../utils/translations";
 import { Dropdown } from "react-native-element-dropdown";
 import Video from "react-native-video";
 import { Slider } from "react-native-elements";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 const colors = [
   GRADIENT_COLOR_NEW1,
   GRADIENT_COLOR_NEW2,
@@ -117,12 +117,7 @@ const HomeView = (props) => {
     return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
   };
   //  console.log("allservice>>>>>>>>>>", allServices);
-
-
-  const [isModalVisible, setModalVisible] = useState(false);
-
-
-
+  
 
   useFocusEffect(
     React.useCallback(() => {
@@ -438,6 +433,8 @@ const HomeView = (props) => {
                         </View> */}
         </View>
       </ScrollView>
+
+      
     </SafeAreaView>
   );
 };
