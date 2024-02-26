@@ -40,9 +40,10 @@ const ServiceDetailView = (props) => {
     backscreen,
     paymentList,
     image,
+    serviceDetaildata,
   } = props;
 
-  // console.log("serviceDetail_paymentList?.creditcard_:-", serviceDetail);
+  // console.log("serviceDetail_paymentList?.creditcard_:-", serviceDetaildata?.state_name);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -68,10 +69,10 @@ const ServiceDetailView = (props) => {
   return (
     <SafeAreaView style={commomstyle.container}>
       <StatusBar
-          animated={true}
-          backgroundColor={WHITE_COLOR}
-          barStyle="dark-content"
-        />
+        animated={true}
+        backgroundColor={WHITE_COLOR}
+        barStyle="dark-content"
+      />
       <Header
         onPressLeft={toggleShowSearch}
         onPressRight={props.drawerOpen()}
@@ -97,13 +98,12 @@ const ServiceDetailView = (props) => {
               )}
               {
                 <Image
-                 // source={require("../../../assets/dummy/no_image.png")}
-                 // source={{uri: `${image}`}}
-                  source={{uri: image ? image : null}}
+                  // source={require("../../../assets/dummy/no_image.png")}
+                  // source={{uri: `${image}`}}
+                  source={{ uri: image ? image : null }}
                   style={styles.serviceImg}
                   onLoadStart={onLoadStarts}
                   onLoadEnd={onLoadEnds}
-                 
                 />
               }
             </View>
@@ -125,6 +125,7 @@ const ServiceDetailView = (props) => {
               <Text style={styles.hour}>{serviceDetail?.pricemodel}</Text>
             </View>
           </TouchableOpacity>
+
           <View style={styles.bottom}>
             <View style={styles.addView}>
               <Text style={styles.serveTxticon}>
@@ -151,6 +152,20 @@ const ServiceDetailView = (props) => {
                 </Text>
               </View>
             </View>
+
+            <View style={styles.addView}>
+              <View style={styles.addViewtext}>
+                <Text style={styles.serveTxt}>
+                  {StringsOfLanguages.INDUSTRY}
+                </Text>
+              </View>
+              <View style={styles.addViewcontent}>
+                <Text style={styles.addrsTxt}>
+                  {serviceDetail?.industry_name}
+                </Text>
+              </View>
+            </View>
+
             <View style={styles.addView}>
               <View style={styles.addViewtext}>
                 <Text style={styles.serveTxt}>{StringsOfLanguages.PHONE}</Text>
@@ -159,6 +174,7 @@ const ServiceDetailView = (props) => {
                 <Text style={styles.addrsTxt}>{serviceDetail?.phone}</Text>
               </View>
             </View>
+
             <View style={styles.addView}>
               <View style={styles.addViewtext}>
                 <Text style={styles.serveTxt}>{StringsOfLanguages.EMAIL}</Text>
@@ -167,12 +183,15 @@ const ServiceDetailView = (props) => {
                 <Text style={styles.addrsTxt}>{serviceDetail?.email}</Text>
               </View>
             </View>
+
             <View style={styles.addView}>
               <View style={styles.addViewtext}>
                 <Text style={styles.serveTxt}>{StringsOfLanguages.CITY}</Text>
               </View>
               <View style={styles.addViewcontent}>
-                <Text style={styles.addrsTxt}>{serviceDetail?.city}, {serviceDetail?.state_id}</Text>
+                <Text style={styles.addrsTxt}>
+                  {serviceDetail?.city}, {serviceDetaildata?.state_name}
+                </Text>
               </View>
             </View>
 
@@ -346,7 +365,19 @@ const ServiceDetailView = (props) => {
             </View>
             <View style={styles.addViewicons}>{/*   */}</View>
           </View>
+
           <View style={styles.contactView}>
+            {serviceDetail?.showtext == 1 ? (
+              <>
+                <TouchableOpacity
+                  style={styles.contact}
+                  onPress={() => Linking.openURL(`sms:${serviceDetail?.phone}`)}
+                >
+                  <Image source={ICONS.adthereIcon} style={styles.contactImg} />
+                </TouchableOpacity>
+              </>
+            ) : null}
+
             {serviceDetail?.showcall == 1 ? (
               <>
                 <TouchableOpacity
@@ -367,16 +398,6 @@ const ServiceDetailView = (props) => {
                   }
                 >
                   <Image source={ICONS.emailIcon} style={styles.contactImg} />
-                </TouchableOpacity>
-              </>
-            ) : null}
-            {serviceDetail?.showtext == 1 ? (
-              <>
-                <TouchableOpacity
-                  style={styles.contact}
-                  onPress={() => Linking.openURL(`sms:${serviceDetail?.phone}`)}
-                >
-                  <Image source={ICONS.adthereIcon} style={styles.contactImg} />
                 </TouchableOpacity>
               </>
             ) : null}

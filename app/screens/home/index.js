@@ -98,7 +98,7 @@ const Home = ({ navigation }) => {
     setShowSearch(!showSearch);
     if (searchdata.serviceid != "" && searchdata.cityid != "") {
       navigation.navigate("findServiceScreen", searchdata);
-      console.log("enter in home>>>>>>>", searchdata);
+     // console.log("enter in home>>>>>>>", searchdata);
     } else {
       showMessage({
         message: StringsOfLanguages.PLEASE_SELECT_SERVICE_CITY,

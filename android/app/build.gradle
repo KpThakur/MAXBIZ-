@@ -89,9 +89,9 @@ def reactNativeArchitectures() {
 android {
    ndkVersion rootProject.ext.ndkVersion
     compileSdkVersion rootProject.ext.compileSdkVersion
-    namespace "com.SmbMarket"
+    namespace "com.MaxBiz"
     defaultConfig {
-        applicationId "com.SmbMarket"
+        applicationId "com.MaxBiz"
         minSdkVersion rootProject.ext.minSdkVersion
         versionCode 1
         versionName "1.0"

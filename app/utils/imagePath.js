@@ -44,4 +44,5 @@ export const ICONS = {
     mic_On_Icon: require('../assets/images/mic_Onicon.png'),
     mic_Off_Icon: require('../assets/images/mic_off_ICON.png'),
     city_Icon: require('../assets/images/city_ICON.png'),
+    map_Icon: require('../assets/images/map_Icon.png'),
 }
