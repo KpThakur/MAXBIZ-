@@ -29,6 +29,7 @@ const ServiceList = (props) => {
         phone={item.phone}
         email={item.email}
         service_name={item.service_name}
+        city={item.city}
         serviceDetail={item}
         showDetail={(serviceDetail)=>showDetail(serviceDetail)}
       />

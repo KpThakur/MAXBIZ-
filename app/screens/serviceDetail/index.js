@@ -18,8 +18,8 @@ const ServiceDetail = ({ route, navigation }) => {
   const [paymentList, setPaymentList] = useState({});
   const [image, setImage] = useState("");
 
-  //  console.log("serviceDetaildata?.servicedata:-", serviceDetaildata?.servicedata);
-    console.log("paymentList:-", paymentList);
+  //  console.log("serviceDetaildata?.servicedata:-", serviceDetaildata?.state_name);
+  //  console.log("paymentList:-", paymentList);
   
   
 
@@ -117,7 +117,7 @@ const ServiceDetail = ({ route, navigation }) => {
 
   const backscreen = () => {
     navigation.navigate("findServiceScreen", searchdata);
-    console.log("back in findServiceScreen<<<<", searchdata);
+   // console.log("back in findServiceScreen<<<<", searchdata);
   };
   const drawerOpen = () => {
     //navigation.navigate("drawerNavigation");
@@ -143,6 +143,7 @@ const ServiceDetail = ({ route, navigation }) => {
         backscreen={backscreen}
         paymentList={paymentList}
         image={image}
+        serviceDetaildata={serviceDetaildata}
       />
     </>
   );

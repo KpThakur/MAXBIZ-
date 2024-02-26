@@ -28,6 +28,9 @@ import {
 //import { ICONS } from "@utils/imagePath";
 import { ICONS } from "../utils/imagePath";
 import {
+  BORDERLINE_COLOR,
+  FONT_FAMILY_LIGHT,
+  FONT_FAMILY_MEDIUM,
   GRADIENT_COLOR_NEW2,
   GRADIENT_COLOR_NEW3,
   GRADIENT_COLOR_NEW4,
@@ -46,10 +49,11 @@ const ServiceItem = (props) => {
     email,
     service_name,
     serviceDetail,
+    city,
   } = props;
   // console.log("🚀 ~ ServiceItem ~ service_name:", rating);
 
-  // console.log("service_____item___________________:", serviceDetail);
+  // console.log("service_____item___________________:", address);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -60,7 +64,7 @@ const ServiceItem = (props) => {
       return;
     }
     setIsLoading(true);
-   // console.log("onLoadStart===============");
+    // console.log("onLoadStart===============");
   };
 
   const onLoadEnds = () => {
@@ -69,36 +73,37 @@ const ServiceItem = (props) => {
     }
     setIsLoading(false);
     initialLoadRef.current = false;
-   // console.log("onLoadEnd>>>>>>>>>>>");
+    // console.log("onLoadEnd>>>>>>>>>>>");
   };
-  
+
   return (
     <>
       {/* <ScrollView showsVerticalScrollIndicator={false}> */}
       <View style={styles.container}>
-        
         <TouchableOpacity
           onPress={() => {
-            props.showDetail(serviceDetail)
-           // console.log('in serviceDetails>>>>', serviceDetail)
+            props.showDetail(serviceDetail);
+            // console.log('in serviceDetails>>>>', serviceDetail)
           }}
           style={styles.top}
         >
           <View style={styles.activeView}>
-          {isLoading && (
-            <ActivityIndicator size={"large"} style={styles.activityIndicator}  />
-          )}
-          {
-            <Image
-              // source={require("../assets/dummy/no_image.png")}
-              source={{ uri: `${img}` }}
-              style={styles.serviceImg}
-              onLoadStart={onLoadStarts}
-              onLoadEnd={onLoadEnds}
-            />
-          }
+            {isLoading && (
+              <ActivityIndicator
+                size={"large"}
+                style={styles.activityIndicator}
+              />
+            )}
+            {
+              <Image
+                // source={require("../assets/dummy/no_image.png")}
+                source={{ uri: `${img}` }}
+                style={styles.serviceImg}
+                onLoadStart={onLoadStarts}
+                onLoadEnd={onLoadEnds}
+              />
+            }
           </View>
-     
 
           <View style={styles.dataView}>
             <Text style={styles.name}>{name}</Text>
@@ -107,7 +112,7 @@ const ServiceItem = (props) => {
               <StarRating
                 disabled={false}
                 maxStars={5}
-               // rating={rating}
+                // rating={rating}
                 rating={parseFloat(rating)}
                 //fullStar={ICONS.starIcon}
                 //emptyStar={ICONS.starBlackIcon}
@@ -118,21 +123,24 @@ const ServiceItem = (props) => {
             <Text style={styles.hour}>{pricemodel}</Text>
           </View>
         </TouchableOpacity>
-        
+
         <View style={styles.bottom}>
-          <View style={styles.addView}>
+          {/* <View style={styles.addView}>
             <Text style={styles.serveTxticon}>
               <Image source={ICONS.dialIcon} style={styles.serviceImgicon} />
             </Text>
             <Text style={styles.addrsTxtadd}>{phone}</Text>
-          </View>
-          <View style={styles.addView}>
+          </View> */}
+
+          {/* <View style={styles.addView}>
             <Text style={styles.serveTxticon}>
               <Image source={ICONS.emailIcon} style={styles.serviceImgicon} />
             </Text>
             <Text style={styles.addrsTxtadd}>{email}</Text>
           </View>
-          <View style={styles.addView}>
+           */}
+
+          {/* <View style={styles.addView}>
             <Text style={styles.serveTxticon}>
               <Image
                 source={ICONS.locationIcon}
@@ -140,28 +148,85 @@ const ServiceItem = (props) => {
               />
             </Text>
             <Text style={styles.addrsTxtadd}>{address}</Text>
-          </View>
+          </View> */}
 
           <View style={styles.addView}>
-            <Text style={styles.serveTxt}>{StringsOfLanguages.CITY}</Text>
-            <Text style={[styles.addrsTxtadd, {bottom: scale(2.5)}]}>
-              {serviceDetail?.city}, {serviceDetail?.state_id}
-            </Text>
-          </View>
-          
-          <View style={styles.addView}>
-            <Text style={styles.serveTxt}>{StringsOfLanguages.SERVES}</Text>
-            <Text style={styles.addrsTxt}>
-              {service_name
-                ? service_name.map((item) => item.title).join(" | ")
-                : ""}
-            </Text>
+            <View style={styles.addViewtext}>
+              <Text style={styles.serveTxt}>{StringsOfLanguages.SERVES}</Text>
+            </View>
+            <View style={styles.addViewcontent}>
+              <Text style={styles.addrsTxt}>
+                {service_name
+                  ? service_name.map((item) => item.title).join(" | ")
+                  : ""}
+              </Text>
+            </View>
           </View>
           {/* <View>
                     <Text style={styles.bestReview}>{best}</Text>
                 </View> */}
+
+          {/* <View style={styles.addView}>
+            <Text style={styles.serveTxt}>{StringsOfLanguages.INDUSTRY}</Text>
+            <Text
+             // style={[styles.addrsTxtadd]}
+               style={styles.addrsTxt}
+            >
+              {serviceDetail?.industryname}
+            </Text>
+          </View> */}
+
+          <View style={styles.addView}>
+            <View style={styles.addViewtext}>
+              <Text style={styles.serveTxt}>{StringsOfLanguages.INDUSTRY}</Text>
+            </View>
+            <View style={styles.addViewcontent}>
+              <Text style={styles.addrsTxt}>{serviceDetail?.industryname}</Text>
+            </View>
+          </View>
+
+          <View style={styles.addView}>
+            <View style={styles.addViewtext}>
+              <Text style={styles.serveTxt}>{StringsOfLanguages.CITY}</Text>
+            </View>
+            <View style={styles.addViewcontent}>
+              <Text
+                // style={[styles.addrsTxtadd, { bottom: scale(2.5) }]}
+                style={[styles.addrsTxt]}
+              >
+                {city}, {serviceDetail?.state_name}
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.addView}>
+            <View style={styles.addViewtext}>
+              <Text style={styles.serveTxt}>{StringsOfLanguages.HOURS}</Text>
+            </View>
+
+            <View style={styles.addViewcontent}>
+              <Text
+                // style={[styles.addrsTxtadd, { bottom: scale(2.5) }]}
+                style={[styles.addrsTxt]}
+              >
+                {serviceDetail?.hours}
+              </Text>
+            </View>
+          </View>
         </View>
+
         <View style={styles.contactView}>
+          {serviceDetail?.showtext === 1 ? (
+            <>
+              <TouchableOpacity
+                style={styles.contact}
+                onPress={() => Linking.openURL(`sms:${serviceDetail?.phone}`)}
+              >
+                <Image source={ICONS.adthereIcon} style={styles.contactImg} />
+              </TouchableOpacity>
+            </>
+          ) : null}
+
           {serviceDetail?.showcall === 1 ? (
             <>
               <TouchableOpacity
@@ -185,22 +250,27 @@ const ServiceItem = (props) => {
               </TouchableOpacity>
             </>
           ) : null}
-          {serviceDetail?.showtext === 1 ? (
-            <>
-              <TouchableOpacity
-                style={styles.contact}
-                onPress={() => Linking.openURL(`sms:${serviceDetail?.phone}`)}
-              >
-                <Image source={ICONS.adthereIcon} style={styles.contactImg} />
-              </TouchableOpacity>
-            </>
-          ) : null}
 
           <TouchableOpacity
             style={styles.contact}
             onPress={() => Linking.openURL(`${serviceDetail?.websiteurl}`)}
           >
             <Image source={ICONS.website_Icon} style={styles.contactImg} />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.contact}
+            // onPress={() => Linking.openURL(`geo:${serviceDetail?.address}`)}
+            // onPress={() => Linking.openURL(`geo:${serviceDetail?.latitude},${serviceDetail?.longitude}`)}
+            onPress={() =>
+              Linking.openURL(
+                `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                  serviceDetail?.address
+                )}`
+              )
+            }
+          >
+            <Image source={ICONS.map_Icon} style={styles.contactImg} />
           </TouchableOpacity>
         </View>
       </View>
@@ -233,7 +303,7 @@ const styles = StyleSheet.create({
     height: 100,
     width: 100,
     borderRadius: 10,
-   // marginTop: 8,
+    // marginTop: 8,
   },
   dataView: {
     marginLeft: scale(15),
@@ -256,15 +326,31 @@ const styles = StyleSheet.create({
   },
   bottom: {
     marginVertical: scale(10),
-    
+  },
+
+  addViewtext: {
+    flex: 1.7,
+    // backgroundColor:'yellow',
+  },
+
+  addViewcontent: {
+    flex: 4.2,
+    // backgroundColor:'red',
+    // marginLeft:scale(1)
   },
   addView: {
     flexDirection: "row",
+    // borderBottomWidth:1,
+    //  borderBottomColor:BORDERLINE_COLOR,
     marginBottom: scale(5),
-    paddingVertical: Platform.OS === "ios" ? normalize(2) : null,
-    // alignItems:'center'
-    //paddingBottom:0,
   },
+  // addView: {
+  //   flexDirection: "row",
+  //   marginBottom: scale(5),
+  //   paddingVertical: Platform.OS === "ios" ? normalize(2) : null,
+  //   // alignItems:'center'
+  //   //paddingBottom:0,
+  // },
   addrsTxtadd: {
     fontSize: scale(15),
     fontFamily: FONT_FAMILY_SEMIBOLD,
@@ -285,11 +371,17 @@ const styles = StyleSheet.create({
     fontSize: scale(13),
     fontFamily: FONT_FAMILY_REGULAR,
     color: GRAY_COLOR,
-    flex: 1,
-    marginLeft: normalize(3),
     top: 2,
-    
+    // flex:1
   },
+  // addrsTxt: {
+  //   fontSize: scale(13),
+  //   fontFamily: FONT_FAMILY_REGULAR,
+  //   color: GRAY_COLOR,
+  //   flex: 1,
+  //   marginLeft: normalize(5),
+  //   top: 2,
+  // },
   bestReview: {
     fontFamily: FONT_FAMILY_REGULAR,
     color: GRAY_COLOR,
@@ -322,11 +414,11 @@ const styles = StyleSheet.create({
   },
   activeView: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   activityIndicator: {
-    position: 'absolute',
+    position: "absolute",
     zIndex: 1,
   },
 });

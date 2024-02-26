@@ -9,7 +9,7 @@ const Index = ({route,navigation}) => {
 
   const backscreen = () => {
     navigation.navigate("serviceDetailScreen",{searchdata: searchdata} );
-    console.log('backinTypeScreen<<<<<<<<', searchdata)
+   // console.log('backinTypeScreen<<<<<<<<', searchdata)
 
 }
   return (
