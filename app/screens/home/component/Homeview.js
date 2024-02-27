@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   SafeAreaView,
   Text,
@@ -13,10 +13,7 @@ import {
   BackHandler,
   Modal,
 } from "react-native";
-import {
-  FONT_FAMILY_SEMIBOLD,
-  COMMON_COLOR,
-} from "./../../../../utils/constants";
+
 import styles from "./style";
 import commomstyle from "../../../common/styles";
 import { Button, Input, Header } from "@components";
@@ -24,6 +21,7 @@ import { ICONS, LOGOIMAGE } from "../../../utils/imagePath";
 import LinearGradient from "react-native-linear-gradient";
 import {
   BLACK_COLOR,
+  COMMON_COLOR,
   GRADIENT_COLOR_NEW1,
   GRADIENT_COLOR_NEW2,
   GRADIENT_COLOR_NEW3,
@@ -117,34 +115,92 @@ const HomeView = (props) => {
     return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
   };
   //  console.log("allservice>>>>>>>>>>", allServices);
-  
 
-  useFocusEffect(
-    React.useCallback(() => {
-      const onBackPress = () => {
-        Alert.alert("Hold on!", "Are you sure you want to close this app ?", [
-          {
-            text: "Cancel",
-            onPress: () => null,
-            style: "cancel",
-          },
-          { text: "YES", onPress: () => BackHandler.exitApp() },
-        ]);
-        return true;
-      };
-      BackHandler.addEventListener("hardwareBackPress", onBackPress);
-      return () =>
-        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
-    }, [])
-  );
+  const AppExitModal = ({ visible, onClose, onExitApp }) => {
+    useFocusEffect(
+      useCallback(() => {
+        const onBackPress = () => {
+          openModal();
+          return true;
+        };
+
+        BackHandler.addEventListener("hardwareBackPress", onBackPress);
+
+        return () => {
+          BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+        };
+      }, [openModal])
+    );
+    return (
+      <Modal
+        transparent={true}
+        animationType="fade"
+        visible={visible}
+        onRequestClose={() => onClose()}
+      >
+        <View style={styles.modalMainView}>
+          <View style={styles.modalContainView}>
+            <Text style={styles.modalTextHoldStyle}>Hold on!</Text>
+            <Text style={styles.modalTextStyle}>
+              Are you sure you want to close this app ?
+            </Text>
+
+            <View style={styles.buttnView}>
+              <TouchableOpacity onPress={() => onClose()}>
+                <Text style={[styles.buttnText, { color: COMMON_COLOR }]}>
+                  CANCEL
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => onExitApp()}>
+                <Text style={styles.buttnText}>YES</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+    );
+  };
+
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const openModal = () => {
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
+  const onExitApp = () => {
+    BackHandler.exitApp();
+  };
+
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     const onBackPress = () => {
+  //       Alert.alert("Hold on!", "Are you sure you want to close this app ?", [
+  //         {
+  //           text: "Cancel",
+  //           onPress: () => null,
+  //           style: "cancel",
+  //         },
+  //         { text: "YES", onPress: () => BackHandler.exitApp() },
+  //       ]);
+  //       return true;
+  //     };
+  //     BackHandler.addEventListener("hardwareBackPress", onBackPress);
+  //     return () =>
+  //       BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+  //   }, [])
+  // );
 
   return (
     <SafeAreaView style={commomstyle.container}>
       <StatusBar
-          animated={true}
-          backgroundColor={WHITE_COLOR}
-          barStyle="dark-content"
-        />
+        animated={true}
+        backgroundColor={WHITE_COLOR}
+        barStyle="dark-content"
+      />
       <Header
         onPressLeft={toggleShowSearch}
         //onPressRight={props.drawerOpen()}
@@ -434,7 +490,11 @@ const HomeView = (props) => {
         </View>
       </ScrollView>
 
-      
+      <AppExitModal
+        visible={modalVisible}
+        onClose={closeModal}
+        onExitApp={onExitApp}
+      />
     </SafeAreaView>
   );
 };

@@ -249,8 +249,46 @@ const styles = StyleSheet.create({
   thumbStyle:{
     width: scale(10),
     height: scale(10),
-    
-  }
+  },
+  modalMainView:{
+    flex:1,
+    justifyContent:'center',
+    alignItems:'center',
+    backgroundColor:"rgba(0,0,0,0.6)"
+  },
+  modalContainView:{
+    backgroundColor: WHITE_COLOR,
+    paddingHorizontal: scale(15),
+    paddingVertical: scale(20),
+    borderRadius: scale(10)
+  },
+  modalTextHoldStyle:{
+    color: COMMON_COLOR,
+    fontFamily: FONT_FAMILY_SEMIBOLD,
+    fontSize: scale(16),
+    paddingLeft: scale(5),
+    paddingTop: scale(3)
+  },
+  modalTextStyle:{
+    color: BLACK_COLOR,
+    fontFamily: FONT_FAMILY_REGULAR,
+    fontSize: scale(14),
+    paddingLeft: scale(5)
+  },
+  buttnView:{
+   // backgroundColor:'red',
+    display:'flex',
+    flexDirection:'row',
+    justifyContent:'flex-end',
+    paddingTop: scale(25),
+    paddingBottom: scale(3)
+  },
+  buttnText:{
+    color: BLACK_COLOR,
+    marginRight: scale(30),
+    fontFamily: FONT_FAMILY_REGULAR,
+    fontSize: scale(14)
+  },
 });
 
 export default styles;
