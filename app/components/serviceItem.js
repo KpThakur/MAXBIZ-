@@ -51,9 +51,6 @@ const ServiceItem = (props) => {
     serviceDetail,
     city,
   } = props;
-  // console.log("🚀 ~ ServiceItem ~ service_name:", rating);
-
-  // console.log("service_____item___________________:", address);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -64,7 +61,6 @@ const ServiceItem = (props) => {
       return;
     }
     setIsLoading(true);
-    // console.log("onLoadStart===============");
   };
 
   const onLoadEnds = () => {
@@ -73,7 +69,6 @@ const ServiceItem = (props) => {
     }
     setIsLoading(false);
     initialLoadRef.current = false;
-    // console.log("onLoadEnd>>>>>>>>>>>");
   };
 
   return (
@@ -83,7 +78,6 @@ const ServiceItem = (props) => {
         <TouchableOpacity
           onPress={() => {
             props.showDetail(serviceDetail);
-            // console.log('in serviceDetails>>>>', serviceDetail)
           }}
           style={styles.top}
         >

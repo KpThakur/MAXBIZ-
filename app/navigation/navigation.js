@@ -213,7 +213,6 @@ const AppLoading = () => {
 
       try {
         userToken =  await AsyncStorage.getItem('userToken');
-        console.log("🚀 ~ file: navigation.js:211 ~ bootstrapAsync ~ userToken:", userToken)
         if (userToken === null) {
           getPublicToken()
       }
@@ -257,7 +256,6 @@ const AppLoading = () => {
   const getPublicToken = async () => {
     const response = await apiCall('GET', ApiEndPoint.JWTTOKEN);
           if (response.status === 200) {
-            console.log("🚀 ~ file: navigation.js:256 ~ getPublicToken ~ response.data.token:", response.data.token)
               await setDefaultHeader('token', response.data.token);
           }
   }

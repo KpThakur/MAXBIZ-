@@ -9,17 +9,9 @@ import { SearchContext } from "../../utils/searchContext";
 const ContentList = ({route , navigation}) => {
 
   const { type , contentdata  } = route?.params
-  
-  // console.log("🚀 ~ file: index.js:7 ~ contentList ~ contentdata:", contentdata)
-  
-  //console.log("contentList -> type", type)
-
   const [searchdata, setSearchdata] = useContext(SearchContext);
-
-
   const backscreen = () => {
     navigation.navigate("serviceDetailScreen",{searchdata: searchdata} );
-   // console.log('backinTypeScreen<<<<<<<<', searchdata)
 }
   return (
     <Fragment>

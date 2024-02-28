@@ -42,10 +42,8 @@ const RegistrationView = ({ navigation }) => {
   const [inputError, setinputError] = useState({});
   const [imageData, setimageData] = useState({});
   const [servicesData, setServicesData] = useState([]);
-  console.log('servicesData============: ', servicesData);
 
   const onSelectedItemsChange = (servicesData) => {
-  console.log('selectedItems: ', servicesData);
     //this.setState({ selectedItems });
     (servicesData.length <= 3)?
     setServicesData(servicesData):'null'
@@ -120,7 +118,6 @@ const RegistrationView = ({ navigation }) => {
     navigation.navigate("thankyouScreen");
     const valid = validationFrom();
     if (valid) {
-      console.log("🚀 ~ file: index.js:121 ~ toNextPage ~ valid:", valid)
       
     }
   };

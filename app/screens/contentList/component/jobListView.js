@@ -36,24 +36,20 @@ import Notfound from "../../../components/notfound";
 
 const JobListView = (props) => {
   const { type, contentdata, backscreen } = props;
- // console.log("🚀 ~ PhotoListView ~ contentdata:", contentdata);
 
   const ReadMoreText = ({ content, maxLines = 3 }) => {
     const [showAll, setShowAll] = useState(false);
     const [numberOfLines, setNumberOfLines] = useState(0);
     const toggleReadMore = () => {
       setShowAll(!showAll);
-      // console.log('read__________more', showAll)
     };
 
     // const handleTextLayout = (e) => {
     //   setNumberOfLines(e.nativeEvent.lines.length);
-    //   console.log('e.nativeEvent.lines.length',e.nativeEvent.lines.length)
     // };
 
     const handleTextLayout = useCallback((e) => {
       setNumberOfLines(e.nativeEvent.lines.length >= 3); 
-     // console.log("e.nativeEvent", e.nativeEvent);
     }, []);
 
     return (
@@ -97,7 +93,6 @@ const JobListView = (props) => {
 
   const renderItem = ({ item }) => (
     <View style={{ padding: 15 }}>
-      {/* {console.log("🚀 ~ PhotoListView ~ item:", item.fileid)} */}
 
       <View style={styles.containerjob}>
         <View style={styles.leftContainerjob}>

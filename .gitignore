@@ -27,18 +27,21 @@ ios/.xcode.env.local
 build/
 .idea
 .gradle
+.gradle/
 local.properties
 *.iml
 *.hprof
 .cxx/
 *.keystore
 !debug.keystore
+*.properties
 
 # node.js
 #
 node_modules/
 npm-debug.log
 yarn-error.log
+
 
 # fastlane
 #

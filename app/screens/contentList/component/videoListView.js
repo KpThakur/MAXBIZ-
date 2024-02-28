@@ -85,7 +85,6 @@ const VideoListView = (props) => {
 
   const { type, contentdata, backscreen } = props;
   const ratingCompleted = (rating) => {
-   // console.log(StringsOfLanguages.RATING_IS + rating);
   };
 
   /* const onStateChange = useCallback((state) => {
@@ -103,14 +102,12 @@ const VideoListView = (props) => {
     setLoading(true);
     const videoId = extractVideoId(videolink);
     setPlayvideoId(videoId);
-   // console.log("🚀 ~ videoPlay ~ videolink:", videolink);
     setVideoModel(!videoModel);
   };
 
   const onReady = () => {
     setLoading(false);
     clearLoadingTimeout();
-   // console.log("onReady>>>>>>>>>>>");
   };
 
   const loadingTimeout = setTimeout(() => {
@@ -132,7 +129,7 @@ const VideoListView = (props) => {
 
   const renderItem = ({ item }) => (
     <View>
-      {/* {console.log("=====", item)} */}
+     
       <View style={styles.container}>
         <View style={styles.leftContainer}>
           <TouchableOpacity
