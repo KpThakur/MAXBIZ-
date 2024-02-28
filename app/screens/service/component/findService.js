@@ -77,7 +77,7 @@ const FindService = (props) => {
         onPressLeft={toggleShowSearch}
         //onPressRight={props.drawerOpen()}
         headerType={"none"}
-        leftImg={!showSearch ? ICONS.searchIcon : ICONS.crossIcon}
+        leftImg={!showSearch ? ICONS.search_New : ICONS.close_New}
         leftImgStyl={styles.leftImg}
         rightImg={true}
         rightImgStyl={{}}
@@ -93,7 +93,9 @@ const FindService = (props) => {
                 <Dropdown
                   style={commomstyle.dropdown}
                   placeholderStyle={commomstyle.placeholderStyle}
-                  selectedTextStyle={commomstyle.selectedTextStyle}
+                  // selectedTextStyle={commomstyle.selectedTextStyle}
+                  selectedTextStyle={searchdata.servicename.length > 35 ? commomstyle.selectedTextStylelong : commomstyle.selectedTextStyle}
+
                   inputSearchStyle={commomstyle.inputSearchStyle}
                   iconStyle={commomstyle.iconStyle}
                   containerStyle={commomstyle.dropdownContener}

@@ -24,6 +24,7 @@ import StarRating from "react-native-star-rating";
 import { ICONS } from "../../../utils/imagePath";
 import Notfound from "../../../components/notfound";
 import StringsOfLanguages from "../../../utils/translations";
+import moment from "moment";
 
 
 
@@ -59,7 +60,7 @@ const Review = (props) => {
             </View>
             <Text style={styles.detailText}>{item?.description}</Text>
             <View style={styles.section3}>
-              <Text style={styles.dateText}>{item?.createddate}</Text>
+              <Text style={styles.dateText}>{moment(item.createddate).format('MM/DD/YYYY h:mm:ss A')}</Text>
               <View style={styles.button}>
                 <Text style={styles.buttonText}>{StringsOfLanguages.VERIFIED}</Text>
                 <Image style={styles.tickMark} source={tickMark} />

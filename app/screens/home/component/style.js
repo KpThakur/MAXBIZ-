@@ -196,6 +196,12 @@ const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY_REGULAR,
     color: GRAY_COLOR,
   },
+  selectedTextStylelong: {
+    fontSize: scale(12),
+    height : 55,
+    fontFamily: FONT_FAMILY_REGULAR,
+    color: GRAY_COLOR,
+  },
   inputSearchStyle: {
     height: 40,
     fontSize: 16,

@@ -8,10 +8,12 @@ const styles = StyleSheet.create({
         fontSize:scale(18)
      },
      leftImg:{
-        width: scale(20), 
-        height: scale(20),
-        marginHorizontal:scale(10),
-        
+        // width: scale(20), 
+        // height: scale(20),
+        // marginHorizontal:scale(10),
+        width: scale(30), 
+        height: scale(30),
+        marginHorizontal:scale(10),        
       },
     container:{
         paddingHorizontal: scale(18),

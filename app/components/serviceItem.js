@@ -53,7 +53,7 @@ const ServiceItem = (props) => {
   } = props;
   // console.log("🚀 ~ ServiceItem ~ service_name:", rating);
 
-  // console.log("service_____item___________________:", address);
+  // console.log("service_____item___________________:", service_name);
 
   const [isLoading, setIsLoading] = useState(false);
 
