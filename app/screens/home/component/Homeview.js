@@ -98,7 +98,6 @@ const HomeView = (props) => {
 
   const playvideo = () => {
     SetPausedVideo(!pausedvideo);
-    console.log("playyyyyyy");
   };
 
   // const onProgress = ({ currentTime }) => {
@@ -114,7 +113,6 @@ const HomeView = (props) => {
     const remainingSeconds = Math.floor(seconds % 60);
     return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
   };
-  //  console.log("allservice>>>>>>>>>>", allServices);
 
   const AppExitModal = ({ visible, onClose, onExitApp }) => {
     useFocusEffect(

@@ -27,12 +27,8 @@ const customMenu = (props) => {
   /* const userToken =  JSON.parse(AsyncStorage.getItem('userToken')); */
 
   const getuserData = async () => {
-    const userToken = await AsyncStorage.getItem("userToken");
-    console.log(
-      "🚀 ~ file: customMenu.js:41 ~ getuserData ~ userToken:",
-      userToken
-    );
-
+    const userToken  = await AsyncStorage.getItem('userToken');
+   
     if (userToken !== null) {
       const userData = await AsyncStorage.getItem("userData");
       setUserData(JSON.parse(userData));

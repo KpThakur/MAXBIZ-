@@ -43,7 +43,6 @@ const ServiceDetailView = (props) => {
     serviceDetaildata,
   } = props;
 
-  // console.log("serviceDetail_paymentList?.creditcard_:-", serviceDetaildata?.state_name);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -54,7 +53,6 @@ const ServiceDetailView = (props) => {
       return;
     }
     setIsLoading(true);
-    // console.log("onLoadStart===============");
   };
 
   const onLoadEnds = () => {
@@ -63,7 +61,6 @@ const ServiceDetailView = (props) => {
     }
     setIsLoading(false);
     initialLoadRef.current = false;
-    // console.log("onLoadEnd>>>>>>>>>>>");
   };
 
   return (

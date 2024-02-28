@@ -67,7 +67,6 @@ const YourComponent = React.memo(() => {
 
 const PhotoListView = (props) => {
   const { type, contentdata, backscreen } = props;
- // console.log("🚀 ~ PhotoListView ~ contentdata:", contentdata);
   const [photoModel, setPhotoModel] = useState(false);
   const [imgeurl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
@@ -87,7 +86,6 @@ const PhotoListView = (props) => {
       return;
     }
     setLoading(true);
-   // console.log("onLoadStart===============");
   };
 
 
@@ -97,12 +95,11 @@ const PhotoListView = (props) => {
     }
     setLoading(false);
     initialLoadRef.current = false;
-   // console.log("onLoadEnd>>>>>>>>>>>");
   };
 
   const renderItem = ({ item }) => (
     <View>
-      {/* {console.log("🚀 ~ PhotoListView ~ item:", item.aws_url)} */}
+      
 
       <View style={styles.container}>
         <View style={styles.leftContainer}>

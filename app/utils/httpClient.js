@@ -8,7 +8,6 @@ const httpClient = axios.create({
 });
 
 export function setDefaultHeader(header, value) {
-  console.log("🚀 ~ file: httpClient.js:11 ~ setDefaultHeader ~ value:", value)
   //httpClient.defaults.headers.common[header] = value;
   httpClient.defaults.headers.common = {'Authorization': `Bearer ${value}`}
 }
@@ -20,7 +19,6 @@ export async function apiCall(
   data,
   header = { "Content-Type": "application/json", "access-control-allow-origin": "*" }
 ) {
-  console.log("🚀 ~ file: httpClient.js:22 ~ url:", url)
  /*  const { response } = configureStore().store.getState().login;
   const generatedToken = await AsyncStorage.getItem("token");
   let headers = {
@@ -45,18 +43,14 @@ export async function apiCall(
       return response;
     }
   } catch (error) {
-     console.log('errordsfdfdfs: ', error);
     if (error.response) {
       if (error.response.status === 401) {
-        // console.log(`${url}: `, error.response);
         return error.response;
       }
       return error.response;
     } else if (error.request) {
-      // console.log("Error request 1: ", error.request);
       return error.response;
     } else {
-      // console.log("Error message 2: ", error.message);
     }
     // return error;
     return error.response;

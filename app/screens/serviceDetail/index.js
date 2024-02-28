@@ -18,8 +18,6 @@ const ServiceDetail = ({ route, navigation }) => {
   const [paymentList, setPaymentList] = useState({});
   const [image, setImage] = useState("");
 
-  //  console.log("serviceDetaildata?.servicedata:-", serviceDetaildata?.state_name);
-  //  console.log("paymentList:-", paymentList);
   
   
 
@@ -43,7 +41,7 @@ const ServiceDetail = ({ route, navigation }) => {
   //       const paydata = JSON.parse(serviceDetaildata?.payments);
   //       setPaymentList(paydata);
   //     } catch (error) {
-  //       console.error("Error parsing payments JSON:", error);
+  //       .error("Error parsing payments JSON:", error);
   //     }
   //   }
   // }, [serviceDetaildata]);
@@ -78,11 +76,9 @@ const ServiceDetail = ({ route, navigation }) => {
     };
     const { data } = await apiCall("POST", apiEndPoints.GETIMAGE, params);
     if (data.status == 200) {
-      // console.log('image data>>>', data.url)
       setImage(data.url);
       setIsLoading(false);
     } else {
-      console.log("image in else");
     }
   };
   useEffect(() => {
@@ -98,7 +94,6 @@ const ServiceDetail = ({ route, navigation }) => {
         });
 
         if (response.status === 200) {
-          // console.log("🚀 ~ getServicesDetails ~ response.data.data:", response.data.data)
           setIsLoading(false);
           setServiceDetail(response.data.data);
         } else {
@@ -106,10 +101,7 @@ const ServiceDetail = ({ route, navigation }) => {
           setServiceDetail([]);
         }
       } catch (error) {
-        console.log(
-          "🚀 ~ file: index.js:43 ~ getServicesDetails ~ error:",
-          error
-        );
+        
         setIsLoading(false);
       }
     }
@@ -117,13 +109,11 @@ const ServiceDetail = ({ route, navigation }) => {
 
   const backscreen = () => {
     navigation.navigate("findServiceScreen", searchdata);
-   // console.log("back in findServiceScreen<<<<", searchdata);
   };
   const drawerOpen = () => {
     //navigation.navigate("drawerNavigation");
   };
   const showDetailContent = (screenName, type = "", data) => {
-    // console.log("🚀 ~ file: index.js:58 ~ showDetailContent ~ data:", data)
     navigation.navigate(screenName, { type: type, contentdata: data });
     // navigation.navigate(screenName, { type: type, contentdata: data ,searchdata: searchdata,});
   };

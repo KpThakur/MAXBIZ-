@@ -164,7 +164,7 @@ const FindService = (props) => {
                   <Button
                     onPress={() => {
                       getAllservices(searchdata.serviceid, searchdata.cityid);
-                     // console.log('search service in searchBar', searchdata)
+                     
                      // handlefilter(searchdata.cityid)
                     }}
                     buttonText={StringsOfLanguages.SEARCHSERVICE}
