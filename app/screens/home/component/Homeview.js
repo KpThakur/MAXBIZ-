@@ -225,7 +225,8 @@ const HomeView = (props) => {
               <Dropdown
                 style={styles.dropdown}
                 placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
+               // selectedTextStyle={styles.selectedTextStyle}
+                selectedTextStyle={searchdata.servicename.length > 35 ? styles.selectedTextStylelong : styles.selectedTextStyle}
                 inputSearchStyle={styles.inputSearchStyle}
                 iconStyle={styles.iconStyle}
                 containerStyle={styles.dropdownContener}

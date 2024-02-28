@@ -127,7 +127,8 @@ const ServiceDetailView = (props) => {
             <View style={styles.addView}>
               <Text style={styles.serveTxticon}>
                 <Image
-                  source={require("./../../../assets/images/location.png")}
+                  // source={require("./../../../assets/images/location.png")}
+                  source={ICONS.locationIcon}
                   style={styles.serviceImgicon}
                 />
               </Text>

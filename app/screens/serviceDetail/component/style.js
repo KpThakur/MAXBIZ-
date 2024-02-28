@@ -156,7 +156,9 @@ const styles = StyleSheet.create({
         
      },
      contactImgvideo:{
-        tintColor : GRADIENT_COLOR_NEW2
+        tintColor : GRADIENT_COLOR_NEW2,
+        width: scale(24.7),
+        height: scale(24.7) 
      },
      contactImg:{
         width:scale(20),
