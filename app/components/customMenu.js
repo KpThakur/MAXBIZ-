@@ -40,7 +40,6 @@ const customMenu =  (props) => {
   
   const getuserData = async () => {
     const userToken  = await AsyncStorage.getItem('userToken');
-    console.log("🚀 ~ file: customMenu.js:41 ~ getuserData ~ userToken:", userToken)
    
     if (userToken !== null) {
       const userData = await AsyncStorage.getItem('userData')
@@ -149,7 +148,7 @@ useEffect(() => {
                 width: windowWidth / 1.7,
               }}
             /> 
-          </> :  console.log() }
+          </> :  console.log('1') }
 
         {loginStatus ? <>
           <TouchableOpacity

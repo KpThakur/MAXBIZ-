@@ -72,7 +72,6 @@ const Home = ({ navigation }) => {
           // setAllCity(response.data.data)
           setAllCity(formattedCityData);
           //setIsLoading(false);
-          // console.log('response_City===========<<<<>>>>>>', formattedCityData)
          // setIsFetchingCities(false);
         } else {
           // setIsLoading(false);
@@ -98,7 +97,6 @@ const Home = ({ navigation }) => {
     setShowSearch(!showSearch);
     if (searchdata.serviceid != "" && searchdata.cityid != "") {
       navigation.navigate("findServiceScreen", searchdata);
-     // console.log("enter in home>>>>>>>", searchdata);
     } else {
       showMessage({
         message: StringsOfLanguages.PLEASE_SELECT_SERVICE_CITY,

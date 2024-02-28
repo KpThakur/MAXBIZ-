@@ -24,8 +24,7 @@ const LoginView = ({ navigation }) => {
     }
 
    /*  const curlang = StringsOfLanguages.getLanguage();
-
-    console.log('----',curlang) */
+ */
 
     const validationFrom = () => {
         let formerror = true
@@ -60,7 +59,6 @@ const LoginView = ({ navigation }) => {
             try {
                 setIsLoading(true)
                 const response = await apiCall('POST', apiEndPoints.BUSINESSLOGIN, loginData);
-                console.log("🚀 ~ toJoin ~ response:", response.data.message)
 
                 if (response.status === 200) {
                     await AsyncStorage.setItem('userToken', response.data.token);
@@ -76,14 +74,12 @@ const LoginView = ({ navigation }) => {
                     (response.data.message.password) ?  
                     response.data.message.password :  
                     response.data.message.messageTost
-                    console.log("🚀 ~ toJoin ~ msg:", msg)
                      showMessage({
                         message: msg,
                         type: "danger",
                     }); 
                 }
             } catch (error) {
-                console.log("🚀 ~ file: index.js:71 ~ toJoin ~ error:", error)
                 setIsLoading(false)
 
             }

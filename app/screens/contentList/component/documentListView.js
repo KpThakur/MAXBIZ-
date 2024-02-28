@@ -57,7 +57,6 @@ const DATA = [
 
 const DocumentListView = (props) => {
   const { type, contentdata, backscreen } = props;
- // console.log("🚀 ~ DocumentListView ~ contentdata:", contentdata);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -68,7 +67,6 @@ const DocumentListView = (props) => {
       return;
     }
     setIsLoading(true);
-   // console.log("onLoadStart===============");
   };
 
   const onLoadEnds = () => {
@@ -77,7 +75,6 @@ const DocumentListView = (props) => {
     }
     setIsLoading(false);
     initialLoadRef.current = false;
-   // console.log("onLoadEnd>>>>>>>>>>>");
   };
 
 
@@ -93,16 +90,12 @@ const DocumentListView = (props) => {
   //         source={source}
   //         //source={item?.aws_url}
   //         onLoadComplete={(numberOfPages, filePath) => {
-  //           console.log(`Number of pages: ${numberOfPages}`);
   //         }}
   //         onPageChanged={(page, numberOfPages) => {
-  //           console.log(`Current page: ${page}`);
   //         }}
   //         onError={(error) => {
-  //           console.log(error);
   //         }}
   //         onPressLink={(uri) => {
-  //           console.log(`Link pressed: ${uri}`);
   //         }}
   //         style={styles.pdf}
   //       />
@@ -115,12 +108,10 @@ const DocumentListView = (props) => {
   //         .then(blob => {
   //             var file_name = Math.random().toString(36).substring(6) + 'aws_url'; //e.g ueq6ge1j_name.pdf
   //             var file_object = new File([blob], file_name, {type: 'application/pdf'});
-  //             console.log("file_object<=========>",file_object); //Output
   //          });
 
   const renderItem = ({ item }) => (
     <View>
-      {/* {console.log("🚀 ~ PhotoListView ~ item:", item.aws_url)} */}
 
       <View style={styles.container}>
         <View style={styles.leftContainer}>
