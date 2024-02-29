@@ -5,7 +5,7 @@ import { scale } from '@utils/utils';
 const styles = StyleSheet.create({
     headerTxt:{
         fontFamily: FONT_FAMILY_SEMIBOLD,
-        fontSize:scale(18)
+        fontSize:scale(16)
      },
      leftImg:{
         // width: scale(20), 

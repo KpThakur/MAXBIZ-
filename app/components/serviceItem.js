@@ -361,8 +361,9 @@ const styles = StyleSheet.create({
   },
   serveTxt: {
     fontFamily: FONT_FAMILY_SEMIBOLD,
-    fontSize: scale(15),
+    fontSize: scale(13),
     color: GRAY_COLOR,
+    marginTop : 2
   },
   addrsTxt: {
     fontSize: scale(13),
