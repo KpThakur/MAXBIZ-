@@ -112,7 +112,7 @@ const offerListView = (props) => {
         showsVerticalScrollIndicator={false}
         data={contentdata}
         renderItem={renderItem}
-        ListEmptyComponent={<Notfound textnotfound="Photo" />}
+        ListEmptyComponent={<Notfound textnotfound="Offers" />}
        // keyExtractor={(item) => item.fileid}
         keyExtractor={(item, index, ) => item.id || index.toString()}
 

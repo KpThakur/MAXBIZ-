@@ -95,12 +95,14 @@ const ServiceDetailView = (props) => {
               )}
               {
                 <Image
-                  // source={require("../../../assets/dummy/no_image.png")}
                   // source={{uri: `${image}`}}
                   source={{ uri: image ? image : null }}
+                // source={image ? image : require("../../../assets/dummy/no_image.png")}
                   style={styles.serviceImg}
                   onLoadStart={onLoadStarts}
                   onLoadEnd={onLoadEnds}
+                  alt={"No image found"}
+
                 />
               }
             </View>
@@ -111,7 +113,8 @@ const ServiceDetailView = (props) => {
                 <StarRating
                   disabled={false}
                   maxStars={5}
-                  rating={serviceDetail?.avg_rating}
+                 // rating={serviceDetail?.avg_rating}
+                  rating={parseFloat(serviceDetail?.avg_rating)}
                   /*  fullStar={ICONS.starIcon}
                    emptyStar={ICONS.starBlackIcon} */
                   starSize={20}

@@ -90,11 +90,14 @@ const ServiceItem = (props) => {
             )}
             {
               <Image
-                // source={require("../assets/dummy/no_image.png")}
-                source={{ uri: `${img}` }}
+               // source={{ uri: `${img}` }}
+               // source={{ uri: img ? img : null }}
+                  source={{uri: serviceDetail?.aws_url ? serviceDetail?.aws_url : null}}
+               // source={img ? img : require("../assets/dummy/no_image.png")}
                 style={styles.serviceImg}
                 onLoadStart={onLoadStarts}
                 onLoadEnd={onLoadEnds}
+                alt={"No image found"}
               />
             }
           </View>
