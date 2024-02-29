@@ -140,7 +140,7 @@ const JobListView = (props) => {
         showsVerticalScrollIndicator={false}
         data={contentdata}
         renderItem={renderItem}
-        ListEmptyComponent={<Notfound textnotfound="Photo" />}
+        ListEmptyComponent={<Notfound textnotfound="Jobs" />}
        // keyExtractor={(item) => item.fileid}
         keyExtractor={(item, index) => index.toString()}
       />

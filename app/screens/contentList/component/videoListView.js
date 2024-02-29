@@ -37,6 +37,7 @@ import { Button } from "react-native-elements";
 // import YoutubeIframe from "react-native-youtube-iframe";
 import YoutubePlayer from "react-native-youtube-iframe";
 import { ActivityIndicator } from "react-native";
+import Notfound from "../../../components/notfound";
 
 const DATA = [
   {
@@ -168,6 +169,7 @@ const VideoListView = (props) => {
         showsVerticalScrollIndicator={false}
         data={contentdata}
         renderItem={renderItem}
+        ListEmptyComponent={<Notfound textnotfound="Video" />}
        // keyExtractor={(item) => item.id}
         keyExtractor={(item, index) => item.id || index.toString()}
       />

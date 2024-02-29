@@ -164,7 +164,7 @@ const DocumentListView = (props) => {
         showsVerticalScrollIndicator={false}
         data={contentdata}
         renderItem={renderItem}
-        ListEmptyComponent={<Notfound textnotfound="Photo" />}
+        ListEmptyComponent={<Notfound textnotfound="Document" />}
         //keyExtractor={item => item.fileid}
       />
       {/* </LinearGradient> */}
