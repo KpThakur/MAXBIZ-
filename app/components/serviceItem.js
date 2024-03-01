@@ -90,10 +90,12 @@ const ServiceItem = (props) => {
             )}
             {
               <Image
-               // source={{ uri: `${img}` }}
-               // source={{ uri: img ? img : null }}
-                  source={{uri: serviceDetail?.aws_url ? serviceDetail?.aws_url : null}}
-               // source={img ? img : require("../assets/dummy/no_image.png")}
+                // source={{ uri: `${img}` }}
+                // source={{ uri: img ? img : null }}
+                // source={{
+                //   uri: serviceDetail?.aws_url ? serviceDetail?.aws_url : null,
+                // }}
+                source={img ? { uri: img } : require("../assets/dummy/no_image.png")}
                 style={styles.serviceImg}
                 onLoadStart={onLoadStarts}
                 onLoadEnd={onLoadEnds}
@@ -363,7 +365,7 @@ const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY_SEMIBOLD,
     fontSize: scale(13),
     color: GRAY_COLOR,
-    marginTop : 2
+    marginTop: 2,
   },
   addrsTxt: {
     fontSize: scale(13),

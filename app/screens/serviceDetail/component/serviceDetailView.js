@@ -96,8 +96,8 @@ const ServiceDetailView = (props) => {
               {
                 <Image
                   // source={{uri: `${image}`}}
-                  source={{ uri: image ? image : null }}
-                // source={image ? image : require("../../../assets/dummy/no_image.png")}
+                 // source={{ uri: image ? image : null }}
+                  source={image ? { uri: image } : require("../../../assets/dummy/no_image.png")}
                   style={styles.serviceImg}
                   onLoadStart={onLoadStarts}
                   onLoadEnd={onLoadEnds}
