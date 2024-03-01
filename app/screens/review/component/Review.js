@@ -100,7 +100,8 @@ const Review = (props) => {
           data={contentdata}
           renderItem={renderItem}
           ListEmptyComponent={<Notfound textnotfound = 'Review'/>}
-          keyExtractor={item => item.contentdata}
+         // keyExtractor={item => item.contentdata}
+          keyExtractor={(item, index) => index.toString()}
         />
       {/* </LinearGradient> */}
 
