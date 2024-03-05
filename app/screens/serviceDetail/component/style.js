@@ -65,11 +65,11 @@ const styles = StyleSheet.create({
         marginVertical:scale(10)
     },
     addViewtext:{
-        flex:2,
+        flex:2.4,
        // backgroundColor:'yellow',
     },
     addViewcontent:{
-        flex:4.2,
+        flex:4,
         //backgroundColor:'red',
         marginLeft:scale(2)
     },

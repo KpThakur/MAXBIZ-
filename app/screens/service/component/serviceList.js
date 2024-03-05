@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import { FlatList, View,Text } from "react-native";
+import React, { useCallback, useState } from "react";
+import { FlatList, View,Text, RefreshControl } from "react-native";
 import ServiceItem from "../../../components/serviceItem";
 import { ICONS } from "../../../../utils/imagePath";
 import Notfound from '../../../components/notfound'
+import { COMMON_COLOR } from "../../../utils/constants";
 
 
 
@@ -10,6 +11,15 @@ const ServiceList = (props) => {
   const { serviceList } = props
 
   const [serviceData, setServiceData] = useState([]);
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   const renderItem = ({ item }) => {
  
@@ -40,6 +50,9 @@ const ServiceList = (props) => {
   return (
     <>
       <FlatList
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={COMMON_COLOR} colors={[COMMON_COLOR]}/>
+        }
         showsVerticalScrollIndicator={false}
         data={serviceList}
       //  data={filteredData > 0 ? filteredData : serviceList}

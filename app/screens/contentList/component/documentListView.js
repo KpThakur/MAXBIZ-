@@ -1,4 +1,4 @@
-import React, { Fragment, useRef, useState } from "react";
+import React, { Fragment, useCallback, useRef, useState } from "react";
 import styles from "./style";
 import profile_img from "../../../assets/images/review-img-01.png";
 import profile_img2 from "../../../assets/images/review-img-02.png";
@@ -14,6 +14,7 @@ import {
   Linking,
   ActivityIndicator,
   StatusBar,
+  RefreshControl,
 } from "react-native";
 import commomstyle from "../../../common/styles";
 import { Header } from "@components";
@@ -25,6 +26,7 @@ import {
   GRADIENT_COLOR_NEW2,
   GRADIENT_COLOR_NEW3,
   GRADIENT_COLOR_NEW4,
+  COMMON_COLOR,
 } from "../../../utils/constants";
 import Notfound from "../../../components/notfound";
 import Pdf from "react-native-pdf";
@@ -77,6 +79,14 @@ const DocumentListView = (props) => {
     initialLoadRef.current = false;
   };
 
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   // const documentView = (item) => {
   //   const source = {
@@ -112,7 +122,6 @@ const DocumentListView = (props) => {
 
   const renderItem = ({ item }) => (
     <View>
-
       <View style={styles.container}>
         <View style={styles.leftContainer}>
           <TouchableOpacity
@@ -122,7 +131,10 @@ const DocumentListView = (props) => {
             {isLoading && (
               <ActivityIndicator
                 size={"large"}
-                style={[styles.activityIndicator, {alignSelf:'center', bottom:10}]}
+                style={[
+                  styles.activityIndicator,
+                  { alignSelf: "center", bottom: 10 },
+                ]}
               />
             )}
             {
@@ -144,10 +156,10 @@ const DocumentListView = (props) => {
   return (
     <SafeAreaView style={commomstyle.container}>
       <StatusBar
-          animated={true}
-          backgroundColor={WHITE_COLOR}
-          barStyle="dark-content"
-        />
+        animated={true}
+        backgroundColor={WHITE_COLOR}
+        barStyle="dark-content"
+      />
       {/* <LinearGradient
         colors={[GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW2, GRADIENT_COLOR_NEW3, GRADIENT_COLOR_NEW4]}
         angle={83}
@@ -161,6 +173,9 @@ const DocumentListView = (props) => {
         showFindServiceOnBack={true}
       />
       <FlatList
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={COMMON_COLOR} colors={[COMMON_COLOR]} />
+        }
         showsVerticalScrollIndicator={false}
         data={contentdata}
         renderItem={renderItem}

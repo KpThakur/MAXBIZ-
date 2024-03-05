@@ -151,7 +151,7 @@ const ServiceItem = (props) => {
 
           <View style={styles.addView}>
             <View style={styles.addViewtext}>
-              <Text style={styles.serveTxt}>{StringsOfLanguages.SERVES}</Text>
+              <Text style={styles.serveTxt}>{StringsOfLanguages.SEARCH_SERVICE}</Text>
             </View>
             <View style={styles.addViewcontent}>
               <Text style={styles.addrsTxt}>
@@ -328,12 +328,12 @@ const styles = StyleSheet.create({
   },
 
   addViewtext: {
-    flex: 1.7,
+    flex: 1.8,
     // backgroundColor:'yellow',
   },
 
   addViewcontent: {
-    flex: 4.2,
+    flex: 4.1,
     // backgroundColor:'red',
     // marginLeft:scale(1)
   },

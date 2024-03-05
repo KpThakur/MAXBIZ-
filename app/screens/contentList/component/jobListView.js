@@ -18,6 +18,7 @@ import {
   Image,
   FlatList,
   StatusBar,
+  RefreshControl,
 } from "react-native";
 import commomstyle from "../../../common/styles";
 import { Header } from "@components";
@@ -31,11 +32,21 @@ import {
   GRADIENT_COLOR_NEW4,
   FONT_FAMILY_REGULAR,
   FONT_FAMILY_MEDIUM,
+  COMMON_COLOR,
 } from "../../../utils/constants";
 import Notfound from "../../../components/notfound";
 
 const JobListView = (props) => {
   const { type, contentdata, backscreen } = props;
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   const ReadMoreText = ({ content, maxLines = 3 }) => {
     const [showAll, setShowAll] = useState(false);
@@ -49,7 +60,7 @@ const JobListView = (props) => {
     // };
 
     const handleTextLayout = useCallback((e) => {
-      setNumberOfLines(e.nativeEvent.lines.length >= 3); 
+      setNumberOfLines(e.nativeEvent.lines.length >= 3);
     }, []);
 
     return (
@@ -74,7 +85,7 @@ const JobListView = (props) => {
         <Text
           onTextLayout={handleTextLayout}
           numberOfLines={showAll ? undefined : 3}
-          style={{ lineHeight: 21, fontFamily:FONT_FAMILY_REGULAR }}
+          style={{ lineHeight: 21, fontFamily: FONT_FAMILY_REGULAR }}
         >
           {content}
         </Text>
@@ -82,7 +93,12 @@ const JobListView = (props) => {
         {numberOfLines ? (
           <Text
             onPress={toggleReadMore}
-            style={{ lineHeight: 21, marginTop: 3, color:'blue', fontFamily:FONT_FAMILY_MEDIUM }}
+            style={{
+              lineHeight: 21,
+              marginTop: 3,
+              color: "blue",
+              fontFamily: FONT_FAMILY_MEDIUM,
+            }}
           >
             {showAll ? "Less" : "See More"}
           </Text>
@@ -93,7 +109,6 @@ const JobListView = (props) => {
 
   const renderItem = ({ item }) => (
     <View style={{ padding: 15 }}>
-
       <View style={styles.containerjob}>
         <View style={styles.leftContainerjob}>
           <View style={styles.jobcont}>
@@ -120,10 +135,10 @@ const JobListView = (props) => {
   return (
     <SafeAreaView style={commomstyle.container}>
       <StatusBar
-          animated={true}
-          backgroundColor={WHITE_COLOR}
-          barStyle="dark-content"
-        />
+        animated={true}
+        backgroundColor={WHITE_COLOR}
+        barStyle="dark-content"
+      />
       {/* <LinearGradient
         colors={[GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW2, GRADIENT_COLOR_NEW3, GRADIENT_COLOR_NEW4]}
         angle={83}
@@ -137,11 +152,14 @@ const JobListView = (props) => {
         showFindServiceOnBack={true}
       />
       <FlatList
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={COMMON_COLOR} colors={[COMMON_COLOR]} />
+        }
         showsVerticalScrollIndicator={false}
         data={contentdata}
         renderItem={renderItem}
         ListEmptyComponent={<Notfound textnotfound="Jobs" />}
-       // keyExtractor={(item) => item.fileid}
+        // keyExtractor={(item) => item.fileid}
         keyExtractor={(item, index) => index.toString()}
       />
       {/* </LinearGradient> */}

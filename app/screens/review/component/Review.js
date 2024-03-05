@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useCallback, useState } from "react";
 import styles from "./style";
 import profile_img from "../../../assets/images/review-img-01.png";
 import profile_img2 from "../../../assets/images/review-img-02.png";
@@ -12,6 +12,7 @@ import {
   Image,
   FlatList,
   StatusBar,
+  RefreshControl,
 } from "react-native";
 import commomstyle from "../../../common/styles";
 import { Button, Input, Header } from "@components";
@@ -19,7 +20,7 @@ import Reviews from "../../../components/reviews";
 import { Rating, AirbnbRating } from "react-native-ratings";
 import tickMark from "../../../assets/images/tickMark.png";
 import LinearGradient from "react-native-linear-gradient";
-import { WHITE_COLOR,GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW2, GRADIENT_COLOR_NEW3, GRADIENT_COLOR_NEW4, GRAY_COLOR } from "../../../utils/constants";
+import { WHITE_COLOR,GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW2, GRADIENT_COLOR_NEW3, GRADIENT_COLOR_NEW4, GRAY_COLOR, COMMON_COLOR } from "../../../utils/constants";
 import StarRating from "react-native-star-rating";
 import { ICONS } from "../../../utils/imagePath";
 import Notfound from "../../../components/notfound";
@@ -30,6 +31,16 @@ import moment from "moment";
 
 const Review = (props) => {
   const {contentdata, backscreen} = props
+
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   const renderItem = ({ item }) => (
     <View>
@@ -96,6 +107,9 @@ const Review = (props) => {
         showFindServiceOnBack={true}
          />
           <FlatList
+           refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={COMMON_COLOR} colors={[COMMON_COLOR]} />
+          }
           showsVerticalScrollIndicator={false}
           data={contentdata}
           renderItem={renderItem}

@@ -1,4 +1,11 @@
-import React, { Fragment, memo, useEffect, useRef, useState } from "react";
+import React, {
+  Fragment,
+  memo,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import styles from "./style";
 import profile_img from "../../../assets/images/review-img-01.png";
 import profile_img2 from "../../../assets/images/review-img-02.png";
@@ -15,6 +22,7 @@ import {
   Platform,
   ActivityIndicator,
   StatusBar,
+  RefreshControl,
 } from "react-native";
 import commomstyle from "../../../common/styles";
 import { Header } from "@components";
@@ -26,6 +34,7 @@ import {
   GRADIENT_COLOR_NEW2,
   GRADIENT_COLOR_NEW3,
   GRADIENT_COLOR_NEW4,
+  COMMON_COLOR,
 } from "../../../utils/constants";
 import Notfound from "../../../components/notfound";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -77,8 +86,6 @@ const PhotoListView = (props) => {
     setPhotoModel(!photoModel);
   };
 
- 
-
   const initialLoadRef = useRef(true);
 
   const onLoadStarts = () => {
@@ -88,7 +95,6 @@ const PhotoListView = (props) => {
     setLoading(true);
   };
 
-
   const onLoadEnds = () => {
     if (!initialLoadRef.current) {
       return;
@@ -97,10 +103,17 @@ const PhotoListView = (props) => {
     initialLoadRef.current = false;
   };
 
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
   const renderItem = ({ item }) => (
     <View>
-      
-
       <View style={styles.container}>
         <View style={styles.leftContainer}>
           {/* <Image style={styles.imageDesign} source={item?.aws_url ? item?.aws_url : require("../../../assets/dummy/profile2.jpg")} /> */}
@@ -165,10 +178,10 @@ const PhotoListView = (props) => {
   return (
     <SafeAreaView style={commomstyle.container}>
       <StatusBar
-          animated={true}
-          backgroundColor={WHITE_COLOR}
-          barStyle="dark-content"
-        />
+        animated={true}
+        backgroundColor={WHITE_COLOR}
+        barStyle="dark-content"
+      />
       {/* <LinearGradient
         colors={[GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW2, GRADIENT_COLOR_NEW3, GRADIENT_COLOR_NEW4]}
         angle={83}
@@ -183,6 +196,9 @@ const PhotoListView = (props) => {
       />
 
       <FlatList
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={COMMON_COLOR} colors={[COMMON_COLOR]} />
+        }
         showsVerticalScrollIndicator={false}
         data={contentdata}
         renderItem={renderItem}
