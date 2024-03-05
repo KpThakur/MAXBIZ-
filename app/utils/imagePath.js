@@ -1,5 +1,6 @@
 export const LOGOIMAGE = {
-    LOGO: require('../assets/images/logo.png'),
+    // LOGO: require('../assets/images/logo.png'),
+     LOGO: require('../assets/images/logo_name.png'),
 }
 export const ICONS = {
     emailIcon: require('../assets/images/email3x.png'),

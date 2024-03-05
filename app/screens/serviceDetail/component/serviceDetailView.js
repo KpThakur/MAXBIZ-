@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   SafeAreaView,
   Text,
@@ -10,6 +10,7 @@ import {
   Linking,
   ActivityIndicator,
   StatusBar,
+  RefreshControl,
 } from "react-native";
 import {
   GRADIENT_COLOR_NEW1,
@@ -26,6 +27,7 @@ import StarRating from "react-native-star-rating";
 import LinearGradient from "react-native-linear-gradient";
 import {
   BLACK_COLOR,
+  COMMON_COLOR,
   GRAY_COLOR,
   WHITE_COLOR,
   YELLOW_COLOR,
@@ -43,8 +45,16 @@ const ServiceDetailView = (props) => {
     serviceDetaildata,
   } = props;
 
-
   const [isLoading, setIsLoading] = useState(false);
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   const initialLoadRef = useRef(true);
 
@@ -83,7 +93,17 @@ const ServiceDetailView = (props) => {
         showFindServiceOnBack={true}
       />
 
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={COMMON_COLOR}
+            colors={[COMMON_COLOR]}
+          />
+        }
+      >
         <View style={styles.container}>
           <TouchableOpacity style={styles.top}>
             <View style={styles.activeView}>
@@ -96,13 +116,16 @@ const ServiceDetailView = (props) => {
               {
                 <Image
                   // source={{uri: `${image}`}}
-                 // source={{ uri: image ? image : null }}
-                  source={image ? { uri: image } : require("../../../assets/dummy/no_image.png")}
+                  // source={{ uri: image ? image : null }}
+                  source={
+                    image
+                      ? { uri: image }
+                      : require("../../../assets/dummy/no_image.png")
+                  }
                   style={styles.serviceImg}
                   onLoadStart={onLoadStarts}
                   onLoadEnd={onLoadEnds}
                   alt={"No image found"}
-
                 />
               }
             </View>
@@ -113,7 +136,7 @@ const ServiceDetailView = (props) => {
                 <StarRating
                   disabled={false}
                   maxStars={5}
-                 // rating={serviceDetail?.avg_rating}
+                  // rating={serviceDetail?.avg_rating}
                   rating={parseFloat(serviceDetail?.avg_rating)}
                   /*  fullStar={ICONS.starIcon}
                    emptyStar={ICONS.starBlackIcon} */
@@ -122,25 +145,45 @@ const ServiceDetailView = (props) => {
                   starStyle={{}}
                 />
               </View>
-              <Text style={styles.hour}>{serviceDetail?.pricemodel}</Text>
+              {/* <Text style={styles.hour}>{serviceDetail?.pricemodel}</Text> */}
             </View>
           </TouchableOpacity>
 
           <View style={styles.bottom}>
             <View style={styles.addView}>
               <Text style={styles.serveTxticon}>
-                <Image
+                {/* <Image
                   // source={require("./../../../assets/images/location.png")}
                   source={ICONS.locationIcon}
                   style={styles.serviceImgicon}
-                />
+                /> */}
               </Text>
-              <Text style={styles.addrsTxtadd}>{serviceDetail?.address}</Text>
+              {/* <Text style={styles.addrsTxtadd}>{serviceDetail?.address}</Text> */}
             </View>
+
+            {/* <View style={styles.addView}>
+              <View style={styles.addViewtext}>
+                <Text style={styles.serveTxt}>{StringsOfLanguages.PHONE}</Text>
+              </View>
+              <View style={styles.addViewcontent}>
+                <Text style={styles.addrsTxt}>{serviceDetail?.phone}</Text>
+              </View>
+            </View> */}
+
+            {/* <View style={styles.addView}>
+              <View style={styles.addViewtext}>
+                <Text style={styles.serveTxt}>{StringsOfLanguages.EMAIL}</Text>
+              </View>
+              <View style={styles.addViewcontent}>
+                <Text style={styles.addrsTxt}>{serviceDetail?.email}</Text>
+              </View>
+            </View> */}
+
             <View style={styles.addView}>
               <View style={styles.addViewtext}>
                 <Text style={styles.serveTxt}>
-                  {StringsOfLanguages.SERVICES}
+                  {/* {StringsOfLanguages.SERVICES} */}
+                  {StringsOfLanguages.SEARCH_SERVICE}
                 </Text>
               </View>
               <View style={styles.addViewcontent}>
@@ -150,6 +193,17 @@ const ServiceDetailView = (props) => {
                         .map((item) => item.title)
                         .join(" | ")
                     : ""}
+                </Text>
+              </View>
+            </View>
+
+            <View style={styles.addView}>
+              <View style={styles.addViewtext}>
+                <Text style={styles.serveTxt}>{StringsOfLanguages.CITY}</Text>
+              </View>
+              <View style={styles.addViewcontent}>
+                <Text style={styles.addrsTxt}>
+                  {serviceDetail?.city}, {serviceDetaildata?.state_name}
                 </Text>
               </View>
             </View>
@@ -169,34 +223,14 @@ const ServiceDetailView = (props) => {
 
             <View style={styles.addView}>
               <View style={styles.addViewtext}>
-                <Text style={styles.serveTxt}>{StringsOfLanguages.PHONE}</Text>
+                <Text style={styles.serveTxt}>Pricing Model :</Text>
               </View>
               <View style={styles.addViewcontent}>
-                <Text style={styles.addrsTxt}>{serviceDetail?.phone}</Text>
+                <Text style={styles.addrsTxt}>{serviceDetail?.pricemodel}</Text>
               </View>
             </View>
 
-            <View style={styles.addView}>
-              <View style={styles.addViewtext}>
-                <Text style={styles.serveTxt}>{StringsOfLanguages.EMAIL}</Text>
-              </View>
-              <View style={styles.addViewcontent}>
-                <Text style={styles.addrsTxt}>{serviceDetail?.email}</Text>
-              </View>
-            </View>
-
-            <View style={styles.addView}>
-              <View style={styles.addViewtext}>
-                <Text style={styles.serveTxt}>{StringsOfLanguages.CITY}</Text>
-              </View>
-              <View style={styles.addViewcontent}>
-                <Text style={styles.addrsTxt}>
-                  {serviceDetail?.city}, {serviceDetaildata?.state_name}
-                </Text>
-              </View>
-            </View>
-
-            <View style={styles.addView}>
+            {/* <View style={styles.addView}>
               <View style={styles.addViewtext}>
                 <Text style={styles.serveTxt}>
                   {StringsOfLanguages.HEAD_COUNT}
@@ -205,7 +239,7 @@ const ServiceDetailView = (props) => {
               <View style={styles.addViewcontent}>
                 <Text style={styles.addrsTxt}>{serviceDetail?.numemps}</Text>
               </View>
-            </View>
+            </View> */}
 
             <View style={styles.addView}>
               <View style={styles.addViewtext}>
@@ -218,9 +252,12 @@ const ServiceDetailView = (props) => {
                   {/* {"Cash | Credit card | Cash app | Paypal"} */}
                   {paymentList?.cash == 1 ? "Cash, " : null}
                   {paymentList?.creditcard == 1 ? "Credit card, " : null}
-                  {paymentList?.cashapp == 1 ? "Cash app, " : null}
+                  {/* {paymentList?.cashapp == 1 ? "Cash app, " : null} */}
+                  {paymentList?.Check == 1 ? "Check, " : null}
                   {paymentList?.paypal == 1 ? "Paypal, " : null}
-                  {paymentList?.zelle == 1 ? "Zelle" : null}
+                  {paymentList?.zelle == 1 || paymentList?.zelle == 0
+                    ? "Zelle"
+                    : null}
                 </Text>
               </View>
             </View>
@@ -244,6 +281,7 @@ const ServiceDetailView = (props) => {
                 <Text style={styles.addrsTxt}>{serviceDetail?.websiteurl}</Text>
               </View>
             </View>
+
             <View style={styles.addView}>
               <View style={styles.addViewtext}>
                 <Text style={styles.serveTxt}>{StringsOfLanguages.ABOUT}</Text>
@@ -255,6 +293,7 @@ const ServiceDetailView = (props) => {
                 </Text>
               </View>
             </View>
+
             {/*  <View>
                         <Text style={styles.bestReview}>"{'best'}"</Text>
                     </View> */}
@@ -295,6 +334,7 @@ const ServiceDetailView = (props) => {
                 </Text>
               </TouchableOpacity>
             </View>
+
             <View style={styles.addViewicons}>
               <TouchableOpacity
                 onPress={() =>
@@ -327,6 +367,7 @@ const ServiceDetailView = (props) => {
                 <Text style={styles.contacttext}>Jobs</Text>
               </TouchableOpacity>
             </View>
+
             <View style={styles.addViewicons}>
               <TouchableOpacity
                 onPress={() =>
@@ -364,6 +405,7 @@ const ServiceDetailView = (props) => {
                 </Text>
               </TouchableOpacity>
             </View>
+
             <View style={styles.addViewicons}>{/*   */}</View>
           </View>
 
@@ -408,6 +450,21 @@ const ServiceDetailView = (props) => {
               onPress={() => Linking.openURL(`${serviceDetail?.websiteurl}`)}
             >
               <Image source={ICONS.website_Icon} style={styles.contactImg} />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.contact}
+              // onPress={() => Linking.openURL(`geo:${serviceDetail?.address}`)}
+              // onPress={() => Linking.openURL(`geo:${serviceDetail?.latitude},${serviceDetail?.longitude}`)}
+              onPress={() =>
+                Linking.openURL(
+                  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                    serviceDetail?.address
+                  )}`
+                )
+              }
+            >
+              <Image source={ICONS.map_Icon} style={styles.contactImg} />
             </TouchableOpacity>
           </View>
         </View>

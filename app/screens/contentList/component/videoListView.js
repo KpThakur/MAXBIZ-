@@ -19,6 +19,7 @@ import {
   Linking,
   Modal,
   StatusBar,
+  RefreshControl,
 } from "react-native";
 
 import commomstyles from "../../../common/styles";
@@ -31,6 +32,7 @@ import {
   GRADIENT_COLOR_NEW2,
   GRADIENT_COLOR_NEW3,
   GRADIENT_COLOR_NEW4,
+  COMMON_COLOR,
 } from "../../../utils/constants";
 import LinearGradient from "react-native-linear-gradient";
 import { Button } from "react-native-elements";
@@ -85,8 +87,17 @@ const VideoListView = (props) => {
   const [loading, setLoading] = useState(false);
 
   const { type, contentdata, backscreen } = props;
-  const ratingCompleted = (rating) => {
-  };
+  const ratingCompleted = (rating) => {};
+
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   /* const onStateChange = useCallback((state) => {
     if (state === "ended") {
@@ -130,7 +141,6 @@ const VideoListView = (props) => {
 
   const renderItem = ({ item }) => (
     <View>
-     
       <View style={styles.container}>
         <View style={styles.leftContainer}>
           <TouchableOpacity
@@ -154,10 +164,10 @@ const VideoListView = (props) => {
   return (
     <SafeAreaView style={commomstyles.container}>
       <StatusBar
-          animated={true}
-          backgroundColor={WHITE_COLOR}
-          barStyle="dark-content"
-        />
+        animated={true}
+        backgroundColor={WHITE_COLOR}
+        barStyle="dark-content"
+      />
       <Header
         rightImgStyl={{ tintColor: WHITE_COLOR }}
         rightImg={true}
@@ -166,11 +176,14 @@ const VideoListView = (props) => {
         showFindServiceOnBack={true}
       />
       <FlatList
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={COMMON_COLOR} colors={[COMMON_COLOR]} />
+        }
         showsVerticalScrollIndicator={false}
         data={contentdata}
         renderItem={renderItem}
         ListEmptyComponent={<Notfound textnotfound="Video" />}
-       // keyExtractor={(item) => item.id}
+        // keyExtractor={(item) => item.id}
         keyExtractor={(item, index) => item.id || index.toString()}
       />
 

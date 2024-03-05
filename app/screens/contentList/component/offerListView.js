@@ -1,4 +1,4 @@
-import React, { Fragment, useRef, useState } from "react";
+import React, { Fragment, useCallback, useRef, useState } from "react";
 import styles from "./style";
 import profile_img from "../../../assets/images/review-img-01.png";
 import profile_img2 from "../../../assets/images/review-img-02.png";
@@ -13,6 +13,7 @@ import {
   FlatList,
   ActivityIndicator,
   StatusBar,
+  RefreshControl,
 } from "react-native";
 import commomstyle from "../../../common/styles";
 import { Header } from "@components";
@@ -24,6 +25,7 @@ import {
   GRADIENT_COLOR_NEW2,
   GRADIENT_COLOR_NEW3,
   GRADIENT_COLOR_NEW4,
+  COMMON_COLOR,
 } from "../../../utils/constants";
 import Notfound from "../../../components/notfound";
 
@@ -31,6 +33,15 @@ const offerListView = (props) => {
   const { type, contentdata, backscreen } = props;
 
   const [isLoading, setIsLoading] = useState(false);
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   const initialLoadRef = useRef(true);
 
@@ -109,6 +120,9 @@ const offerListView = (props) => {
         showFindServiceOnBack={true}
       />
       <FlatList
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={COMMON_COLOR} colors={[COMMON_COLOR]} />
+        }
         showsVerticalScrollIndicator={false}
         data={contentdata}
         renderItem={renderItem}

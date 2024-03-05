@@ -80,7 +80,7 @@ const StringsOfLanguages = new LocalizedStrings({
         ENTER_YOUR_EMAIL_ID : 'Enter your email id',
         PASSWORD : "Password",
         SELECT_YOUR_SERVICE : "Occupation name",
-        SEARCH_SERVICE : "Occupation",
+        SEARCH_SERVICE : "Occupation :",
         SELECT_YOUR_CITY : "City name",
         SEARCH_CITY : "City",
         BUSINESS_USERNAME : "Business UserName",

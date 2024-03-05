@@ -52,9 +52,9 @@ const login = (props) => {
                     headertxt={{ color: WHITE_COLOR }}
                 />
 
-                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
                     <View style={style.firstFlex}>
-                        <Logo style={{ }} />
+                        <Logo style={{ height: 200, width: 200   }} />
                     </View>
                     <View style={style.secondFlex}>
                         <View style={style.topContainer}>
