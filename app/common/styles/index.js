@@ -63,6 +63,12 @@ const style = StyleSheet.create({
     fontFamily: FONT_FAMILY_REGULAR,
     color: GRAY_COLOR,
   },
+  selectedTextSortlong: {
+    fontSize: scale(14),
+    height : 50,
+    fontFamily: FONT_FAMILY_REGULAR,
+    color: GRAY_COLOR,
+  },
   selectedTextStylelong: {
     fontSize: scale(12),
     height : 55,

@@ -3,11 +3,12 @@ import { StatusBar, Text, View } from "react-native";
 import { normalizeHeight } from "./app/components/scaleFontSize";
 import FlashMessage from "react-native-flash-message";
 import Main from "./app/navigation/index";
-import { SearchProvider } from "./app/utils/searchContext";
+import { PaymentProvider, SearchProvider } from "./app/utils/searchContext";
 
 const App = () => {
   return (
     <SearchProvider>
+      {/* <PaymentProvider> */}
       <View
         style={{
           flex: 1,
@@ -23,6 +24,7 @@ const App = () => {
         <Main />
         <FlashMessage position="bottom" />
       </View>
+      {/* </PaymentProvider> */}
     </SearchProvider>
   );
 };

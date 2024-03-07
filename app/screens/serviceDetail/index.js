@@ -1,9 +1,10 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import ServiceDetailView from "./component/serviceDetailView";
 import apiEndPoints from "../../utils/apiEndPoints";
 import Loader from "../../components/loader";
 import { apiCall } from "../../utils/httpClient";
 import { useFocusEffect } from "@react-navigation/native";
+import { PaymentContext } from "../../utils/searchContext";
 const ServiceDetail = ({ route, navigation }) => {
   const { serviceDetaildata, searchdata } = route?.params || {};
   const [showSearch, setShowSearch] = useState(true);
@@ -18,7 +19,8 @@ const ServiceDetail = ({ route, navigation }) => {
   const [paymentList, setPaymentList] = useState({});
   const [image, setImage] = useState("");
 
-  
+ // const [paymentList, setPaymentList] = useContext(PaymentContext);
+
   
 
   useEffect(() => {
@@ -32,7 +34,8 @@ const ServiceDetail = ({ route, navigation }) => {
     const paydata = serviceDetaildata?.payments
       ? JSON.parse(serviceDetaildata?.payments)
       : {};
-    setPaymentList(paydata);
+   // setPaymentList(paydata);
+    setPaymentList((prevPaymentList) => ({ ...prevPaymentList, ...paydata }));
   }, []);
 
   // useEffect(() => {
