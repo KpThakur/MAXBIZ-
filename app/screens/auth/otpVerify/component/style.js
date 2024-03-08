@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import {
+  BLACK_COLOR,
   COMMON_COLOR,
   FONT_FAMILY_BOLD,
   FONT_FAMILY_REGULAR,
@@ -48,7 +49,7 @@ button: {
   enterOtptxt: {
     fontFamily: FONT_FAMILY_SEMIBOLD,
     fontSize: scale(18),
-    color : WHITE_COLOR
+    color : GRAY_COLOR
   },
   resendView: {
     flexDirection: "row",

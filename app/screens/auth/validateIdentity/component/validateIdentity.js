@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { View, Text, SafeAreaView, ScrollView, StatusBar } from 'react-native';
 import style from './style';
 import commomstyle from '../../../../common/styles';
@@ -6,8 +6,14 @@ import { Button, Input, Header } from '@components';
 import { GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW3,GRADIENT_COLOR_NEW2, WHITE_COLOR } from '../../../../utils/constants';
 import LinearGradient from 'react-native-linear-gradient';
 import StringsOfLanguages from '../../../../utils/translations';
+import styles from '../../otpVerify/component/style';
+import { useFocusEffect } from '@react-navigation/native';
 
 const validateIdentity = (props) => {
+
+    const { backscreen } = props;
+
+    
     return (
         <SafeAreaView style={commomstyle.container}>
             <StatusBar
@@ -16,18 +22,20 @@ const validateIdentity = (props) => {
           barStyle="dark-content"
         />
 
-            <LinearGradient 
+            {/* <LinearGradient 
              colors={[GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW3,GRADIENT_COLOR_NEW2]}
              locations={[0.24, 0.63, 0.87, 0.99]}
              style={commomstyle.gradientstyle}
-             > 
+             >  */}
 
             <Header
                 rightImg={false}
                 headerText={""}
                 headertxt={styles.headerTxt}
+                backscreen={backscreen}
+                showFindServiceOnBack={true}
             />
-             <ScrollView contentContainerStyle={{ flexGrow: 1}}>
+             <ScrollView contentContainerStyle={{ flexGrow: 1}} showsVerticalScrollIndicator={false}>
             <View style={style.container}>
               <View style={style.containercenter}> 
                 <Text style={style.firstText}>{StringsOfLanguages.VALIDATE_YOUR_IDENTITY}</Text>
@@ -102,7 +110,7 @@ const validateIdentity = (props) => {
                 </View>
             </View>
             </ScrollView>
-            </LinearGradient>
+            {/* </LinearGradient> */}
         </SafeAreaView>
     )
 }

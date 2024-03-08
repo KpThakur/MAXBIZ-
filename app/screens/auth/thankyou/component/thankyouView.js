@@ -11,7 +11,10 @@ import StringsOfLanguages from "../../../../utils/translations";
 const thankyouView = (props) => {
  
   return (
-    <View style={[style.container, {
+    <View style={[
+      style.container, 
+       
+      {
     /*  flexDirection: "column", */
     }]}>
       <StatusBar
@@ -20,11 +23,11 @@ const thankyouView = (props) => {
           barStyle="dark-content"
         />
       {/* <Header /> */}
-      <LinearGradient 
+      {/* <LinearGradient 
            colors={[GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW3, GRADIENT_COLOR_NEW2]}
            locations={[0.24, 0.63, 0.87]} // Make sure the length matches the colors array
            style={{ flexGrow: 1 }}
-      >
+      > */}
      <View style = {{padding : 20,flexGrow: 1,}}>
       <View style={style.imageview}>
         <View style={style.showimageview}>
@@ -50,7 +53,7 @@ const thankyouView = (props) => {
      </View>
      </View>  
     
-    </LinearGradient>
+    {/* </LinearGradient> */}
     </View>
   );
 };

@@ -5,45 +5,55 @@ import commomstyle from "../../../../common/styles";
 import { Button, Input, Header } from "@components";
 import Picker from "@components/picker";
 //import MultiSelect from 'react-native-multiple-select';
-import { Dropdown } from 'react-native-element-dropdown';
-import { MultiSelect } from 'react-native-element-dropdown';
-import { GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW3,GRADIENT_COLOR_NEW2, GRAY_COLOR, WHITE_COLOR } from '../../../../utils/constants';
+import { Dropdown } from "react-native-element-dropdown";
+import { MultiSelect } from "react-native-element-dropdown";
+import {
+  GRADIENT_COLOR_NEW1,
+  GRADIENT_COLOR_NEW3,
+  GRADIENT_COLOR_NEW2,
+  GRAY_COLOR,
+  WHITE_COLOR,
+} from "../../../../utils/constants";
 import LinearGradient from "react-native-linear-gradient";
 import StringsOfLanguages from "../../../../utils/translations";
 
 const data = [
-  { label: 'Item 1', value: '1' },
-  { label: 'Item 2', value: '2' },
-  { label: 'Item 3', value: '3' },
-  { label: 'Item 4', value: '4' },
-  { label: 'Item 5', value: '5' },
-  { label: 'Item 6', value: '6' },
-  { label: 'Item 7', value: '7' },
-  { label: 'Item 8', value: '8' },
+  { label: "Item 1", value: "1" },
+  { label: "Item 2", value: "2" },
+  { label: "Item 3", value: "3" },
+  { label: "Item 4", value: "4" },
+  { label: "Item 5", value: "5" },
+  { label: "Item 6", value: "6" },
+  { label: "Item 7", value: "7" },
+  { label: "Item 8", value: "8" },
 ];
 
 const registration = (props) => {
+  const { backscreen } = props;
   return (
     <SafeAreaView style={commomstyle.container}>
       <StatusBar
-          animated={true}
-          backgroundColor={WHITE_COLOR}
-          barStyle="dark-content"
-        />
-    <LinearGradient 
+        animated={true}
+        backgroundColor={WHITE_COLOR}
+        barStyle="dark-content"
+      />
+      {/* <LinearGradient 
            colors={[GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW3, GRADIENT_COLOR_NEW2]}
            locations={[0.24, 0.63, 0.87]} // Make sure the length matches the colors array
            style={{ flexGrow: 1 }}
-      > 
+      >  */}
       <Header
         rightImg={false}
         headerText={StringsOfLanguages.REGISTRATION}
-        headertxt={styles.headerTxt}
+        headertxt={style.headerTxt}
+        backscreen={backscreen}
+        showFindServiceOnBack={true}
       />
-      <ScrollView  style={{ flexGrow: 1 }}>
+      <ScrollView style={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
         <View style={style.container}>
-
-          <Text style={style.firstText}>{StringsOfLanguages.REGISTER_YOUR_BUSINESS}</Text>
+          <Text style={style.firstText}>
+            {StringsOfLanguages.REGISTER_YOUR_BUSINESS}
+          </Text>
 
           <View style={style.firstInput}>
             <Input
@@ -87,10 +97,7 @@ const registration = (props) => {
             </Text>
           </View>
 
-
           <View style={style.firstInput}>
-
-
             {/*  <MultiSelect
                 style={style.dropdownmulti}
                 items={props.items}
@@ -119,6 +126,7 @@ const registration = (props) => {
                 /> */}
 
             <MultiSelect
+              showsVerticalScrollIndicator={false}
               style={style.dropdown}
               placeholderStyle={style.placeholderStyle}
               selectedTextStyle={style.selectedTextStylemul}
@@ -132,11 +140,11 @@ const registration = (props) => {
               placeholder={StringsOfLanguages.SELECT_ITEM}
               searchPlaceholder={StringsOfLanguages.SEARCH}
               value={props.register.services}
-              onChange={item => {
+              onChange={(item) => {
                 props.setRegister({
                   ...props.register,
                   services: item,
-                })
+                });
               }}
               /* renderLeftIcon={() => (
                 <AntDesign
@@ -148,9 +156,6 @@ const registration = (props) => {
               )} */
               selectedStyle={style.selectedStyle}
             />
-
-
-
 
             {/*   <Picker
               onChangeText={(val) =>
@@ -174,6 +179,7 @@ const registration = (props) => {
           </View>
           <View style={style.firstInput}>
             <Dropdown
+              showsVerticalScrollIndicator={false}
               style={style.dropdown}
               placeholderStyle={style.placeholderStyle}
               selectedTextStyle={style.selectedTextStyle}
@@ -188,14 +194,13 @@ const registration = (props) => {
               placeholder={StringsOfLanguages.SELECT_CITY}
               searchPlaceholder={StringsOfLanguages.SEARCH_CITY_NAME}
               value={props.register.city}
-              onChange={item => {
-
+              onChange={(item) => {
                 props.setRegister({
                   ...props.register,
                   city: item.value,
-                })
+                });
               }}
-            /*  renderLeftIcon={() => (
+              /*  renderLeftIcon={() => (
              <AntDesign style={style.icon} color="black" name="Safety" size={20} />
             )} */
             />
@@ -260,7 +265,8 @@ const registration = (props) => {
             />
             <Text style={style.errorText}>{props.inputError.erroraddress}</Text>
           </View>
-          <View style={style.secondText}>
+
+          {/* <View style={style.secondText}>
             <Input
               onChangeText={(val) =>
                 props.setRegister({
@@ -275,8 +281,11 @@ const registration = (props) => {
               style={style.inputContainer}
               inputDsgn={style.inputDesign}
             />
-            <Text style={style.errorText}>{/* {props.inputError.erroraddress} */}</Text>
-          </View>
+            <Text style={style.errorText}>
+              {props.inputError.erroraddress}
+            </Text>
+          </View> */}
+
           <View style={style.firstInput}>
             <Input
               onChangeText={(val) =>
@@ -292,7 +301,9 @@ const registration = (props) => {
               style={style.inputContainer}
               inputDsgn={style.inputDesign}
             />
-            <Text style={style.errorText}>{/* {props.inputError.erroraddress} */}</Text>
+            <Text style={style.errorText}>
+              {/* {props.inputError.erroraddress} */}
+            </Text>
           </View>
           <View style={style.firstInput}>
             <Input
@@ -309,30 +320,44 @@ const registration = (props) => {
               style={style.inputContainer}
               inputDsgn={style.inputDesign}
             />
-            <Text style={style.errorText}>{/* {props.inputError.erroraddress} */}</Text>
-          </View>
-
-
-
-
-
-          <View style={[style.secondText, { flex: 1, flexDirection: 'row', justifyContent: 'space-between' }]}>
-            <View style={{ flex: 3 }}><Text style={style.labelText}>Business License</Text></View>
-            <View tyle={{ flex: 3 }}>
-              <Button buttonText={StringsOfLanguages.BROWSE} onPress={() => props.uploaddocument()} style={style.btnstyle} />
-            </View>
             <Text style={style.errorText}>
-              {props.inputError.errorcity}
+              {/* {props.inputError.erroraddress} */}
             </Text>
           </View>
 
+          <View
+            style={[
+              style.secondText,
+              {
+                flex: 1,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems:'center'
+              },
+            ]}
+          >
+            <View style={{ flex: 3 }}>
+              <Text style={style.labelText}>Business License</Text>
+            </View>
+            <View style={{ flex: 3 }}>
+              <Button
+                buttonText={StringsOfLanguages.BROWSE}
+                onPress={() => props.uploaddocument()}
+                style={style.btnstyle}
+              />
+            </View>
+            <Text style={style.errorText}>{props.inputError.errorcity}</Text>
+          </View>
 
           <View style={style.button}>
-            <Button buttonText={StringsOfLanguages.SUBMIT} onPress={() => props.toNextPage()} />
+            <Button
+              buttonText={StringsOfLanguages.SUBMIT}
+              onPress={() => props.toNextPage()}
+            />
           </View>
         </View>
       </ScrollView>
-      </LinearGradient>
+      {/* </LinearGradient> */}
     </SafeAreaView>
   );
 };

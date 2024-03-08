@@ -65,8 +65,10 @@ const style = StyleSheet.create({
         paddingHorizontal: scale(25)
     },
     lastItem: {
+        display:'flex',
+        flexDirection:'row',
         alignItems: 'center',
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         paddingTop: 5
     },
     newUserText: {

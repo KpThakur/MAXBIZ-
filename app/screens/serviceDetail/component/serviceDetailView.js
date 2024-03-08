@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import {
   SafeAreaView,
   Text,
@@ -34,6 +34,7 @@ import {
 } from "../../../utils/constants";
 import { scale } from "@utils/utils";
 import StringsOfLanguages from "../../../utils/translations";
+import { PaymentContext } from "../../../utils/searchContext";
 const ServiceDetailView = (props) => {
   const {
     toggleShowSearch,
@@ -44,6 +45,10 @@ const ServiceDetailView = (props) => {
     image,
     serviceDetaildata,
   } = props;
+
+ // const [paymentList, setPaymentList] = useContext(PaymentContext);
+
+
 
   const [isLoading, setIsLoading] = useState(false);
 
