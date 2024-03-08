@@ -121,16 +121,23 @@ const login = (props) => {
             />
           </View>
         </View>
-        {/*  <View style={style.thiredFlex}>
-                        <View style={style.lastItem}>
-                            <TouchableOpacity onPress={() => props.toRegistration()}
-                                activeOpacity={1}
-                                style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Text style={style.newUserText}>{StringsOfLanguages.NEW_USER} </Text>
-                                <Text style={style.registerText}>{StringsOfLanguages.REGISTER_OR_SIGNUP_WITH}</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View> */}
+        <View style={style.thiredFlex}>
+          {/* <View style={style.lastItem}>
+            <Text style={style.newUserText}>
+              {StringsOfLanguages.NEW_USER}{" "}
+            </Text>
+            <TouchableOpacity
+              onPress={() => props.toRegistration()}
+             // activeOpacity={0}
+              style={{ flexDirection: "row", alignItems: "center" }}
+            >
+             
+              <Text style={style.registerText}>
+                {StringsOfLanguages.REGISTER_OR_SIGNUP_WITH}
+              </Text>
+            </TouchableOpacity>
+          </View> */}
+        </View>
       </ScrollView>
       {/* </LinearGradient> */}
     </SafeAreaView>

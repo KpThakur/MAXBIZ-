@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     color: GRAY_COLOR,
   },
   selectedTextSortlong: {
-    fontSize: scale(14),
+    fontSize: scale(16),
     height : 50,
     fontFamily: FONT_FAMILY_REGULAR,
     color: GRAY_COLOR,

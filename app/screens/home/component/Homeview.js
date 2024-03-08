@@ -223,11 +223,12 @@ const HomeView = (props) => {
           <View style={styles.inputView}>
             <View style={styles.input}>
               <Dropdown
+                showsVerticalScrollIndicator={false}
                 style={styles.dropdown}
                 placeholderStyle={styles.placeholderStyle}
                // selectedTextStyle={styles.selectedTextStyle}
                // selectedTextStyle={searchdata.servicename.length > 35 ? styles.selectedTextStylelong : styles.selectedTextStyle}
-                selectedTextStyle={searchdata.servicename.length > 55 ? styles.selectedTextStylelong : searchdata.servicename.length > 35 ? styles.selectedTextSortlong : styles.selectedTextStyle}
+                selectedTextStyle={searchdata.servicename.length > 55 ? styles.selectedTextStylelong : searchdata.servicename.length > 33 ? styles.selectedTextSortlong : styles.selectedTextStyle}
                 inputSearchStyle={styles.inputSearchStyle}
                 iconStyle={styles.iconStyle}
                 containerStyle={styles.dropdownContener}
@@ -288,6 +289,7 @@ const HomeView = (props) => {
                             </View> */}
             <View style={styles.input}>
               <Dropdown
+                showsVerticalScrollIndicator={false}
                 style={styles.dropdown}
                 placeholderStyle={styles.placeholderStyle}
                 selectedTextStyle={styles.selectedTextStyle}

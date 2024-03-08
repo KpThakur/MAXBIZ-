@@ -18,7 +18,7 @@ const style = StyleSheet.create({
     },
     labelText: {
         fontFamily: FONT_FAMILY_REGULAR,
-        color: PLACEHOLDER_COLOR,
+        color: GRAY_COLOR,
         fontWeight: '400',
         marginHorizontal: scale(9),
         fontSize: scale(15),
@@ -80,11 +80,11 @@ const style = StyleSheet.create({
         marginRight: scale(5),
     },
     dropdownContener: {
-        backgroundColor: GRADIENT_COLOR_NEW2, 
+        backgroundColor: WHITE_COLOR, 
         marginTop: -2, 
         borderBottomRightRadius: 5, 
         borderBottomLeftRadius: 5, 
-        borderColor: GRAY_COLOR,
+        borderColor: WHITE_COLOR,
         borderWidth : 1,
         color: GRAY_COLOR
     },

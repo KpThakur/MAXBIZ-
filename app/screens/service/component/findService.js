@@ -91,11 +91,12 @@ const FindService = (props) => {
             <View style={styles.inputView}>
               <View style={styles.input}>
                 <Dropdown
+                  showsVerticalScrollIndicator={false}
                   style={commomstyle.dropdown}
                   placeholderStyle={commomstyle.placeholderStyle}
                   // selectedTextStyle={commomstyle.selectedTextStyle}
                  // selectedTextStyle={searchdata.servicename.length > 35 ? commomstyle.selectedTextStylelong : commomstyle.selectedTextStyle}
-                  selectedTextStyle={searchdata.servicename.length > 55 ? commomstyle.selectedTextStylelong : searchdata.servicename.length > 35 ? commomstyle.selectedTextSortlong : commomstyle.selectedTextStyle}
+                  selectedTextStyle={searchdata.servicename.length > 55 ? commomstyle.selectedTextStylelong : searchdata.servicename.length > 33 ? commomstyle.selectedTextSortlong : commomstyle.selectedTextStyle}
                   inputSearchStyle={commomstyle.inputSearchStyle}
                   iconStyle={commomstyle.iconStyle}
                   containerStyle={commomstyle.dropdownContener}
@@ -131,6 +132,7 @@ const FindService = (props) => {
                                 /> */}
 
                 <Dropdown
+                  showsVerticalScrollIndicator={false}
                   style={commomstyle.dropdown}
                   placeholderStyle={commomstyle.placeholderStyle}
                   selectedTextStyle={commomstyle.selectedTextStyle}

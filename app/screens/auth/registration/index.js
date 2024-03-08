@@ -2,41 +2,47 @@ import React, { useState } from "react";
 import Registration from "./component/registration";
 import ImagePicker from "react-native-image-crop-picker";
 
-import MultiSelect from 'react-native-multiple-select';
+import MultiSelect from "react-native-multiple-select";
 import StringsOfLanguages from "../../../utils/translations";
 
-const items = [{
-    id: '92iijs7yta',
-    name: 'Ondo'
-  }, {
-    id: 'a0s0a8ssbsd',
-    name: 'Ogun'
-  }, {
-    id: '16hbajsabsd',
-    name: 'Calabar'
-  }, {
-    id: 'nahs75a5sg',
-    name: 'Lagos'
-  }, {
-    id: '667atsas',
-    name: 'Maiduguri'
-  }, {
-    id: 'hsyasajs',
-    name: 'Anambra'
-  }, {
-    id: 'djsjudksjd',
-    name: 'Benue'
-  }, {
-    id: 'sdhyaysdj',
-    name: 'Kaduna'
-  }, {
-    id: 'suudydjsjd',
-    name: 'Abuja'
-    }
+const items = [
+  {
+    id: "92iijs7yta",
+    name: "Ondo",
+  },
+  {
+    id: "a0s0a8ssbsd",
+    name: "Ogun",
+  },
+  {
+    id: "16hbajsabsd",
+    name: "Calabar",
+  },
+  {
+    id: "nahs75a5sg",
+    name: "Lagos",
+  },
+  {
+    id: "667atsas",
+    name: "Maiduguri",
+  },
+  {
+    id: "hsyasajs",
+    name: "Anambra",
+  },
+  {
+    id: "djsjudksjd",
+    name: "Benue",
+  },
+  {
+    id: "sdhyaysdj",
+    name: "Kaduna",
+  },
+  {
+    id: "suudydjsjd",
+    name: "Abuja",
+  },
 ];
-
-
-
 
 const RegistrationView = ({ navigation }) => {
   const [inputError, setinputError] = useState({});
@@ -45,10 +51,8 @@ const RegistrationView = ({ navigation }) => {
 
   const onSelectedItemsChange = (servicesData) => {
     //this.setState({ selectedItems });
-    (servicesData.length <= 3)?
-    setServicesData(servicesData):'null'
+    servicesData.length <= 3 ? setServicesData(servicesData) : "null";
   };
-
 
   const uploaddocument = () => {
     ImagePicker.openPicker({}).then((images) => {
@@ -59,13 +63,13 @@ const RegistrationView = ({ navigation }) => {
     businessusername: "",
     businessname: "",
     address: "",
-     about_us: "",
+    about_us: "",
     /*areas: "",
     mainservice: "", */
     operation_hours: "",
     payment: "",
     phone_no: "",
-    website_url: "", 
+    website_url: "",
     services: [],
     city: "",
     head_count: "",
@@ -78,7 +82,6 @@ const RegistrationView = ({ navigation }) => {
     let errorservices = "";
     let errorindustry = "";
     let errorcity = "";
-    
 
     if (register.businessusername == "") {
       errorbusinessusername = StringsOfLanguages.PLEASE_ENTER_BUSINESS_USERNAME;
@@ -89,8 +92,8 @@ const RegistrationView = ({ navigation }) => {
     if (register.address == "") {
       erroraddress = StringsOfLanguages.PLEASE_ENTER_ADDRESS;
     }
-   
-    if (servicesData.length  == 0) {
+
+    if (servicesData.length == 0) {
       errorservices = StringsOfLanguages.PLEASE_ENTER_SERVICES;
     }
     /* if (register.industry == "") {
@@ -103,11 +106,15 @@ const RegistrationView = ({ navigation }) => {
       errorservices ||
       errorindustry ||
       errorcity
-     
     ) {
       setinputError({
         ...inputError,
-        errorbusinessusername,errorbusinessname, erroraddress ,errorservices,errorindustry,errorcity
+        errorbusinessusername,
+        errorbusinessname,
+        erroraddress,
+        errorservices,
+        errorindustry,
+        errorcity,
       });
       return false;
     }
@@ -118,10 +125,14 @@ const RegistrationView = ({ navigation }) => {
     navigation.navigate("thankyouScreen");
     const valid = validationFrom();
     if (valid) {
-      
     }
   };
-/*   const uploaddocument = () => {
+
+  const backscreen = () => {
+    navigation.navigate("validateIdentityScreen");
+  };
+
+  /*   const uploaddocument = () => {
     
   }; */
   return (
@@ -135,6 +146,7 @@ const RegistrationView = ({ navigation }) => {
       setServicesData={setServicesData}
       onSelectedItemsChange={onSelectedItemsChange}
       items={items}
+      backscreen={backscreen}
     />
   );
 };

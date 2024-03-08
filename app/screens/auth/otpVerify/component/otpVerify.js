@@ -12,6 +12,9 @@ import commomstyle from '../../../../common/styles';
 import LinearGradient from "react-native-linear-gradient";
 import StringsOfLanguages from "../../../../utils/translations";
 const OtpVerify = (props) => {
+  const { backscreen, otp, setOtp } = props;
+
+  
   return (
     <SafeAreaView style={commomstyle.container}>
       <StatusBar
@@ -19,14 +22,16 @@ const OtpVerify = (props) => {
           backgroundColor={WHITE_COLOR}
           barStyle="dark-content"
         />
-       <LinearGradient 
+       {/* <LinearGradient 
              colors={[GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW3,GRADIENT_COLOR_NEW2]}
              locations={[0.24, 0.63, 0.87, 0.99]}
-             style = {{flexGrow : 1}}> 
+             style = {{flexGrow : 1}}>  */}
       <Header
         rightImg={false}
         headerText={StringsOfLanguages.OTP_VERIFICATION}
         headertxt={styles.headerTxt}
+        backscreen={backscreen}
+        showFindServiceOnBack={true}
       />
        <ScrollView ontentContainerStyle={{ flexGrow: 1}}>
       <View style={styles.container}>
@@ -36,6 +41,8 @@ const OtpVerify = (props) => {
             containerStyle={styles.otpInputContainer}
             textInputStyle={styles.otpInputTxt}
             tintColor={COMMON_COLOR}
+            defaultValue={otp}
+            handleTextChange={(text) => setOtp(text)}
           ></OTPTextInput>
 
           <View style={styles.resendView}>
@@ -52,7 +59,10 @@ const OtpVerify = (props) => {
             containerStyle={styles.otpInputContainer}
             textInputStyle={styles.otpInputTxt}
             tintColor={COMMON_COLOR}
+            defaultValue={otp}
+            handleTextChange={(text) => setOtp(text)}
           ></OTPTextInput>
+
           <View style={styles.resendView}>
             <Text style={styles.resendTxt}>{StringsOfLanguages.DIDNT_RECIEVE_A_EMAIL_CODE}</Text>
             <View>
@@ -62,12 +72,13 @@ const OtpVerify = (props) => {
             </View>
           </View>
           </View>
+          
         <View style={styles.button}>
           <Button buttonText={StringsOfLanguages.VERIFY}  onPress={() => props.toNextPage()}/>
         </View>
       </View>
       </ScrollView>
-      </LinearGradient>
+      {/* </LinearGradient> */}
     </SafeAreaView>
   );
 };

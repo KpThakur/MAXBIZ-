@@ -17,15 +17,15 @@ export const SearchProvider = (props) => {
 };
 
 
-// export const PaymentContext = createContext();
+export const LoadingContext = createContext();
 
-// export const PaymentProvider = (props) => {
+export const LoadingProvider = (props) => {
 
-//   const [paymentList, setPaymentList] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
-//   return (
-//     <PaymentContext.Provider value={[paymentList, setPaymentList]}>
-//       {props.children}
-//     </PaymentContext.Provider>
-//   );
-// };
+  return (
+    <LoadingContext.Provider value={[isLoading, setIsLoading]}>
+      {props.children}
+    </LoadingContext.Provider>
+  );
+};
