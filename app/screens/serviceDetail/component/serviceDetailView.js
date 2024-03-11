@@ -28,6 +28,7 @@ import LinearGradient from "react-native-linear-gradient";
 import {
   BLACK_COLOR,
   COMMON_COLOR,
+  GOLDEN_COLOR,
   GRAY_COLOR,
   WHITE_COLOR,
   YELLOW_COLOR,
@@ -45,6 +46,7 @@ const ServiceDetailView = (props) => {
     image,
     serviceDetaildata,
   } = props;
+    console.log("🚀 ~ ServiceDetailView ~ paymentList:", paymentList)
 
  // const [paymentList, setPaymentList] = useContext(PaymentContext);
 
@@ -146,7 +148,7 @@ const ServiceDetailView = (props) => {
                   /*  fullStar={ICONS.starIcon}
                    emptyStar={ICONS.starBlackIcon} */
                   starSize={20}
-                  fullStarColor={YELLOW_COLOR}
+                  fullStarColor={GOLDEN_COLOR}
                   starStyle={{}}
                 />
               </View>
@@ -188,7 +190,7 @@ const ServiceDetailView = (props) => {
               <View style={styles.addViewtext}>
                 <Text style={styles.serveTxt}>
                   {/* {StringsOfLanguages.SERVICES} */}
-                  {StringsOfLanguages.SEARCH_SERVICE}
+                  {StringsOfLanguages.SEARCH_SERVICE}:
                 </Text>
               </View>
               <View style={styles.addViewcontent}>
@@ -196,7 +198,7 @@ const ServiceDetailView = (props) => {
                   {serviceDetail?.servicedata
                     ? serviceDetail?.servicedata
                         .map((item) => item.title)
-                        .join(" | ")
+                        .join(", ")
                     : ""}
                 </Text>
               </View>
@@ -256,11 +258,11 @@ const ServiceDetailView = (props) => {
                 <Text style={styles.addrsTxt}>
                   {/* {"Cash | Credit card | Cash app | Paypal"} */}
                   {paymentList?.cash == 1 ? "Cash, " : null}
-                  {paymentList?.creditcard == 1 ? "Credit card, " : null}
+                  {paymentList?.creditcard == 1 ? "Card, " : null}
                   {/* {paymentList?.cashapp == 1 ? "Cash app, " : null} */}
-                  {paymentList?.Check == 1 ? "Check, " : null}
+                  {paymentList?.cashapp == 1 ? "Check, " : null}
                   {paymentList?.paypal == 1 ? "Paypal, " : null}
-                  {paymentList?.zelle == 1 || paymentList?.zelle == 0
+                  {paymentList?.zelle == 1
                     ? "Zelle"
                     : null}
                 </Text>

@@ -20,7 +20,7 @@ import Reviews from "../../../components/reviews";
 import { Rating, AirbnbRating } from "react-native-ratings";
 import tickMark from "../../../assets/images/tickMark.png";
 import LinearGradient from "react-native-linear-gradient";
-import { WHITE_COLOR,GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW2, GRADIENT_COLOR_NEW3, GRADIENT_COLOR_NEW4, GRAY_COLOR, COMMON_COLOR } from "../../../utils/constants";
+import { WHITE_COLOR,GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW2, GRADIENT_COLOR_NEW3, GRADIENT_COLOR_NEW4, GRAY_COLOR, COMMON_COLOR, YELLOW_COLOR, GOLDEN_COLOR } from "../../../utils/constants";
 import StarRating from "react-native-star-rating";
 import { ICONS } from "../../../utils/imagePath";
 import Notfound from "../../../components/notfound";
@@ -66,7 +66,7 @@ const Review = (props) => {
                  /*   fullStar={ICONS.starIcon}
                   emptyStar={ICONS.starBlackIcon} */
                   starSize={15}
-                  fullStarColor = {GRAY_COLOR}
+                  fullStarColor = {GOLDEN_COLOR}
                 />
             </View>
             <Text style={styles.detailText}>{item?.description}</Text>

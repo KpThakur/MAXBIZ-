@@ -14,13 +14,10 @@ const index = ({ navigation }) => {
 
    /*  const getuserData = async () => {
         const userToken  = await AsyncStorage.getItem('userToken');
-        console.log("🚀 ~ file: index.js:9 ~ getuserData ~ userToken:", userToken)
         if (userToken !== null) {
             const userData = await AsyncStorage.getItem('userData')
-            console.log("🚀 ~ getuserData ~ userData:", userData)
           setUserData(JSON.parse(userData))
           getBusinessdetail()
-          console.log("🚀 ~ file: index.js:12 ~ getuserData ~ JSON.parse(userData):", JSON.parse(userData))
         }
       }
    
@@ -39,9 +36,7 @@ const index = ({ navigation }) => {
                 profileid : userData.profileid,
                 businessid : userData.businessid
             }
-            console.log("🚀 ~ file: index.js:40 ~ getBusinessdetail ~ parms:", parms)
             const response = await apiCall('POST', apiEndPoints.BUSINESSDETAIL, parms);
-            console.log("🚀 ~ file: index.js:44 ~ getBusinessdetail ~ response:", response)
            
             if (response.status === 200) {
                
@@ -56,7 +51,6 @@ const index = ({ navigation }) => {
                   });
             } 
         } catch (error) {
-            console.log("🚀 ~ file: index.js:71 ~ toJoin ~ error:", error)
             setIsLoading(false)
             
         } 

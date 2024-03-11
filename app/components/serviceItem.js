@@ -31,6 +31,7 @@ import {
   BORDERLINE_COLOR,
   FONT_FAMILY_LIGHT,
   FONT_FAMILY_MEDIUM,
+  GOLDEN_COLOR,
   GRADIENT_COLOR_NEW2,
   GRADIENT_COLOR_NEW3,
   GRADIENT_COLOR_NEW4,
@@ -116,7 +117,7 @@ const ServiceItem = (props) => {
                 //fullStar={ICONS.starIcon}
                 //emptyStar={ICONS.starBlackIcon}
                 starSize={20}
-                fullStarColor={YELLOW_COLOR}
+                fullStarColor={GOLDEN_COLOR}
               />
             </View>
             <Text style={styles.hour}>{pricemodel}</Text>
@@ -151,12 +152,12 @@ const ServiceItem = (props) => {
 
           <View style={styles.addView}>
             <View style={styles.addViewtext}>
-              <Text style={styles.serveTxt}>{StringsOfLanguages.SEARCH_SERVICE}</Text>
+              <Text style={styles.serveTxt}>{StringsOfLanguages.SEARCH_SERVICE}:</Text>
             </View>
             <View style={styles.addViewcontent}>
               <Text style={styles.addrsTxt}>
                 {service_name
-                  ? service_name.map((item) => item.title).join(" | ")
+                  ? service_name.map((item) => item.title).join(", ")
                   : ""}
               </Text>
             </View>
