@@ -29,6 +29,7 @@ export const THEME_LIN_GRAD_COLOR = "#323232"
 export const EXTRA_COLOR = "#616161"
 export const BORDER_COLOR = "#616161"
 export const YELLOW_COLOR = "#FFD700"
+export const GOLDEN_COLOR = "rgb(241, 165, 69)"
 
 
 //Fonts
