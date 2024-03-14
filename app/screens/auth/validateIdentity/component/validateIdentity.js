@@ -39,7 +39,7 @@ const validateIdentity = (props) => {
             <View style={style.container}>
               <View style={style.containercenter}> 
                 <Text style={style.firstText}>{StringsOfLanguages.VALIDATE_YOUR_IDENTITY}</Text>
-                <View style={style.firstInput}>
+                {/* <View style={style.firstInput}>
                     <Input
                         onChangeText={(val) => props.setLoginData({
                             ...props.loginData,
@@ -53,8 +53,8 @@ const validateIdentity = (props) => {
                         inputDsgn={style.inputDesign}
                     />
                      <Text style={style.errorText}>{props.inputError.firstnameError}</Text>
-                </View>
-                <View style={style.firstInput}>
+                </View> */}
+                {/* <View style={style.firstInput}>
                     <Input
                         onChangeText={(val) => props.setLoginData({
                             ...props.loginData,
@@ -68,8 +68,8 @@ const validateIdentity = (props) => {
                         inputDsgn={style.inputDesign}
                     />
                      <Text style={style.errorText}>{props.inputError.lastnameError}</Text>
-                </View>
-                <View style={style.firstInput}>
+                </View> */}
+                {/* <View style={style.firstInput}>
                     <Input
                         onChangeText={(val) => props.setLoginData({
                             ...props.loginData,
@@ -85,14 +85,14 @@ const validateIdentity = (props) => {
                         maxLength = {12}
                     />
                      <Text style={style.errorText}>{props.inputError.mobileNoError}</Text>
-                </View>
+                </View> */}
                 <View style={style.secondText}>
                     <Input
                         onChangeText={(val) => props.setLoginData({
                             ...props.loginData,
-                            emailaddr: val
+                            email: val
                         })}
-                        value={props.loginData.emailaddr}
+                        value={props.loginData.email}
                         image="noNeed"
                         placeholder={StringsOfLanguages.YOUR_EMAIL_ADDRESS}
                         labelTxt={style.labelTxt}

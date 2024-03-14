@@ -122,7 +122,7 @@ const login = (props) => {
           </View>
         </View>
         <View style={style.thiredFlex}>
-          {/* <View style={style.lastItem}>
+          <View style={style.lastItem}>
             <Text style={style.newUserText}>
               {StringsOfLanguages.NEW_USER}{" "}
             </Text>
@@ -136,7 +136,7 @@ const login = (props) => {
                 {StringsOfLanguages.REGISTER_OR_SIGNUP_WITH}
               </Text>
             </TouchableOpacity>
-          </View> */}
+          </View>
         </View>
       </ScrollView>
       {/* </LinearGradient> */}

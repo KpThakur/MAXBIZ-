@@ -29,7 +29,10 @@ const data = [
 ];
 
 const registration = (props) => {
-  const { backscreen } = props;
+  const { backscreen, allCity, getcitylist, industryList, getServiceList, submitForResig, imageData, uploaddocument, extractFileName} = props;
+
+ 
+
   return (
     <SafeAreaView style={commomstyle.container}>
       <StatusBar
@@ -98,6 +101,24 @@ const registration = (props) => {
           </View>
 
           <View style={style.firstInput}>
+            <Input
+              onChangeText={(val) =>
+                props.setRegister({
+                  ...props.register,
+                  address: val,
+                })
+              }
+              value={props.register.address}
+              image="noNeed"
+              placeholder={StringsOfLanguages.ADDRESS}
+              labelTxt={style.labelTxt}
+              style={style.inputContainer}
+              inputDsgn={style.inputDesign}
+            />
+            <Text style={style.errorText}>{props.inputError.erroraddress}</Text>
+          </View>
+
+          <View style={style.firstInput}>
             {/*  <MultiSelect
                 style={style.dropdownmulti}
                 items={props.items}
@@ -125,7 +146,7 @@ const registration = (props) => {
 
                 /> */}
 
-            <MultiSelect
+            {/* <MultiSelect
               showsVerticalScrollIndicator={false}
               style={style.dropdown}
               placeholderStyle={style.placeholderStyle}
@@ -146,18 +167,18 @@ const registration = (props) => {
                   services: item,
                 });
               }}
-              /* renderLeftIcon={() => (
+               renderLeftIcon={() => (
                 <AntDesign
                   style={style.icon}
                   color="black"
                   name="Safety"
                   size={20}
                 />
-              )} */
+              )} 
               selectedStyle={style.selectedStyle}
-            />
+            /> */}
 
-            {/*   <Picker
+            {/* <Picker
               onChangeText={(val) =>
                 props.setRegister({
                   ...props.register,
@@ -186,12 +207,16 @@ const registration = (props) => {
               inputSearchStyle={style.inputSearchStyle}
               iconStyle={style.iconStyle}
               containerStyle={style.dropdownContener}
-              data={data}
+              onChangeText={getcitylist}
+              // data={data}
+              data={allCity ? allCity : []}
               search
               maxHeight={300}
-              labelField="label"
-              valueField="value"
-              placeholder={StringsOfLanguages.SELECT_CITY}
+              // labelField="label"
+              // valueField="value"
+              labelField="formattedLabel"
+              valueField="id"
+              placeholder={StringsOfLanguages.SEARCH_CITY}
               searchPlaceholder={StringsOfLanguages.SEARCH_CITY_NAME}
               value={props.register.city}
               onChange={(item) => {
@@ -207,6 +232,42 @@ const registration = (props) => {
           </View>
 
           <View style={style.firstInput}>
+            <Dropdown
+              showsVerticalScrollIndicator={false}
+              style={style.dropdown}
+              placeholderStyle={style.placeholderStyle}
+              selectedTextStyle={style.selectedTextStyle}
+            //  selectedTextStyle={props.register?.servicename.length > 55 ? commomstyle.selectedTextStylelong : props.register?.servicename.length > 33 ? commomstyle.selectedTextSortlong : commomstyle.selectedTextStyle}
+              inputSearchStyle={style.inputSearchStyle}
+              iconStyle={style.iconStyle}
+              containerStyle={style.dropdownContener}
+              onChangeText={getServiceList}
+              // data={data}
+              data={industryList ? industryList : []}
+              search
+              maxHeight={300}
+              labelField="title"
+              valueField="naicsid"
+              // labelField="formattedLabel"
+              // valueField="id"
+              placeholder={StringsOfLanguages.INDUSTRY_}
+              searchPlaceholder={StringsOfLanguages.SEARCH_INDUSTRY_NAME}
+              value={props.register.industry}
+              onChange={(item) => {
+                props.setRegister({
+                  ...props.register,
+                  serviceid: item.naicsid,
+                  servicename: item.title,
+                });
+              }}
+              
+              /*  renderLeftIcon={() => (
+             <AntDesign style={style.icon} color="black" name="Safety" size={20} />
+            )} */
+            />
+          </View>
+
+          {/* <View style={style.firstInput}>
             <Input
               onChangeText={(val) =>
                 props.setRegister({
@@ -223,10 +284,53 @@ const registration = (props) => {
               msg={props.inputError.errorbusinessname}
             />
             <Text style={style.errorText}>
-              {/*  {props.inputError.errorbusinessname} */}
+               {props.inputError.errorbusinessname}
+            </Text>
+          </View> */}
+
+          {/* <View style={style.firstInput}>
+            <Input
+              onChangeText={(val) =>
+                props.setRegister({
+                  ...props.register,
+                  industry: val,
+                })
+              }
+              value={props.register.industry}
+              image="noNeed"
+              placeholder={StringsOfLanguages.INDUSTRY_}
+              labelTxt={style.labelTxt}
+              style={style.inputContainer}
+              inputDsgn={style.inputDesign}
+              msg={props.inputError.errorindustry}
+            />
+            <Text style={style.errorText}>
+              {props.inputError.errorindustry}
+            </Text>
+          </View> */}
+
+          <View style={style.firstInput}>
+            <Input
+              onChangeText={(val) =>
+                props.setRegister({
+                  ...props.register,
+                  occupation: val,
+                })
+              }
+              value={props.register.occupation}
+              image="noNeed"
+              placeholder={StringsOfLanguages.SEARCH_SERVICE}
+              labelTxt={style.labelTxt}
+              style={style.inputContainer}
+              inputDsgn={style.inputDesign}
+              msg={props.inputError.erroroccuption}
+            />
+            <Text style={style.errorText}>
+              {props.inputError.erroroccuption}
             </Text>
           </View>
-          <View style={style.firstInput}>
+
+          {/* <View style={style.firstInput}>
             <Input
               onChangeText={(val) =>
                 props.setRegister({
@@ -243,28 +347,11 @@ const registration = (props) => {
               msg={props.inputError.errorbusinessname}
             />
             <Text style={style.errorText}>
-              {/* {props.inputError.errorbusinessname} */}
+              {props.inputError.errorbusinessname}
             </Text>
-          </View>
+          </View> */}
 
           <View></View>
-          <View style={style.firstInput}>
-            <Input
-              onChangeText={(val) =>
-                props.setRegister({
-                  ...props.register,
-                  address: val,
-                })
-              }
-              value={props.register.address}
-              image="noNeed"
-              placeholder={StringsOfLanguages.ADDRESS}
-              labelTxt={style.labelTxt}
-              style={style.inputContainer}
-              inputDsgn={style.inputDesign}
-            />
-            <Text style={style.errorText}>{props.inputError.erroraddress}</Text>
-          </View>
 
           {/* <View style={style.secondText}>
             <Input
@@ -286,7 +373,7 @@ const registration = (props) => {
             </Text>
           </View> */}
 
-          <View style={style.firstInput}>
+          {/* <View style={style.firstInput}>
             <Input
               onChangeText={(val) =>
                 props.setRegister({
@@ -302,10 +389,11 @@ const registration = (props) => {
               inputDsgn={style.inputDesign}
             />
             <Text style={style.errorText}>
-              {/* {props.inputError.erroraddress} */}
+              {props.inputError.erroraddress}
             </Text>
-          </View>
-          <View style={style.firstInput}>
+          </View> */}
+
+          {/* <View style={style.firstInput}>
             <Input
               onChangeText={(val) =>
                 props.setRegister({
@@ -321,9 +409,9 @@ const registration = (props) => {
               inputDsgn={style.inputDesign}
             />
             <Text style={style.errorText}>
-              {/* {props.inputError.erroraddress} */}
+              {props.inputError.erroraddress}
             </Text>
-          </View>
+          </View> */}
 
           <View
             style={[
@@ -332,7 +420,7 @@ const registration = (props) => {
                 flex: 1,
                 flexDirection: "row",
                 justifyContent: "space-between",
-                alignItems:'center'
+                alignItems: "center",
               },
             ]}
           >
@@ -342,17 +430,19 @@ const registration = (props) => {
             <View style={{ flex: 3 }}>
               <Button
                 buttonText={StringsOfLanguages.BROWSE}
-                onPress={() => props.uploaddocument()}
+                onPress={() => uploaddocument()}
                 style={style.btnstyle}
               />
             </View>
-            <Text style={style.errorText}>{props.inputError.errorcity}</Text>
           </View>
+          {/* <Text style={style.errorText}>{imageData ? imageData.filename : ""}</Text> */}
+          <Text style={style.errorText}>{imageData ? extractFileName(imageData.path) : ""}</Text>
+          <Text style={style.errorText}>{props.inputError.errorbusiness_photo_url}</Text>
 
           <View style={style.button}>
             <Button
               buttonText={StringsOfLanguages.SUBMIT}
-              onPress={() => props.toNextPage()}
+              onPress={() => submitForResig()}
             />
           </View>
         </View>

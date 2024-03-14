@@ -12,7 +12,7 @@ import commomstyle from '../../../../common/styles';
 import LinearGradient from "react-native-linear-gradient";
 import StringsOfLanguages from "../../../../utils/translations";
 const OtpVerify = (props) => {
-  const { backscreen, otp, setOtp } = props;
+  const { backscreen, otp, setOtp, toverifyOtp, resendOtp, otpInputRef } = props;
 
   
   return (
@@ -36,23 +36,23 @@ const OtpVerify = (props) => {
        <ScrollView ontentContainerStyle={{ flexGrow: 1}}>
       <View style={styles.container}>
         <View style={styles.containercenter}>
-          <Text style={styles.enterOtptxt}>{StringsOfLanguages.ENTER_YOUR_MOBILE_OTP}</Text>
+          {/* <Text style={styles.enterOtptxt}>{StringsOfLanguages.ENTER_YOUR_MOBILE_OTP}</Text>
           <OTPTextInput
             containerStyle={styles.otpInputContainer}
             textInputStyle={styles.otpInputTxt}
             tintColor={COMMON_COLOR}
             defaultValue={otp}
             handleTextChange={(text) => setOtp(text)}
-          ></OTPTextInput>
+          ></OTPTextInput> */}
 
-          <View style={styles.resendView}>
+          {/* <View style={styles.resendView}>
             <Text style={styles.resendTxt}>{StringsOfLanguages.DIDNT_RECIEVE_A_MOBILE_CODE}</Text>
             <View>
               <TouchableOpacity>
                 <Text style={styles.resendTxtCommon}>{StringsOfLanguages.RESEND}</Text>
               </TouchableOpacity>
             </View>
-          </View>
+          </View> */}
 
           <Text style={styles.enterOtptxt}>{StringsOfLanguages.ENTER_YOUR_EMAIL_OTP}</Text>
           <OTPTextInput
@@ -61,12 +61,13 @@ const OtpVerify = (props) => {
             tintColor={COMMON_COLOR}
             defaultValue={otp}
             handleTextChange={(text) => setOtp(text)}
+           // ref={e => (otpInputRef = e)}
           ></OTPTextInput>
 
           <View style={styles.resendView}>
             <Text style={styles.resendTxt}>{StringsOfLanguages.DIDNT_RECIEVE_A_EMAIL_CODE}</Text>
             <View>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={()=> resendOtp()}>
                 <Text style={styles.resendTxtCommon}>{StringsOfLanguages.RESEND}</Text>
               </TouchableOpacity>
             </View>
@@ -74,7 +75,7 @@ const OtpVerify = (props) => {
           </View>
           
         <View style={styles.button}>
-          <Button buttonText={StringsOfLanguages.VERIFY}  onPress={() => props.toNextPage()}/>
+          <Button buttonText={StringsOfLanguages.VERIFY}  onPress={() => toverifyOtp()}/>
         </View>
       </View>
       </ScrollView>

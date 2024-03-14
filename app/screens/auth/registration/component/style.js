@@ -91,8 +91,10 @@ const style = StyleSheet.create({
     dropdown: {
         marginBottom: scale(15),
         height: scale(45),
-        borderBottomColor: GRAY_COLOR,
+        borderBottomColor: BORDERLINE_COLOR,
         borderBottomWidth: scale(2),
+       
+
     },
 
     placeholderStyle: {
@@ -120,10 +122,12 @@ const style = StyleSheet.create({
         borderRadius: 12,
         backgroundColor: GRADIENT_COLOR_NEW2
     },
-    /* iconStyle: {
-      width: 20,
-      height: 20,
-    }, */
+     iconStyle: {
+    //   width: 20,
+    //   height: 20,
+    // tintColor: WHITE_COLOR
+
+    }, 
    
 
 })
