@@ -13,6 +13,7 @@ import {
   GRADIENT_COLOR_NEW2,
   GRAY_COLOR,
   WHITE_COLOR,
+  COMMON_COLOR,
 } from "../../../../utils/constants";
 import LinearGradient from "react-native-linear-gradient";
 import StringsOfLanguages from "../../../../utils/translations";
@@ -29,9 +30,17 @@ const data = [
 ];
 
 const registration = (props) => {
-  const { backscreen, allCity, getcitylist, industryList, getServiceList, submitForResig, imageData, uploaddocument, extractFileName} = props;
-
- 
+  const {
+    backscreen,
+    allCity,
+    getcitylist,
+    industryList,
+    getServiceList,
+    submitForResig,
+    imageData,
+    uploaddocument,
+    extractFileName,
+  } = props;
 
   return (
     <SafeAreaView style={commomstyle.container}>
@@ -81,6 +90,7 @@ const registration = (props) => {
 
           <View style={style.firstInput}>
             <Input
+              // editable={false}
               onChangeText={(val) =>
                 props.setRegister({
                   ...props.register,
@@ -229,6 +239,9 @@ const registration = (props) => {
              <AntDesign style={style.icon} color="black" name="Safety" size={20} />
             )} */
             />
+             <Text style={style.errorText}>
+              {props.inputError.errorcity}
+            </Text>
           </View>
 
           <View style={style.firstInput}>
@@ -236,8 +249,17 @@ const registration = (props) => {
               showsVerticalScrollIndicator={false}
               style={style.dropdown}
               placeholderStyle={style.placeholderStyle}
-              selectedTextStyle={style.selectedTextStyle}
-            //  selectedTextStyle={props.register?.servicename.length > 55 ? commomstyle.selectedTextStylelong : props.register?.servicename.length > 33 ? commomstyle.selectedTextSortlong : commomstyle.selectedTextStyle}
+              //  selectedTextStyle={style.selectedTextStyle}
+              // selectedTextStyle={props.register?.servicename.length > 55 ? commomstyle.selectedTextStylelong : props.register?.servicename.length > 33 ? commomstyle.selectedTextSortlong : commomstyle.selectedTextStyle}
+              selectedTextStyle={
+                props.register &&
+                props.register.servicename &&
+                (props.register.servicename.length > 55
+                  ? commomstyle.selectedTextStylelong
+                  : props.register.servicename.length > 33
+                  ? commomstyle.selectedTextSortlong
+                  : commomstyle.selectedTextStyle)
+              }
               inputSearchStyle={style.inputSearchStyle}
               iconStyle={style.iconStyle}
               containerStyle={style.dropdownContener}
@@ -260,11 +282,15 @@ const registration = (props) => {
                   servicename: item.title,
                 });
               }}
-              
+
+
               /*  renderLeftIcon={() => (
              <AntDesign style={style.icon} color="black" name="Safety" size={20} />
             )} */
             />
+             <Text style={style.errorText}>
+              {props.inputError.errorindustry}
+            </Text>
           </View>
 
           {/* <View style={style.firstInput}>
@@ -436,8 +462,12 @@ const registration = (props) => {
             </View>
           </View>
           {/* <Text style={style.errorText}>{imageData ? imageData.filename : ""}</Text> */}
-          <Text style={style.errorText}>{imageData ? extractFileName(imageData.path) : ""}</Text>
-          <Text style={style.errorText}>{props.inputError.errorbusiness_photo_url}</Text>
+          <Text style={[style.errorText, {color: COMMON_COLOR}]}>
+            {imageData ? extractFileName(imageData.path) : ""}
+          </Text>
+          <Text style={style.errorText}>
+            {props.inputError.errorbusiness_photo_url}
+          </Text>
 
           <View style={style.button}>
             <Button

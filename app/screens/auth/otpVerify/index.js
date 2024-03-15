@@ -15,21 +15,35 @@ const OtpVerifyView = ({ route, navigation }) => {
   const [otp, setOtp] = useState();
   // const [emailotp, setEmailOtp] = useState();
 
-  console.log("otp:-", otp);
+  console.log("otp check>>>:-", otp);
 
   const [isLoading, setIsLoading] = useContext(LoadingContext);
 
   const otpInputRef = useRef(null);
 
-  //   const clearText = () => {
-  //     otpInputRef.current.clear();
-  // }
+  const clearText = () => {
+    otpInputRef.current.clear();
+  };
 
   const validationFrom = () => {
-    if (!otp || otp.length !== 4) {
-      Alert.alert("Please enter a valid 4-digit OTP");
+    if (!otp || otp.length === 0) {
+      Alert.alert("Please enter OTP");
       return false;
+    } else if (otp.length !== 4) {
+      Alert.alert("Please enter a 4-digit OTP");
+      return false;
+    } else {
+      return true;
     }
+
+    // if (otp?.length === 0) {
+    //   Alert.alert("Please enter  OTP");
+    //   return false;
+    // } else if (otp?.length <= 4) {
+    //   Alert.alert("Please enter a valid 4-digit OTP");
+    //   return false;
+    // }
+
     // if (!emailotp || emailotp.length !== 4) {
     //   Alert.alert("Please enter a valid 4-digit Email OTP");
     //   return false;
@@ -38,16 +52,16 @@ const OtpVerifyView = ({ route, navigation }) => {
   };
 
   const toverifyOtp = async () => {
-    // navigation.navigate("registrationScreen");
-
     // const valid = validationFrom();
     // if (valid) {
+    //   navigation.navigate("registrationScreen");
+    //   clearText();
     // }
     const valid = validationFrom();
     if (valid) {
       const parms = {
         email: loginData,
-        otp: otp,
+        email_otp: otp,
       };
       try {
         setIsLoading(true);
@@ -56,22 +70,23 @@ const OtpVerifyView = ({ route, navigation }) => {
           apiEndPoints.VERIFYEMAILMOBILE,
           parms
         );
+        console.log("responce verify:-", response)
         if (response.data.status === 200) {
          // console.log("helllllooo");
           setIsLoading(false);
           setOtp(response.data.data);
-         // console.log("responce otp:-", response);
+          console.log("responce 200:-", response.data);
           // Alert.alert("Your verification is successful");
           navigation.navigate("registrationScreen");
           setOtp("");
-          // otpInputRef.current.clearText();
+          clearText();
         } else {
           setIsLoading(false);
           console.log("OTP verification failed:");
           //  Alert.alert('Please enter a valid 4-digit OTP')
-          console.log("verify responce:-", response);
+          console.log("responce not 200:-", response.data);
           showMessage({
-            message: response.data.message.otpmail,
+            message: response.data.message.otpmail || response.data.message.messageTost,
             type: "warning",
             duration: 3000,
           });
@@ -82,7 +97,7 @@ const OtpVerifyView = ({ route, navigation }) => {
       }
     } else {
       console.log("Validation failed");
-      
+
     }
   };
 
@@ -99,7 +114,7 @@ const OtpVerifyView = ({ route, navigation }) => {
        // console.log("resend responce:-", response);
         // Alert.alert("Your verification is successful");
         setOtp("");
-        // otpInputRef.current.clearText();
+        clearText();
         showMessage({
           message: response.data.message.messageSuccess,
           type: "success",
@@ -127,7 +142,7 @@ const OtpVerifyView = ({ route, navigation }) => {
         otp={otp}
         setOtp={setOtp}
         resendOtp={resendOtp}
-        // otpInputRef={otpInputRef}
+        otpInputRef={otpInputRef}
       />
     </>
   );

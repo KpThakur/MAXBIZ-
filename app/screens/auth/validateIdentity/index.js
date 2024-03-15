@@ -20,10 +20,10 @@ const ValidtIdntyView = ({ navigation }) => {
   // console.log("emailadd:-", loginData?.email)
 
   function validationFrom() {
-   // let mobileNoError = "";
+    // let mobileNoError = "";
     let emailaddrError = "";
-   // let firstnameError = "";
-   // let lastnameError = "";
+    // let firstnameError = "";
+    // let lastnameError = "";
 
     // if (loginData.firstname == "") {
     //   firstnameError = StringsOfLanguages.PLEASE_ENTER_YOUR_FIRST_NAME;
@@ -36,24 +36,30 @@ const ValidtIdntyView = ({ navigation }) => {
 
     // let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     let reg = /^\s*\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+\s*$/;
-    if (loginData.email == "" || loginData.email.trim() === "") {
-      emailaddrError = StringsOfLanguages.PLEASE_ENTER_EMAIL;
-    }
-    if (reg.test(loginData.email) == "") {
-      emailaddrError = StringsOfLanguages.PLEASE_ENTER_CORRECT_EMAIL;
-    }
     if (
-     // firstnameError || 
-     // lastnameError ||
-     //  mobileNoError ||
+      loginData.email === "" ||
+      loginData.email === undefined ||
+      loginData.email.trim() === ""
+    ) {
+      emailaddrError = StringsOfLanguages.PLEASE_ENTER_EMAIL;
+      // return false;
+    } else if (reg.test(loginData.email) === false) {
+      emailaddrError = StringsOfLanguages.PLEASE_ENTER_CORRECT_EMAIL;
+      // return false;
+    }
+
+    if (
+      // firstnameError ||
+      // lastnameError ||
+      //  mobileNoError ||
       emailaddrError
-        ){
+    ) {
       setinputError({
         ...inputError,
-      //  mobileNoError,
+        //  mobileNoError,
         emailaddrError,
-       // firstnameError,
-       // lastnameError,
+        // firstnameError,
+        // lastnameError,
       });
       return false;
     }
@@ -70,7 +76,7 @@ const ValidtIdntyView = ({ navigation }) => {
     // if (valid) {
 
     // }
-   // console.log("email>>>", email);
+    // console.log("email>>>", email);
     const valid = validationFrom();
     if (valid) {
       const parms = {
@@ -84,19 +90,44 @@ const ValidtIdntyView = ({ navigation }) => {
           parms
         );
         if (response.status === 200) {
+          console.log("Response data:", response.data);
           setIsLoading(false);
-          setLoginData(response.data.data);
-          // console.log("responce:-",response)
-          navigation.navigate("otpVerifyScreen", {
-            loginData: loginData?.email,
-          });
-          showMessage({
-            message: response.data.message.messageSuccess,
-            type: "success",
-            duration: 3000,
-          });
+          if (response.data.indentityValidated === 0) {
+            setLoginData(response.data.data);
+            navigation.navigate("otpVerifyScreen", {
+              loginData: loginData?.email,
+            });
+            showMessage({
+              message: response.data.message.messageSuccess,
+              type: "success",
+              duration: 3000,
+            });
+            console.log("navigate in otp:-", response.data.indentityValidated);
+          } else {
+            if (response.data.businessValidated === 1) {
+              setIsLoading(false);
+              showMessage({
+                message: "your bussiness already register",
+                type: "success",
+                duration: 3000,
+              });
+              console.log("your bussiness already register:-", response.data);
+
+            } else {
+              setIsLoading(false);
+              navigation.navigate("registrationScreen");
+              showMessage({
+                message: response.data.message.messageTost,
+                type: "success",
+                duration: 3000,
+              });
+              console.log("navigate to registration ", response.data.indentityValidated);
+            }
+          }
+
         } else {
           setIsLoading(false);
+          console.log("api not successfull");
         }
       } catch (error) {
         setIsLoading(false);
@@ -106,6 +137,55 @@ const ValidtIdntyView = ({ navigation }) => {
       console.log("Validation failed");
     }
   };
+
+ 
+
+  async function handleVaildateIdentity() {
+    if (!formValidation()) {
+      setIsLoader(true);
+
+      const param = {
+        email: formVaildate.email,
+        // mobile: formVaildate.mobile,
+        // countrycode: formVaildate.countrycode,
+      };
+
+      const { data } = await apiCall("POST", ApiEndPoint.USERREGISTER, param);
+      if (data.status == 200) {
+        setIsLoader(false);
+        if (data.data.indentityValidated == 0) {
+          setOtpShow(true);
+          console.log("primer if");
+        } else {
+          if (data.data.businessValidated == 1) {
+            console.log("segundo if");
+            setIsLoader(false);
+            //setbusinessRegiDataStatus(true);
+            document.getElementById("businessRegiMdlClose").click();
+            otpVarify();
+          } else {
+            console.log("tercero else");
+            setIsLoader(false);
+            otpVarify();
+          }
+        }
+        successToast(data.message?.messageTost);
+        dispatch(setBusinessRegisterDetail(data.data));
+        // dispatch(setBusinessRegisterDetail(formVaildate))
+
+        // setOtpShow(true)
+        // successToast(data.message)
+        // dispatch(setBusinessRegisterDetail(formVaildate))
+        // setFormVaildateStatus(true);
+        // document.getElementById('vaildateIdentityModel').click()
+      } else {
+        console.log("cuarto if");
+        setIsLoader(false);
+        setFormError(data.message);
+        errorToast(data.message?.messageTost);
+      }
+    }
+  }
 
   const backscreen = () => {
     navigation.navigate("loginScreen");

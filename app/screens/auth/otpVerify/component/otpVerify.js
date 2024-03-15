@@ -59,9 +59,10 @@ const OtpVerify = (props) => {
             containerStyle={styles.otpInputContainer}
             textInputStyle={styles.otpInputTxt}
             tintColor={COMMON_COLOR}
-            defaultValue={otp}
+           // defaultValue={otp}
+            defaultValue={String(otp)}
             handleTextChange={(text) => setOtp(text)}
-           // ref={e => (otpInputRef = e)}
+            ref={otpInputRef}
           ></OTPTextInput>
 
           <View style={styles.resendView}>

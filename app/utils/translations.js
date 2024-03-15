@@ -120,7 +120,7 @@ const StringsOfLanguages = new LocalizedStrings({
         PLEASE_ENTER_ADDRESS : 'Please enter Address',
         PLEASE_ENTER_SERVICES : 'Please enter Services',
         PLEASE_ENTER_OCCUPTION : 'Please enter Occupation',
-        PLEASE_ENTER_INDUSTRY : 'Please enter Industry',
+        PLEASE_ENTER_INDUSTRY : 'Please select Industry',
 
         OK : 'OK',
         UPDATE_PASSWORD : "Update Password",
@@ -136,6 +136,9 @@ const StringsOfLanguages = new LocalizedStrings({
         PLEASE_ENTER_CORRECT_EMAIL : "Please enter Correct Email",
         PLEASE_ENTER_EMAIL : "Please enter Email",
         PLEASE_SELECT_CERTIFICATE : "Please select certificate",
+        PLEASE_SELECT_CITY : "Please select City",
+        PLEASE_SELECT_INDUSTRY : "Please select Industry",
+
         FIRST_NAME : "First Name",
         LAST_NAME : "Last Name",
         EMAIL_ADDRESS : "Email Address",

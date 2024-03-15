@@ -50,6 +50,7 @@ const input = (props) => {
     image,
     keyboardType,
     maxLength,
+    editable
   } = props;
   const {
     inputDesign,
@@ -96,6 +97,7 @@ const input = (props) => {
           secureTextEntry={secureTextEntry}
           onFocus={handleFocus}
           onBlur={_handleBlur}
+         // editable={editable}
         />
         <View
           style={[
