@@ -31,6 +31,8 @@ const data = [
 
 const registration = (props) => {
   const {
+    register,
+    setRegister,
     backscreen,
     allCity,
     getcitylist,
@@ -40,7 +42,11 @@ const registration = (props) => {
     imageData,
     uploaddocument,
     extractFileName,
+    searchOccupation,
+    serviceList,
   } = props;
+
+ // console.log("occupation in view", serviceList);
 
   return (
     <SafeAreaView style={commomstyle.container}>
@@ -71,11 +77,11 @@ const registration = (props) => {
             <Input
               onChangeText={(val) =>
                 props.setRegister({
-                  ...props.register,
+                  ...register,
                   businessusername: val,
                 })
               }
-              value={props.register.businessusername}
+              value={register.businessusername}
               image="noNeed"
               placeholder={StringsOfLanguages.BUSINESS_USERNAME}
               labelTxt={style.labelTxt}
@@ -93,11 +99,11 @@ const registration = (props) => {
               // editable={false}
               onChangeText={(val) =>
                 props.setRegister({
-                  ...props.register,
+                  ...register,
                   businessname: val,
                 })
               }
-              value={props.register.businessname}
+              value={register.businessname}
               image="noNeed"
               placeholder={StringsOfLanguages.BUSINESS_NAME}
               labelTxt={style.labelTxt}
@@ -114,11 +120,11 @@ const registration = (props) => {
             <Input
               onChangeText={(val) =>
                 props.setRegister({
-                  ...props.register,
+                  ...register,
                   address: val,
                 })
               }
-              value={props.register.address}
+              value={register.address}
               image="noNeed"
               placeholder={StringsOfLanguages.ADDRESS}
               labelTxt={style.labelTxt}
@@ -184,7 +190,7 @@ const registration = (props) => {
                   name="Safety"
                   size={20}
                 />
-              )} 
+              )}
               selectedStyle={style.selectedStyle}
             /> */}
 
@@ -228,20 +234,20 @@ const registration = (props) => {
               valueField="id"
               placeholder={StringsOfLanguages.SEARCH_CITY}
               searchPlaceholder={StringsOfLanguages.SEARCH_CITY_NAME}
-              value={props.register.city}
+              value={register.cityid}
               onChange={(item) => {
                 props.setRegister({
-                  ...props.register,
-                  city: item.value,
+                  ...register,
+                 // city: item.value,
+                 cityid: item.id,
+                 cityname: item.city,
                 });
               }}
               /*  renderLeftIcon={() => (
              <AntDesign style={style.icon} color="black" name="Safety" size={20} />
             )} */
             />
-             <Text style={style.errorText}>
-              {props.inputError.errorcity}
-            </Text>
+            <Text style={style.errorText}>{props.inputError.errorcity}</Text>
           </View>
 
           <View style={style.firstInput}>
@@ -252,11 +258,11 @@ const registration = (props) => {
               //  selectedTextStyle={style.selectedTextStyle}
               // selectedTextStyle={props.register?.servicename.length > 55 ? commomstyle.selectedTextStylelong : props.register?.servicename.length > 33 ? commomstyle.selectedTextSortlong : commomstyle.selectedTextStyle}
               selectedTextStyle={
-                props.register &&
-                props.register.servicename &&
-                (props.register.servicename.length > 55
+                register &&
+                register.servicename &&
+                (register.servicename.length > 55
                   ? commomstyle.selectedTextStylelong
-                  : props.register.servicename.length > 33
+                  : register.servicename.length > 33
                   ? commomstyle.selectedTextSortlong
                   : commomstyle.selectedTextStyle)
               }
@@ -274,21 +280,20 @@ const registration = (props) => {
               // valueField="id"
               placeholder={StringsOfLanguages.INDUSTRY_}
               searchPlaceholder={StringsOfLanguages.SEARCH_INDUSTRY_NAME}
-              value={props.register.industry}
+              value={register.servicename}
               onChange={(item) => {
                 props.setRegister({
-                  ...props.register,
+                  ...register,
                   serviceid: item.naicsid,
                   servicename: item.title,
                 });
               }}
 
-
               /*  renderLeftIcon={() => (
              <AntDesign style={style.icon} color="black" name="Safety" size={20} />
             )} */
             />
-             <Text style={style.errorText}>
+            <Text style={style.errorText}>
               {props.inputError.errorindustry}
             </Text>
           </View>
@@ -336,7 +341,7 @@ const registration = (props) => {
           </View> */}
 
           <View style={style.firstInput}>
-            <Input
+            {/* <Input
               onChangeText={(val) =>
                 props.setRegister({
                   ...props.register,
@@ -350,6 +355,36 @@ const registration = (props) => {
               style={style.inputContainer}
               inputDsgn={style.inputDesign}
               msg={props.inputError.erroroccuption}
+            /> */}
+            <MultiSelect
+              selectText={3} 
+              showsVerticalScrollIndicator={false}
+              style={style.dropdown}
+              placeholderStyle={style.placeholderStyle}
+              selectedTextStyle={style.selectedTextStylemul}
+              inputSearchStyle={style.inputSearchStyle}
+              iconStyle={style.iconStyle}
+              containerStyle={style.dropdownContener}
+              search
+              onChangeText={searchOccupation}
+              data={serviceList ? serviceList : []}
+              labelField="title"
+              valueField="naicsid"
+              placeholder={StringsOfLanguages.SEARCH_SERVICE}
+              searchPlaceholder={StringsOfLanguages.SEARCH}
+              value={register.occupation}
+              onChange={(item) => {
+                setRegister({
+                  ...register,
+                  // occupation: item.occupation,
+                  occupationid: item.naicsid,
+                  occupation: item.title,
+                });
+              }}
+             
+              selectedStyle={style.selectedStyle}
+             // maxSelect={1}
+            // activeColor={GRAY_COLOR}
             />
             <Text style={style.errorText}>
               {props.inputError.erroroccuption}
@@ -462,7 +497,7 @@ const registration = (props) => {
             </View>
           </View>
           {/* <Text style={style.errorText}>{imageData ? imageData.filename : ""}</Text> */}
-          <Text style={[style.errorText, {color: COMMON_COLOR}]}>
+          <Text style={[style.errorText, { color: COMMON_COLOR }]}>
             {imageData ? extractFileName(imageData.path) : ""}
           </Text>
           <Text style={style.errorText}>

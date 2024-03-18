@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Registration from "./component/registration";
 import ImagePicker from "react-native-image-crop-picker";
 
@@ -56,16 +56,18 @@ const RegistrationView = ({ navigation }) => {
   const [allCity, setAllCity] = useState([]);
   const [industryList, setIndustryList] = useState([]);
   const [businessDetail, setbusinessDetail] = useState([]);
+  const [serviceList, setServiceList] = useState([]);
+
+  const [selectedItems, setSelectedItems] = useState([]);
 
   const [isLoading, setIsLoading] = useContext(LoadingContext);
-
 
   const onSelectedItemsChange = (servicesData) => {
     //this.setState({ selectedItems });
     servicesData.length <= 3 ? setServicesData(servicesData) : "null";
   };
 
- // console.log("certificate data:-", imageData);
+  // console.log("certificate data:-", imageData);
 
   const uploaddocument = () => {
     ImagePicker.openPicker({
@@ -97,14 +99,13 @@ const RegistrationView = ({ navigation }) => {
     const fileName = uriParts.pop();
     return fileName;
   };
-  
-  
 
   const [register, setRegister] = useState({
     businessusername: "",
     businessname: "",
     address: "",
     industry: "",
+    occupationid:"",
     occupation: "",
     about_us: "",
     /*areas: "",
@@ -114,20 +115,25 @@ const RegistrationView = ({ navigation }) => {
     phone_no: "",
     website_url: "",
     services: [],
-    city: "",
     cityid: "",
+    cityname: "",
     servicename: "",
     head_count: "",
     business_photo_url: "",
     certificate: "",
+    serviceid:"",
   });
+
+ 
+
+  console.log("ocupation find:---------", register?.occupation);
 
 
   function validationFrom() {
     let errorbusinessusername = "";
     let errorbusinessname = "";
     let erroraddress = "";
-   // let errorservices = "";
+    // let errorservices = "";
     let errorindustry = "";
     let errorcity = "";
     let erroroccuption = "";
@@ -165,7 +171,7 @@ const RegistrationView = ({ navigation }) => {
       errorbusinessusername ||
       errorbusinessname ||
       erroraddress ||
-     // errorservices ||
+      // errorservices ||
       errorindustry ||
       errorcity ||
       erroroccuption ||
@@ -176,7 +182,7 @@ const RegistrationView = ({ navigation }) => {
         errorbusinessusername,
         errorbusinessname,
         erroraddress,
-       // errorservices,
+        // errorservices,
         errorindustry,
         errorcity,
         erroroccuption,
@@ -218,6 +224,7 @@ const RegistrationView = ({ navigation }) => {
   };
 
   const getcitylist = async (val = "") => {
+   // console.log("search city", val);
     if (val.length >= 3) {
       try {
         const parms = {
@@ -234,8 +241,9 @@ const RegistrationView = ({ navigation }) => {
             formattedLabel: `${city.city || ""}, ${city.state_id || ""}`,
           }));
           // setAllCity(response.data.data)
-          // console.log("responce City:-", response.data);
+           console.log("responce City:-", response.data);
           setAllCity(formattedCityData);
+          // console.log("city find:-", response.data)
         } else {
           console.log("in else");
         }
@@ -245,35 +253,104 @@ const RegistrationView = ({ navigation }) => {
     }
   };
 
+
+  const searchOccupation = async (item) => {
+   // console.log("search occuption", item);
+    if (item.length >= 3) {
+      try {
+        const params = { servicename: item };
+       // console.log('param', params)
+        const response = await apiCall(
+          "POST",
+          apiEndPoints.GETSERVICELIST,
+          params
+        );
+       // console.log("Response:", response.data);
+        if (response.status === 200) {
+          setServiceList(response.data.data);
+         // console.log("Response in 200:", response.data);
+        } else {
+          console.log("in else");
+        }
+      } catch (error) {
+        console.error("Error fetching occupation list:", error);
+      }
+    }
+  };
+
+  // const submitForResig = async () => {
+  //   // console.log("submit call>>>>>>>>>>>")
+  //   const valid = validationFrom();
+  //   if (valid) {
+  //     try {
+  //       setIsLoading(true);
+  //       const params = {
+  //         businessusername: register?.businessusername,
+  //         businessname: register?.businessname,
+  //         address: register?.address,
+  //        // cityid: register?.city,
+  //         servicename: register?.services,
+  //         occupation: register?.occupation,
+  //        // certificate: imageData
+  //       };
+  //       const response = await apiCall(
+  //         "POST",
+  //         apiEndPoints.REGISTERBUSINESSDETAIL,
+  //         params
+  //       );
+  //       console.log('responce:->>>>>', response)
+  //       if (response.status === 200) {
+  //         setbusinessDetail(response.data.data);
+  //         console.log('responce in 200 :-', response.data)
+  //         setIsLoading(false);
+  //         navigation.navigate("thankyouScreen");
+  //       }
+  //       if (response.status == 401) {
+  //         console.log('responce in 400 :-', response.data)
+  //         showMessage({
+  //           message: response.message,
+  //           type: "warning",
+  //           duration: 3000,
+  //         });
+  //       } else {
+  //         setIsLoading(false);
+  //       }
+  //     } catch (error) {
+  //       setIsLoading(false);
+  //     }
+  //   }
+  // };
+
   const submitForResig = async () => {
-    // console.log("submit call>>>>>>>>>>>")
     const valid = validationFrom();
     if (valid) {
       try {
         setIsLoading(true);
-        const parms = {
-          businessusername: register?.businessusername,
-          businessname: register?.businessname,
-          address: register?.address,
-          city: register?.city,
-          servicename: register?.services,
-          occupation: register?.occupation,
-          certificate: imageData
-        };
+
+        const formData = new FormData();
+        formData.append("businessusername", register?.businessusername);
+        formData.append("businessname", register?.businessname);
+        formData.append("address", register?.address);
+        formData.append("servicename", register?.servicename);
+        formData.append("cityid", register?.cityname)                       
+       // formData.append("occupation", register?.occupation);
+         formData.append("certificate", imageData);
+
+        console.log("formData", formData);
+
         const response = await apiCall(
           "POST",
           apiEndPoints.REGISTERBUSINESSDETAIL,
-          parms
+          formData
         );
-        console.log('responce:-', response.data)
+
+        console.log("response:", response.data);
+
         if (response.status === 200) {
           setbusinessDetail(response.data.data);
-          console.log('responce in 200 :-', response.data)
           setIsLoading(false);
           navigation.navigate("thankyouScreen");
-        }
-        if (response.status == 401) {
-          console.log('responce in 400 :-', response.data)
+        } else if (response.status === 401) {
           showMessage({
             message: response.message,
             type: "warning",
@@ -284,6 +361,7 @@ const RegistrationView = ({ navigation }) => {
         }
       } catch (error) {
         setIsLoading(false);
+        console.error("Error:", error);
       }
     }
   };
@@ -297,25 +375,29 @@ const RegistrationView = ({ navigation }) => {
   }; */
   return (
     <>
-    {isLoading && <Loader />}
-    <Registration
-      register={register}
-      setRegister={setRegister}
-      submitForResig={submitForResig}
-      uploaddocument={uploaddocument}
-      inputError={inputError}
-      servicesData={servicesData}
-      setServicesData={setServicesData}
-      onSelectedItemsChange={onSelectedItemsChange}
-      items={items}
-      backscreen={backscreen}
-      allCity={allCity}
-      getcitylist={getcitylist}
-      industryList={industryList}
-      getServiceList={getServiceList}
-      imageData={imageData}
-      extractFileName={extractFileName}
-    />
+      {isLoading && <Loader />}
+      <Registration
+        register={register}
+        setRegister={setRegister}
+        submitForResig={submitForResig}
+        uploaddocument={uploaddocument}
+        inputError={inputError}
+        servicesData={servicesData}
+        setServicesData={setServicesData}
+        onSelectedItemsChange={onSelectedItemsChange}
+        items={items}
+        backscreen={backscreen}
+        allCity={allCity}
+        getcitylist={getcitylist}
+        industryList={industryList}
+        getServiceList={getServiceList}
+        imageData={imageData}
+        extractFileName={extractFileName}
+        searchOccupation={searchOccupation}
+        serviceList={serviceList}
+        setSelectedItems={setSelectedItems}
+        selectedItems={selectedItems}
+      />
     </>
   );
 };

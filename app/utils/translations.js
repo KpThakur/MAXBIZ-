@@ -119,7 +119,7 @@ const StringsOfLanguages = new LocalizedStrings({
         PLEASE_ENTER_BUSINESS_NAME : 'Please enter Business Name',
         PLEASE_ENTER_ADDRESS : 'Please enter Address',
         PLEASE_ENTER_SERVICES : 'Please enter Services',
-        PLEASE_ENTER_OCCUPTION : 'Please enter Occupation',
+        PLEASE_ENTER_OCCUPTION : 'Please select Occupation',
         PLEASE_ENTER_INDUSTRY : 'Please select Industry',
 
         OK : 'OK',

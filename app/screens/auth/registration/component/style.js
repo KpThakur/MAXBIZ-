@@ -105,7 +105,7 @@ const style = StyleSheet.create({
     selectedTextStylemul: {
         fontSize: scale(12),
         fontFamily: FONT_FAMILY_REGULAR,
-        color: GRAY_COLOR
+        color: WHITE_COLOR
     },
     selectedTextStyle: {
         fontSize: scale(16),

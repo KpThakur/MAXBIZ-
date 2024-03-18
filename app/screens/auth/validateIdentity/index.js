@@ -69,6 +69,7 @@ const ValidtIdntyView = ({ navigation }) => {
   const [isLoading, setIsLoading] = useContext(LoadingContext);
 
   const toNextPage = async () => {
+    navigation.navigate("registrationScreen");
     // navigation.navigate("otpVerifyScreen", {
     //   loginData: loginData?.email,
     // });
@@ -79,7 +80,7 @@ const ValidtIdntyView = ({ navigation }) => {
     // console.log("email>>>", email);
     const valid = validationFrom();
     if (valid) {
-      const parms = {
+      const params = {
         email: loginData?.email,
       };
       try {
@@ -87,16 +88,16 @@ const ValidtIdntyView = ({ navigation }) => {
         const response = await apiCall(
           "POST",
           apiEndPoints.USERREGISTER,
-          parms
+          params
         );
         if (response.status === 200) {
           console.log("Response data:", response.data);
           setIsLoading(false);
           if (response.data.indentityValidated === 0) {
-            setLoginData(response.data.data);
             navigation.navigate("otpVerifyScreen", {
               loginData: loginData?.email,
             });
+            setLoginData(response.data.data);
             showMessage({
               message: response.data.message.messageSuccess,
               type: "success",
@@ -138,54 +139,6 @@ const ValidtIdntyView = ({ navigation }) => {
     }
   };
 
- 
-
-  async function handleVaildateIdentity() {
-    if (!formValidation()) {
-      setIsLoader(true);
-
-      const param = {
-        email: formVaildate.email,
-        // mobile: formVaildate.mobile,
-        // countrycode: formVaildate.countrycode,
-      };
-
-      const { data } = await apiCall("POST", ApiEndPoint.USERREGISTER, param);
-      if (data.status == 200) {
-        setIsLoader(false);
-        if (data.data.indentityValidated == 0) {
-          setOtpShow(true);
-          console.log("primer if");
-        } else {
-          if (data.data.businessValidated == 1) {
-            console.log("segundo if");
-            setIsLoader(false);
-            //setbusinessRegiDataStatus(true);
-            document.getElementById("businessRegiMdlClose").click();
-            otpVarify();
-          } else {
-            console.log("tercero else");
-            setIsLoader(false);
-            otpVarify();
-          }
-        }
-        successToast(data.message?.messageTost);
-        dispatch(setBusinessRegisterDetail(data.data));
-        // dispatch(setBusinessRegisterDetail(formVaildate))
-
-        // setOtpShow(true)
-        // successToast(data.message)
-        // dispatch(setBusinessRegisterDetail(formVaildate))
-        // setFormVaildateStatus(true);
-        // document.getElementById('vaildateIdentityModel').click()
-      } else {
-        console.log("cuarto if");
-        setIsLoader(false);
-        setFormError(data.message);
-        errorToast(data.message?.messageTost);
-      }
-    }
-  }
 
   const backscreen = () => {
     navigation.navigate("loginScreen");

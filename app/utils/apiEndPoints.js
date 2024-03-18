@@ -16,6 +16,6 @@ export default {
     GETINDUSTRYLIST: "/master/getIndustryList",
     GETCITIESLIST: "master/getCitiesList",
     REGISTERBUSINESSDETAIL: "userAuth/registerBusinessDetail",
-
+    GETSERVICELIST: "master/getServiceList",
   };
   

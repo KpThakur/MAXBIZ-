@@ -1,10 +1,10 @@
 // export const GLOBAL_URL = 'http://192.168.1.5:4001'
 // export const GLOBAL_URL = 'http://192.168.1.21:8000'
-   export const GLOBAL_URL = 'http://192.168.1.21:8080'
+// export const GLOBAL_URL = 'http://192.168.1.21:8080'
 // export const GLOBAL_URL = 'http://192.168.1.83:8000'
 // export const GLOBAL_URL = 'http://192.168.137.1:3000'
 // export const GLOBAL_URL = 'https://itinformatix.org:3026'
-//   export const GLOBAL_URL = 'https://smbmapitest.azurewebsites.net'
+   export const GLOBAL_URL = 'https://smbmapitest.azurewebsites.net'
 
  //Colors
 export const GRADIENT_COLOR = "#877DF2"
