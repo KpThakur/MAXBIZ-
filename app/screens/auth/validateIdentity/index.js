@@ -6,7 +6,7 @@ import { apiCall } from "../../../utils/httpClient";
 import apiEndPoints from "../../../utils/apiEndPoints";
 import Loader from "../../../components/loader";
 import { showMessage } from "react-native-flash-message";
-import { Alert } from "react-native";
+import { Alert, Modal } from "react-native";
 
 const ValidtIdntyView = ({ navigation }) => {
   const [inputError, setinputError] = useState({});
@@ -69,7 +69,7 @@ const ValidtIdntyView = ({ navigation }) => {
   const [isLoading, setIsLoading] = useContext(LoadingContext);
 
   const toNextPage = async () => {
-    navigation.navigate("registrationScreen");
+    // navigation.navigate("registrationScreen");
     // navigation.navigate("otpVerifyScreen", {
     //   loginData: loginData?.email,
     // });
@@ -107,13 +107,14 @@ const ValidtIdntyView = ({ navigation }) => {
           } else {
             if (response.data.businessValidated === 1) {
               setIsLoading(false);
-              showMessage({
-                message: "your bussiness already register",
-                type: "success",
-                duration: 3000,
-              });
-              console.log("your bussiness already register:-", response.data);
+              openModal();
+              // showMessage({
+              //   message: "your bussiness already register",
+              //   type: "success",
+              //   duration: 3000,
+              // });
 
+              console.log("your bussiness already register:-", response.data);
             } else {
               setIsLoading(false);
               navigation.navigate("registrationScreen");
@@ -122,10 +123,12 @@ const ValidtIdntyView = ({ navigation }) => {
                 type: "success",
                 duration: 3000,
               });
-              console.log("navigate to registration ", response.data.indentityValidated);
+              console.log(
+                "navigate to registration ",
+                response.data.indentityValidated
+              );
             }
           }
-
         } else {
           setIsLoading(false);
           console.log("api not successfull");
@@ -139,9 +142,73 @@ const ValidtIdntyView = ({ navigation }) => {
     }
   };
 
+  // const toNextPage = async () => {
+  //   const valid = validationFrom();
+  //   if (valid) {
+  //     const params = {
+  //       email: loginData?.email,
+  //     };
+  //     try {
+  //       setIsLoading(true);
+  //       const response = await apiCall(
+  //         "POST",
+  //         apiEndPoints.USERREGISTER,
+  //         params
+  //       );
+  //       if (response.status === 200) {
+  //         console.log("Response data:", response.data);
+  //         setIsLoading(false);
+  //         if (response.data.indentityValidated === 0) {
+  //           navigation.navigate("otpVerifyScreen", {
+  //             loginData: loginData?.email,
+  //           });
+  //           setLoginData(response.data.data);
+  //           showMessage({
+  //             message: response.data.message.messageSuccess,
+  //             type: "success",
+  //             duration: 3000,
+  //           });
+  //           console.log("navigate in otp:-", response.data.indentityValidated);
+  //         } else if (response.data.businessValidated === 1) {
+  //           setIsLoading(false);
+  //           openModal();
+  //           console.log("your bussiness already register:-", response.data);
+  //         } else if (response.data.businessValidated === 0) {
+  //           setIsLoading(false);
+  //           navigation.navigate("registrationScreen");
+  //           showMessage({
+  //             message: response.data.message.messageTost,
+  //             type: "success",
+  //             duration: 3000,
+  //           });
+  //         } else {
+  //           setIsLoading(false);
+  //         }
+  //       } else {
+  //         console.log("in else");
+  //       }
+  //     } catch (error) {
+  //       setIsLoading(false);
+  //       console.error("Error:", error);
+  //     }
+  //   } else {
+  //     console.log("validation fieled");
+  //   }
+  // };
+
 
   const backscreen = () => {
     navigation.navigate("loginScreen");
+  };
+
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const openModal = () => {
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
   };
 
   return (
@@ -153,6 +220,8 @@ const ValidtIdntyView = ({ navigation }) => {
         toNextPage={toNextPage}
         inputError={inputError}
         backscreen={backscreen}
+        visible={modalVisible}
+        onClose={closeModal}
       />
     </>
   );

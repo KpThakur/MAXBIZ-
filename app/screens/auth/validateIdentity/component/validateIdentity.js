@@ -1,45 +1,87 @@
-import React, { useCallback } from 'react';
-import { View, Text, SafeAreaView, ScrollView, StatusBar } from 'react-native';
-import style from './style';
-import commomstyle from '../../../../common/styles';
-import { Button, Input, Header } from '@components';
-import { GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW3,GRADIENT_COLOR_NEW2, WHITE_COLOR } from '../../../../utils/constants';
-import LinearGradient from 'react-native-linear-gradient';
-import StringsOfLanguages from '../../../../utils/translations';
-import styles from '../../otpVerify/component/style';
-import { useFocusEffect } from '@react-navigation/native';
+import React, { useCallback } from "react";
+import {
+  View,
+  Text,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  Modal,
+  TouchableOpacity,
+  Image,
+} from "react-native";
+import style from "./style";
+import commomstyle from "../../../../common/styles";
+import { Button, Input, Header } from "@components";
+import {
+  GRADIENT_COLOR_NEW1,
+  GRADIENT_COLOR_NEW3,
+  GRADIENT_COLOR_NEW2,
+  WHITE_COLOR,
+} from "../../../../utils/constants";
+import LinearGradient from "react-native-linear-gradient";
+import StringsOfLanguages from "../../../../utils/translations";
+import styles from "../../otpVerify/component/style";
+import { useFocusEffect } from "@react-navigation/native";
+import { ICONS } from "../../../../utils/imagePath";
+import { Icon } from "react-native-elements";
 
 const validateIdentity = (props) => {
+  const { backscreen, visible, onClose } = props;
 
-    const { backscreen } = props;
-
-    
+  const RegiConfirmModal = ({ visible, onClose }) => {
     return (
-        <SafeAreaView style={commomstyle.container}>
-            <StatusBar
-          animated={true}
-          backgroundColor={WHITE_COLOR}
-          barStyle="dark-content"
-        />
+      <Modal
+        transparent={true}
+        animationType="fade"
+        visible={visible}
+        onRequestClose={() => onClose()}
+      >
+        <View style={style.modalMainView}>
+          <View style={style.modalContainView}>
+            <Text style={style.modalTextStyle}>
+            This email already belongs to a registered business. Please wait until MAXBIZ Team verifies your business.
+            </Text>
 
-            {/* <LinearGradient 
+            <TouchableOpacity onPress={() => onClose()}>
+              <Image source={ICONS.close_New} style={style.closeIcon} /> 
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+    );
+  };
+
+  return (
+    <SafeAreaView style={commomstyle.container}>
+      <StatusBar
+        animated={true}
+        backgroundColor={WHITE_COLOR}
+        barStyle="dark-content"
+      />
+
+      {/* <LinearGradient 
              colors={[GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW3,GRADIENT_COLOR_NEW2]}
              locations={[0.24, 0.63, 0.87, 0.99]}
              style={commomstyle.gradientstyle}
              >  */}
 
-            <Header
-                rightImg={false}
-                headerText={""}
-                headertxt={styles.headerTxt}
-                backscreen={backscreen}
-                showFindServiceOnBack={true}
-            />
-             <ScrollView contentContainerStyle={{ flexGrow: 1}} showsVerticalScrollIndicator={false}>
-            <View style={style.container}>
-              <View style={style.containercenter}> 
-                <Text style={style.firstText}>{StringsOfLanguages.VALIDATE_YOUR_IDENTITY}</Text>
-                {/* <View style={style.firstInput}>
+      <Header
+        rightImg={false}
+        headerText={""}
+        headertxt={styles.headerTxt}
+        backscreen={backscreen}
+        showFindServiceOnBack={true}
+      />
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={style.container}>
+          <View style={style.containercenter}>
+            <Text style={style.firstText}>
+              {StringsOfLanguages.VALIDATE_YOUR_IDENTITY}
+            </Text>
+            {/* <View style={style.firstInput}>
                     <Input
                         onChangeText={(val) => props.setLoginData({
                             ...props.loginData,
@@ -54,7 +96,7 @@ const validateIdentity = (props) => {
                     />
                      <Text style={style.errorText}>{props.inputError.firstnameError}</Text>
                 </View> */}
-                {/* <View style={style.firstInput}>
+            {/* <View style={style.firstInput}>
                     <Input
                         onChangeText={(val) => props.setLoginData({
                             ...props.loginData,
@@ -69,7 +111,7 @@ const validateIdentity = (props) => {
                     />
                      <Text style={style.errorText}>{props.inputError.lastnameError}</Text>
                 </View> */}
-                {/* <View style={style.firstInput}>
+            {/* <View style={style.firstInput}>
                     <Input
                         onChangeText={(val) => props.setLoginData({
                             ...props.loginData,
@@ -86,32 +128,37 @@ const validateIdentity = (props) => {
                     />
                      <Text style={style.errorText}>{props.inputError.mobileNoError}</Text>
                 </View> */}
-                <View style={style.secondText}>
-                    <Input
-                        onChangeText={(val) => props.setLoginData({
-                            ...props.loginData,
-                            email: val
-                        })}
-                        value={props.loginData.email}
-                        image="noNeed"
-                        placeholder={StringsOfLanguages.YOUR_EMAIL_ADDRESS}
-                        labelTxt={style.labelTxt}
-                        style={style.inputContainer}
-                        inputDsgn={style.inputDesign}
-                    />
-                     <Text style={style.errorText}>{props.inputError.emailaddrError}</Text>
-                </View>
-               </View> 
-                <View style={style.button}>
-                    <Button
-                        buttonText={StringsOfLanguages.SUBMIT}
-                        onPress={() => props.toNextPage()}
-                    />
-                </View>
+            <View style={style.secondText}>
+              <Input
+                onChangeText={(val) =>
+                  props.setLoginData({
+                    ...props.loginData,
+                    email: val,
+                  })
+                }
+                value={props.loginData.email}
+                image="noNeed"
+                placeholder={StringsOfLanguages.YOUR_EMAIL_ADDRESS}
+                labelTxt={style.labelTxt}
+                style={style.inputContainer}
+                inputDsgn={style.inputDesign}
+              />
+              <Text style={style.errorText}>
+                {props.inputError.emailaddrError}
+              </Text>
             </View>
-            </ScrollView>
-            {/* </LinearGradient> */}
-        </SafeAreaView>
-    )
-}
+          </View>
+          <View style={style.button}>
+            <Button
+              buttonText={StringsOfLanguages.SUBMIT}
+              onPress={() => props.toNextPage()}
+            />
+          </View>
+        </View>
+      </ScrollView>
+      {/* </LinearGradient> */}
+      <RegiConfirmModal visible={visible} onClose={onClose} />
+    </SafeAreaView>
+  );
+};
 export default validateIdentity;

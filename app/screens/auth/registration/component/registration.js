@@ -1,12 +1,20 @@
 import React from "react";
-import { View, Text, ScrollView, SafeAreaView, StatusBar } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  SafeAreaView,
+  StatusBar,
+  TouchableOpacity,
+} from "react-native";
 import style from "./style";
 import commomstyle from "../../../../common/styles";
 import { Button, Input, Header } from "@components";
 import Picker from "@components/picker";
 //import MultiSelect from 'react-native-multiple-select';
 import { Dropdown } from "react-native-element-dropdown";
-import { MultiSelect } from "react-native-element-dropdown";
+//import { MultiSelect } from "react-native-element-dropdown";
+import { Icon, colors } from "react-native-elements";
 import {
   GRADIENT_COLOR_NEW1,
   GRADIENT_COLOR_NEW3,
@@ -14,6 +22,7 @@ import {
   GRAY_COLOR,
   WHITE_COLOR,
   COMMON_COLOR,
+  GREEN_COLOR,
 } from "../../../../utils/constants";
 import LinearGradient from "react-native-linear-gradient";
 import StringsOfLanguages from "../../../../utils/translations";
@@ -46,7 +55,7 @@ const registration = (props) => {
     serviceList,
   } = props;
 
- // console.log("occupation in view", serviceList);
+  // console.log("occupation in view", serviceList);
 
   return (
     <SafeAreaView style={commomstyle.container}>
@@ -238,9 +247,9 @@ const registration = (props) => {
               onChange={(item) => {
                 props.setRegister({
                   ...register,
-                 // city: item.value,
-                 cityid: item.id,
-                 cityname: item.city,
+                  // city: item.value,
+                  cityid: item.id,
+                  cityname: item.city,
                 });
               }}
               /*  renderLeftIcon={() => (
@@ -356,8 +365,8 @@ const registration = (props) => {
               inputDsgn={style.inputDesign}
               msg={props.inputError.erroroccuption}
             /> */}
-            <MultiSelect
-              selectText={3} 
+            {/* <MultiSelect
+             // selectText={3} 
               showsVerticalScrollIndicator={false}
               style={style.dropdown}
               placeholderStyle={style.placeholderStyle}
@@ -376,16 +385,63 @@ const registration = (props) => {
               onChange={(item) => {
                 setRegister({
                   ...register,
-                  // occupation: item.occupation,
                   occupationid: item.naicsid,
                   occupation: item.title,
                 });
               }}
-             
+              activeColor={'skyblue'}
               selectedStyle={style.selectedStyle}
-             // maxSelect={1}
-            // activeColor={GRAY_COLOR}
-            />
+              maxSelect={1}
+              // renderSelectedItem={(item, unSelect) => {
+              //    return(
+              //     <View style={style.selectedStyleView}>
+              //       <Text style={style.selectedStyle}>{item.title}</Text>
+              //       <TouchableOpacity onPress={() => unSelect && unSelect(item.naicsid)}>
+              //       <Icon color={"white"} name="clear" size={13} style={style.selectedStyle}/>
+              //       </TouchableOpacity>
+              //     </View>
+              //    )
+              // }}
+            /> */}
+            <Dropdown
+              showsVerticalScrollIndicator={false}
+              style={style.dropdown}
+              placeholderStyle={style.placeholderStyle}
+              selectedTextStyle={style.selectedTextStyle}
+              // selectedTextStyle={
+              //   register &&
+              //   register.servicename &&
+              //   (register.servicename.length > 55
+              //     ? commomstyle.selectedTextStylelong
+              //     : register.servicename.length > 33
+              //     ? commomstyle.selectedTextSortlong
+              //     : commomstyle.selectedTextStyle)
+              // }
+              inputSearchStyle={style.inputSearchStyle}
+              iconStyle={style.iconStyle}
+              containerStyle={style.dropdownContener}
+              onChangeText={searchOccupation}
+              // data={data}
+              data={serviceList ? serviceList : []}
+              search
+              maxHeight={300}
+              labelField="title"
+              valueField="naicsid"
+              // labelField="formattedLabel"
+              // valueField="id"
+              placeholder={StringsOfLanguages.SEARCH_SERVICE}
+              searchPlaceholder={StringsOfLanguages.SEARCH}
+              value={register.occupation}
+              onChange={(item) => {
+                setRegister({
+                  ...register,
+                  occupationid: item.naicsid,
+                  occupation: item.title,
+                });
+              }}
+               />
+           
+
             <Text style={style.errorText}>
               {props.inputError.erroroccuption}
             </Text>

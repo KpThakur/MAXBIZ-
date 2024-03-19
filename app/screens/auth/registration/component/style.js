@@ -120,7 +120,9 @@ const style = StyleSheet.create({
       },
     selectedStyle: {
         borderRadius: 12,
-        backgroundColor: GRADIENT_COLOR_NEW2
+        backgroundColor: GRADIENT_COLOR_NEW2,
+        color:WHITE_COLOR,
+        paddingHorizontal: 10
     },
      iconStyle: {
     //   width: 20,
@@ -128,6 +130,27 @@ const style = StyleSheet.create({
     // tintColor: WHITE_COLOR
 
     }, 
+    selectedStyleView: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+       // borderRadius: 14,
+       // backgroundColor: 'white',
+      //  shadowColor: '#000',
+      //  marginTop: 8,
+        marginRight: 12,
+      //  paddingHorizontal: 12,
+        paddingVertical: 8,
+        // shadowOffset: {
+        //   width: 0,
+        //   height: 1,
+        // },
+        // shadowOpacity: 0.2,
+        // shadowRadius: 1.41,
+  
+        // elevation: 2,
+      },
+  
    
 
 })
