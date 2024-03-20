@@ -30,7 +30,8 @@ export const EXTRA_COLOR = "#616161"
 export const BORDER_COLOR = "#616161"
 export const YELLOW_COLOR = "#FFD700"
 export const GOLDEN_COLOR = "rgb(241, 165, 69)"
-
+export const AQUA_COLOR = "rgb(0,255,255)"
+export const SKY_BLUE = "rgb(135,206,235)"
 
 //Fonts
 export const FONT_FAMILY_REGULAR = "Poppins-Regular"

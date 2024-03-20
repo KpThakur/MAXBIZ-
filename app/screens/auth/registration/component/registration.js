@@ -13,7 +13,7 @@ import { Button, Input, Header } from "@components";
 import Picker from "@components/picker";
 //import MultiSelect from 'react-native-multiple-select';
 import { Dropdown } from "react-native-element-dropdown";
-//import { MultiSelect } from "react-native-element-dropdown";
+import { MultiSelect } from "react-native-element-dropdown";
 import { Icon, colors } from "react-native-elements";
 import {
   GRADIENT_COLOR_NEW1,
@@ -23,6 +23,8 @@ import {
   WHITE_COLOR,
   COMMON_COLOR,
   GREEN_COLOR,
+  AQUA_COLOR,
+  SKY_BLUE,
 } from "../../../../utils/constants";
 import LinearGradient from "react-native-linear-gradient";
 import StringsOfLanguages from "../../../../utils/translations";
@@ -53,6 +55,7 @@ const registration = (props) => {
     extractFileName,
     searchOccupation,
     serviceList,
+    pdfFileName
   } = props;
 
   // console.log("occupation in view", serviceList);
@@ -192,14 +195,14 @@ const registration = (props) => {
                   services: item,
                 });
               }}
-               renderLeftIcon={() => (
-                <AntDesign
-                  style={style.icon}
-                  color="black"
-                  name="Safety"
-                  size={20}
-                />
-              )}
+              //  renderLeftIcon={() => (
+              //   <AntDesign
+              //     style={style.icon}
+              //     color="black"
+              //     name="Safety"
+              //     size={20}
+              //   />
+              // )}
               selectedStyle={style.selectedStyle}
             /> */}
 
@@ -225,6 +228,7 @@ const registration = (props) => {
           </View>
           <View style={style.firstInput}>
             <Dropdown
+              activeColor={SKY_BLUE}
               showsVerticalScrollIndicator={false}
               style={style.dropdown}
               placeholderStyle={style.placeholderStyle}
@@ -261,6 +265,7 @@ const registration = (props) => {
 
           <View style={style.firstInput}>
             <Dropdown
+              activeColor={SKY_BLUE}
               showsVerticalScrollIndicator={false}
               style={style.dropdown}
               placeholderStyle={style.placeholderStyle}
@@ -403,43 +408,45 @@ const registration = (props) => {
               //    )
               // }}
             /> */}
-            <Dropdown
+            <MultiSelect
+              activeColor={AQUA_COLOR}
               showsVerticalScrollIndicator={false}
               style={style.dropdown}
               placeholderStyle={style.placeholderStyle}
-              selectedTextStyle={style.selectedTextStyle}
-              // selectedTextStyle={
-              //   register &&
-              //   register.servicename &&
-              //   (register.servicename.length > 55
-              //     ? commomstyle.selectedTextStylelong
-              //     : register.servicename.length > 33
-              //     ? commomstyle.selectedTextSortlong
-              //     : commomstyle.selectedTextStyle)
-              // }
+              selectedTextStyle={style.selectedTextStylemul}
               inputSearchStyle={style.inputSearchStyle}
               iconStyle={style.iconStyle}
               containerStyle={style.dropdownContener}
-              onChangeText={searchOccupation}
-              // data={data}
-              data={serviceList ? serviceList : []}
               search
-              maxHeight={300}
+             // data={data}
+              data={serviceList ? serviceList : []}
+              onChangeText={searchOccupation}
+             // labelField="label"
               labelField="title"
-              valueField="naicsid"
-              // labelField="formattedLabel"
-              // valueField="id"
+              valueField="title"
               placeholder={StringsOfLanguages.SEARCH_SERVICE}
               searchPlaceholder={StringsOfLanguages.SEARCH}
-              value={register.occupation}
+              value={props.register.services}
               onChange={(item) => {
-                setRegister({
-                  ...register,
-                  occupationid: item.naicsid,
-                  occupation: item.title,
+                console.log("item===>>>", item)
+                props.setRegister({
+                  ...props.register,
+                 // servicesid: item.naicsid,
+                  services: item
                 });
               }}
-               />
+             
+             
+              //  renderLeftIcon={() => (
+              //   <AntDesign
+              //     style={style.icon}
+              //     color="black"
+              //     name="Safety"
+              //     size={20}
+              //   />
+              // )}
+              selectedStyle={style.selectedStyle}
+            />
            
 
             <Text style={style.errorText}>
@@ -554,7 +561,8 @@ const registration = (props) => {
           </View>
           {/* <Text style={style.errorText}>{imageData ? imageData.filename : ""}</Text> */}
           <Text style={[style.errorText, { color: COMMON_COLOR }]}>
-            {imageData ? extractFileName(imageData.path) : ""}
+            {/* {imageData ? extractFileName(imageData.path) : ""} */}
+            {pdfFileName}
           </Text>
           <Text style={style.errorText}>
             {props.inputError.errorbusiness_photo_url}

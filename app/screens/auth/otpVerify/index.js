@@ -12,7 +12,7 @@ import OtpVerify from "./component/otpVerify";
 const OtpVerifyView = ({ route, navigation }) => {
   const { loginData } = route?.params || {};
   // console.log('logindata>>>>>>>>:-', loginData)
-  const [otp, setOtp] = useState();
+  const [otp, setOtp] = useState("");
   // const [emailotp, setEmailOtp] = useState();
 
   console.log("otp check>>>:-", otp);

@@ -26,7 +26,7 @@ import { ICONS } from "../../../../utils/imagePath";
 import { Icon } from "react-native-elements";
 
 const validateIdentity = (props) => {
-  const { backscreen, visible, onClose } = props;
+  const { backscreen, visible, onClose, message } = props;
 
   const RegiConfirmModal = ({ visible, onClose }) => {
     return (
@@ -39,7 +39,7 @@ const validateIdentity = (props) => {
         <View style={style.modalMainView}>
           <View style={style.modalContainView}>
             <Text style={style.modalTextStyle}>
-            This email already belongs to a registered business. Please wait until MAXBIZ Team verifies your business.
+              {message}
             </Text>
 
             <TouchableOpacity onPress={() => onClose()}>

@@ -10,6 +10,8 @@ import { showMessage } from "react-native-flash-message";
 import { LoadingContext } from "../../../utils/searchContext";
 import Loader from "../../../components/loader";
 import axios from "axios";
+import { Platform } from "react-native";
+import DocumentPicker from "react-native-document-picker";
 
 const items = [
   {
@@ -52,16 +54,22 @@ const items = [
 
 const RegistrationView = ({ navigation }) => {
   const [inputError, setinputError] = useState({});
-  const [imageData, setimageData] = useState(null);
+  const [imageData, setImageData] = useState(null);
   const [servicesData, setServicesData] = useState([]);
   const [allCity, setAllCity] = useState([]);
   const [industryList, setIndustryList] = useState([]);
   const [businessDetail, setbusinessDetail] = useState([]);
   const [serviceList, setServiceList] = useState([]);
-
+  const [pdfFileName, setPdfFileName] = useState(null);
   const [selectedItems, setSelectedItems] = useState([]);
 
   const [isLoading, setIsLoading] = useContext(LoadingContext);
+
+ // const [userData, setUserData] = useState({});
+ // console.log("find profileid:-----", userData?.profileid);
+
+  
+  // console.log("servicelist:>>>>>>>>>>-", serviceList);
 
   const onSelectedItemsChange = (servicesData) => {
     //this.setState({ selectedItems });
@@ -69,32 +77,6 @@ const RegistrationView = ({ navigation }) => {
   };
 
   
-
-  const uploaddocument = () => {
-  // const result =  
-   ImagePicker.openPicker({
-      width: 300,
-      height: 400,
-      cropping: false,
-      compressImageQuality: 1,
-    }).then((image) => {
-      // console.log(image);
-      setimageData(image);
-      // const fileName = result.uri.split('/').pop();
-      // const fileType = fileName.split('.').pop();
-    
-      // console.log(fileName, fileType);
-    });
-  };
-
-
-
-  const extractFileName = (path) => {
-    if (!path) return "";
-    const uriParts = decodeURI(path).split("/");
-    const fileName = uriParts.pop();
-    return fileName;
-  };
 
   const [register, setRegister] = useState({
     businessusername: "",
@@ -110,7 +92,7 @@ const RegistrationView = ({ navigation }) => {
     payment: "",
     phone_no: "",
     website_url: "",
-    services: [],
+    services: "",
     cityid: "",
     cityname: "",
     servicename: "",
@@ -140,14 +122,81 @@ const RegistrationView = ({ navigation }) => {
     is_non_profit: 0,
   });
 
+
+  // const uploaddocument = () => {
+  // // const result =
+  //  ImagePicker.openPicker({
+  //     width: 300,
+  //     height: 400,
+  //     cropping: false,
+  //     compressImageQuality: 1,
+  //    // mediaType:'any',
+  //    // multiple: true
+  //   }).then((image) => {
+  //     // console.log(image);
+  //     setImageData(image);
+  //     // const fileName = result.uri.split('/').pop();
+  //     // const fileType = fileName.split('.').pop();
+
+  //   });
+  // };
+
+  // const uploaddocument = () => {
+  //   ImagePicker.openPicker({
+  //     width: 300,
+  //     height: 400,
+  //     cropping: false,
+  //     compressImageQuality: 1,
+  //     multiple: false, // Set to false if you only want to select one file at a time
+  //     mediaType: 'any',
+  //   }).then((image) => {
+  //     if (Platform.OS === 'android' && image.mime === 'application/pdf') {
+  //       setImageData(image);
+  //     } else if (Platform.OS === 'ios' && image.path.toLowerCase().endsWith('.pdf')) {
+  //       setImageData(image);
+  //     } else {
+  //       alert('Please select a PDF file.');
+  //     }
+  //   });
+  // };
+
+  const uploaddocument = async () => {
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.pdf],
+      });
+      // console.log("pdf", res)
+      console.log(
+        "URI: " + res.uri,
+        "Type: " + res.type,
+        "Name: " + res.name,
+        "Size: " + res.size
+      );
+      setPdfFileName(res[0].name);
+     // setImageData(res[0]);
+      setRegister({ ...register?.certificate, certificate: res[0] });
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        console.log("User cancelled the picker");
+      } else {
+        // Error occurred
+        console.log("Error occurred:", err);
+      }
+    }
+  };
+
+   const extractFileName = (path) => {
+    if (!path) return "";
+    const uriParts = decodeURI(path).split("/");
+    const fileName = uriParts.pop();
+    return fileName;
+  };
+
   const getIpAddress = async () => {
     const res = await axios.get("https://geolocation-db.com/json/");
-    console.log('ipadd', res)
+    console.log("ipadd", res);
     return res.data.IPv4;
-    
   };
- 
-
 
   function validationFrom() {
     let errorbusinessusername = "";
@@ -159,25 +208,30 @@ const RegistrationView = ({ navigation }) => {
     let erroroccuption = "";
     let errorbusiness_photo_url = "";
 
-    if (register.businessusername == "") {
+    if (register.businessusername == "" || register.businessusername === undefined) {
       errorbusinessusername = StringsOfLanguages.PLEASE_ENTER_BUSINESS_USERNAME;
     }
-    if (register.businessname == "") {
+    if (register.businessname == "" || register.businessname === undefined) {
       errorbusinessname = StringsOfLanguages.PLEASE_ENTER_BUSINESS_NAME;
     }
-    if (register.address == "") {
+    if (register.address == "" || register.address === undefined ) {
       erroraddress = StringsOfLanguages.PLEASE_ENTER_ADDRESS;
     }
-    if (register.cityname == "") {
+    if (register.cityname == "" || register.cityname === undefined) {
       errorcity = StringsOfLanguages.PLEASE_SELECT_CITY;
     }
-    if (register.servicename == "") {
+    if (register.servicename == "" || register.servicename === undefined) {
       errorindustry = StringsOfLanguages.PLEASE_ENTER_INDUSTRY;
     }
-    if (register.occupation == "") {
+   
+    if (register.services == "" || register.services === undefined) {
       erroroccuption = StringsOfLanguages.PLEASE_ENTER_OCCUPTION;
     }
-    if (!imageData) {
+    // if (!imageData) {
+    //   errorbusiness_photo_url = StringsOfLanguages.PLEASE_SELECT_CERTIFICATE;
+    // }
+     // console.log("check certi valid", register?.certificate)
+    if (register?.certificate === "" || register.certificate === undefined ) {
       errorbusiness_photo_url = StringsOfLanguages.PLEASE_SELECT_CERTIFICATE;
     }
 
@@ -212,8 +266,6 @@ const RegistrationView = ({ navigation }) => {
     }
     return true;
   }
-
-
 
   const getServiceList = async (service) => {
     // console.log("search name", service);
@@ -263,7 +315,7 @@ const RegistrationView = ({ navigation }) => {
             formattedLabel: `${city.city || ""}, ${city.state_id || ""}`,
           }));
           // setAllCity(response.data.data)
-         // console.log("responce City:-", response.data);
+          // console.log("responce City:-", response.data);
           setAllCity(formattedCityData);
           // console.log("city find:-", response.data)
         } else {
@@ -276,20 +328,20 @@ const RegistrationView = ({ navigation }) => {
   };
 
   const searchOccupation = async (item) => {
-     console.log("search occuption", item);
+    console.log("search occuption", item);
     if (item.length >= 3) {
       try {
         const params = { servicename: item };
-         console.log('param', params)
+        console.log("param", params);
         const response = await apiCall(
           "POST",
           apiEndPoints.GETSERVICELIST,
           params
         );
-         console.log("Response:", response.data);
+        console.log("Response:", response.data);
         if (response.status === 200) {
           setServiceList(response.data.data);
-           console.log("Response in 200:", response.data);
+          console.log("Response in 200:", response.data.data);
         } else {
           console.log("in else");
         }
@@ -299,98 +351,53 @@ const RegistrationView = ({ navigation }) => {
     }
   };
 
-  // const submitForResig = async () => {
-  //   // console.log("submit call>>>>>>>>>>>")
-  //   const valid = validationFrom();
-  //   if (valid) {
-  //     try {
-  //       setIsLoading(true);
-  //       const params = {
-  //         businessusername: register?.businessusername,
-  //         businessname: register?.businessname,
-  //         address: register?.address,
-  //        // cityid: register?.city,
-  //         servicename: register?.services,
-  //         occupation: register?.occupation,
-  //        // certificate: imageData
-  //       };
-  //       const response = await apiCall(
-  //         "POST",
-  //         apiEndPoints.REGISTERBUSINESSDETAIL,
-  //         params
-  //       );
-  //       console.log('responce:->>>>>', response)
-  //       if (response.status === 200) {
-  //         setbusinessDetail(response.data.data);
-  //         console.log('responce in 200 :-', response.data)
-  //         setIsLoading(false);
-  //         navigation.navigate("thankyouScreen");
-  //       }
-  //       if (response.status == 401) {
-  //         console.log('responce in 400 :-', response.data)
-  //         showMessage({
-  //           message: response.message,
-  //           type: "warning",
-  //           duration: 3000,
-  //         });
-  //       } else {
-  //         setIsLoading(false);
-  //       }
-  //     } catch (error) {
-  //       setIsLoading(false);
-  //     }
-  //   }
-  // };
-
- // console.log("ocupation find:---------", imageData);
+  console.log("find data<<<<<<||>>>>>>>>>>>:-", register?.serviceid);
 
   const submitForResig = async () => {
     const valid = validationFrom();
+    console.log("check valid", valid)
     if (valid) {
       try {
         setIsLoading(true);
-
-         const formData = new FormData();
-        formData.append("profileid", null);
+       // console.log("find data<<<<<<||>>>>>>>>>>>:-", imageData);
+        const formData = new FormData();
+        formData.append("profileid", 1);
         formData.append("businessusername", register?.businessusername);
         formData.append("fullname", register?.businessname);
         formData.append("address", register?.address);
-        formData.append("naicsid", register?.occupation);
-        formData.append("cityid", register?.cityname);
-       // formData.append("occupation", register?.occupation);
+        formData.append("naicsid", register?.services);
+       // formData.append("naicsid", "");
+        formData.append("cityid", register?.cityid);
         formData.append("certificate", imageData);
         formData.append("ipaddress", await getIpAddress());
-        formData.append("is_nonprofit", register?.is_non_profit );
-        formData.append("photofile", register?.business_url );
-        formData.append("instagramurl", register?.instagramurl );
-        formData.append("youtubeurl", register?.youtubeurl );
-        formData.append("twitterurl", register?.twitterurl );
-        formData.append("linkedInurl", register?.linkedInurl );
-        formData.append("facebookurl", register?.facebookurl );
-        formData.append("business_validation", 1 );
-        formData.append("year_revenue", "" );
-        formData.append("industry", register?.servicename );
-        formData.append("service_area", register?.servicing_areas );
-        formData.append("service_offer", register?.service_offer );
-        formData.append("showemail", 1 );
-        formData.append("showtext", 1 );
-        formData.append("showcall", 1 );
-        formData.append("websiteurl", register?.website );
-        formData.append("email", register?.phone );
-        formData.append("phone", register?.phone );
-        formData.append("payments", register?.payment_method );
-        formData.append("hours", register?.hours_operation );
+        formData.append("is_nonprofit", register?.is_non_profit);
+        formData.append("photofile", register?.business_url);
+        formData.append("instagramurl", register?.instagramurl);
+        formData.append("youtubeurl", register?.youtubeurl);
+        formData.append("twitterurl", register?.twitterurl);
+        formData.append("linkedInurl", register?.linkedInurl);
+        formData.append("facebookurl", register?.facebookurl);
+        formData.append("business_validation", 1);
+        formData.append("year_revenue", "");
+        formData.append("industry", register?.serviceid);
+        formData.append("service_area", register?.servicing_areas);
+        formData.append("service_offer", register?.service_offer);
+        formData.append("showemail", 1);
+        formData.append("showtext", 1);
+        formData.append("showcall", 1);
+        formData.append("websiteurl", register?.website);
+        formData.append("email", register?.phone);
+        formData.append("phone", register?.phone);
+        formData.append("payments", register?.payment_method);
+        formData.append("hours", register?.hours_operation);
         formData.append("pricehour", 0);
-        formData.append("about", register?.introduction );
-        formData.append("annualgrossrevenue", 2000 );
-        formData.append("numemps", register?.numemps );
-        formData.append("county", 0 );
-        formData.append("state", 0 );
+        formData.append("about", register?.introduction);
+        formData.append("annualgrossrevenue", 2000);
+        formData.append("numemps", register?.numemps);
+        formData.append("county", 0);
+        formData.append("state", 0);
 
-
-
-
-         console.log("formData", formData);
+        console.log("formData>>>>>>>>>>>", formData);
 
         const response = await apiCall(
           "POST",
@@ -398,12 +405,18 @@ const RegistrationView = ({ navigation }) => {
           formData
         );
 
-        console.log("response:", response.data);
-
+        console.log("response:", response);
+        console.log("response status:", response.status);
         if (response.status === 200) {
           setbusinessDetail(response.data.data);
           setIsLoading(false);
           navigation.navigate("thankyouScreen");
+          showMessage({
+            message: response.message,
+            type: "success",
+            duration: 3000,
+          });
+          console.log("response in 200:", response.data.data)
         } else if (response.status === 401) {
           showMessage({
             message: response.message,
@@ -451,7 +464,7 @@ const RegistrationView = ({ navigation }) => {
         serviceList={serviceList}
         setSelectedItems={setSelectedItems}
         selectedItems={selectedItems}
-       
+        pdfFileName={pdfFileName}
       />
     </>
   );

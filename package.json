@@ -24,6 +24,7 @@
     "react": "18.2.0",
     "react-native": "0.71.4",
     "react-native-blob-util": "^0.19.6",
+    "react-native-document-picker": "^9.1.1",
     "react-native-drop-down-item": "^1.1.0",
     "react-native-element-dropdown": "^2.10.0",
     "react-native-elements": "^3.4.2",
