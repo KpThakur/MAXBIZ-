@@ -62,21 +62,19 @@ const RegistrationView = ({ navigation }) => {
   const [serviceList, setServiceList] = useState([]);
   const [pdfFileName, setPdfFileName] = useState(null);
   const [selectedItems, setSelectedItems] = useState([]);
+  const [uripath, setUrilastpath] = useState("");
 
   const [isLoading, setIsLoading] = useContext(LoadingContext);
 
- // const [userData, setUserData] = useState({});
- // console.log("find profileid:-----", userData?.profileid);
+  // const [userData, setUserData] = useState({});
+  // console.log("find profileid:-----", userData?.profileid);
 
-  
   // console.log("servicelist:>>>>>>>>>>-", serviceList);
 
   const onSelectedItemsChange = (servicesData) => {
     //this.setState({ selectedItems });
     servicesData.length <= 3 ? setServicesData(servicesData) : "null";
   };
-
-  
 
   const [register, setRegister] = useState({
     businessusername: "",
@@ -122,7 +120,6 @@ const RegistrationView = ({ navigation }) => {
     is_non_profit: 0,
   });
 
-
   // const uploaddocument = () => {
   // // const result =
   //  ImagePicker.openPicker({
@@ -167,14 +164,24 @@ const RegistrationView = ({ navigation }) => {
       });
       // console.log("pdf", res)
       console.log(
-        "URI: " + res.uri,
-        "Type: " + res.type,
-        "Name: " + res.name,
-        "Size: " + res.size
+        "URI: " + res[0].uri,
+        "Type: " + res[0].type,
+        "Name: " + res[0].name,
+        "Size: " + res[0].size
       );
       setPdfFileName(res[0].name);
-     // setImageData(res[0]);
-      setRegister({ ...register?.certificate, certificate: res[0] });
+      setImageData(res[0]);
+      // setRegister({ ...register?.certificate, certificate: res[0] });
+      const uriSegments = res[0].uri.split("/");
+      const lastSegment = uriSegments[uriSegments.length - 1];
+      setUrilastpath(lastSegment);
+      console.log("lastSegment>>>>", lastSegment);
+
+      // const modified = res[0].lastModified || "";
+      // const modifiedDate = res[0].lastModifiedDate || "";
+      // console.log("lastModified>>>>", modified);
+      // console.log("lastModifiedDate>>>>", modifiedDate);
+     
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         console.log("User cancelled the picker");
@@ -183,20 +190,29 @@ const RegistrationView = ({ navigation }) => {
         console.log("Error occurred:", err);
       }
     }
+    
   };
 
-   const extractFileName = (path) => {
+ // console.log("lastSegment>>>>in object>>>", uripath);
+
+  const extractFileName = (path) => {
     if (!path) return "";
     const uriParts = decodeURI(path).split("/");
     const fileName = uriParts.pop();
+    console.log("find name", fileName);
+
     return fileName;
   };
 
   const getIpAddress = async () => {
     const res = await axios.get("https://geolocation-db.com/json/");
-    console.log("ipadd", res);
+    // console.log("find ipaddress:---", res);
     return res.data.IPv4;
   };
+
+  // useEffect(() => {
+  //  // getIpAddress();
+  // },[])
 
   function validationFrom() {
     let errorbusinessusername = "";
@@ -208,13 +224,16 @@ const RegistrationView = ({ navigation }) => {
     let erroroccuption = "";
     let errorbusiness_photo_url = "";
 
-    if (register.businessusername == "" || register.businessusername === undefined) {
+    if (
+      register.businessusername == "" ||
+      register.businessusername === undefined
+    ) {
       errorbusinessusername = StringsOfLanguages.PLEASE_ENTER_BUSINESS_USERNAME;
     }
     if (register.businessname == "" || register.businessname === undefined) {
       errorbusinessname = StringsOfLanguages.PLEASE_ENTER_BUSINESS_NAME;
     }
-    if (register.address == "" || register.address === undefined ) {
+    if (register.address == "" || register.address === undefined) {
       erroraddress = StringsOfLanguages.PLEASE_ENTER_ADDRESS;
     }
     if (register.cityname == "" || register.cityname === undefined) {
@@ -223,17 +242,17 @@ const RegistrationView = ({ navigation }) => {
     if (register.servicename == "" || register.servicename === undefined) {
       errorindustry = StringsOfLanguages.PLEASE_ENTER_INDUSTRY;
     }
-   
+
     if (register.services == "" || register.services === undefined) {
       erroroccuption = StringsOfLanguages.PLEASE_ENTER_OCCUPTION;
     }
-    // if (!imageData) {
-    //   errorbusiness_photo_url = StringsOfLanguages.PLEASE_SELECT_CERTIFICATE;
-    // }
-     // console.log("check certi valid", register?.certificate)
-    if (register?.certificate === "" || register.certificate === undefined ) {
+    if (!imageData) {
       errorbusiness_photo_url = StringsOfLanguages.PLEASE_SELECT_CERTIFICATE;
     }
+    // console.log("check certi valid", register?.certificate)
+    // if (register?.certificate === "" || register.certificate === undefined ) {
+    //   errorbusiness_photo_url = StringsOfLanguages.PLEASE_SELECT_CERTIFICATE;
+    // }
 
     // if (servicesData.length == 0) {
     //   errorservices = StringsOfLanguages.PLEASE_ENTER_SERVICES;
@@ -351,24 +370,34 @@ const RegistrationView = ({ navigation }) => {
     }
   };
 
-  console.log("find data<<<<<<||>>>>>>>>>>>:-", register?.serviceid);
+//  console.log("find data<<<<<<||>>>>>>>>>>>:-", uripath);
 
   const submitForResig = async () => {
     const valid = validationFrom();
-    console.log("check valid", valid)
+    console.log("check valid", valid);
     if (valid) {
       try {
         setIsLoading(true);
-       // console.log("find data<<<<<<||>>>>>>>>>>>:-", imageData);
+        // console.log("find image data<<<<<<||>>>>>>>>>>>:-", imageData);
+
         const formData = new FormData();
         formData.append("profileid", 1);
         formData.append("businessusername", register?.businessusername);
         formData.append("fullname", register?.businessname);
         formData.append("address", register?.address);
-        formData.append("naicsid", register?.services);
-       // formData.append("naicsid", "");
+       // formData.append("naicsid", register?.services);
+        formData.append("naicsid", "");
         formData.append("cityid", register?.cityid);
         formData.append("certificate", imageData);
+        // formData.append("certificate", {
+        //   lastModified: "",
+        //   lastModifiedDate: "",
+        //   name: imageData?.name,
+        //   size: imageData?.size,
+        //   type: imageData?.type,
+        //   webkitRelativePath: uripath,
+        //  // uri: uripath,
+        // });
         formData.append("ipaddress", await getIpAddress());
         formData.append("is_nonprofit", register?.is_non_profit);
         formData.append("photofile", register?.business_url);
@@ -397,6 +426,57 @@ const RegistrationView = ({ navigation }) => {
         formData.append("county", 0);
         formData.append("state", 0);
 
+        // const params = {
+        //   profileid: 1,
+        //   businessusername: register?.businessusername,
+        //   fullname: register?.businessname,
+        //   address: register?.address,
+        //  // naicsid: register?.services,
+        //   naicsid: "" ,
+        //   cityid: register?.cityid,
+        //  // certificate: imageData,
+        //   ipaddress: await getIpAddress(),
+        //   is_nonprofit: register?.is_non_profit,
+        //   photofile: register?.business_url,
+        //   instagramurl: register?.instagramurl,
+        //   youtubeurl: register?.youtubeurl,
+        //   twitterurl: register?.twitterurl,
+        //   linkedInurl: register?.linkedInurl,
+        //   facebookurl: register?.facebookurl,
+        //   business_validation: 1,
+        //   year_revenue: "",
+        //   industry: register?.serviceid,
+        //   service_area: register?.servicing_areas,
+        //   service_offer: register?.service_offer,
+        //   showemail: 1,
+        //   showtext: 1,
+        //   showcall: 1,
+        //   websiteurl: register?.website,
+        //   email: register?.phone,
+        //   phone: register?.phone,
+        //   payments: register?.payment_method,
+        //   hours: register?.hours_operation,
+        //   pricehour: 0,
+        //   about: register?.introduction,
+        //   annualgrossrevenue: 2000,
+        //   numemps: register?.numemps,
+        //   county: 0,
+        //   state: 0
+        // };
+
+        //   const formData = new FormData();
+        //   formData.append('params', JSON.stringify(params));
+        //  // formData.append('params', params)
+        //   formData.append('certificate', {
+        //     lastModified: "" ,
+        //     lastModifiedDate: "" ,
+        //     name: imageData?.name,
+        //     size: imageData?.size ,
+        //     type: imageData?.type ,
+        //     webkitRelativePath: uripath,
+        //    // uri: uripath
+        //   })
+
         console.log("formData>>>>>>>>>>>", formData);
 
         const response = await apiCall(
@@ -416,15 +496,17 @@ const RegistrationView = ({ navigation }) => {
             type: "success",
             duration: 3000,
           });
-          console.log("response in 200:", response.data.data)
-        } else if (response.status === 401) {
-          showMessage({
-            message: response.message,
-            type: "warning",
-            duration: 3000,
-          });
+          console.log("response in 200:", response.data.data);
         } else {
           setIsLoading(false);
+          if (response.status == 401) {
+            showMessage({
+              message: response.message,
+              type: "warning",
+              duration: 3000,
+            });
+            console.log("response in 401:", response.data.data);
+          }
         }
       } catch (error) {
         setIsLoading(false);
