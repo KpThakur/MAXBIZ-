@@ -17,6 +17,7 @@ const ValidtIdntyView = ({ navigation }) => {
     lastname: "",
   });
    const [message, setMessage] = useState();
+
   // console.log("emailadd:-", loginData?.email)
 
   function validationFrom() {
@@ -69,7 +70,7 @@ const ValidtIdntyView = ({ navigation }) => {
   const [isLoading, setIsLoading] = useContext(LoadingContext);
 
   const toNextPage = async () => {
-    // navigation.navigate("registrationScreen");
+     navigation.navigate("registrationScreen");
     // navigation.navigate("otpVerifyScreen", {
     //   loginData: loginData?.email,
     // });
@@ -97,6 +98,7 @@ const ValidtIdntyView = ({ navigation }) => {
           if (response.data.data.indentityValidated === 0) {
             navigation.navigate("otpVerifyScreen", {
               loginData: loginData?.email,
+              profileid:  response?.data?.data.profileid
             });
             setLoginData(response.data.data);
             showMessage({
@@ -119,7 +121,7 @@ const ValidtIdntyView = ({ navigation }) => {
               console.log("your bussiness already register:-", response.data);
             } else {
               setIsLoading(false);
-              navigation.navigate("registrationScreen");
+              navigation.navigate("registrationScreen", {  profileid:  response?.data?.data.profileid });
               showMessage({
                 message: response.data.message.messageTost,
                 type: "success",

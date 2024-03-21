@@ -10,12 +10,12 @@ import StringsOfLanguages from "../../../utils/translations";
 import OtpVerify from "./component/otpVerify";
 
 const OtpVerifyView = ({ route, navigation }) => {
-  const { loginData } = route?.params || {};
+  const { loginData, profileid } = route?.params || {};
   // console.log('logindata>>>>>>>>:-', loginData)
   const [otp, setOtp] = useState("");
   // const [emailotp, setEmailOtp] = useState();
 
-  console.log("otp check>>>:-", otp);
+  console.log("profilid check>>>:-", profileid);
 
   const [isLoading, setIsLoading] = useContext(LoadingContext);
 
@@ -77,7 +77,7 @@ const OtpVerifyView = ({ route, navigation }) => {
           setOtp(response.data.data);
           console.log("responce 200:-", response.data);
           // Alert.alert("Your verification is successful");
-          navigation.navigate("registrationScreen");
+          navigation.navigate("registrationScreen", { profileid: profileid });
           setOtp("");
           clearText();
         } else {

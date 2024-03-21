@@ -11,7 +11,8 @@ import { LoadingContext } from "../../../utils/searchContext";
 import Loader from "../../../components/loader";
 import axios from "axios";
 import { Platform } from "react-native";
-import DocumentPicker from "react-native-document-picker";
+import DocumentPicker, { types } from "react-native-document-picker";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const items = [
   {
@@ -52,7 +53,11 @@ const items = [
   },
 ];
 
-const RegistrationView = ({ navigation }) => {
+const RegistrationView = ({ route, navigation }) => {
+  const { profileid } = route?.params || {};
+
+  console.log("check profile id:-----", profileid);
+
   const [inputError, setinputError] = useState({});
   const [imageData, setImageData] = useState(null);
   const [servicesData, setServicesData] = useState([]);
@@ -63,14 +68,15 @@ const RegistrationView = ({ navigation }) => {
   const [pdfFileName, setPdfFileName] = useState(null);
   const [selectedItems, setSelectedItems] = useState([]);
   const [uripath, setUrilastpath] = useState("");
+  const [selectedOption, setSelectedOption] = useState([]);
 
   const [isLoading, setIsLoading] = useContext(LoadingContext);
 
   // const [userData, setUserData] = useState({});
   // console.log("find profileid:-----", userData?.profileid);
 
-  // console.log("servicelist:>>>>>>>>>>-", serviceList);
-
+  console.log("servicelist:>>>>>>>>>>-", serviceList);
+  console.log("The selected option ===>>", selectedOption);
   const onSelectedItemsChange = (servicesData) => {
     //this.setState({ selectedItems });
     servicesData.length <= 3 ? setServicesData(servicesData) : "null";
@@ -160,7 +166,9 @@ const RegistrationView = ({ navigation }) => {
   const uploaddocument = async () => {
     try {
       const res = await DocumentPicker.pick({
-        type: [DocumentPicker.types.pdf],
+        // type: [DocumentPicker.types.pdf],
+        type: [types.pdf, types.docx],
+        // presentationStyle:'fullScreen'
       });
       // console.log("pdf", res)
       console.log(
@@ -177,11 +185,10 @@ const RegistrationView = ({ navigation }) => {
       setUrilastpath(lastSegment);
       console.log("lastSegment>>>>", lastSegment);
 
-      // const modified = res[0].lastModified || "";
-      // const modifiedDate = res[0].lastModifiedDate || "";
-      // console.log("lastModified>>>>", modified);
-      // console.log("lastModifiedDate>>>>", modifiedDate);
-     
+      // const modifiedTimestamp = res[0].lastModified || "";
+      // const modifiedDate = modifiedTimestamp ? new Date(parseInt(modifiedTimestamp, 10)) : "";
+      // console.log("lastModified:", modifiedTimestamp);
+      // console.log("lastModifiedDate:", modifiedDate);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         console.log("User cancelled the picker");
@@ -190,10 +197,9 @@ const RegistrationView = ({ navigation }) => {
         console.log("Error occurred:", err);
       }
     }
-    
   };
 
- // console.log("lastSegment>>>>in object>>>", uripath);
+  // console.log("lastSegment>>>>in object>>>", uripath);
 
   const extractFileName = (path) => {
     if (!path) return "";
@@ -370,10 +376,26 @@ const RegistrationView = ({ navigation }) => {
     }
   };
 
-//  console.log("find data<<<<<<||>>>>>>>>>>>:-", uripath);
+  //  console.log("find data<<<<<<||>>>>>>>>>>>:-", uripath);
 
   const submitForResig = async () => {
     const valid = validationFrom();
+    
+    const result = [];
+    selectedOption.map((item, index) => {
+      serviceList.map((ite) => {
+        if (ite.title === item) {
+          result.push(ite.naicsid);
+        }
+      });
+    });
+    const stringData = result.join(",");
+    console.log("The reuslt ===>>",typeof stringData,stringData);
+
+    // const selectedValue = serviceList.filter((item,index)=> item.title===selectedOption[0])
+    // const value = selectedValue[0].naicsid;
+    // console.log("The selectedValue ===>>",value);
+
     console.log("check valid", valid);
     if (valid) {
       try {
@@ -381,12 +403,12 @@ const RegistrationView = ({ navigation }) => {
         // console.log("find image data<<<<<<||>>>>>>>>>>>:-", imageData);
 
         const formData = new FormData();
-        formData.append("profileid", 1);
+        formData.append("profileid", profileid);
         formData.append("businessusername", register?.businessusername);
         formData.append("fullname", register?.businessname);
         formData.append("address", register?.address);
-       // formData.append("naicsid", register?.services);
-        formData.append("naicsid", "");
+        formData.append("naicsid", stringData);
+        // formData.append("naicsid", "");
         formData.append("cityid", register?.cityid);
         formData.append("certificate", imageData);
         // formData.append("certificate", {
@@ -477,22 +499,27 @@ const RegistrationView = ({ navigation }) => {
         //    // uri: uripath
         //   })
 
-        console.log("formData>>>>>>>>>>>", formData);
+        const userToken = await AsyncStorage.getItem("userToken");
 
+        console.log("---", userToken);
+
+        console.log("formData>>>>>>>>>>>", formData);
+        const header = { "content-type": "multipart/form-data" };
         const response = await apiCall(
           "POST",
           apiEndPoints.REGISTERBUSINESSDETAIL,
-          formData
+          formData,
+          header
         );
 
-        console.log("response:", response);
-        console.log("response status:", response.status);
-        if (response.status === 200) {
+        console.log("response>>>>>>>>>>>>>>>>>>>>>>>>>:", response);
+        // console.log("response status:", response.status);
+        if (response.data.status === 200) {
           setbusinessDetail(response.data.data);
           setIsLoading(false);
           navigation.navigate("thankyouScreen");
           showMessage({
-            message: response.message,
+            message: response.data.message,
             type: "success",
             duration: 3000,
           });
@@ -501,15 +528,21 @@ const RegistrationView = ({ navigation }) => {
           setIsLoading(false);
           if (response.status == 401) {
             showMessage({
-              message: response.message,
+              message: response.data.message,
               type: "warning",
               duration: 3000,
             });
             console.log("response in 401:", response.data.data);
           }
+          showMessage({
+            message: response.data.message,
+            type: "danger",
+            duration: 3000,
+          });
         }
       } catch (error) {
         setIsLoading(false);
+        console.log("this error is runing ===>>>");
         console.error("Error:", error);
       }
     }
@@ -547,6 +580,8 @@ const RegistrationView = ({ navigation }) => {
         setSelectedItems={setSelectedItems}
         selectedItems={selectedItems}
         pdfFileName={pdfFileName}
+        selectedOption={selectedOption}
+        setSelectedOption={setSelectedOption}
       />
     </>
   );

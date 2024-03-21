@@ -429,9 +429,10 @@ const registration = (props) => {
               value={props.register.services}
               onChange={(item) => {
                 console.log("item===>>>", item)
+                props.setSelectedOption(item)
                 props.setRegister({
                   ...props.register,
-                 // servicesid: item.naicsid,
+                  // servicesid: item.naicsid,
                   services: item
                 });
               }}
