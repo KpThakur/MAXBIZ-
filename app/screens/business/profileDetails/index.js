@@ -1,18 +1,17 @@
-import React, { Fragment, useEffect, useState } from 'react'
-import  ProfileDetails  from './components/profileDetails'
-import  CommingSoon  from './components/commingSoon'
+import React, { Fragment, useEffect, useState } from "react";
+import ProfileDetails from "./components/profileDetails";
+import CommingSoon from "./components/commingSoon";
 import { useFocusEffect } from "@react-navigation/native";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import apiEndPoints from '../../../utils/apiEndPoints';
-import { apiCall } from '../../../utils/httpClient';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import apiEndPoints from "../../../utils/apiEndPoints";
+import { apiCall } from "../../../utils/httpClient";
 import { showMessage, hideMessage } from "react-native-flash-message";
-import Loader from '../../../components/loader';
-const index = ({ navigation }) => {
+import Loader from "../../../components/loader";
+const Index = ({ navigation }) => {
+  const [userData, setUserData] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
-    const [userData, setUserData] = useState({})
-    const [isLoading, setIsLoading] = useState(false)
-
-   /*  const getuserData = async () => {
+  /*  const getuserData = async () => {
         const userToken  = await AsyncStorage.getItem('userToken');
         if (userToken !== null) {
             const userData = await AsyncStorage.getItem('userData')
@@ -56,12 +55,12 @@ const index = ({ navigation }) => {
         } 
     } */
 
-    return (
-       <Fragment>
-        {isLoading && <Loader />}
-           {/* <ProfileDetails/> */}
-           <CommingSoon/>
-       </Fragment>
-    )
-}
-export default index
+  return (
+    <Fragment>
+      {isLoading && <Loader />}
+      <ProfileDetails/>
+      {/* <CommingSoon /> */}
+    </Fragment>
+  );
+};
+export default Index;

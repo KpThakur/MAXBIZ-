@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import Registration from "./component/registration";
 import ImagePicker from "react-native-image-crop-picker";
 
@@ -13,6 +13,7 @@ import axios from "axios";
 import { Platform } from "react-native";
 import DocumentPicker, { types } from "react-native-document-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFocusEffect } from "@react-navigation/native";
 
 const items = [
   {
@@ -56,7 +57,7 @@ const items = [
 const RegistrationView = ({ route, navigation }) => {
   const { profileid } = route?.params || {};
 
-  console.log("check profile id:-----", profileid);
+//  console.log("check profile id:-----", profileid);
 
   const [inputError, setinputError] = useState({});
   const [imageData, setImageData] = useState(null);
@@ -72,11 +73,12 @@ const RegistrationView = ({ route, navigation }) => {
 
   const [isLoading, setIsLoading] = useContext(LoadingContext);
 
-  // const [userData, setUserData] = useState({});
-  // console.log("find profileid:-----", userData?.profileid);
+ 
+   console.log("find businessDetail:-----", imageData);
 
-  console.log("servicelist:>>>>>>>>>>-", serviceList);
-  console.log("The selected option ===>>", selectedOption);
+ // console.log("servicelist:>>>>>>>>>>-", serviceList);
+ // console.log("The selected option ===>>", selectedOption);
+
   const onSelectedItemsChange = (servicesData) => {
     //this.setState({ selectedItems });
     servicesData.length <= 3 ? setServicesData(servicesData) : "null";
@@ -125,6 +127,28 @@ const RegistrationView = ({ route, navigation }) => {
     instagramurl: "",
     is_non_profit: 0,
   });
+
+  useFocusEffect(
+    useCallback(() => {
+      setRegister({
+        ...register,
+        businessusername:"",
+        businessname: "",
+        address:"",
+        cityid:"",
+        serviceid:"",
+        servicename:"",
+      });
+     
+    }, [])
+  );
+
+  // useEffect(()=> {
+  //   setImageData({
+  //     ...imageData,
+  //      imageData: ""
+  //   })
+  // },[])
 
   // const uploaddocument = () => {
   // // const result =
@@ -390,7 +414,7 @@ const RegistrationView = ({ route, navigation }) => {
       });
     });
     const stringData = result.join(",");
-    console.log("The reuslt ===>>",typeof stringData,stringData);
+   // console.log("The reuslt ===>>",typeof stringData,stringData);
 
     // const selectedValue = serviceList.filter((item,index)=> item.title===selectedOption[0])
     // const value = selectedValue[0].naicsid;

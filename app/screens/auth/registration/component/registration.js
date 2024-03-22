@@ -436,8 +436,8 @@ const registration = (props) => {
                   services: item
                 });
               }}
-             
-             
+             // maxSelect={1}
+              
               //  renderLeftIcon={() => (
               //   <AntDesign
               //     style={style.icon}

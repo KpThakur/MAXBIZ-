@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import ValidateIdentity from "./component/validateIdentity";
 import StringsOfLanguages from "../../../utils/translations";
 import { LoadingContext } from "../../../utils/searchContext";
@@ -7,6 +7,7 @@ import apiEndPoints from "../../../utils/apiEndPoints";
 import Loader from "../../../components/loader";
 import { showMessage } from "react-native-flash-message";
 import { Alert, Modal } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 
 const ValidtIdntyView = ({ navigation }) => {
   const [inputError, setinputError] = useState({});
@@ -19,6 +20,15 @@ const ValidtIdntyView = ({ navigation }) => {
    const [message, setMessage] = useState();
 
   // console.log("emailadd:-", loginData?.email)
+
+  useFocusEffect(
+    useCallback(() => {
+      setLoginData({
+        ...loginData,
+        email: "",
+      });
+    }, [])
+  );
 
   function validationFrom() {
     // let mobileNoError = "";
@@ -70,7 +80,7 @@ const ValidtIdntyView = ({ navigation }) => {
   const [isLoading, setIsLoading] = useContext(LoadingContext);
 
   const toNextPage = async () => {
-     navigation.navigate("registrationScreen");
+    // navigation.navigate("registrationScreen");
     // navigation.navigate("otpVerifyScreen", {
     //   loginData: loginData?.email,
     // });
@@ -91,10 +101,11 @@ const ValidtIdntyView = ({ navigation }) => {
           apiEndPoints.USERREGISTER,
           params
         );
+       // console.log('responce:---', response)
         if (response.status === 200) {
           console.log("Response data:", response.data);
           setIsLoading(false);
-         // console.log("find validate:-",response.data.data.indentityValidated )
+          console.log("find validate:-",response.data.data.indentityValidated )
           if (response.data.data.indentityValidated === 0) {
             navigation.navigate("otpVerifyScreen", {
               loginData: loginData?.email,
@@ -108,7 +119,7 @@ const ValidtIdntyView = ({ navigation }) => {
             });
             console.log("navigate in otp:-", response.data.indentityValidated);
           } else {
-           // console.log("find businessValidated>>>>>>", response.data.data.businessValidated )
+            console.log("find businessValidated>>>>>>", response.data.data.businessValidated )
             if (response.data.data.businessValidated === 1) {
               setIsLoading(false);
               openModal();
@@ -135,7 +146,15 @@ const ValidtIdntyView = ({ navigation }) => {
           }
         } else {
           setIsLoading(false);
-          console.log("api not successfull");
+          console.log("api in account success");
+          showMessage({
+            message: response.data.message.messageSuccess,
+            type:'success',
+            duration: 3000
+          })
+          // openModal();
+          // setMessage(response.data.message.messageSuccess)
+          console.log("success>>>>>|||", response.data)
         }
       } catch (error) {
         setIsLoading(false);

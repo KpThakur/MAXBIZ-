@@ -20,7 +20,7 @@ const style = StyleSheet.create({
   modalContainer: {
     width: wp('100%'),
     height: hp('40%'),
-    backgroundColor: GRADIENT_COLOR_NEW2,
+    backgroundColor: WHITE_COLOR,
 
     //padding: scale(10),
     borderTopRightRadius: scale(30),
@@ -52,7 +52,7 @@ const style = StyleSheet.create({
   topheadingtext : {
     fontWeight:"700",
     fontSize:scale(20),
-    color : WHITE_COLOR
+    color : COMMON_COLOR
   },
   confirmtxt : {
     fontWeight:"700",

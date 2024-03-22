@@ -14,7 +14,7 @@ const style = StyleSheet.create({
   //Remi
 mainvideo :{
   flex:1,
-  backgroundColor: GRADIENT_COLOR_NEW2,
+  backgroundColor: WHITE_COLOR,
   borderRadius: 15,
   borderColor:BLACK_COLOR,
   marginLeft:scale(4),
@@ -47,7 +47,7 @@ namelable :{
 namevalue :{
   fontSize:scale(18),
   marginHorizontal: scale(30),  
-  color  :WHITE_COLOR,
+  color  : COMMON_COLOR,
   height : scale(50)
 },
 namevaluedate : {

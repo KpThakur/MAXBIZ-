@@ -46,7 +46,7 @@ const style = StyleSheet.create({
       width: 0,
       height: 1,
     },
-    backgroundColor: GRADIENT_COLOR_NEW3,
+    backgroundColor: WHITE_COLOR,
     shadowOpacity: 0.2,
     shadowRadius: 2.62,
     elevation: 2,

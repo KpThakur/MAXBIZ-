@@ -7,6 +7,7 @@ import {
   FONT_FAMILY_MEDIUM,
   GRADIENT_COLOR,
   GRADIENT_COLOR_NEW2,
+  COMMON_COLOR,
 } from "./../../../utils/constants";
 import { scale } from "@utils/utils";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -19,7 +20,7 @@ const style = StyleSheet.create({
   modalContainer: {
     width: wp('100%'),
     height: hp('75%'),
-    backgroundColor: GRADIENT_COLOR_NEW2,
+    backgroundColor: WHITE_COLOR,
 
     //padding: scale(10),
     borderTopRightRadius: scale(30),
@@ -50,7 +51,7 @@ const style = StyleSheet.create({
   topheadingtext : {
     fontWeight:"700",
     fontSize:scale(20),
-    color  :WHITE_COLOR
+    color  : COMMON_COLOR
   },
   midelcontent :{
     flex:4.5,
