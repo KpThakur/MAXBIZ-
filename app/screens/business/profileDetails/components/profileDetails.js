@@ -28,7 +28,10 @@ import {
 import LinearGradient from "react-native-linear-gradient";
 import StringsOfLanguages from "../../../../utils/translations";
 import { AuthContext } from "../../../../utils/UserContext";
-const ProfileDetails = () => {
+const ProfileDetails = ( props ) => {
+  const { businessDetail } = props;
+
+  console.log("find businessDetail in profile>>>", businessDetail)
   const [isSelectedCall, setSelectionCall] = useState(false);
   const [isSelectedText, setSelectionText] = useState(false);
   const [isSelectedEmail, setSelectionEmail] = useState(false);
@@ -41,10 +44,14 @@ const ProfileDetails = () => {
   const [showDocuments, setShowDocuments] = useState(false);
 
   const { signOut } = React.useContext(AuthContext);
-  
+
   const logOut = () => {
-    signOut()
-  } 
+    signOut();
+  };
+
+  const [tryvalue, setTryvalue] = useState('');
+
+  console.log("check value:-", tryvalue)
 
   const toggleDetails = () => {
     return setShowDetail(!showDetails);
@@ -66,7 +73,7 @@ const ProfileDetails = () => {
   };
   return (
     <SafeAreaView style={commomstyle.container}>
-       <StatusBar
+      <StatusBar
         animated={true}
         backgroundColor={WHITE_COLOR}
         barStyle="dark-content"
@@ -82,75 +89,89 @@ const ProfileDetails = () => {
         locations={[0.24, 0.63, 0.87, 0.99]}
         style={{ flexGrow: 1 }}
       > */}
-        <Header
-          headertxt={styles.headerTxt}
-          headerType="none"
-          rightImg={true}
-          headerText={StringsOfLanguages.PROFILE_DETAIL}
-          rightImgStyl={{ tintColor: WHITE_COLOR }}
-        />
-        <ScrollView style={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
-          <View style={styles.container}>
-            <View style={styles.section1}>
-              <View style={styles.headingWrapper}>
-                <TouchableOpacity
-                  onPress={toggleDetails}
-                  style={styles.dropDown}
-                >
-                  <Text style={styles.headingTxt}>
-                    {StringsOfLanguages.DETAILS}
-                  </Text>
-                  <View>
-                    <Image
-                      style={styles.dropdownImg}
-                      source={
-                        showDetails ? ICONS.upArrwIcon : ICONS.downArrwIcon
-                      }
-                    />
-                  </View>
-                </TouchableOpacity>
-              </View>
-              {showDetails && (
-                <View style={styles.inputWrap}>
-                  <View style={styles.input}>
-                    <Input image={"noNeed"} placeholder={"Business Name"} />
-                    {/* <Input
+      <Header
+        headertxt={styles.headerTxt}
+        headerType="none"
+        rightImg={true}
+        headerText={StringsOfLanguages.PROFILE_DETAIL}
+        rightImgStyl={{ tintColor: WHITE_COLOR }}
+      />
+      <ScrollView style={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+        <View style={styles.container}>
+          <View style={styles.section1}>
+            <View style={styles.headingWrapper}>
+              <TouchableOpacity onPress={toggleDetails} style={styles.dropDown}>
+                <Text style={styles.headingTxt}>
+                  {StringsOfLanguages.DETAILS}
+                </Text>
+                <View>
+                  <Image
+                    style={styles.dropdownImg}
+                    source={showDetails ? ICONS.upArrwIcon : ICONS.downArrwIcon}
+                  />
+                </View>
+              </TouchableOpacity>
+            </View>
+            {showDetails && (
+              <View style={styles.inputWrap}>
+                <View style={styles.input}>
+                  <Input image={"noNeed"} 
+                  placeholder= {StringsOfLanguages.BUSINESS_NAME}
+                  onChangeText={(val) => 
+                   setTryvalue(val)
+                  }
+                  />
+                  {/* <Input
                      // value={"Remi"}
                       placeholder={StringsOfLanguages.BUSINESS_NAME}
                     /> */}
-                  </View>
-                  <View style={styles.input}>
-                    <Input
-                      image={"noNeed"}
-                      placeholder={StringsOfLanguages.ADDRESS}
-                    />
-                  </View>
-                  <View style={styles.input}>
-                    <Input
-                      image={"noNeed"}
-                      placeholder={StringsOfLanguages.SERVICES}
-                    />
-                  </View>
-                  <View style={styles.input}>
-                    <Input
-                      image={"noNeed"}
-                      placeholder={StringsOfLanguages.INDUSTRY}
-                    />
-                  </View>
+                </View>
 
-                  <View style={styles.input}>
-                    <Input
-                      image={"noNeed"}
-                      placeholder={StringsOfLanguages.HEAD_COUNT}
-                    />
+                {/* <View style={styles.addView}>
+                  <View style={styles.addViewtext}>
+                    <Text style={styles.serveTxt}>
+                      {StringsOfLanguages.BUSINESS_NAME}
+                    </Text>
                   </View>
-                  {/* <View style={styles.input}>
+                  <View style={styles.addViewcontent}>
+                    <Text style={styles.addrsTxt}>
+                     {'value'}
+                    </Text>
+                  </View>
+                </View> */}
+
+                <View style={styles.input}>
+                  <Input
+                    image={"noNeed"}
+                    placeholder={StringsOfLanguages.ADDRESS}
+                  />
+                </View>
+                <View style={styles.input}>
+                  <Input
+                    image={"noNeed"}
+                    placeholder={StringsOfLanguages.SERVICES}
+                  />
+                </View>
+                <View style={styles.input}>
+                  <Input
+                    image={"noNeed"}
+                    placeholder={StringsOfLanguages.INDUSTRY}
+                  />
+                </View>
+
+                <View style={styles.input}>
+                  <Input
+                    image={"noNeed"}
+                    placeholder={StringsOfLanguages.HEAD_COUNT}
+                  />
+                </View>
+                {/* <View style={styles.input}>
                   <Input
                     image={"noNeed"}
                     placeholder={"Overview/introduction"}
                   />
                 </View> */}
-                  {/*  <View style={styles.input}>
+                {/*  <View style={styles.input}>
                   <Input
                     image={"noNeed"}
                     placeholder={"Servicing areas: cities, counties,states"}
@@ -162,140 +183,140 @@ const ProfileDetails = () => {
                     placeholder={"Services offered within your main service"}
                   />
                 </View> */}
-                  <View style={styles.input}>
-                    <Input
-                      image={"noNeed"}
-                      placeholder={StringsOfLanguages.HOURS_OF_OPERATION}
-                    />
-                  </View>
-                  <View style={styles.input}>
-                    <Input
-                      image={"noNeed"}
-                      placeholder={StringsOfLanguages.PAYMENT_METHOD}
-                    />
-                  </View>
+                <View style={styles.input}>
+                  <Input
+                    image={"noNeed"}
+                    placeholder={StringsOfLanguages.HOURS_OF_OPERATION}
+                  />
+                </View>
+                <View style={styles.input}>
+                  <Input
+                    image={"noNeed"}
+                    placeholder={StringsOfLanguages.PAYMENT_METHOD}
+                  />
+                </View>
 
-                  <View style={styles.input}>
-                    <Input
-                      image={"noNeed"}
-                      placeholder={StringsOfLanguages.WEBSITE_URL}
-                    />
-                  </View>
-                  <View style={styles.input}>
-                    <View style={styles.checkboxContainer}>
-                      <Text>{StringsOfLanguages.PAYMENT_METHOD}</Text>
-                      <View style={{ flexDirection: "row" }}>
-                        <View style={styles.checkbox}>
-                          <CheckBox
-                            checked={isSelectedCall}
-                            onPress={() => setSelectionCall(!isSelectedCall)}
-                          />
-                          <Text style={styles.checkboxText}>
-                            {StringsOfLanguages.CASH}
-                          </Text>
-                        </View>
-                        <View style={styles.checkbox}>
-                          <CheckBox
-                            checked={isSelectedText}
-                            onPress={() => setSelectionText(!isSelectedText)}
-                          />
-                          <Text style={styles.checkboxText}>
-                            {StringsOfLanguages.CASH_APP}
-                          </Text>
-                        </View>
-                      </View>
-
-                      <View style={{ flexDirection: "row" }}>
-                        <View style={styles.checkbox}>
-                          <CheckBox
-                            checked={isSelectedEmail}
-                            onPress={() => setSelectionEmail(!isSelectedEmail)}
-                          />
-                          <Text style={styles.checkboxText}>
-                            {StringsOfLanguages.CREDIT_CARD}
-                          </Text>
-                        </View>
-                        <View style={styles.checkbox}>
-                          <CheckBox
-                            checked={isSelectedEmail}
-                            onPress={() => setSelectionEmail(!isSelectedEmail)}
-                          />
-                          <Text style={styles.checkboxText}>
-                            {StringsOfLanguages.PAYPAL}
-                          </Text>
-                        </View>
-                      </View>
-                      <View style={{ flexDirection: "row" }}>
-                        <View style={styles.checkbox}>
-                          <CheckBox
-                            checked={isSelectedEmail}
-                            onPress={() => setSelectionEmail(!isSelectedEmail)}
-                          />
-                          <Text style={styles.checkboxText}>
-                            {StringsOfLanguages.ZELLE}
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-                  </View>
-
+                <View style={styles.input}>
+                  <Input
+                    image={"noNeed"}
+                    placeholder={StringsOfLanguages.WEBSITE_URL}
+                  />
+                </View>
+                <View style={styles.input}>
                   <View style={styles.checkboxContainer}>
-                    <Text>{StringsOfLanguages.CONTACT_OPTIONS}</Text>
-                    <View style={styles.checkbox}>
-                      <CheckBox
-                        checked={isSelectedCall}
-                        onPress={() => setSelectionCall(!isSelectedCall)}
-                      />
-                      <Text style={styles.checkboxText}>
-                        {StringsOfLanguages.SHOW_CALL_BUTTON}
-                      </Text>
+                    <Text>{StringsOfLanguages.PAYMENT_METHOD}</Text>
+                    <View style={{ flexDirection: "row" }}>
+                      <View style={styles.checkbox}>
+                        <CheckBox
+                          checked={isSelectedCall}
+                          onPress={() => setSelectionCall(!isSelectedCall)}
+                        />
+                        <Text style={styles.checkboxText}>
+                          {StringsOfLanguages.CASH}
+                        </Text>
+                      </View>
+                      <View style={styles.checkbox}>
+                        <CheckBox
+                          checked={isSelectedText}
+                          onPress={() => setSelectionText(!isSelectedText)}
+                        />
+                        <Text style={styles.checkboxText}>
+                          {StringsOfLanguages.CASH_APP}
+                        </Text>
+                      </View>
                     </View>
-                    <View style={styles.checkbox}>
-                      <CheckBox
-                        checked={isSelectedText}
-                        onPress={() => setSelectionText(!isSelectedText)}
-                      />
-                      <Text style={styles.checkboxText}>
-                        {StringsOfLanguages.SHOW_TEXT_BUTTON}
-                      </Text>
-                    </View>
-                    <View style={styles.checkbox}>
-                      <CheckBox
-                        checked={isSelectedEmail}
-                        onPress={() => setSelectionEmail(!isSelectedEmail)}
-                      />
-                      <Text style={styles.checkboxText}>
-                        {StringsOfLanguages.SHOW_EMAIL_BUTTON}
-                      </Text>
-                    </View>
-                    <View style={styles.checkbox}>
-                      <CheckBox
-                        checked={isSelectedEmail}
-                        onPress={() => setSelectionEmail(!isSelectedEmail)}
-                      />
-                      <Text style={styles.checkboxText}>
-                        {StringsOfLanguages.NON_PROFIT}
-                      </Text>
-                    </View>
-                    <View style={styles.checkbox}>
-                      <CheckBox
-                        checked={isSelectedEmail}
-                        onPress={() => setSelectionEmail(!isSelectedEmail)}
-                      />
-                      <Text style={styles.checkboxText}>
-                        {StringsOfLanguages.MINORITY}
-                      </Text>
-                    </View>
-                  </View>
 
-                  <View style={styles.saveButton}>
-                    <Button buttonText={StringsOfLanguages.SAVE_CHANGES} />
+                    <View style={{ flexDirection: "row" }}>
+                      <View style={styles.checkbox}>
+                        <CheckBox
+                          checked={isSelectedEmail}
+                          onPress={() => setSelectionEmail(!isSelectedEmail)}
+                        />
+                        <Text style={styles.checkboxText}>
+                          {StringsOfLanguages.CREDIT_CARD}
+                        </Text>
+                      </View>
+                      <View style={styles.checkbox}>
+                        <CheckBox
+                          checked={isSelectedEmail}
+                          onPress={() => setSelectionEmail(!isSelectedEmail)}
+                        />
+                        <Text style={styles.checkboxText}>
+                          {StringsOfLanguages.PAYPAL}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={{ flexDirection: "row" }}>
+                      <View style={styles.checkbox}>
+                        <CheckBox
+                          checked={isSelectedEmail}
+                          onPress={() => setSelectionEmail(!isSelectedEmail)}
+                        />
+                        <Text style={styles.checkboxText}>
+                          {StringsOfLanguages.ZELLE}
+                        </Text>
+                      </View>
+                    </View>
                   </View>
                 </View>
-              )}
-            </View>
 
-            {/*   <View style={styles.section1}>
+                <View style={styles.checkboxContainer}>
+                  <Text>{StringsOfLanguages.CONTACT_OPTIONS}</Text>
+                  <View style={styles.checkbox}>
+                    <CheckBox
+                      checked={isSelectedCall}
+                      onPress={() => setSelectionCall(!isSelectedCall)}
+                    />
+                    <Text style={styles.checkboxText}>
+                      {StringsOfLanguages.SHOW_CALL_BUTTON}
+                    </Text>
+                  </View>
+                  <View style={styles.checkbox}>
+                    <CheckBox
+                      checked={isSelectedText}
+                      onPress={() => setSelectionText(!isSelectedText)}
+                    />
+                    <Text style={styles.checkboxText}>
+                      {StringsOfLanguages.SHOW_TEXT_BUTTON}
+                    </Text>
+                  </View>
+                  <View style={styles.checkbox}>
+                    <CheckBox
+                      checked={isSelectedEmail}
+                      onPress={() => setSelectionEmail(!isSelectedEmail)}
+                    />
+                    <Text style={styles.checkboxText}>
+                      {StringsOfLanguages.SHOW_EMAIL_BUTTON}
+                    </Text>
+                  </View>
+                  <View style={styles.checkbox}>
+                    <CheckBox
+                      checked={isSelectedEmail}
+                      onPress={() => setSelectionEmail(!isSelectedEmail)}
+                    />
+                    <Text style={styles.checkboxText}>
+                      {StringsOfLanguages.NON_PROFIT}
+                    </Text>
+                  </View>
+                  <View style={styles.checkbox}>
+                    <CheckBox
+                      checked={isSelectedEmail}
+                      onPress={() => setSelectionEmail(!isSelectedEmail)}
+                    />
+                    <Text style={styles.checkboxText}>
+                      {StringsOfLanguages.MINORITY}
+                    </Text>
+                  </View>
+                </View>
+
+                <View style={styles.saveButton}>
+                  <Button buttonText={StringsOfLanguages.SAVE_CHANGES} />
+                </View>
+              </View>
+            )}
+          </View>
+
+          {/*   <View style={styles.section1}>
             <View style={styles.headingWrapper}>
               <TouchableOpacity onPress={toggleVideos} style={styles.dropDown}>
                 <Text style={styles.headingTxt}>Videos</Text>
@@ -313,31 +334,26 @@ const ProfileDetails = () => {
                   filetype={'video'} />
               </View>}
           </View> */}
-            <View style={styles.section1}>
-              <View style={styles.headingWrapper}>
-                <TouchableOpacity
-                  onPress={togglePhotos}
-                  style={styles.dropDown}
-                >
-                  <Text style={styles.headingTxt}>Photos</Text>
-                  <View>
-                    <Image
-                      style={styles.dropdownImg}
-                      source={
-                        showPhotos ? ICONS.upArrwIcon : ICONS.downArrwIcon
-                      }
-                    />
-                  </View>
-                </TouchableOpacity>
-              </View>
-              {showPhotos && (
+          <View style={styles.section1}>
+            <View style={styles.headingWrapper}>
+              <TouchableOpacity onPress={togglePhotos} style={styles.dropDown}>
+                <Text style={styles.headingTxt}>Photos</Text>
                 <View>
-                  <VideoList filetype={"photo"} />
+                  <Image
+                    style={styles.dropdownImg}
+                    source={showPhotos ? ICONS.upArrwIcon : ICONS.downArrwIcon}
+                  />
                 </View>
-              )}
+              </TouchableOpacity>
             </View>
+            {showPhotos && (
+              <View>
+                <VideoList filetype={"photo"} />
+              </View>
+            )}
+          </View>
 
-            {/* <View style={styles.section1}>
+          {/* <View style={styles.section1}>
             <View style={styles.headingWrapper}>
               <TouchableOpacity
                 onPress={toggleDocuments}
@@ -394,11 +410,11 @@ const ProfileDetails = () => {
               <VideoList />
             </View>}
           </View> */}
-          </View>
-          <TouchableOpacity onPress={() => logOut()} >
-            <Text>Logout</Text>
-          </TouchableOpacity>
-        </ScrollView>
+        </View>
+        <TouchableOpacity onPress={() => logOut()}>
+          <Text>Logout</Text>
+        </TouchableOpacity>
+      </ScrollView>
       {/* </LinearGradient> */}
     </SafeAreaView>
   );

@@ -3,10 +3,12 @@ import { StatusBar, Text, View } from "react-native";
 import { normalizeHeight } from "./app/components/scaleFontSize";
 import FlashMessage from "react-native-flash-message";
 import Main from "./app/navigation/index";
-import { LoadingProvider, SearchProvider } from "./app/utils/searchContext";
-
+import { LoadingProvider, RegisterProvider, SearchProvider } from "./app/utils/searchContext";
+import { UserProvider } from "./app/utils/UserContext";
 const App = () => {
   return (
+    // <RegisterProvider>
+    <UserProvider>
     <SearchProvider>
       <LoadingProvider>
       <View
@@ -26,6 +28,8 @@ const App = () => {
       </View>
       </LoadingProvider>
     </SearchProvider>
+    </UserProvider>
+    // </RegisterProvider>
   );
 };
 

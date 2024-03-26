@@ -147,13 +147,13 @@ const ValidtIdntyView = ({ navigation }) => {
         } else {
           setIsLoading(false);
           console.log("api in account success");
-          showMessage({
-            message: response.data.message.messageSuccess,
-            type:'success',
-            duration: 3000
-          })
-          // openModal();
-          // setMessage(response.data.message.messageSuccess)
+          // showMessage({
+          //   message: response.data.message.messageSuccess,
+          //   type:'success',
+          //   duration: 3000
+          // })
+          openModal();
+          setMessage(response.data.message.messageSuccess)
           console.log("success>>>>>|||", response.data)
         }
       } catch (error) {

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import ProfileDetails from "./components/profileDetails";
 import CommingSoon from "./components/commingSoon";
 import { useFocusEffect } from "@react-navigation/native";
@@ -7,9 +7,15 @@ import apiEndPoints from "../../../utils/apiEndPoints";
 import { apiCall } from "../../../utils/httpClient";
 import { showMessage, hideMessage } from "react-native-flash-message";
 import Loader from "../../../components/loader";
-const Index = ({ navigation }) => {
+import { RegisterDataContext } from "../../../utils/searchContext";
+const Index = ({ route, navigation }) => {
+  const { businessDetail } = route?.params || {};
   const [userData, setUserData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+
+  // const [register, setRegister] = useContext(RegisterDataContext);
+
+  // console.log("find register data", register)
 
   /*  const getuserData = async () => {
         const userToken  = await AsyncStorage.getItem('userToken');
@@ -58,7 +64,9 @@ const Index = ({ navigation }) => {
   return (
     <Fragment>
       {isLoading && <Loader />}
-      <ProfileDetails/>
+      <ProfileDetails
+       businessDetail={businessDetail}
+       />
       {/* <CommingSoon /> */}
     </Fragment>
   );

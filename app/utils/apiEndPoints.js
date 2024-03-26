@@ -4,18 +4,23 @@ export default {
     GETSERVICENAME: "master/getServiceList",
     GETALLSERVICES: "service/getListServicesSearch",
     GETSERVICEDETAIL: "service/getServicesDetails",
+    GETIMAGE: "business/getImage",
+
+    // for login
     BUSINESSLOGIN: "userAuth/userLogin",
+    VERIFYEDOTP: "userAuth/verifyedOtp",
+    RELOGIN_BUSINESS: "userAuth/reloginbusiness",
     BUSINESSDETAIL: "userAuth/getBusinessDetails",
     LOGOUT: "userlogout/userLogout",
-    GETIMAGE: "business/getImage",
+    
     //for registration
     USERREGISTER: "userAuth/userRegister",
     VERIFYEMAILMOBILE: "userAuth/verifyEmailMobile",
-   // VERIFYEDOTP: "userAuth/verifyedOtp",
     RESENTOTP: "userAuth/resentOtp",
     GETINDUSTRYLIST: "/master/getIndustryList",
     GETCITIESLIST: "master/getCitiesList",
     REGISTERBUSINESSDETAIL: "userAuth/registerBusinessDetail",
     GETSERVICELIST: "master/getServiceList",
+    FORGOTPASSWORD: "userAuth/forgotPassword",
   };
   

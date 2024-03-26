@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import {
   FONT_FAMILY_SEMIBOLD,
   COMMON_COLOR,
@@ -7,7 +7,9 @@ import {
   FONT_FAMILY_MEDIUM,
   BLACK_COLOR,
   WHITE_COLOR,
-  GRADIENT_COLOR_NEW3
+  GRADIENT_COLOR_NEW3,
+  BORDERLINE_COLOR,
+  GRAY_COLOR
 } from "./../../../../utils/constants";
 import { scale } from "@utils/utils";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -100,7 +102,8 @@ const style = StyleSheet.create({
   },
   checkboxText: {
     fontFamily: FONT_FAMILY_REGULAR,
-    color: PLACEHOLDER_COLOR,
+   // color: PLACEHOLDER_COLOR,
+    color: GRAY_COLOR,
     fontWeight: "400",
     fontSize: scale(15),
     paddingVertical: scale(15),
@@ -132,8 +135,41 @@ mainvideoview:{
   elevation: 5,
   alignSelf:'flex-end'
   
-}
-
+},
+addView:{
+  flexDirection:'row',
+  borderBottomWidth:2,
+  borderBottomColor:BORDERLINE_COLOR,
+  marginBottom:scale(20),
+  paddingBottom:10,
+},
+addViewtext:{
+  flex:2.9,
+ // backgroundColor:'yellow',
+},
+serveTxt:{
+  // fontFamily:FONT_FAMILY_SEMIBOLD,
+  // fontSize:scale(15),
+  // color: GRAY_COLOR, 
+  // marginBottom:scale(10), 
+  fontFamily: FONT_FAMILY_REGULAR,
+  color: GRAY_COLOR,
+  // marginHorizontal: scale(9),
+  marginHorizontal: Platform.OS === "ios" ? scale(3) : scale(6),
+  fontSize: scale(15),
+     
+},
+addViewcontent:{
+  flex:4,
+  //backgroundColor:'red',
+  marginLeft:scale(2)
+},
+addrsTxt:{
+  fontSize:scale(15),
+  fontFamily:FONT_FAMILY_REGULAR,
+  color:GRAY_COLOR,
+  //flex:1,
+},
 
 
 });

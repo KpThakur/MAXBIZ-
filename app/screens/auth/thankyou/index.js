@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import ThankyouView from './component/thankyouView';
 
-const Thankyou = ({navigation}) => {
+const Thankyou = ({route, navigation }) => {
+    const { businessDetail } = route?.params || {};
     const [loginData, setLoginData] = useState({
         "mobileNo": '',
         "emailaddr": ''
     })
     const OnSubmit = () => {
-    navigation.navigate('loginScreen')
+    navigation.navigate('loginScreen', businessDetail)
     }
     return (
 

@@ -541,7 +541,7 @@ const RegistrationView = ({ route, navigation }) => {
         if (response.data.status === 200) {
           setbusinessDetail(response.data.data);
           setIsLoading(false);
-          navigation.navigate("thankyouScreen");
+          navigation.navigate("thankyouScreen", {businessDetail: businessDetail});
           showMessage({
             message: response.data.message,
             type: "success",

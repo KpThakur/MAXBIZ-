@@ -84,7 +84,7 @@ const StringsOfLanguages = new LocalizedStrings({
         SELECT_YOUR_CITY : "City name",
         SEARCH_CITY : "City",
         BUSINESS_USERNAME : "Business UserName",
-        BUSINESS_NAME : "Business Name",
+        BUSINESS_NAME : "Business Name :",
         SELECT_ITEM : "Select item",
         SEARCH : "Search...",
         SELECT_CITY : "Select City",

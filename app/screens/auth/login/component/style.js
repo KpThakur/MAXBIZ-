@@ -4,6 +4,7 @@ import {
     BLACK_COLOR, FONT_FAMILY_REGULAR, GRADIENT_COLOR,
     FONT_FAMILY_MEDIUM, PLACEHOLDER_COLOR, COMMON_COLOR
 } from '@utils/constants';
+import { FONT_FAMILY_SEMIBOLD, GRAY_COLOR, WHITE_COLOR } from '../../../../utils/constants';
 
 
 const style = StyleSheet.create({
@@ -90,5 +91,76 @@ const style = StyleSheet.create({
         fontFamily: FONT_FAMILY_REGULAR,
         alignSelf: 'flex-end'
     },
+    modalMainView:{
+        flex:1,
+        justifyContent:'center',
+       // alignItems:'center',
+        backgroundColor:"rgba(0,0,0,0.6)"
+      },
+      modalContainView:{
+        
+        backgroundColor: WHITE_COLOR,
+        paddingHorizontal: scale(15),
+        paddingVertical: scale(10),
+        borderRadius: scale(10),
+        
+      },
+      modalMainViewText:{
+        display:'flex',
+        flexDirection:'row',
+        justifyContent:'space-between',
+        backgroundColor: WHITE_COLOR,
+      //  paddingHorizontal: scale(15),
+        paddingVertical: scale(10),
+       
+      },
+      closeIcon:{
+        width: scale(22),
+        height: scale(22),
+        tintColor:BLACK_COLOR,
+        bottom: scale(5),
+        left: scale(5)
+       },
+       otpInputContainer: {
+        // marginHorizontal: scale(60),
+        paddingHorizontal: scale(25),
+        paddingVertical: scale(10),
+       
+      },
+      otpInputTxt: {
+        fontFamily: FONT_FAMILY_SEMIBOLD,
+        fontSize: scale(20),
+        borderWidth: scale(2),
+        borderRadius: scale(8),
+        alignItems:"center"
+      },
+      enterOtptxt: {
+        fontFamily: FONT_FAMILY_SEMIBOLD,
+        fontSize: scale(14),
+        color : GRAY_COLOR
+      },
+      resendText:{
+        textAlign:'right',
+        fontFamily:FONT_FAMILY_REGULAR,
+        color: COMMON_COLOR,
+        fontSize: scale(12),
+        paddingVertical: scale(5)
+      },
+      buttonView:{
+        paddingVertical: scale(10)
+      },
+      submitTouch:{
+        backgroundColor: GRADIENT_COLOR,
+        width: scale(90),
+        alignSelf:'center',
+        borderRadius: scale(10)
+      },
+      submitText:{
+          textAlign:'center',
+          fontFamily: FONT_FAMILY_SEMIBOLD,
+          color: WHITE_COLOR,
+          fontSize: scale(16),
+          paddingVertical: scale(5)
+      }
 })
 export default style;

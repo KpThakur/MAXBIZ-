@@ -7,12 +7,13 @@ import {
   ScrollView,
   SafeAreaView,
   StatusBar,
+  Modal,
 } from "react-native";
 import style from "./style";
 import commomstyle from "../../../../common/styles";
 import { Button, Input, Logo } from "@components";
 
-import { ICONS, LOGOIMAGE } from "@utils/imagePath";
+// import { ICONS, LOGOIMAGE } from "@utils/imagePath";
 import { Header } from "@components";
 import {
   WHITE_COLOR,
@@ -20,13 +21,25 @@ import {
   GRADIENT_COLOR_NEW2,
   GRADIENT_COLOR_NEW3,
   GRADIENT_COLOR_NEW4,
+  COMMON_COLOR,
 } from "../../../../utils/constants";
 import LinearGradient from "react-native-linear-gradient";
 import StringsOfLanguages from "../../../../utils/translations";
 import { useFocusEffect } from "@react-navigation/native";
+import { ICONS } from "../../../../utils/imagePath";
+import OTPTextInput from "react-native-otp-textinput";
 
 const login = (props) => {
-  const { inputError } = props;
+  const {
+    inputError,
+    visible,
+    onClose,
+    otp,
+    setOtp,
+    otpInputRef,
+    twofacVerify,
+    handleResentOtp,
+  } = props;
 
   useFocusEffect(
     useCallback(() => {
@@ -37,6 +50,55 @@ const login = (props) => {
       });
     }, [])
   );
+
+  const TwoFactModal = ({ visible, onClose }) => {
+    return (
+      <Modal
+        transparent={true}
+        animationType="fade"
+        visible={visible}
+        onRequestClose={() => onClose()}
+      >
+        <View style={style.modalMainView}>
+          <View style={style.modalContainView}>
+            <View style={style.modalMainViewText}>
+              <Text style={style.enterOtptxt}>
+                {StringsOfLanguages.ENTER_YOUR_EMAIL_OTP}
+              </Text>
+
+              <TouchableOpacity onPress={() => onClose()}>
+                <Image source={ICONS.close_New} style={style.closeIcon} />
+              </TouchableOpacity>
+            </View>
+            <OTPTextInput
+              containerStyle={style.otpInputContainer}
+              textInputStyle={style.otpInputTxt}
+              tintColor={COMMON_COLOR}
+              // defaultValue={otp}
+              defaultValue={String(otp)}
+              handleTextChange={(text) => setOtp(text)}
+              ref={otpInputRef}
+            ></OTPTextInput>
+            <TouchableOpacity onPress={() => handleResentOtp()}>
+            <Text style={style.resendText}>
+              {"Resend One Time Password"}
+            </Text>
+            </TouchableOpacity>
+            <View style={style.buttonView}>
+              <TouchableOpacity
+                style={style.submitTouch}
+                onPress={() => twofacVerify()}
+              >
+                <Text style={style.submitText}>
+                  {StringsOfLanguages.SUBMIT}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+    );
+  };
 
   return (
     <SafeAreaView style={commomstyle.container}>
@@ -128,10 +190,9 @@ const login = (props) => {
             </Text>
             <TouchableOpacity
               onPress={() => props.toRegistration()}
-             // activeOpacity={0}
+              // activeOpacity={0}
               style={{ flexDirection: "row", alignItems: "center" }}
             >
-             
               <Text style={style.registerText}>
                 {StringsOfLanguages.REGISTER_OR_SIGNUP_WITH}
               </Text>
@@ -140,6 +201,7 @@ const login = (props) => {
         </View>
       </ScrollView>
       {/* </LinearGradient> */}
+      <TwoFactModal visible={visible} onClose={onClose} />
     </SafeAreaView>
   );
 };

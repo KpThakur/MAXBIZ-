@@ -29,3 +29,60 @@ export const LoadingProvider = (props) => {
     </LoadingContext.Provider>
   );
 };
+
+
+// export const RegisterDataContext = createContext();
+
+// export const RegisterProvider = (props) => {
+
+//   const [register, setRegister] = useState({
+//     businessusername: "",
+//     businessname: "",
+//     address: "",
+//     industry: "",
+//     occupationid: "",
+//     occupation: "",
+//     about_us: "",
+//     /*areas: "",
+//     mainservice: "", */
+//     operation_hours: "",
+//     payment: "",
+//     phone_no: "",
+//     website_url: "",
+//     services: "",
+//     cityid: "",
+//     cityname: "",
+//     servicename: "",
+//     head_count: "",
+//     business_photo_url: "",
+//     certificate: "",
+//     serviceid: "",
+//     payment_method: "",
+//     phone: "",
+//     business_url: "",
+//     lastModifiedDate: "",
+//     facebookurl: "",
+//     // head_count: "",
+//     hours_operation: "",
+//     introduction: "",
+//     linkedInurl: "",
+//     numemps: "",
+//     pricehour: "",
+//     revenue: "",
+//     servicing_areas: "",
+//     servicing_offer: "",
+//     twitterurl: "",
+//     website: "",
+//     youtubeurl: "",
+//     service_offer: "",
+//     instagramurl: "",
+//     is_non_profit: 0,
+//   });
+  
+//   return (
+//     <RegisterDataContext.Provider value={[register, setRegister]}>
+//       {props.children}
+//     </RegisterDataContext.Provider>
+//   );
+// };
+

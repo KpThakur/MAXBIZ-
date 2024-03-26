@@ -1,26 +1,48 @@
-import React, { useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import Login from "./component/login";
-import { AuthContext } from "../../../utils/UserContext";
+import { AuthContext, UserContext } from "../../../utils/UserContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import apiEndPoints from "../../../utils/apiEndPoints";
 import { apiCall, setDefaultHeader } from "../../../utils/httpClient";
 import Loader from "../../../components/loader";
 import { showMessage, hideMessage } from "react-native-flash-message";
 import StringsOfLanguages from "../../../utils/translations";
+import { Alert } from "react-native";
 //const AuthContext = React.createContext();
-const LoginView = ({ navigation }) => {
+const LoginView = ({ route, navigation }) => {
+  const { businessDetail } = route?.params || {};
   const { signIn } = React.useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
   const [check, setCheck] = useState();
   const [inputError, setInputError] = useState({});
   const [profileid, setProfileid] = useState();
   const [BusinessRegisterDetail, setBusinessRegisterDetail] = useState("");
+  const [otp, setOtp] = useState("");
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
     token: "123",
   });
+
+  const [handlelogin, setHandleLogin] = useState("");
+
+  // console.log("check profileid", profileid);
   //const { signIn } = React.useContext(AuthContext);
+
+  // const [userData, setUserData] = useContext(AuthContext);
+
+  const [userDataArray, setUserDataArray] = useContext(UserContext);
+  const userData = userDataArray[0]; 
+  const setUserData = setUserDataArray[1]; 
+  console.log("find userdata>>>", userData);
+  
+
+  const otpInputRef = useRef(null);
+
+  const clearText = () => {
+    otpInputRef.current.clear();
+  };
+
   const Remember = () => {
     setCheck(!check);
   };
@@ -55,7 +77,37 @@ const LoginView = ({ navigation }) => {
     setInputError(error);
     return formerror;
   };
-  
+
+  const validationOtp = () => {
+    if (!otp || otp.length === 0) {
+      Alert.alert("Please enter OTP");
+      return false;
+    } else if (otp.length !== 4) {
+      Alert.alert("Please enter a 4-digit OTP");
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const openModal = () => {
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
+  const forgotPassword = () => {
+    //navigation.navigate('forgotPasswordScreen')
+  };
+  const toRegistration = () => {
+    //navigation.navigate('joinScreen')
+    navigation.navigate("validateIdentityScreen");
+  };
+
   const toJoin = async () => {
     const validation = validationFrom();
     if (validation) {
@@ -66,17 +118,25 @@ const LoginView = ({ navigation }) => {
           apiEndPoints.BUSINESSLOGIN,
           loginData
         );
-        // console.log("responce:---|||", response);
+        console.log("responce >>>>>>>", response.data);
         if (response.status === 200) {
-          if (response.data.businessValidated === 1) {
-            // if(response.data.subscriptionplan === 1 ){
-
-            if (response.data.two_factor_auth === 1) {
-              setProfileid(response.data?.profileid);
-              console.log(
-                "find two_factor_auth >>>",
-                response.data.two_factor_auth
-              );
+          console.log(
+            "check businessValidated  :---",
+            response.data.data.businessValidated
+          );
+          if (response.data.data.businessValidated === 1) {
+            console.log(
+              "check subscriptionplan  :---",
+              response.data.data.subscriptionplan
+            );
+            // if (response.data.data.subscriptionplan === 1) {
+            console.log(
+              "check two_factor_auth  :---",
+              response.data.data.two_factor_auth
+            );
+            if (response.data.data.two_factor_auth === 1) {
+              setProfileid(response.data?.data.profileid);
+              submitforgotform();
             } else {
               await AsyncStorage.setItem("userToken", response.data.token);
               await AsyncStorage.setItem(
@@ -84,89 +144,51 @@ const LoginView = ({ navigation }) => {
                 JSON.stringify(response.data.data)
               );
               await setDefaultHeader("token", response.data.token);
-              signIn(response.data.data);
-              setIsLoading(false);
+              signIn(0, response.data.token, "business");
+
+              await AsyncStorage.setItem(
+                "allinformation",
+                String(response.data.data.allinformation)
+              );
+
+              await AsyncStorage.setItem(
+                "plan_type",
+                String(response.data.data.plan_type)
+              );
+
+              setBusinessRegisterDetail(response.data.data);
+              showMessage({
+                message: response.data.message?.messageTost,
+                type: "success",
+                duration: 3000,
+              });
+              navigation.navigate("profileDetailsScreen", businessDetail);
+              console.log(
+                "navigate in two_factor_auth else :---",
+                response.data.data.two_factor_auth
+              );
             }
-            // }else{
-            // //  AsyncStorage.setItem("profileid", response.data.profileid)
-            //   setBusinessRegisterDetail(response.data.data)
+            // } else {
+            //
+            //   AsyncStorage.setItem("profile_id", response.data?.dataprofileid);
+            //   setBusinessRegisterDetail(response.data.data);
+            //  // navigation.navigate("SubscriptionPlanScreen");
+            //  console.log("navigate in subscriptionplan else :---", response.data.subscriptionplan);
+
             // }
-            console.log(
-              "find businessValidated >>>",
-              response.data.businessValidated
-            );
           } else {
-            navigation.navigate("profileDetailsScreen");
-            // AsyncStorage.setItem("profileid", response.data.profileid);
-            await AsyncStorage.setItem("userToken", response.data.token);
-            await AsyncStorage.setItem(
-              "userData",
-              JSON.stringify(response.data.data)
-            );
-            await setDefaultHeader("token", response.data.token);
             setBusinessRegisterDetail(response.data.data);
+            navigation.navigate("validateIdentityScreen");
             showMessage({
-              message: response.data.message?.messageTost,
+              message: response.data.message.messageTost,
               type: "warning",
               duration: 3000,
             });
           }
-          console.log("responce in 200:---", response.data);
-        } else {
-          setIsLoading(false);
-          var msg = response.data.message.email
-            ? response.data.message.email
-            : response.data.message.password
-            ? response.data.message.password
-            : response.data.message.messageTost;
-          showMessage({
-            message: msg,
-            type: "danger",
-          });
-          console.log("responce in 200:---", response.data);
-        }
-      } catch (error) {
-        setIsLoading(false);
-      }
-    }
-  };
-
-  const toJoinNew = async () => {
-    const validation = validationFrom();
-    if (validation) {
-      try {
-        setIsLoading(true);
-        const response = await apiCall(
-          "POST",
-          apiEndPoints.BUSINESSLOGIN,
-          loginData
-        );
-        if (response.status === 200) {
-          if (response.data.businessValidated === 1) {
-            setProfileid(response.data?.profileid);
-            await AsyncStorage.setItem("userToken", response.data.token);
-            await AsyncStorage.setItem(
-              "userData",
-              JSON.stringify(response.data.data)
-            );
-            await setDefaultHeader("token", response.data.token);
-            signIn(response.data.data);
-            navigation.navigate("profileDetailsScreen");
-            console.log("responce in businessValidated:---", response.data);
-          } else if (response.data.two_factor_auth === 1) {
-            setProfileid(data.data?.profileid);
-            // openTwoStepauth()
-          } else if (response.data.subscriptionplan === 1) {
-          } else {
-            setIsLoading(false);
-            // navigation.navigate("profileDetailsScreen");
-            // signIn(response.data.data)
-            // setProfileid(response.data?.profileid)
-            // await AsyncStorage.setItem('userToken', response.data.token);
-            // await AsyncStorage.setItem('userData', JSON.stringify(response.data.data));
-            // await setDefaultHeader('token', response.data.token);
-            // console.log("responce in else businessValidated:---", response.data);
-          }
+          console.log(
+            "navigate in businessValidated else :---",
+            response.data.data.businessValidated
+          );
         } else {
           setIsLoading(false);
           var msg = response.data.message.email
@@ -181,80 +203,316 @@ const LoginView = ({ navigation }) => {
           console.log("responce in 200 else:---", response.data);
         }
       } catch (error) {
+        console.error(error);
         setIsLoading(false);
+      }
+    }
+  };
+
+  // const toJoin = async () => {
+  //   const validation = validationFrom();
+  //   if (validation) {
+  //     try {
+  //       setIsLoading(true);
+  //       const response = await apiCall(
+  //         "POST",
+  //         apiEndPoints.BUSINESSLOGIN,
+  //         loginData
+  //       );
+  //       // console.log("responce:---|||", response);
+  //       if (response.status === 200) {
+  //         if (response.data.data.businessValidated === 1) {
+  //           // if(response.data.data.subscriptionplan === 1 ){
+
+  //           if (response.data.data.two_factor_auth === 1) {
+  //              setProfileid(response.data?.data.profileid);
+  //             console.log(
+  //               "find two_factor_auth >>>",
+  //               response.data.data.two_factor_auth
+  //             );
+  //           } else {
+  //             await AsyncStorage.setItem("userToken", response.data.token);
+  //             await AsyncStorage.setItem(
+  //               "userData",
+  //               JSON.stringify(response.data.data)
+  //             );
+  //             await setDefaultHeader("token", response.data.token);
+  //             signIn(0, response.data.token, "business");
+
+  //             setIsLoading(false);
+  //           }
+  //           // }else{
+  //           // //  AsyncStorage.setItem("profileid", response.data.profileid)
+  //           //   setBusinessRegisterDetail(response.data.data)
+  //           // }
+  //           console.log(
+  //             "find businessValidated >>>",
+  //             response.data.businessValidated
+  //           );
+  //         } else {
+  //           navigation.navigate("profileDetailsScreen");
+  //           // AsyncStorage.setItem("profileid", response.data.profileid);
+  //           await AsyncStorage.setItem("userToken", response.data.token);
+  //           await AsyncStorage.setItem(
+  //             "userData",
+  //             JSON.stringify(response.data.data)
+  //           );
+  //           await setDefaultHeader("token", response.data.token);
+  //           setBusinessRegisterDetail(response.data.data);
+  //           showMessage({
+  //             message: response.data.message?.messageTost,
+  //             type: "warning",
+  //             duration: 3000,
+  //           });
+  //         }
+  //         console.log("responce in 200:---", response.data);
+  //       } else {
+  //         setIsLoading(false);
+  //         var msg = response.data.message.email
+  //           ? response.data.message.email
+  //           : response.data.message.password
+  //           ? response.data.message.password
+  //           : response.data.message.messageTost;
+  //         showMessage({
+  //           message: msg,
+  //           type: "danger",
+  //         });
+  //         console.log("responce in 200:---", response.data);
+  //       }
+  //     } catch (error) {
+  //       setIsLoading(false);
+  //     }
+  //   }
+  // };
+
+  // const toJoinNew = async () => {
+  //   const validation = validationFrom();
+  //   if (validation) {
+  //     try {
+  //       setIsLoading(true);
+  //       const response = await apiCall(
+  //         "POST",
+  //         apiEndPoints.BUSINESSLOGIN,
+  //         loginData
+  //       );
+  //       if (response.status === 200) {
+  //         if (response.data.businessValidated === 1) {
+  //           setProfileid(response.data?.profileid);
+  //           await AsyncStorage.setItem("userToken", response.data.token);
+  //           await AsyncStorage.setItem(
+  //             "userData",
+  //             JSON.stringify(response.data.data)
+  //           );
+  //           await setDefaultHeader("token", response.data.token);
+  //           signIn(response.data.data);
+  //           navigation.navigate("profileDetailsScreen");
+  //           console.log("responce in businessValidated:---", response.data);
+  //         } else if (response.data.two_factor_auth === 1) {
+  //           setProfileid(data.data?.profileid);
+  //           // openTwoStepauth()
+  //         } else if (response.data.subscriptionplan === 1) {
+  //         } else {
+  //           setIsLoading(false);
+  //           // navigation.navigate("profileDetailsScreen");
+  //           // signIn(response.data.data)
+  //           // setProfileid(response.data?.profileid)
+  //           // await AsyncStorage.setItem('userToken', response.data.token);
+  //           // await AsyncStorage.setItem('userData', JSON.stringify(response.data.data));
+  //           // await setDefaultHeader('token', response.data.token);
+  //           // console.log("responce in else businessValidated:---", response.data);
+  //         }
+  //       } else {
+  //         setIsLoading(false);
+  //         var msg = response.data.message.email
+  //           ? response.data.message.email
+  //           : response.data.message.password
+  //           ? response.data.message.password
+  //           : response.data.message.messageTost;
+  //         showMessage({
+  //           message: msg,
+  //           type: "danger",
+  //         });
+  //         console.log("responce in 200 else:---", response.data);
+  //       }
+  //     } catch (error) {
+  //       setIsLoading(false);
+  //       console.log(error);
+  //     }
+  //   } else {
+  //     console.log("validation failed");
+  //   }
+  // };
+
+  const submitforgotform = async () => {
+    try {
+      setIsLoading(true);
+      const params = {
+        email: loginData?.email,
+        type: "TFA",
+      };
+      console.log("responce:- ", response.data);
+      const response = await apiCall(
+        "POST",
+        apiEndPoints.FORGOTPASSWORD,
+        params
+      );
+      if (response.status === 200) {
+        setIsLoading(false);
+        showMessage({
+          message: response.data.message?.messageTost,
+          type: "danger",
+          duration: 3000,
+        });
+        openModal();
+      } else {
+        setIsLoading(false);
+        showMessage({
+          message: response.data.message?.messageTost,
+          type: "danger",
+          duration: 3000,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const twofacVerify = async () => {
+    const validOtp = validationOtp();
+    if (validOtp) {
+      try {
+        setIsLoading(true);
+        const params = { otp: otp, email: loginData?.email };
+        console.log("responce>>>", response.data);
+        const response = await apiCall(
+          "POST",
+          apiEndPoints.VERIFYEDOTP,
+          params
+        );
+        if (response.status === 200) {
+          setIsLoading(false);
+          showMessage({
+            message: response.data.message?.messageTost,
+            type: "success",
+            duration: 3000,
+          });
+          clearText();
+          setOtp("");
+          reloginBusiness();
+        } else {
+          setIsLoading(false);
+          showMessage({
+            message: response.data.message?.messageTost,
+            type: "warning",
+            duration: 3000,
+          });
+        }
+      } catch (error) {
         console.log(error);
       }
-    } else {
-      console.log("validation failed");
     }
   };
 
-  async function handleAuth(params) {
-    if (!formValidation()) {
+  const reloginBusiness = async () => {
+    try {
       setIsLoading(true);
-
-      var { data } = await apiCall("POST", ApiEndPoint.USERLOGIN, loginData);
-      if (data.status == 200) {
-        setFormError(data.message);
+      const parms = {
+        profile_id: profileid,
+      };
+      const response = await apiCall(
+        "POST",
+        apiEndPoints.RELOGIN_BUSINESS,
+        parms
+      );
+      if (response.status === 200) {
         setIsLoading(false);
-        if (data.data.businessValidated === 1) {
-          if (data.data.subscriptionplan === 1) {
-            if (data.data.two_factor_auth === 1) {
-              setProfileid(data.data?.profileid);
-              submitforgotform();
-            } else {
-              dispatch(setUserAuthData(data.data));
-              dispatch(
-                handleLoginStatus({
-                  username: data.data.first_name,
-                  userType: "business",
-                  token: data.token,
-                })
-              );
-              // successToast(data.message)
-              await localStorage.setItem("authToken", data.token);
-              signIn(0, data.token, "business");
-              await setDefaultHeader("token", data.token);
-              await localStorage.setItem(
-                "allinformation",
-                data.data.allinformation
-              );
-              await localStorage.setItem("plan_type", data.data.plan_type);
-              history.push("/");
-            }
-          } else {
-            /* dispatch(setUserAuthData(data.data));
-                  dispatch(handleLoginStatus({username: data.data.first_name, userType: 'business', token: data.token}));
-                  // successToast(data.message)
-                  await localStorage.setItem('authToken', data.token)
-                  signIn(0, data.token, 'business')
-                  await setDefaultHeader('token', data.token)
-                  await localStorage.setItem('allinformation', data.data.allinformation)
-                  await localStorage.setItem('plan_type', data.data.plan_type) */
+        if (response.data.data.businessValidated === 1) {
+          if (response.data.data.subscriptionplan === 1) {
+            setUserData(response.data.data);
+            setHandleLogin({
+              username: response.data.first_name,
+              userType: "business",
+              token: response.data.token,
+            });
+            await AsyncStorage.setItem("userToken", response.data.token);
+            await AsyncStorage.setItem(
+              "userData",
+              JSON.stringify(response.data.data)
+            );
+            await setDefaultHeader("token", response.data.token);
+            signIn(0, response.data.token, "business");
 
-            localStorage.setItem("profile_id", data.data?.profileid);
-            dispatch(setBusinessRegisterDetail(data.data));
-            history.push("/subscriptionplan");
+            await AsyncStorage.setItem(
+              "allinformation",
+              String(response.data.data.allinformation)
+            );
+
+            await AsyncStorage.setItem(
+              "plan_type",
+              String(response.data.data.plan_type)
+            );
+
+            setBusinessRegisterDetail(response.data.data);
+            showMessage({
+              message: response.data.message?.messageTost,
+              type: "success",
+              duration: 3000,
+            });
+            navigation.navigate("profileDetailsScreen");
+          } else {
+            AsyncStorage.setItem("profile_id", response.data?.data.profileid);
+            setBusinessRegisterDetail(response.data.data);
+            // navigation.navigate("SubscriptionPlanScreen");
           }
         } else {
-          dispatch(setBusinessRegisterDetail(data.data));
-          errorToast(data.message?.messageTost);
-          history.push("/join_us");
+          showMessage({
+            message: response.data.message?.messageTost,
+            type: "danger",
+            duration: 3000,
+          });
+          setBusinessRegisterDetail(response.data.data);
+          navigation.navigate("validateIdentityScreen");
         }
       } else {
-        setFormError(data.message);
         setIsLoading(false);
-        errorToast(data.message?.messageTost);
+        showMessage({
+          message: response.data.message?.message,
+          type: "danger",
+          duration: 3000,
+        });
       }
+    } catch (error) {
+      console.log(error);
     }
-  }
-  const forgotPassword = () => {
-    //navigation.navigate('forgotPasswordScreen')
   };
-  const toRegistration = () => {
-    //navigation.navigate('joinScreen')
-    navigation.navigate("validateIdentityScreen");
+
+  const handleResentOtp = async () => {
+    try {
+      setIsLoading(true);
+      const params = { email: loginData?.email };
+      const response = await apiCall("POST", apiEndPoints.RESENTOTP, params);
+      if (response.status === 200) {
+        setIsLoading(false);
+        clearText();
+        setOtp("");
+        showMessage({
+          message: response.data.message,
+          type: "success",
+          duration: 3000,
+        });
+      } else {
+        setIsLoading(false);
+        showMessage({
+          message: response.data.message?.messageTost,
+          type: "warning",
+          duration: 3000,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
+
   return (
     <>
       {isLoading && <Loader />}
@@ -267,6 +525,13 @@ const LoginView = ({ navigation }) => {
         toRegistration={toRegistration}
         forgotPassword={forgotPassword}
         inputError={inputError}
+        visible={modalVisible}
+        onClose={closeModal}
+        otp={otp}
+        setOtp={setOtp}
+        otpInputRef={otpInputRef}
+        twofacVerify={twofacVerify}
+        handleResentOtp={handleResentOtp}
       />
     </>
   );
