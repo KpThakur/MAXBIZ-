@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   StatusBar,
+  TextInput,
 } from "react-native";
 import { CheckBox, Icon } from "react-native-elements";
 // import CheckBox from '@react-native-community/checkbox';
@@ -28,10 +29,10 @@ import {
 import LinearGradient from "react-native-linear-gradient";
 import StringsOfLanguages from "../../../../utils/translations";
 import { AuthContext } from "../../../../utils/UserContext";
-const ProfileDetails = ( props ) => {
-  const { businessDetail } = props;
+const ProfileDetails = (props) => {
+  const { businessDetail, handleChange, value, paymentCheckbox, toggleCheckbox } = props;
 
-  console.log("find businessDetail in profile>>>", businessDetail)
+ // console.log("check name>>>>>", businessDetail?.fullname);
   const [isSelectedCall, setSelectionCall] = useState(false);
   const [isSelectedText, setSelectionText] = useState(false);
   const [isSelectedEmail, setSelectionEmail] = useState(false);
@@ -43,15 +44,7 @@ const ProfileDetails = ( props ) => {
   const [showJobs, setShowJobs] = useState(false);
   const [showDocuments, setShowDocuments] = useState(false);
 
-  const { signOut } = React.useContext(AuthContext);
-
-  const logOut = () => {
-    signOut();
-  };
-
-  const [tryvalue, setTryvalue] = useState('');
-
-  console.log("check value:-", tryvalue)
+ 
 
   const toggleDetails = () => {
     return setShowDetail(!showDetails);
@@ -71,6 +64,9 @@ const ProfileDetails = ( props ) => {
   const toggleDocuments = () => {
     return setShowDocuments(!showDocuments);
   };
+
+  const [editing, setEditing] = useState(false);
+
   return (
     <SafeAreaView style={commomstyle.container}>
       <StatusBar
@@ -94,7 +90,7 @@ const ProfileDetails = ( props ) => {
         headerType="none"
         rightImg={true}
         headerText={StringsOfLanguages.PROFILE_DETAIL}
-        rightImgStyl={{ tintColor: WHITE_COLOR }}
+        rightImgStyl={{}}
       />
       <ScrollView style={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
@@ -115,12 +111,25 @@ const ProfileDetails = ( props ) => {
             {showDetails && (
               <View style={styles.inputWrap}>
                 <View style={styles.input}>
-                  <Input image={"noNeed"} 
-                  placeholder= {StringsOfLanguages.BUSINESS_NAME}
-                  onChangeText={(val) => 
-                   setTryvalue(val)
-                  }
+                  <Input
+                    // onChangeText={(val) =>
+                    //  setInputValue({
+                    //     ...inputValue,
+                    //     businessname: val,
+                    //   })
+                    // }
+                    onChangeText={(text) => handleChange("businessName", text)}
+                    value={businessDetail?.fullname}
+                    placeholder={StringsOfLanguages.BUSINESS_NAME}
+                    image={"noNeed"}
+                    labelTxt={styles.labelTxt}
+                    maxLength={70}
                   />
+                  {/* <Input
+                    image={"noNeed"}
+                    placeholder={StringsOfLanguages.BUSINESS_NAME}
+                    onChangeText={handleTextChange}
+                  /> */}
                   {/* <Input
                      // value={"Remi"}
                       placeholder={StringsOfLanguages.BUSINESS_NAME}
@@ -144,18 +153,27 @@ const ProfileDetails = ( props ) => {
                   <Input
                     image={"noNeed"}
                     placeholder={StringsOfLanguages.ADDRESS}
+                    value={businessDetail?.address}
+                    labelTxt={styles.labelTxt}
                   />
                 </View>
                 <View style={styles.input}>
                   <Input
                     image={"noNeed"}
                     placeholder={StringsOfLanguages.SERVICES}
+                    // value={businessDetail?.naics[0].title}
+                    value={businessDetail?.naics?.[0]?.title || ""}
+                    labelTxt={styles.labelTxt}
+                    maxLength={70}
                   />
                 </View>
                 <View style={styles.input}>
                   <Input
                     image={"noNeed"}
                     placeholder={StringsOfLanguages.INDUSTRY}
+                    labelTxt={styles.labelTxt}
+                    value={businessDetail?.industry_name}
+                    maxLength={70}
                   />
                 </View>
 
@@ -163,6 +181,8 @@ const ProfileDetails = ( props ) => {
                   <Input
                     image={"noNeed"}
                     placeholder={StringsOfLanguages.HEAD_COUNT}
+                    labelTxt={styles.labelTxt}
+                    value={businessDetail?.head_count}
                   />
                 </View>
                 {/* <View style={styles.input}>
@@ -187,12 +207,17 @@ const ProfileDetails = ( props ) => {
                   <Input
                     image={"noNeed"}
                     placeholder={StringsOfLanguages.HOURS_OF_OPERATION}
+                    labelTxt={styles.labelTxt}
+                    value={businessDetail?.hours}
                   />
                 </View>
                 <View style={styles.input}>
                   <Input
                     image={"noNeed"}
                     placeholder={StringsOfLanguages.PAYMENT_METHOD}
+                    labelTxt={styles.labelTxt}
+                    // value={businessDetail?.payments}
+                    value={value}
                   />
                 </View>
 
@@ -200,16 +225,32 @@ const ProfileDetails = ( props ) => {
                   <Input
                     image={"noNeed"}
                     placeholder={StringsOfLanguages.WEBSITE_URL}
+                    labelTxt={styles.labelTxt}
+                    value={businessDetail?.websiteurl}
                   />
                 </View>
                 <View style={styles.input}>
                   <View style={styles.checkboxContainer}>
                     <Text>{StringsOfLanguages.PAYMENT_METHOD}</Text>
-                    <View style={{ flexDirection: "row" }}>
+                    <View style={styles.checkboxView}>
+                      {paymentCheckbox.map((option, index) => (
+                        <View key={index} style={styles.checkbox}>
+                          <CheckBox
+                            checked={option.isSelected}
+                            onPress={() => toggleCheckbox(index)}
+                          />
+                          <Text style={styles.checkboxText}>
+                            {option.label}
+                          </Text>
+                        </View>
+                      ))}
+                    </View>
+                    {/* <View style={{ flexDirection: "row" }}>
                       <View style={styles.checkbox}>
                         <CheckBox
                           checked={isSelectedCall}
                           onPress={() => setSelectionCall(!isSelectedCall)}
+                         
                         />
                         <Text style={styles.checkboxText}>
                           {StringsOfLanguages.CASH}
@@ -256,7 +297,7 @@ const ProfileDetails = ( props ) => {
                           {StringsOfLanguages.ZELLE}
                         </Text>
                       </View>
-                    </View>
+                    </View> */}
                   </View>
                 </View>
 
@@ -411,9 +452,6 @@ const ProfileDetails = ( props ) => {
             </View>}
           </View> */}
         </View>
-        <TouchableOpacity onPress={() => logOut()}>
-          <Text>Logout</Text>
-        </TouchableOpacity>
       </ScrollView>
       {/* </LinearGradient> */}
     </SafeAreaView>

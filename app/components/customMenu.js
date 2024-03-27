@@ -24,6 +24,8 @@ const customMenu = (props) => {
   const [loginStatus, setloginStatus] = useState(false);
   const [userData, setUserData] = useState({});
 
+ // console.log("userdata:-", userData)
+
   /* const userToken =  JSON.parse(AsyncStorage.getItem('userToken')); */
 
   const getuserData = async () => {

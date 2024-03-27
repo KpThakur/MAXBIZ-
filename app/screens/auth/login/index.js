@@ -29,12 +29,10 @@ const LoginView = ({ route, navigation }) => {
   // console.log("check profileid", profileid);
   //const { signIn } = React.useContext(AuthContext);
 
-  // const [userData, setUserData] = useContext(AuthContext);
+   const {userData, setUserData} = useContext(AuthContext);
 
-  const [userDataArray, setUserDataArray] = useContext(UserContext);
-  const userData = userDataArray[0]; 
-  const setUserData = setUserDataArray[1]; 
-  console.log("find userdata>>>", userData);
+  
+  console.log("find profileid>>>", profileid);
   
 
   const otpInputRef = useRef(null);
@@ -135,9 +133,44 @@ const LoginView = ({ route, navigation }) => {
               response.data.data.two_factor_auth
             );
             if (response.data.data.two_factor_auth === 1) {
-              setProfileid(response.data?.data.profileid);
+             // setProfileid(response.data?.data.profileid);
               submitforgotform();
+              setProfileid(response.data?.data.profileid);
+              // await AsyncStorage.setItem("profile_id", String(response.data?.data.profileid ))
+              // await AsyncStorage.setItem("businessid", String(response.data?.data.businessid) )
+               await AsyncStorage.setItem("userToken", response.data.token);
+               await AsyncStorage.setItem(
+                 "userData",
+                 JSON.stringify(response.data.data)
+               );
+               await setDefaultHeader("token", response.data.token);
+               signIn(0, response.data.token, "business");
+ 
+               await AsyncStorage.setItem(
+                 "allinformation",
+                 String(response.data.data.allinformation)
+               );
+ 
+               await AsyncStorage.setItem(
+                 "plan_type",
+                 String(response.data.data.plan_type)
+               );
+ 
+               setBusinessRegisterDetail(response.data.data);
+               showMessage({
+                 message: response.data.message?.messageTost,
+                 type: "success",
+                 duration: 3000,
+               });
+               navigation.navigate("profileDetailsScreen");
+               console.log(
+                 "navigate in two_factor_auth :---",
+                 response.data.data.two_factor_auth
+               );
             } else {
+              setProfileid(response.data?.data.profileid);
+             // await AsyncStorage.setItem("profile_id", String(response.data?.data.profileid ))
+             // await AsyncStorage.setItem("businessid", String(response.data?.data.businessid) )
               await AsyncStorage.setItem("userToken", response.data.token);
               await AsyncStorage.setItem(
                 "userData",
@@ -162,7 +195,7 @@ const LoginView = ({ route, navigation }) => {
                 type: "success",
                 duration: 3000,
               });
-              navigation.navigate("profileDetailsScreen", businessDetail);
+              navigation.navigate("profileDetailsScreen");
               console.log(
                 "navigate in two_factor_auth else :---",
                 response.data.data.two_factor_auth
@@ -170,7 +203,7 @@ const LoginView = ({ route, navigation }) => {
             }
             // } else {
             //
-            //   AsyncStorage.setItem("profile_id", response.data?.dataprofileid);
+            //   AsyncStorage.setItem("profile_id", String(response.data?.data.profileid ));
             //   setBusinessRegisterDetail(response.data.data);
             //  // navigation.navigate("SubscriptionPlanScreen");
             //  console.log("navigate in subscriptionplan else :---", response.data.subscriptionplan);
