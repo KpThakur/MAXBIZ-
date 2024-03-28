@@ -11,6 +11,7 @@ export default {
     VERIFYEDOTP: "userAuth/verifyedOtp",
     RELOGIN_BUSINESS: "userAuth/reloginbusiness",
     BUSINESSDETAIL: "userAuth/getBusinessDetails",
+    BUSINESSDETAILUPDATE: "/userAuth/businessDetailUpdate",
     LOGOUT: "userlogout/userLogout",
     
     //for registration

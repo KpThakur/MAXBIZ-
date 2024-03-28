@@ -106,142 +106,6 @@ const LoginView = ({ route, navigation }) => {
     navigation.navigate("validateIdentityScreen");
   };
 
-  const toJoin = async () => {
-    const validation = validationFrom();
-    if (validation) {
-      try {
-        setIsLoading(true);
-        const response = await apiCall(
-          "POST",
-          apiEndPoints.BUSINESSLOGIN,
-          loginData
-        );
-        console.log("responce >>>>>>>", response.data);
-        if (response.status === 200) {
-          console.log(
-            "check businessValidated  :---",
-            response.data.data.businessValidated
-          );
-          if (response.data.data.businessValidated === 1) {
-            console.log(
-              "check subscriptionplan  :---",
-              response.data.data.subscriptionplan
-            );
-            // if (response.data.data.subscriptionplan === 1) {
-            console.log(
-              "check two_factor_auth  :---",
-              response.data.data.two_factor_auth
-            );
-            if (response.data.data.two_factor_auth === 1) {
-             // setProfileid(response.data?.data.profileid);
-              submitforgotform();
-              setProfileid(response.data?.data.profileid);
-              // await AsyncStorage.setItem("profile_id", String(response.data?.data.profileid ))
-              // await AsyncStorage.setItem("businessid", String(response.data?.data.businessid) )
-               await AsyncStorage.setItem("userToken", response.data.token);
-               await AsyncStorage.setItem(
-                 "userData",
-                 JSON.stringify(response.data.data)
-               );
-               await setDefaultHeader("token", response.data.token);
-               signIn(0, response.data.token, "business");
- 
-               await AsyncStorage.setItem(
-                 "allinformation",
-                 String(response.data.data.allinformation)
-               );
- 
-               await AsyncStorage.setItem(
-                 "plan_type",
-                 String(response.data.data.plan_type)
-               );
- 
-               setBusinessRegisterDetail(response.data.data);
-               showMessage({
-                 message: response.data.message?.messageTost,
-                 type: "success",
-                 duration: 3000,
-               });
-               navigation.navigate("profileDetailsScreen");
-               console.log(
-                 "navigate in two_factor_auth :---",
-                 response.data.data.two_factor_auth
-               );
-            } else {
-              setProfileid(response.data?.data.profileid);
-             // await AsyncStorage.setItem("profile_id", String(response.data?.data.profileid ))
-             // await AsyncStorage.setItem("businessid", String(response.data?.data.businessid) )
-              await AsyncStorage.setItem("userToken", response.data.token);
-              await AsyncStorage.setItem(
-                "userData",
-                JSON.stringify(response.data.data)
-              );
-              await setDefaultHeader("token", response.data.token);
-              signIn(0, response.data.token, "business");
-
-              await AsyncStorage.setItem(
-                "allinformation",
-                String(response.data.data.allinformation)
-              );
-
-              await AsyncStorage.setItem(
-                "plan_type",
-                String(response.data.data.plan_type)
-              );
-
-              setBusinessRegisterDetail(response.data.data);
-              showMessage({
-                message: response.data.message?.messageTost,
-                type: "success",
-                duration: 3000,
-              });
-              navigation.navigate("profileDetailsScreen");
-              console.log(
-                "navigate in two_factor_auth else :---",
-                response.data.data.two_factor_auth
-              );
-            }
-            // } else {
-            //
-            //   AsyncStorage.setItem("profile_id", String(response.data?.data.profileid ));
-            //   setBusinessRegisterDetail(response.data.data);
-            //  // navigation.navigate("SubscriptionPlanScreen");
-            //  console.log("navigate in subscriptionplan else :---", response.data.subscriptionplan);
-
-            // }
-          } else {
-            setBusinessRegisterDetail(response.data.data);
-            navigation.navigate("validateIdentityScreen");
-            showMessage({
-              message: response.data.message.messageTost,
-              type: "warning",
-              duration: 3000,
-            });
-          }
-          console.log(
-            "navigate in businessValidated else :---",
-            response.data.data.businessValidated
-          );
-        } else {
-          setIsLoading(false);
-          var msg = response.data.message.email
-            ? response.data.message.email
-            : response.data.message.password
-            ? response.data.message.password
-            : response.data.message.messageTost;
-          showMessage({
-            message: msg,
-            type: "danger",
-          });
-          console.log("responce in 200 else:---", response.data);
-        }
-      } catch (error) {
-        console.error(error);
-        setIsLoading(false);
-      }
-    }
-  };
-
   // const toJoin = async () => {
   //   const validation = validationFrom();
   //   if (validation) {
@@ -252,18 +116,61 @@ const LoginView = ({ route, navigation }) => {
   //         apiEndPoints.BUSINESSLOGIN,
   //         loginData
   //       );
-  //       // console.log("responce:---|||", response);
+  //       console.log("responce >>>>>>>", response.data);
   //       if (response.status === 200) {
+  //         console.log(
+  //           "check businessValidated  :---",
+  //           response.data.data.businessValidated
+  //         );
   //         if (response.data.data.businessValidated === 1) {
-  //           // if(response.data.data.subscriptionplan === 1 ){
-
+  //           console.log(
+  //             "check subscriptionplan  :---",
+  //             response.data.data.subscriptionplan
+  //           );
+  //           // if (response.data.data.subscriptionplan === 1) {
+  //           console.log(
+  //             "check two_factor_auth  :---",
+  //             response.data.data.two_factor_auth
+  //           );
   //           if (response.data.data.two_factor_auth === 1) {
-  //              setProfileid(response.data?.data.profileid);
-  //             console.log(
-  //               "find two_factor_auth >>>",
-  //               response.data.data.two_factor_auth
-  //             );
+  //            // setProfileid(response.data?.data.profileid);
+  //             submitforgotform();
+  //             setProfileid(response.data?.data.profileid);
+  //             // await AsyncStorage.setItem("profile_id", String(response.data?.data.profileid ))
+  //             // await AsyncStorage.setItem("businessid", String(response.data?.data.businessid) )
+  //              await AsyncStorage.setItem("userToken", response.data.token);
+  //              await AsyncStorage.setItem(
+  //                "userData",
+  //                JSON.stringify(response.data.data)
+  //              );
+  //              await setDefaultHeader("token", response.data.token);
+  //              signIn(0, response.data.token, "business");
+ 
+  //              await AsyncStorage.setItem(
+  //                "allinformation",
+  //                String(response.data.data.allinformation)
+  //              );
+ 
+  //              await AsyncStorage.setItem(
+  //                "plan_type",
+  //                String(response.data.data.plan_type)
+  //              );
+ 
+  //              setBusinessRegisterDetail(response.data.data);
+  //              showMessage({
+  //                message: response.data.message?.messageTost,
+  //                type: "success",
+  //                duration: 3000,
+  //              });
+  //              navigation.navigate("profileDetailsScreen");
+  //              console.log(
+  //                "navigate in two_factor_auth :---",
+  //                response.data.data.two_factor_auth
+  //              );
   //           } else {
+  //             setProfileid(response.data?.data.profileid);
+  //            // await AsyncStorage.setItem("profile_id", String(response.data?.data.profileid ))
+  //            // await AsyncStorage.setItem("businessid", String(response.data?.data.businessid) )
   //             await AsyncStorage.setItem("userToken", response.data.token);
   //             await AsyncStorage.setItem(
   //               "userData",
@@ -272,88 +179,49 @@ const LoginView = ({ route, navigation }) => {
   //             await setDefaultHeader("token", response.data.token);
   //             signIn(0, response.data.token, "business");
 
-  //             setIsLoading(false);
+  //             await AsyncStorage.setItem(
+  //               "allinformation",
+  //               String(response.data.data.allinformation)
+  //             );
+
+  //             await AsyncStorage.setItem(
+  //               "plan_type",
+  //               String(response.data.data.plan_type)
+  //             );
+
+  //             setBusinessRegisterDetail(response.data.data);
+  //             showMessage({
+  //               message: response.data.message?.messageTost,
+  //               type: "success",
+  //               duration: 3000,
+  //             });
+  //             navigation.navigate("profileDetailsScreen");
+  //             console.log(
+  //               "navigate in two_factor_auth else :---",
+  //               response.data.data.two_factor_auth
+  //             );
   //           }
-  //           // }else{
-  //           // //  AsyncStorage.setItem("profileid", response.data.profileid)
-  //           //   setBusinessRegisterDetail(response.data.data)
+  //           // } else {
+  //           //
+  //           //   AsyncStorage.setItem("profile_id", String(response.data?.data.profileid ));
+  //           //   setBusinessRegisterDetail(response.data.data);
+  //           //  // navigation.navigate("SubscriptionPlanScreen");
+  //           //  console.log("navigate in subscriptionplan else :---", response.data.subscriptionplan);
+
   //           // }
-  //           console.log(
-  //             "find businessValidated >>>",
-  //             response.data.businessValidated
-  //           );
   //         } else {
-  //           navigation.navigate("profileDetailsScreen");
-  //           // AsyncStorage.setItem("profileid", response.data.profileid);
-  //           await AsyncStorage.setItem("userToken", response.data.token);
-  //           await AsyncStorage.setItem(
-  //             "userData",
-  //             JSON.stringify(response.data.data)
-  //           );
-  //           await setDefaultHeader("token", response.data.token);
   //           setBusinessRegisterDetail(response.data.data);
+  //           navigation.navigate("validateIdentityScreen");
   //           showMessage({
-  //             message: response.data.message?.messageTost,
+  //             message: response.data.message.messageTost,
   //             type: "warning",
   //             duration: 3000,
   //           });
   //         }
-  //         console.log("responce in 200:---", response.data);
-  //       } else {
-  //         setIsLoading(false);
-  //         var msg = response.data.message.email
-  //           ? response.data.message.email
-  //           : response.data.message.password
-  //           ? response.data.message.password
-  //           : response.data.message.messageTost;
-  //         showMessage({
-  //           message: msg,
-  //           type: "danger",
-  //         });
-  //         console.log("responce in 200:---", response.data);
-  //       }
-  //     } catch (error) {
-  //       setIsLoading(false);
-  //     }
-  //   }
-  // };
-
-  // const toJoinNew = async () => {
-  //   const validation = validationFrom();
-  //   if (validation) {
-  //     try {
-  //       setIsLoading(true);
-  //       const response = await apiCall(
-  //         "POST",
-  //         apiEndPoints.BUSINESSLOGIN,
-  //         loginData
-  //       );
-  //       if (response.status === 200) {
-  //         if (response.data.businessValidated === 1) {
-  //           setProfileid(response.data?.profileid);
-  //           await AsyncStorage.setItem("userToken", response.data.token);
-  //           await AsyncStorage.setItem(
-  //             "userData",
-  //             JSON.stringify(response.data.data)
-  //           );
-  //           await setDefaultHeader("token", response.data.token);
-  //           signIn(response.data.data);
-  //           navigation.navigate("profileDetailsScreen");
-  //           console.log("responce in businessValidated:---", response.data);
-  //         } else if (response.data.two_factor_auth === 1) {
-  //           setProfileid(data.data?.profileid);
-  //           // openTwoStepauth()
-  //         } else if (response.data.subscriptionplan === 1) {
-  //         } else {
-  //           setIsLoading(false);
-  //           // navigation.navigate("profileDetailsScreen");
-  //           // signIn(response.data.data)
-  //           // setProfileid(response.data?.profileid)
-  //           // await AsyncStorage.setItem('userToken', response.data.token);
-  //           // await AsyncStorage.setItem('userData', JSON.stringify(response.data.data));
-  //           // await setDefaultHeader('token', response.data.token);
-  //           // console.log("responce in else businessValidated:---", response.data);
-  //         }
+  //         console.log(
+  //           "navigate in businessValidated else :---",
+  //           response.data.data.businessValidated
+  //         );
   //       } else {
   //         setIsLoading(false);
   //         var msg = response.data.message.email
@@ -368,13 +236,84 @@ const LoginView = ({ route, navigation }) => {
   //         console.log("responce in 200 else:---", response.data);
   //       }
   //     } catch (error) {
+  //       console.error(error);
   //       setIsLoading(false);
-  //       console.log(error);
   //     }
-  //   } else {
-  //     console.log("validation failed");
   //   }
   // };
+
+  const toJoin = async () => {
+    const validation = validationFrom();
+    if (validation) {
+      try {
+        setIsLoading(true);
+        const response = await apiCall("POST", apiEndPoints.BUSINESSLOGIN, loginData);
+  
+        if (response.status === 200) {
+          const responseData = response.data;
+          console.log("Response data:", responseData);
+  
+          if (responseData.data.businessValidated === 1) {
+            if (responseData.data.two_factor_auth === 1) {
+              // Handle successful login with two-factor authentication
+              await handleSuccessfulLogin(responseData);
+            } else {
+              // Handle successful login without two-factor authentication
+              await handleSuccessfulLogin(responseData);
+            }
+          } else {
+            // Business validation failed, navigate to validateIdentityScreen
+            navigation.navigate("validateIdentityScreen");
+            showMessage({
+              message: responseData.message.messageTost,
+              type: "warning",
+              duration: 3000,
+            });
+          }
+        } else {
+          // Handle other API response statuses (e.g., error messages)
+          handleErrorResponse(response);
+        }
+      } catch (error) {
+        console.error(error);
+        setIsLoading(false);
+      }
+    }
+  };
+  
+  const handleSuccessfulLogin = async (responseData) => {
+    setProfileid(responseData.data.profileid);
+    await AsyncStorage.setItem("userToken", responseData.token);
+    await AsyncStorage.setItem("userData", JSON.stringify(responseData.data));
+    await setDefaultHeader("token", responseData.token);
+    signIn(0, responseData.token, "business");
+  
+    await AsyncStorage.setItem("allinformation", String(responseData.data.allinformation));
+    await AsyncStorage.setItem("plan_type", String(responseData.data.plan_type));
+  
+    setBusinessRegisterDetail(responseData.data);
+    showMessage({
+      message: responseData.message?.messageTost,
+      type: "success",
+      duration: 3000,
+    });
+    navigation.navigate("profileDetailsScreen");
+  };
+  
+  const handleErrorResponse = (response) => {
+    setIsLoading(false);
+    var msg =
+      response.data.message.email ||
+      response.data.message.password ||
+      response.data.message.messageTost;
+    showMessage({
+      message: msg,
+      type: "danger",
+    });
+  };
+  
+
+  
 
   const submitforgotform = async () => {
     try {

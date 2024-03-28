@@ -7,6 +7,7 @@ import {
   Image,
   StatusBar,
   TextInput,
+  RefreshControl,
 } from "react-native";
 import { CheckBox, Icon } from "react-native-elements";
 // import CheckBox from '@react-native-community/checkbox';
@@ -30,9 +31,24 @@ import LinearGradient from "react-native-linear-gradient";
 import StringsOfLanguages from "../../../../utils/translations";
 import { AuthContext } from "../../../../utils/UserContext";
 const ProfileDetails = (props) => {
-  const { businessDetail, handleChange, value, paymentCheckbox, toggleCheckbox } = props;
+  const {
+    businessDetail,
+    inputError,
+    refreshing,
+    onRefresh,
+    handleChange,
+    value,
+    paymentshow,
+    paymentCheckbox,
+    toggleCheckbox,
+    contactCheckbox,
+    toggleContactCheckbox,
+    handleChangenaics,
+    bussinessFormUpdate,
+    paymentMethodError
+  } = props;
 
- // console.log("check name>>>>>", businessDetail?.fullname);
+  // console.log("check name>>>>>", businessDetail?.fullname);
   const [isSelectedCall, setSelectionCall] = useState(false);
   const [isSelectedText, setSelectionText] = useState(false);
   const [isSelectedEmail, setSelectionEmail] = useState(false);
@@ -43,8 +59,6 @@ const ProfileDetails = (props) => {
   const [showOffers, setShowOffers] = useState(false);
   const [showJobs, setShowJobs] = useState(false);
   const [showDocuments, setShowDocuments] = useState(false);
-
- 
 
   const toggleDetails = () => {
     return setShowDetail(!showDetails);
@@ -64,8 +78,6 @@ const ProfileDetails = (props) => {
   const toggleDocuments = () => {
     return setShowDocuments(!showDocuments);
   };
-
-  const [editing, setEditing] = useState(false);
 
   return (
     <SafeAreaView style={commomstyle.container}>
@@ -92,7 +104,18 @@ const ProfileDetails = (props) => {
         headerText={StringsOfLanguages.PROFILE_DETAIL}
         rightImgStyl={{}}
       />
-      <ScrollView style={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={{ flexGrow: 1 }}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={COMMON_COLOR}
+            colors={[COMMON_COLOR]}
+          />
+        }
+      >
         <View style={styles.container}>
           <View style={styles.section1}>
             <View style={styles.headingWrapper}>
@@ -112,28 +135,16 @@ const ProfileDetails = (props) => {
               <View style={styles.inputWrap}>
                 <View style={styles.input}>
                   <Input
-                    // onChangeText={(val) =>
-                    //  setInputValue({
-                    //     ...inputValue,
-                    //     businessname: val,
-                    //   })
-                    // }
-                    onChangeText={(text) => handleChange("businessName", text)}
+                    onChangeText={(text) => handleChange("fullname", text)}
                     value={businessDetail?.fullname}
                     placeholder={StringsOfLanguages.BUSINESS_NAME}
                     image={"noNeed"}
                     labelTxt={styles.labelTxt}
                     maxLength={70}
                   />
-                  {/* <Input
-                    image={"noNeed"}
-                    placeholder={StringsOfLanguages.BUSINESS_NAME}
-                    onChangeText={handleTextChange}
-                  /> */}
-                  {/* <Input
-                     // value={"Remi"}
-                      placeholder={StringsOfLanguages.BUSINESS_NAME}
-                    /> */}
+                  <Text style={styles.errorText}>
+                    {inputError.errorfullname}
+                  </Text>
                 </View>
 
                 {/* <View style={styles.addView}>
@@ -151,14 +162,33 @@ const ProfileDetails = (props) => {
 
                 <View style={styles.input}>
                   <Input
+                    onChangeText={(text) => handleChange("address", text)}
                     image={"noNeed"}
                     placeholder={StringsOfLanguages.ADDRESS}
                     value={businessDetail?.address}
                     labelTxt={styles.labelTxt}
                   />
+                    <Text style={styles.errorText}>
+                    {inputError.erroraddress}
+                  </Text>
                 </View>
+
                 <View style={styles.input}>
                   <Input
+                    onChangeText={(text) => handleChange("city_name", text)}
+                    image={"noNeed"}
+                    placeholder={StringsOfLanguages.CITY_}
+                    value={businessDetail?.city_name}
+                    labelTxt={styles.labelTxt}
+                  />
+                    <Text style={styles.errorText}>
+                    {inputError.errorcity_name}
+                  </Text>
+                </View>
+
+                <View style={styles.input}>
+                  <Input
+                    onChangeText={(text) => handleChangenaics(0, "title", text)}
                     image={"noNeed"}
                     placeholder={StringsOfLanguages.SERVICES}
                     // value={businessDetail?.naics[0].title}
@@ -166,25 +196,37 @@ const ProfileDetails = (props) => {
                     labelTxt={styles.labelTxt}
                     maxLength={70}
                   />
+                   <Text style={styles.errorText}>
+                    {inputError.errornaics}
+                  </Text>
                 </View>
                 <View style={styles.input}>
                   <Input
+                    onChangeText={(text) => handleChange("industry_name", text)}
                     image={"noNeed"}
-                    placeholder={StringsOfLanguages.INDUSTRY}
+                    placeholder={StringsOfLanguages.INDUSTRY_}
                     labelTxt={styles.labelTxt}
                     value={businessDetail?.industry_name}
                     maxLength={70}
                   />
+                  <Text style={styles.errorText}>
+                    {inputError.errorindustry_name}
+                  </Text>
                 </View>
 
-                <View style={styles.input}>
+                {/* <View style={styles.input}>
                   <Input
+                    onChangeText={(text) => handleChange("head_count", text)}
                     image={"noNeed"}
                     placeholder={StringsOfLanguages.HEAD_COUNT}
                     labelTxt={styles.labelTxt}
                     value={businessDetail?.head_count}
                   />
-                </View>
+                   <Text style={styles.errorText}>
+                    {inputError.errorhead_count}
+                  </Text>
+                </View> */}
+
                 {/* <View style={styles.input}>
                   <Input
                     image={"noNeed"}
@@ -205,11 +247,15 @@ const ProfileDetails = (props) => {
                 </View> */}
                 <View style={styles.input}>
                   <Input
+                    onChangeText={(text) => handleChange("hours", text)}
                     image={"noNeed"}
                     placeholder={StringsOfLanguages.HOURS_OF_OPERATION}
                     labelTxt={styles.labelTxt}
                     value={businessDetail?.hours}
                   />
+                    <Text style={styles.errorText}>
+                    {inputError.errorhours}
+                  </Text>
                 </View>
                 <View style={styles.input}>
                   <Input
@@ -218,16 +264,21 @@ const ProfileDetails = (props) => {
                     labelTxt={styles.labelTxt}
                     // value={businessDetail?.payments}
                     value={value}
+                    editable={false}
                   />
                 </View>
 
                 <View style={styles.input}>
                   <Input
+                    onChangeText={(text) => handleChange("websiteurl", text)}
                     image={"noNeed"}
                     placeholder={StringsOfLanguages.WEBSITE_URL}
                     labelTxt={styles.labelTxt}
                     value={businessDetail?.websiteurl}
                   />
+                   <Text style={styles.errorText}>
+                    {inputError.errorwebsiteurl}
+                  </Text>
                 </View>
                 <View style={styles.input}>
                   <View style={styles.checkboxContainer}>
@@ -245,6 +296,9 @@ const ProfileDetails = (props) => {
                         </View>
                       ))}
                     </View>
+                    <Text style={styles.errorText}>
+                    {inputError.errorpaymentcheckbox}
+                  </Text>
                     {/* <View style={{ flexDirection: "row" }}>
                       <View style={styles.checkbox}>
                         <CheckBox
@@ -303,7 +357,23 @@ const ProfileDetails = (props) => {
 
                 <View style={styles.checkboxContainer}>
                   <Text>{StringsOfLanguages.CONTACT_OPTIONS}</Text>
-                  <View style={styles.checkbox}>
+
+                  <View style={styles.checkboxView}>
+                    {contactCheckbox.map((option, index) => (
+                      <View key={index} style={styles.checkbox}>
+                        <CheckBox
+                          checked={option.isSelected}
+                          onPress={() => toggleContactCheckbox(index)}
+                        />
+                        <Text style={styles.checkboxText}>{option.label}</Text>
+                      </View>
+                    ))}
+                  </View>
+                  <Text style={styles.errorText}>
+                    {inputError.contactOptionsError}
+                  </Text>
+
+                  {/* <View style={styles.checkbox}>
                     <CheckBox
                       checked={isSelectedCall}
                       onPress={() => setSelectionCall(!isSelectedCall)}
@@ -347,11 +417,14 @@ const ProfileDetails = (props) => {
                     <Text style={styles.checkboxText}>
                       {StringsOfLanguages.MINORITY}
                     </Text>
-                  </View>
+                  </View> */}
                 </View>
 
                 <View style={styles.saveButton}>
-                  <Button buttonText={StringsOfLanguages.SAVE_CHANGES} />
+                  <Button
+                    buttonText={StringsOfLanguages.SAVE_CHANGES}
+                    onPress={() => bussinessFormUpdate()}
+                  />
                 </View>
               </View>
             )}

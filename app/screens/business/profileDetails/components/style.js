@@ -185,5 +185,12 @@ const style = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
   },
+  errorText: {
+    fontSize: scale(11),
+    color: "red",
+    fontWeight: '400',
+    fontFamily: FONT_FAMILY_REGULAR,
+    alignSelf: 'flex-end'
+},
 });
 export default style;

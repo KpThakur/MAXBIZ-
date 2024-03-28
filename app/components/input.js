@@ -97,7 +97,7 @@ const input = (props) => {
           secureTextEntry={secureTextEntry}
           onFocus={handleFocus}
           onBlur={_handleBlur}
-         // editable={editable}
+          editable={editable}
         />
         <View
           style={[
