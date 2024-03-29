@@ -22,18 +22,57 @@ const Index = ({ route, navigation }) => {
   const [userData, setUserData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [paymentLists, setPaymentLists] = useState({});
-  const [paymentshow, setPaymentShow] = useState({});
+  const [paymentmethod, setPaymentMethod] = useState({});
+  const [showCall, setShowCall] = useState(false);
+  const [showText, setShowText] = useState(false);
+  const [showEmail, setShowEmail] = useState(false);
+  const [isNonProfit, setIsNonProfit] = useState(false);
+  const [isMinority, setIsMinority] = useState(false);
+
+  const [bucketcertificate, setBucketcertificate] = useState("");
+  const [bucket_Img_url, setBucket_Img_url] = useState("images/no_image.png");
+  const [baseUrl, setBaseUrl] = useState("");
+
+  const toggleShowCall = () => setShowCall(!showCall);
+  const toggleShowText = () => setShowText(!showText);
+  const toggleShowEmail = () => setShowEmail(!showEmail);
+  const toggleIsNonProfit = () => setIsNonProfit(!isNonProfit);
+  const toggleIsMinority = () => setIsMinority(!isMinority);
 
   const [businessDetail, setBusinessDetail] = useState({
     fullname: "",
     address: "",
+    cityid: "" ,
     city_name: "",
-    naics: [{ title: "" }],
+    naics: "",
     industry_name: "",
     head_count: "",
     hours: "",
     websiteurl: "",
+
+    showcall: "",
+    showtext: "",
+    showemail: "",
+    is_nonprofit: "",
+    is_minority: "",
+
+    cash: "",
+    creditcard: "",
+    cashapp: "",
+    paypal: "",
+    zelle: ""
   });
+
+
+  const userSelectPayment = {
+    cash: businessDetail?.cash,
+    creditcard: businessDetail?.creditcard,
+    cashapp: businessDetail?.cashapp,
+    paypal: businessDetail?.paypal,
+    zelle: businessDetail?.zelle
+  };
+ 
+ // console.log("find checkbox value:", userSelectPayment)
 
   function validationFrom() {
     let errorfullname = "";
@@ -72,8 +111,17 @@ const Index = ({ route, navigation }) => {
       if (!selectedValues.length) {
         errorpaymentcheckbox = "Please select at least one payment method";
       }
-      if (!selectedContactvalues.length) {
-        contactOptionsError = "Please select at least one contact option";
+      // if (!selectedContactvalues.length) {
+      //   contactOptionsError = "Please select at least one contact option";
+      // }
+      if (
+        !businessDetail.showcall &&
+        !businessDetail.showtext &&
+        !businessDetail.showemail &&
+        !businessDetail.is_nonprofit &&
+        !businessDetail.is_minority
+      ) {
+        contactOptionsError = "Please select at least one option";
       }
     } else {
       console.warn("businessDetail is undefined");
@@ -105,7 +153,7 @@ const Index = ({ route, navigation }) => {
     );
   }
 
-  console.log("find naics |||>>>", businessDetail?.naics);
+  // console.log("find naics |||>>>", businessDetail?.naics);
 
   const [refreshing, setRefreshing] = useState(false);
 
@@ -113,7 +161,7 @@ const Index = ({ route, navigation }) => {
     setRefreshing(true);
     setTimeout(() => {
       getuserData();
-      //  getBusinessdetail();
+       getBusinessdetail();
       setRefreshing(false);
     }, 2000);
   }, []);
@@ -134,19 +182,34 @@ const Index = ({ route, navigation }) => {
     });
   };
 
+  const handleShowPaymentCheckbox = (key) => {
+    setBusinessDetail((prevState) => ({
+      ...prevState,
+      [key]: prevState[key] === 0 ? 1 : 0,
+    }));
+  };
+ 
+  
+
+  const handleShowTextCheckbox = (key) => {
+    setBusinessDetail((prevState) => ({
+      ...prevState,
+      [key]: prevState[key] === 0 ? 1 : 0,
+    }));
+  };
+
   const getuserData = async () => {
     const userToken = await AsyncStorage.getItem("userToken");
     if (userToken !== null) {
       const userData = await AsyncStorage.getItem("userData");
       setUserData(JSON.parse(userData));
-      getBusinessdetail();
+       getBusinessdetail();
     }
   };
 
   useFocusEffect(
     React.useCallback(() => {
       getuserData();
-      // paymentExtract();
     }, [navigation])
   );
 
@@ -155,36 +218,9 @@ const Index = ({ route, navigation }) => {
       ? JSON.parse(businessDetail?.payments)
       : {};
     setPaymentLists(paydata);
-    // paymentExtract();
-    getBusinessdetail();
+     getBusinessdetail();
     getuserData();
   }, []);
-
-  const paymentExtract = () => {
-    const paymentMethods = [];
-    try {
-      if (paymentLists?.cash === 1) {
-        paymentMethods.push("Cash");
-      }
-      if (paymentLists?.creditcard === 1) {
-        paymentMethods.push("Card");
-      }
-      if (paymentLists?.cashapp === 1) {
-        paymentMethods.push("Check");
-      }
-      if (paymentLists?.paypal === 1) {
-        paymentMethods.push("Paypal");
-      }
-      if (paymentLists?.zelle === 1) {
-        paymentMethods.push("Zelle");
-      }
-
-      const value = paymentMethods.join(", ");
-      setPaymentShow(value);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const paymentMethods = [];
 
@@ -217,17 +253,36 @@ const Index = ({ route, navigation }) => {
         profileid: userData?.profileid,
         businessid: userData?.businessid,
       };
-      console.log(" Api responce:----", response);
+      const authToken = await AsyncStorage.getItem("userToken");
+      // console.log("authtoken>>>>", authToken)
+      const header = {
+        Authorization: `Bearer ${authToken}`,
+      };
+      // console.log(" Api responce:----", response);
 
       const response = await apiCall(
         "POST",
         apiEndPoints.BUSINESSDETAIL,
-        parms
+        parms,
+        header
       );
-      console.log(" Api responce:----", response.data.data);
+      console.log(" Api responce:----", response.data);
       if (response.status === 200) {
         setIsLoading(false);
         setBusinessDetail(response.data.data);
+        await AsyncStorage.setItem(
+          "allinformation",
+          String(response.data.data.allinformation)
+        );
+        setPaymentMethod(JSON.parse(response.data.data.payments));
+        response.data.data?.certificate != ""
+          ? getImageCertificate(response.data.data?.certificate)
+          : console.log("");
+
+        response.data.data?.photofile != ""
+          ? getImage(response.data.data?.photofile)
+          : console.log("");
+        setBaseUrl(response.data.base_url);
       } else {
         setIsLoading(false);
         showMessage({
@@ -238,7 +293,39 @@ const Index = ({ route, navigation }) => {
       }
     } catch (error) {
       setIsLoading(false);
+      console.log("catch error", error);
+    }
+  };
+
+  const getImageCertificate = async (param) => {
+    try {
+      const params = {
+        fileName: param,
+      };
+      const response = await apiCall("POST", apiEndPoints.GETIMAGE, params);
+      if (response.status === 200) {
+        setBucketcertificate(response.data.url);
+        setTimeout(() => {}, 1000);
+      } else {
+        console.log("getImageCertificate in else");
+      }
+    } catch (error) {
       console.log(error);
+    }
+  };
+
+  const getImage = async (param) => {
+    if (param && param != "") {
+      const params = {
+        fileName: param,
+      };
+      const response = await apiCall("POST", apiEndPoints.GETIMAGE, params);
+      if (response.status === 200) {
+        setBucket_Img_url(response.data.url);
+        setTimeout(() => {}, 1000);
+      } else {
+        console.log("getImage in else");
+      }
     }
   };
 
@@ -248,6 +335,7 @@ const Index = ({ route, navigation }) => {
     { label: "Check", isSelected: false },
     { label: "PayPal", isSelected: false },
     { label: "Zelle", isSelected: false },
+   
   ]);
 
   const toggleCheckbox = (index) => {
@@ -255,6 +343,8 @@ const Index = ({ route, navigation }) => {
     updatedOptions[index].isSelected = !updatedOptions[index].isSelected;
     setPaymentCheckbox(updatedOptions);
   };
+
+  
 
   const selectedValues = paymentCheckbox.filter(
     (item) => item.isSelected === true
@@ -283,6 +373,8 @@ const Index = ({ route, navigation }) => {
   const selectedLabelsContact = selectedContactvalues.map((item) => item.label);
   // console.log("Selected contacts labels:", selectedLabelsContact);
 
+
+
   const bussinessFormUpdate = async () => {
     const valid = validationFrom();
 
@@ -299,162 +391,100 @@ const Index = ({ route, navigation }) => {
       }
     });
     const stringData = result.join(",");
-    console.log("The result ===>>", stringData);
+    // console.log("The result ===>>", stringData);
 
-    
+    const authToken = await AsyncStorage.getItem("userToken");
+    // console.log("authtoken,,,,", authToken);
 
     if (valid) {
-      try {
-        setIsLoading(true);
-        let businessData = new FormData();
-        businessData.append("businessid", businessDetail?.businessid);
-        businessData.append("profileid", businessDetail?.profileid);
-        businessData.append("status", businessDetail?.status);
-        businessData.append("fullname", businessDetail?.fullname);
-        businessData.append("address", businessDetail?.address);
-        businessData.append("cityid", businessDetail?.cityid);
-        businessData.append("city_name", businessDetail?.city_name);
-        businessData.append("numemps", businessDetail?.numemps);
-        businessData.append(
-          "annualgrossrevenue",
-          businessDetail?.annualgrossrevenue
-        );
-        businessData.append("about", businessDetail?.about);
-        businessData.append("pricehour", businessDetail?.pricehour);
-        businessData.append("pricemodel", businessDetail?.pricemodel);
-        businessData.append("hours", businessDetail?.hours);
-        businessData.append("payments", JSON.stringify(selectedLabels));
-        businessData.append("phone", businessDetail?.phone);
-        businessData.append("email", businessDetail?.email);
-        businessData.append("websiteurl", businessDetail?.websiteurl);
-        businessData.append("showcall", businessDetail?.showcall);
-        businessData.append("showtext", businessDetail?.showtext);
-        businessData.append("showemail", businessDetail?.showemail);
-        businessData.append("service_offer", businessDetail?.service_offer);
-        businessData.append("service_area", businessDetail?.service_area);
-        businessData.append("county", "1");
-        businessData.append("state", "1");
-        businessData.append("industry", businessDetail?.industry);
-        businessData.append("industry_name", businessDetail?.industry_name);
-        businessData.append("year_revenue", businessDetail?.year_revenue);
-        businessData.append("plan_type", plantype);
-        businessData.append(
-          "business_validation",
-          businessDetail?.business_validation
-        );
-        businessData.append("naicsid", stringData);
-        businessData.append("facebookurl", businessDetail?.facebookurl);
-        businessData.append("linkedInurl", businessDetail?.linkedInurl);
-        businessData.append("twitterurl", businessDetail?.twitterurl);
-        businessData.append("youtubeurl", businessDetail?.youtubeurl);
-        businessData.append("instagramurl", businessDetail?.instagramurl);
-        businessData.append("photofile", businessDetail?.photofile);
-        businessData.append("certificate", businessDetail?.certificate);
-        businessData.append("is_nonprofit", businessDetail?.is_nonprofit);
-        businessData.append("is_minority", businessDetail?.is_minority);
-        businessData.append("allinformation", 1);
-
-        
-      } catch (error) {
-        setIsLoading(false);
-        console.log(error);
-      }
-    } else {
-      console.log("validation failed");
-    }
-  };
-
-  const submitBusinessForm = async () => {
-    var servId =
-      businessDetails &&
-      businessDetails?.naics &&
-      businessDetails?.naics.length > 0
-        ? businessDetails.naics.map((x) => x.naicsid)
-        : "";
-    if (!validation()) {
-      // setIsLoader(true);
-      setProIsLoader(true);
+      setIsLoading(true);
       let businessData = new FormData();
-      businessData.append("businessid", businessDetails.businessid);
-      businessData.append("profileid", businessDetails.profileid);
-      businessData.append("status", businessDetails.status);
-      businessData.append("fullname", businessDetails.fullname);
-      businessData.append("address", businessDetails.address);
-      // businessData.append("cityid", selectedCity);
-      businessData.append("cityid", businessDetails.cityid);
-      businessData.append("city_name", businessDetails.city_name);
-      businessData.append("numemps", businessDetails.numemps);
+      businessData.append("businessid", businessDetail?.businessid);
+      businessData.append("profileid", businessDetail?.profileid);
+      businessData.append("status", businessDetail?.status);
+      businessData.append("fullname", businessDetail?.fullname);
+      businessData.append("address", businessDetail?.address);
+      businessData.append("cityid", businessDetail?.cityid);
+      businessData.append("city_name", businessDetail?.city_name);
+      businessData.append("numemps", businessDetail?.numemps);
       businessData.append(
         "annualgrossrevenue",
-        businessDetails.annualgrossrevenue
+        businessDetail?.annualgrossrevenue
       );
-      businessData.append("about", businessDetails.about);
-      businessData.append("pricehour", businessDetails.pricehour);
-      businessData.append("pricemodel", businessDetails.pricemodel);
-      businessData.append("hours", businessDetails.hours);
-      businessData.append("payments", JSON.stringify(paymentmethods));
-      businessData.append("phone", businessDetails.phone);
-      businessData.append("email", businessDetails.email);
-      businessData.append("websiteurl", businessDetails.websiteurl);
-      businessData.append("showcall", businessDetails.showcall);
-      businessData.append("showtext", businessDetails.showtext);
-      businessData.append("showemail", businessDetails.showemail);
-      businessData.append("service_offer", businessDetails.service_offer);
-      businessData.append("service_area", businessDetails.service_area);
+      businessData.append("about", businessDetail?.about);
+      businessData.append("pricehour", businessDetail?.pricehour);
+      businessData.append("pricemodel", businessDetail?.pricemodel);
+      businessData.append("hours", businessDetail?.hours);
+      businessData.append("payments", JSON.stringify(userSelectPayment));
+      businessData.append("phone", businessDetail?.phone);
+      businessData.append("email", businessDetail?.email);
+      businessData.append("websiteurl", businessDetail?.websiteurl);
+      businessData.append("showcall", businessDetail?.showcall);
+      businessData.append("showtext", businessDetail?.showtext);
+      businessData.append("showemail", businessDetail?.showemail);
+      businessData.append("service_offer", businessDetail?.service_offer);
+      businessData.append("service_area", businessDetail?.service_area);
       businessData.append("county", "1");
       businessData.append("state", "1");
-      businessData.append("industry", businessDetails.industry);
-      businessData.append("industry_name", businessDetails.industry_name);
-      businessData.append("year_revenue", businessDetails.year_revenue);
+      businessData.append("industry", businessDetail?.industry);
+      businessData.append("industry_name", businessDetail?.industry_name);
+      businessData.append("year_revenue", businessDetail?.year_revenue);
       businessData.append("plan_type", plantype);
       businessData.append(
         "business_validation",
-        businessDetails.business_validation
+        businessDetail?.business_validation
       );
-      businessData.append(
-        "naicsid",
-        selectedService.length > 0 &&
-          selectedService.map((item) => item.cat).join(", ")
-      );
-      businessData.append("facebookurl", businessDetails.facebookurl);
-      businessData.append("linkedInurl", businessDetails.linkedInurl);
-      businessData.append("twitterurl", businessDetails.twitterurl);
-      businessData.append("youtubeurl", businessDetails.youtubeurl);
-      businessData.append("instagramurl", businessDetails.instagramurl);
-      businessData.append("photofile", businessDetails.photofile);
-      businessData.append("certificate", businessDetails.certificate);
-      businessData.append("is_nonprofit", businessDetails.is_nonprofit);
-      businessData.append("is_minority", businessDetails.is_minority);
+      businessData.append("naicsid", stringData);
+      businessData.append("facebookurl", businessDetail?.facebookurl);
+      businessData.append("linkedInurl", businessDetail?.linkedInurl);
+      businessData.append("twitterurl", businessDetail?.twitterurl);
+      businessData.append("youtubeurl", businessDetail?.youtubeurl);
+      businessData.append("instagramurl", businessDetail?.instagramurl);
+      businessData.append("photofile", businessDetail?.photofile);
+      businessData.append("certificate", businessDetail?.certificate);
+      businessData.append("is_nonprofit", businessDetail?.is_nonprofit);
+      businessData.append("is_minority", businessDetail?.is_minority);
       businessData.append("allinformation", 1);
 
-      // businessData.append("photofile", photofile);
-      const header = {
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-      };
-      const { data } = await apiCall(
-        "POST",
-        apiEndPoints.BUSINESSDETAILUPDATE,
-        businessData,
-        header
-      );
-      if (data.status == 200) {
-        setIsLoader(false); // function handleIndustrySearch(){
-        //   const status = industryListShow?false:true
-        //   setIndustryListShow(status);
-        // } // function handleIndustrySearch(){
-        //   const status = industryListShow?false:true
-        //   setIndustryListShow(status);
-        // }
+      console.log("bussiness formdata:---", businessData)
 
-        document.getElementById("sucessModelBtn").click();
-        //successToast(data.message);
-        setProIsLoader(false);
-        getBusinessData();
-      } else {
-        setProIsLoader(false);
-        setIsLoader(false);
-        errorToast(data.message);
+      const headers = {
+        Authorization: `Bearer ${authToken}`,
+        "content-type": "multipart/form-data"
+      };
+
+      try {
+  
+        const responce = await apiCall(
+          "POST",
+          apiEndPoints.BUSINESSDETAILUPDATE,
+          businessData,
+          headers
+        );
+
+        if (responce.status === 200) {
+          setIsLoading(false);
+          getBusinessdetail();
+          showMessage({
+            message: responce.data.message,
+            type: "success",
+            duration: 3000,
+          });
+          console.log("submit for update >>>>", responce.data);
+        } else {
+          setIsLoading(false);
+          showMessage({
+            message: responce.data.message,
+            type: "danger",
+            duration: 3000,
+          });
+        }
+      } catch (error) {
+        setIsLoading(false);
+        console.log("error in catch", error);
       }
+    } else {
+      console.log("validation failed");
     }
   };
 
@@ -468,13 +498,26 @@ const Index = ({ route, navigation }) => {
         onRefresh={onRefresh}
         handleChange={handleChange}
         value={value}
-        paymentshow={paymentshow}
         paymentCheckbox={paymentCheckbox}
         toggleCheckbox={toggleCheckbox}
         contactCheckbox={contactCheckbox}
         toggleContactCheckbox={toggleContactCheckbox}
         handleChangenaics={handleChangenaics}
         bussinessFormUpdate={bussinessFormUpdate}
+        showCall={showCall}
+        showText={showText}
+        showEmail={showEmail}
+        isNonProfit={isNonProfit}
+        isMinority={isMinority}
+        toggleShowCall={toggleShowCall}
+        toggleShowText={toggleShowText}
+        toggleShowEmail={toggleShowEmail}
+        toggleIsNonProfit={toggleIsNonProfit}
+        toggleIsMinority={toggleIsMinority}
+        handleShowTextCheckbox={handleShowTextCheckbox}
+        handleShowPaymentCheckbox={handleShowPaymentCheckbox}
+        paymentmethod={paymentmethod}
+       
       />
       {/* <CommingSoon /> */}
     </Fragment>

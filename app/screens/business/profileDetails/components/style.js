@@ -136,14 +136,14 @@ const style = StyleSheet.create({
     alignSelf: "flex-end",
   },
   addView: {
-    flexDirection: "row",
+    // flexDirection: "row",
     borderBottomWidth: 2,
     borderBottomColor: BORDERLINE_COLOR,
     marginBottom: scale(20),
     paddingBottom: 10,
   },
   addViewtext: {
-    flex: 2.9,
+    flex: 3.1,
     // backgroundColor:'yellow',
   },
   serveTxt: {
@@ -188,9 +188,12 @@ const style = StyleSheet.create({
   errorText: {
     fontSize: scale(11),
     color: "red",
-    fontWeight: '400',
+    fontWeight: "400",
     fontFamily: FONT_FAMILY_REGULAR,
-    alignSelf: 'flex-end'
-},
+    alignSelf: "flex-end",
+  },
+  TextInput: {
+    height: 50,
+  },
 });
 export default style;

@@ -38,21 +38,31 @@ const ProfileDetails = (props) => {
     onRefresh,
     handleChange,
     value,
-    paymentshow,
     paymentCheckbox,
     toggleCheckbox,
     contactCheckbox,
     toggleContactCheckbox,
     handleChangenaics,
     bussinessFormUpdate,
-    paymentMethodError
+    paymentMethodError,
+    showCall,
+    showText,
+    showEmail,
+    isNonProfit,
+    isMinority,
+    toggleShowCall,
+    toggleShowText,
+    toggleShowEmail,
+    toggleIsNonProfit,
+    toggleIsMinority,
+    handleShowTextCheckbox,
+    handleShowPaymentCheckbox,
+    paymentmethod,
+    paymentselectMethod
   } = props;
 
   // console.log("check name>>>>>", businessDetail?.fullname);
-  const [isSelectedCall, setSelectionCall] = useState(false);
-  const [isSelectedText, setSelectionText] = useState(false);
-  const [isSelectedEmail, setSelectionEmail] = useState(false);
-  const [isSelectedBusiness, setSelectionBusiness] = useState(false);
+
   const [showDetails, setShowDetail] = useState(true);
   const [showVideos, setShowVideos] = useState(false);
   const [showPhotos, setShowPhotos] = useState(false);
@@ -147,19 +157,6 @@ const ProfileDetails = (props) => {
                   </Text>
                 </View>
 
-                {/* <View style={styles.addView}>
-                  <View style={styles.addViewtext}>
-                    <Text style={styles.serveTxt}>
-                      {StringsOfLanguages.BUSINESS_NAME}
-                    </Text>
-                  </View>
-                  <View style={styles.addViewcontent}>
-                    <Text style={styles.addrsTxt}>
-                     {'value'}
-                    </Text>
-                  </View>
-                </View> */}
-
                 <View style={styles.input}>
                   <Input
                     onChangeText={(text) => handleChange("address", text)}
@@ -168,7 +165,7 @@ const ProfileDetails = (props) => {
                     value={businessDetail?.address}
                     labelTxt={styles.labelTxt}
                   />
-                    <Text style={styles.errorText}>
+                  <Text style={styles.errorText}>
                     {inputError.erroraddress}
                   </Text>
                 </View>
@@ -179,9 +176,10 @@ const ProfileDetails = (props) => {
                     image={"noNeed"}
                     placeholder={StringsOfLanguages.CITY_}
                     value={businessDetail?.city_name}
+                    // value={`${businessDetail?.city_name} ${businessDetail?.cityid}`}
                     labelTxt={styles.labelTxt}
                   />
-                    <Text style={styles.errorText}>
+                  <Text style={styles.errorText}>
                     {inputError.errorcity_name}
                   </Text>
                 </View>
@@ -196,9 +194,7 @@ const ProfileDetails = (props) => {
                     labelTxt={styles.labelTxt}
                     maxLength={70}
                   />
-                   <Text style={styles.errorText}>
-                    {inputError.errornaics}
-                  </Text>
+                  <Text style={styles.errorText}>{inputError.errornaics}</Text>
                 </View>
                 <View style={styles.input}>
                   <Input
@@ -208,6 +204,8 @@ const ProfileDetails = (props) => {
                     labelTxt={styles.labelTxt}
                     value={businessDetail?.industry_name}
                     maxLength={70}
+                    multiline={true}
+                    // inputDsgn={styles.TextInput}
                   />
                   <Text style={styles.errorText}>
                     {inputError.errorindustry_name}
@@ -253,10 +251,9 @@ const ProfileDetails = (props) => {
                     labelTxt={styles.labelTxt}
                     value={businessDetail?.hours}
                   />
-                    <Text style={styles.errorText}>
-                    {inputError.errorhours}
-                  </Text>
+                  <Text style={styles.errorText}>{inputError.errorhours}</Text>
                 </View>
+
                 <View style={styles.input}>
                   <Input
                     image={"noNeed"}
@@ -268,6 +265,25 @@ const ProfileDetails = (props) => {
                   />
                 </View>
 
+                {/* <View style={styles.addView}>
+                  <View style={styles.addViewtext}>
+                    <Text style={styles.serveTxt}>
+                      {StringsOfLanguages.PAYMENT_METHOD}
+                    </Text>
+                  </View>
+                  <View style={styles.addViewcontent}>
+                    <Text style={styles.addrsTxt}>
+                    {paymentmethod?.cash == 1 ? "Cash, " : null}
+                    {paymentmethod?.creditcard == 1 ? "Card, " : null}
+                    {paymentmethod?.cashapp == 1 ? "Check, " : null}
+                    {paymentmethod?.paypal == 1 ? "Paypal, " : null}
+                    {paymentmethod?.zelle == 1
+                    ? "Zelle"
+                    : null}
+                    </Text>
+                  </View>
+                </View> */}
+
                 <View style={styles.input}>
                   <Input
                     onChangeText={(text) => handleChange("websiteurl", text)}
@@ -276,14 +292,15 @@ const ProfileDetails = (props) => {
                     labelTxt={styles.labelTxt}
                     value={businessDetail?.websiteurl}
                   />
-                   <Text style={styles.errorText}>
+                  <Text style={styles.errorText}>
                     {inputError.errorwebsiteurl}
                   </Text>
                 </View>
                 <View style={styles.input}>
                   <View style={styles.checkboxContainer}>
                     <Text>{StringsOfLanguages.PAYMENT_METHOD}</Text>
-                    <View style={styles.checkboxView}>
+
+                    {/* <View style={styles.checkboxView}>
                       {paymentCheckbox.map((option, index) => (
                         <View key={index} style={styles.checkbox}>
                           <CheckBox
@@ -297,14 +314,14 @@ const ProfileDetails = (props) => {
                       ))}
                     </View>
                     <Text style={styles.errorText}>
-                    {inputError.errorpaymentcheckbox}
-                  </Text>
-                    {/* <View style={{ flexDirection: "row" }}>
+                      {inputError.errorpaymentcheckbox}
+                    </Text> */}
+
+                    <View style={{ flexDirection: "row" }}>
                       <View style={styles.checkbox}>
                         <CheckBox
-                          checked={isSelectedCall}
-                          onPress={() => setSelectionCall(!isSelectedCall)}
-                         
+                          onPress={() => handleShowPaymentCheckbox("cash")}
+                          checked={businessDetail.cash === 1 ? true : false}
                         />
                         <Text style={styles.checkboxText}>
                           {StringsOfLanguages.CASH}
@@ -312,11 +329,11 @@ const ProfileDetails = (props) => {
                       </View>
                       <View style={styles.checkbox}>
                         <CheckBox
-                          checked={isSelectedText}
-                          onPress={() => setSelectionText(!isSelectedText)}
+                          onPress={() => handleShowPaymentCheckbox("cashapp")}
+                          checked={businessDetail.cashapp === 1 ? true : false}
                         />
                         <Text style={styles.checkboxText}>
-                          {StringsOfLanguages.CASH_APP}
+                          {StringsOfLanguages.Check}
                         </Text>
                       </View>
                     </View>
@@ -324,17 +341,17 @@ const ProfileDetails = (props) => {
                     <View style={{ flexDirection: "row" }}>
                       <View style={styles.checkbox}>
                         <CheckBox
-                          checked={isSelectedEmail}
-                          onPress={() => setSelectionEmail(!isSelectedEmail)}
+                          onPress={() => handleShowPaymentCheckbox("creditcard")}
+                          checked={businessDetail.creditcard === 1 ? true : false}
                         />
                         <Text style={styles.checkboxText}>
-                          {StringsOfLanguages.CREDIT_CARD}
+                          {StringsOfLanguages.CARD}
                         </Text>
                       </View>
                       <View style={styles.checkbox}>
                         <CheckBox
-                          checked={isSelectedEmail}
-                          onPress={() => setSelectionEmail(!isSelectedEmail)}
+                          onPress={() => handleShowPaymentCheckbox("paypal")}
+                          checked={businessDetail.paypal === 1 ? true : false}
                         />
                         <Text style={styles.checkboxText}>
                           {StringsOfLanguages.PAYPAL}
@@ -344,21 +361,22 @@ const ProfileDetails = (props) => {
                     <View style={{ flexDirection: "row" }}>
                       <View style={styles.checkbox}>
                         <CheckBox
-                          checked={isSelectedEmail}
-                          onPress={() => setSelectionEmail(!isSelectedEmail)}
+                          onPress={() => handleShowPaymentCheckbox("zelle")}
+                          checked={businessDetail.zelle === 1 ? true : false}
+                          
                         />
                         <Text style={styles.checkboxText}>
                           {StringsOfLanguages.ZELLE}
                         </Text>
                       </View>
-                    </View> */}
+                    </View>
                   </View>
                 </View>
 
                 <View style={styles.checkboxContainer}>
                   <Text>{StringsOfLanguages.CONTACT_OPTIONS}</Text>
 
-                  <View style={styles.checkboxView}>
+                  {/* <View style={styles.checkboxView}>
                     {contactCheckbox.map((option, index) => (
                       <View key={index} style={styles.checkbox}>
                         <CheckBox
@@ -371,12 +389,12 @@ const ProfileDetails = (props) => {
                   </View>
                   <Text style={styles.errorText}>
                     {inputError.contactOptionsError}
-                  </Text>
+                  </Text> */}
 
-                  {/* <View style={styles.checkbox}>
+                  <View style={styles.checkbox}>
                     <CheckBox
-                      checked={isSelectedCall}
-                      onPress={() => setSelectionCall(!isSelectedCall)}
+                      onPress={() => handleShowTextCheckbox("showcall")}
+                      checked={businessDetail.showcall === 1 ? true : false}
                     />
                     <Text style={styles.checkboxText}>
                       {StringsOfLanguages.SHOW_CALL_BUTTON}
@@ -384,8 +402,8 @@ const ProfileDetails = (props) => {
                   </View>
                   <View style={styles.checkbox}>
                     <CheckBox
-                      checked={isSelectedText}
-                      onPress={() => setSelectionText(!isSelectedText)}
+                      onPress={() => handleShowTextCheckbox("showtext")}
+                      checked={businessDetail.showtext === 1 ? true : false}
                     />
                     <Text style={styles.checkboxText}>
                       {StringsOfLanguages.SHOW_TEXT_BUTTON}
@@ -393,8 +411,8 @@ const ProfileDetails = (props) => {
                   </View>
                   <View style={styles.checkbox}>
                     <CheckBox
-                      checked={isSelectedEmail}
-                      onPress={() => setSelectionEmail(!isSelectedEmail)}
+                      onPress={() => handleShowTextCheckbox("showemail")}
+                      checked={businessDetail.showemail === 1 ? true : false}
                     />
                     <Text style={styles.checkboxText}>
                       {StringsOfLanguages.SHOW_EMAIL_BUTTON}
@@ -402,8 +420,8 @@ const ProfileDetails = (props) => {
                   </View>
                   <View style={styles.checkbox}>
                     <CheckBox
-                      checked={isSelectedEmail}
-                      onPress={() => setSelectionEmail(!isSelectedEmail)}
+                      onPress={() => handleShowTextCheckbox("is_nonprofit")}
+                      checked={businessDetail.is_nonprofit === 1 ? true : false}
                     />
                     <Text style={styles.checkboxText}>
                       {StringsOfLanguages.NON_PROFIT}
@@ -411,13 +429,16 @@ const ProfileDetails = (props) => {
                   </View>
                   <View style={styles.checkbox}>
                     <CheckBox
-                      checked={isSelectedEmail}
-                      onPress={() => setSelectionEmail(!isSelectedEmail)}
+                      onPress={() => handleShowTextCheckbox("is_minority")}
+                      checked={businessDetail.is_minority === 1 ? true : false}
                     />
                     <Text style={styles.checkboxText}>
                       {StringsOfLanguages.MINORITY}
                     </Text>
-                  </View> */}
+                  </View>
+                  <Text style={styles.errorText}>
+                    {inputError.contactOptionsError}
+                  </Text>
                 </View>
 
                 <View style={styles.saveButton}>
@@ -430,7 +451,7 @@ const ProfileDetails = (props) => {
             )}
           </View>
 
-          {/*   <View style={styles.section1}>
+          <View style={styles.section1}>
             <View style={styles.headingWrapper}>
               <TouchableOpacity onPress={toggleVideos} style={styles.dropDown}>
                 <Text style={styles.headingTxt}>Videos</Text>
@@ -442,12 +463,12 @@ const ProfileDetails = (props) => {
                 </View>
               </TouchableOpacity>
             </View>
-            {showVideos &&
+            {showVideos && (
               <View>
-                <VideoList
-                  filetype={'video'} />
-              </View>}
-          </View> */}
+                <VideoList filetype={"video"} />
+              </View>
+            )}
+          </View>
           <View style={styles.section1}>
             <View style={styles.headingWrapper}>
               <TouchableOpacity onPress={togglePhotos} style={styles.dropDown}>
@@ -467,7 +488,7 @@ const ProfileDetails = (props) => {
             )}
           </View>
 
-          {/* <View style={styles.section1}>
+          <View style={styles.section1}>
             <View style={styles.headingWrapper}>
               <TouchableOpacity
                 onPress={toggleDocuments}
@@ -484,11 +505,12 @@ const ProfileDetails = (props) => {
                 </View>
               </TouchableOpacity>
             </View>
-            {showDocuments && <View>
-              <VideoList filetype={'document'} />
-            </View>}
+            {showDocuments && (
+              <View>
+                <VideoList filetype={"document"} />
+              </View>
+            )}
           </View>
-
 
           <View style={styles.section1}>
             <View style={styles.headingWrapper}>
@@ -502,9 +524,11 @@ const ProfileDetails = (props) => {
                 </View>
               </TouchableOpacity>
             </View>
-            {showOffers && <View>
-              <VideoList filetype={'offer'} />
-            </View>}
+            {showOffers && (
+              <View>
+                <VideoList filetype={"offer"} />
+              </View>
+            )}
           </View>
           <View style={styles.section1}>
             <View style={styles.headingWrapper}>
@@ -518,12 +542,12 @@ const ProfileDetails = (props) => {
                 </View>
               </TouchableOpacity>
             </View>
-            {showJobs && 
-             <View>
-              
-              <VideoList />
-            </View>}
-          </View> */}
+            {showJobs && (
+              <View>
+                <VideoList />
+              </View>
+            )}
+          </View>
         </View>
       </ScrollView>
       {/* </LinearGradient> */}

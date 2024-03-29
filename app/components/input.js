@@ -50,7 +50,9 @@ const input = (props) => {
     image,
     keyboardType,
     maxLength,
-    editable
+    editable,
+    multiline,
+    
   } = props;
   const {
     inputDesign,
@@ -98,6 +100,8 @@ const input = (props) => {
           onFocus={handleFocus}
           onBlur={_handleBlur}
           editable={editable}
+          multiline={multiline}
+          
         />
         <View
           style={[

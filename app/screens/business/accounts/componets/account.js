@@ -40,18 +40,18 @@ const account = () => {
           backgroundColor={WHITE_COLOR}
           barStyle="dark-content"
         />
-       <LinearGradient
+       {/* <LinearGradient
                 colors={[GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW2, GRADIENT_COLOR_NEW3, GRADIENT_COLOR_NEW4]}
                 angle={83}
                 locations={[0.24, 0.63, 0.87, 0.99]}
-                style={{ flexGrow: 1 }}>
+                style={{ flexGrow: 1 }}> */}
       <Header
         headertxt={styles.headerTxt}
         rightImg={true}
         headerText="Accounts"
-        rightImgStyl={{ tintColor: WHITE_COLOR }}
+        rightImgStyl={{  }}
       />
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <View style={styles.section1}>
             <View style={styles.headingWrapper}>
@@ -161,7 +161,7 @@ const account = () => {
         </View>
       </ScrollView>
 
-      </LinearGradient>
+      {/* </LinearGradient> */}
     </SafeAreaView>
   );
 };

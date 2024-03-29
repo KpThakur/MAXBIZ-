@@ -4,6 +4,8 @@ import {
   COMMON_COLOR,
   FONT_FAMILY_SEMIBOLD,
   GRADIENT_COLOR_NEW3,
+  GRAY_COLOR,
+  WHITE_COLOR,
 } from "../../../../utils/constants";
 
 const style = StyleSheet.create({
@@ -17,7 +19,7 @@ const style = StyleSheet.create({
       width: 0,
       height: 1,
     },
-    backgroundColor: GRADIENT_COLOR_NEW3,
+    backgroundColor: WHITE_COLOR,
     shadowOpacity: 0.2,
     shadowRadius: 2.62,
     elevation: 2,
@@ -36,7 +38,7 @@ const style = StyleSheet.create({
   headingTxt: {
     fontSize: scale(18),
     fontFamily: FONT_FAMILY_SEMIBOLD,
-    color: COMMON_COLOR,
+    color: GRAY_COLOR,
   },
   dropDown: {
     flexDirection: "row",
