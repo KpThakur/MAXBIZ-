@@ -6,7 +6,7 @@ export default {
     GETSERVICEDETAIL: "service/getServicesDetails",
     GETIMAGE: "business/getImage",
 
-    // for login
+    // for Auth login 
     BUSINESSLOGIN: "userAuth/userLogin",
     VERIFYEDOTP: "userAuth/verifyedOtp",
     RELOGIN_BUSINESS: "userAuth/reloginbusiness",
@@ -14,7 +14,7 @@ export default {
     BUSINESSDETAILUPDATE: "/userAuth/businessDetailUpdate",
     LOGOUT: "userlogout/userLogout",
     
-    //for registration
+    //for registration dashboard
     USERREGISTER: "userAuth/userRegister",
     VERIFYEMAILMOBILE: "userAuth/verifyEmailMobile",
     RESENTOTP: "userAuth/resentOtp",
@@ -23,5 +23,8 @@ export default {
     REGISTERBUSINESSDETAIL: "userAuth/registerBusinessDetail",
     GETSERVICELIST: "master/getServiceList",
     FORGOTPASSWORD: "userAuth/forgotPassword",
+    GETVIDEODOCUMENTDATA: "/business/getVideoDocumentData",
+
+    
   };
   

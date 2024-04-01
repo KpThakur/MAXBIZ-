@@ -127,7 +127,7 @@ const account = () => {
               </View>
             )}
           </View>
-          {/* <View style={styles.section1}>
+          <View style={styles.section1}>
             <View style={styles.headingWrapper}>
               <TouchableOpacity
                 onPress={toggleNotification}
@@ -151,13 +151,13 @@ const account = () => {
                 </View>
                 <View style={styles.buttonView}>
                   <Button
-                    buttonColor={[LINEAR_GRAD_GRAY_COLOR, GRADIENT_GRAY_COLOR]}
+                   // buttonColor={[LINEAR_GRAD_GRAY_COLOR, GRADIENT_GRAY_COLOR]}
                     buttonText={"NO"}
                   />
                 </View>
               </View>
             )}
-          </View> */}
+          </View>
         </View>
       </ScrollView>
 

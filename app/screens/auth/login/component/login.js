@@ -90,15 +90,25 @@ const login = (props) => {
                 onPress={() => twofacVerify()}
               >
                 <Text style={style.submitText}>
-                  {StringsOfLanguages.SUBMIT}
+                  {StringsOfLanguages.VERIFY}
                 </Text>
               </TouchableOpacity>
+
+              <View style={style.newUserView}>
+              <Text style={style.newUserText}>{StringsOfLanguages.NEW_USER}{""}</Text>
+              <TouchableOpacity onPress={() => props.toRegistration()}>
+                <Text style={style.registerText}>{StringsOfLanguages.REGISTER_OR_SIGNUP_WITH}</Text>
+              </TouchableOpacity>
+              </View>
             </View>
           </View>
         </View>
       </Modal>
     );
   };
+
+
+
 
   return (
     <SafeAreaView style={commomstyle.container}>

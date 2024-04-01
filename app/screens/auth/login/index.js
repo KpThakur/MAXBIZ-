@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Login from "./component/login";
 import { AuthContext, UserContext } from "../../../utils/UserContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -257,6 +257,7 @@ const LoginView = ({ route, navigation }) => {
             if (responseData.data.two_factor_auth === 1) {
               // Handle successful login with two-factor authentication
               await handleSuccessfulLogin(responseData);
+              submitforgotform()
             } else {
               // Handle successful login without two-factor authentication
               await handleSuccessfulLogin(responseData);
@@ -312,7 +313,6 @@ const LoginView = ({ route, navigation }) => {
     });
   };
   
-
   
 
   const submitforgotform = async () => {

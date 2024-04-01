@@ -28,6 +28,15 @@ const Index = ({ route, navigation }) => {
   const [showEmail, setShowEmail] = useState(false);
   const [isNonProfit, setIsNonProfit] = useState(false);
   const [isMinority, setIsMinority] = useState(false);
+  const [value, setValue] = useState({});
+  const [allCity, setAllCity] = useState([]);
+  const [serviceList, setServiceList] = useState([]);
+  const [selectedOption, setSelectedOption] = useState([]);
+  const [industryList, setIndustryList] = useState([]);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [videoListData, setVideoListData] = useState([]);
+  const [pageCount, setPageCount] = useState(0);
+  const [itemOffset, setItemOffset] = useState(0);
 
   const [bucketcertificate, setBucketcertificate] = useState("");
   const [bucket_Img_url, setBucket_Img_url] = useState("images/no_image.png");
@@ -42,10 +51,11 @@ const Index = ({ route, navigation }) => {
   const [businessDetail, setBusinessDetail] = useState({
     fullname: "",
     address: "",
-    cityid: "" ,
+    cityid: "",
     city_name: "",
-    naics: "",
-    industry_name: "",
+    services: "",
+    serviceid: "",
+    servicename: "",
     head_count: "",
     hours: "",
     websiteurl: "",
@@ -60,25 +70,113 @@ const Index = ({ route, navigation }) => {
     creditcard: "",
     cashapp: "",
     paypal: "",
-    zelle: ""
+    zelle: "",
   });
 
+  // console.log("check city id :-", allCity);
+  // console.log("check city name :-", businessDetail?.servicename)
+
+  const getuserData = async () => {
+    const userToken = await AsyncStorage.getItem("userToken");
+    if (userToken !== null) {
+      const userData = await AsyncStorage.getItem("userData");
+      setUserData(JSON.parse(userData));
+      getBusinessdetail();
+    }
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getuserData();
+    }, [navigation])
+  );
+
+  useEffect(() => {
+    const paydata = businessDetail?.payments
+      ? JSON.parse(businessDetail?.payments)
+      : {};
+    setPaymentLists(paydata);
+    paymentExtract();
+  }, []);
+
+  const getBusinessdetail = async () => {
+    try {
+      setIsLoading(true);
+      const parms = {
+        profileid: userData?.profileid,
+        businessid: userData?.businessid,
+      };
+      const authToken = await AsyncStorage.getItem("userToken");
+      // console.log("authtoken>>>>", authToken)
+      const header = {
+        Authorization: `Bearer ${authToken}`,
+      };
+      // console.log(" Api responce:----", response);
+
+      const response = await apiCall(
+        "POST",
+        apiEndPoints.BUSINESSDETAIL,
+        parms,
+        header
+      );
+      // console.log(" Api responce:----", response.data);
+      if (response.status === 200) {
+        setIsLoading(false);
+        setBusinessDetail(response.data.data);
+        await AsyncStorage.setItem(
+          "allinformation",
+          String(response.data.data.allinformation)
+        );
+        setPaymentMethod(JSON.parse(response.data.data.payments));
+        response.data.data?.certificate != ""
+          ? getImageCertificate(response.data.data?.certificate)
+          : console.log("");
+
+        response.data.data?.photofile != ""
+          ? getImage(response.data.data?.photofile)
+          : console.log("");
+        setBaseUrl(response.data.base_url);
+        //  console.log(" Api responce in 200 :----", response.data.data);
+      } else {
+        setIsLoading(false);
+        showMessage({
+          message: response.data.message,
+          type: "danger",
+          duration: 3000,
+        });
+      }
+    } catch (error) {
+      setIsLoading(false);
+      console.log("catch error", error);
+    }
+  };
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      getuserData();
+      getBusinessdetail();
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   const userSelectPayment = {
     cash: businessDetail?.cash,
     creditcard: businessDetail?.creditcard,
     cashapp: businessDetail?.cashapp,
     paypal: businessDetail?.paypal,
-    zelle: businessDetail?.zelle
+    zelle: businessDetail?.zelle,
   };
- 
- // console.log("find checkbox value:", userSelectPayment)
+
+  // console.log("find  value:",  userSelectPayment )
 
   function validationFrom() {
     let errorfullname = "";
     let erroraddress = "";
     let errorcity_name = "";
-    let errornaics = "";
+    let errorservices = "";
     let errorindustry_name = "";
     // let errorhead_count = "";
     let errorhours = "";
@@ -94,13 +192,13 @@ const Index = ({ route, navigation }) => {
         erroraddress = StringsOfLanguages.PLEASE_ENTER_ADDRESS;
       }
       if (!businessDetail.city_name) {
-        errorcity_name = StringsOfLanguages.PLEASE_ENTER_CITY;
+        errorcity_name = StringsOfLanguages.PLEASE_SELECT_CITY;
       }
-      if (!businessDetail.naics[0]?.title) {
-        errornaics = StringsOfLanguages.PLEASE_ENTER_SERVICES;
+      if (!businessDetail.services) {
+        errorservices = StringsOfLanguages.PLEASE_ENTER_OCCUPTION;
       }
-      if (!businessDetail.industry_name) {
-        errorindustry_name = StringsOfLanguages.PLEASE_ENTER_INDUSTRY_;
+      if (!businessDetail.servicename) {
+        errorindustry_name = StringsOfLanguages.PLEASE_SELECT_INDUSTRY;
       }
       if (!businessDetail.hours) {
         errorhours = StringsOfLanguages.PLEASE_ENTER_HOURS;
@@ -108,7 +206,16 @@ const Index = ({ route, navigation }) => {
       if (!businessDetail.websiteurl) {
         errorwebsiteurl = StringsOfLanguages.PLEASE_ENTER_WEBSITE;
       }
-      if (!selectedValues.length) {
+      // if (!selectedValues.length) {
+      //   errorpaymentcheckbox = "Please select at least one payment method";
+      // }
+      if (
+        !businessDetail.cash &&
+        !businessDetail.creditcard &&
+        !businessDetail.cashapp &&
+        !businessDetail.paypal &&
+        !businessDetail.zelle
+      ) {
         errorpaymentcheckbox = "Please select at least one payment method";
       }
       // if (!selectedContactvalues.length) {
@@ -131,7 +238,7 @@ const Index = ({ route, navigation }) => {
       errorfullname,
       erroraddress,
       errorcity_name,
-      errornaics,
+      errorservices,
       errorindustry_name,
       // errorhead_count,
       errorhours,
@@ -144,7 +251,7 @@ const Index = ({ route, navigation }) => {
       !errorfullname &&
       !erroraddress &&
       !errorcity_name &&
-      !errornaics &&
+      !errorservices &&
       !errorindustry_name &&
       !errorhours &&
       !errorwebsiteurl &&
@@ -154,17 +261,6 @@ const Index = ({ route, navigation }) => {
   }
 
   // console.log("find naics |||>>>", businessDetail?.naics);
-
-  const [refreshing, setRefreshing] = useState(false);
-
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    setTimeout(() => {
-      getuserData();
-       getBusinessdetail();
-      setRefreshing(false);
-    }, 2000);
-  }, []);
 
   const handleChange = (field, value) => {
     setBusinessDetail((prevbusinessDetail) => ({
@@ -188,8 +284,6 @@ const Index = ({ route, navigation }) => {
       [key]: prevState[key] === 0 ? 1 : 0,
     }));
   };
- 
-  
 
   const handleShowTextCheckbox = (key) => {
     setBusinessDetail((prevState) => ({
@@ -198,104 +292,32 @@ const Index = ({ route, navigation }) => {
     }));
   };
 
-  const getuserData = async () => {
-    const userToken = await AsyncStorage.getItem("userToken");
-    if (userToken !== null) {
-      const userData = await AsyncStorage.getItem("userData");
-      setUserData(JSON.parse(userData));
-       getBusinessdetail();
+  const paymentExtract = () => {
+    const paymentMethods = [];
+
+    if (paymentLists?.cash === 1) {
+      paymentMethods.push("Cash");
     }
+    if (paymentLists?.creditcard === 1) {
+      paymentMethods.push("Card");
+    }
+    if (paymentLists?.cashapp === 1) {
+      paymentMethods.push("Check");
+    }
+    if (paymentLists?.paypal === 1) {
+      paymentMethods.push("Paypal");
+    }
+    if (paymentLists?.zelle === 1) {
+      paymentMethods.push("Zelle");
+    }
+
+    const value = paymentMethods.join(", ");
+    setValue(value);
   };
-
-  useFocusEffect(
-    React.useCallback(() => {
-      getuserData();
-    }, [navigation])
-  );
-
-  useEffect(() => {
-    const paydata = businessDetail?.payments
-      ? JSON.parse(businessDetail?.payments)
-      : {};
-    setPaymentLists(paydata);
-     getBusinessdetail();
-    getuserData();
-  }, []);
-
-  const paymentMethods = [];
-
-  if (paymentLists?.cash === 1) {
-    paymentMethods.push("Cash");
-  }
-  if (paymentLists?.creditcard === 1) {
-    paymentMethods.push("Card");
-  }
-  if (paymentLists?.cashapp === 1) {
-    paymentMethods.push("Check");
-  }
-  if (paymentLists?.paypal === 1) {
-    paymentMethods.push("Paypal");
-  }
-  if (paymentLists?.zelle === 1) {
-    paymentMethods.push("Zelle");
-  }
-
-  const value = paymentMethods.join(", ");
 
   // console.log("find userData in profileid>>>", businessDetail);
   // console.log("find userData in profileid>>>", userData.profileid);
   // console.log("find userData in businessid>>>", userData.businessid);
-
-  const getBusinessdetail = async () => {
-    try {
-      setIsLoading(true);
-      const parms = {
-        profileid: userData?.profileid,
-        businessid: userData?.businessid,
-      };
-      const authToken = await AsyncStorage.getItem("userToken");
-      // console.log("authtoken>>>>", authToken)
-      const header = {
-        Authorization: `Bearer ${authToken}`,
-      };
-      // console.log(" Api responce:----", response);
-
-      const response = await apiCall(
-        "POST",
-        apiEndPoints.BUSINESSDETAIL,
-        parms,
-        header
-      );
-      console.log(" Api responce:----", response.data);
-      if (response.status === 200) {
-        setIsLoading(false);
-        setBusinessDetail(response.data.data);
-        await AsyncStorage.setItem(
-          "allinformation",
-          String(response.data.data.allinformation)
-        );
-        setPaymentMethod(JSON.parse(response.data.data.payments));
-        response.data.data?.certificate != ""
-          ? getImageCertificate(response.data.data?.certificate)
-          : console.log("");
-
-        response.data.data?.photofile != ""
-          ? getImage(response.data.data?.photofile)
-          : console.log("");
-        setBaseUrl(response.data.base_url);
-      } else {
-        setIsLoading(false);
-        showMessage({
-          message: response.data.message,
-          type: "danger",
-          duration: 3000,
-        });
-      }
-    } catch (error) {
-      setIsLoading(false);
-      console.log("catch error", error);
-    }
-  };
 
   const getImageCertificate = async (param) => {
     try {
@@ -335,7 +357,6 @@ const Index = ({ route, navigation }) => {
     { label: "Check", isSelected: false },
     { label: "PayPal", isSelected: false },
     { label: "Zelle", isSelected: false },
-   
   ]);
 
   const toggleCheckbox = (index) => {
@@ -343,8 +364,6 @@ const Index = ({ route, navigation }) => {
     updatedOptions[index].isSelected = !updatedOptions[index].isSelected;
     setPaymentCheckbox(updatedOptions);
   };
-
-  
 
   const selectedValues = paymentCheckbox.filter(
     (item) => item.isSelected === true
@@ -373,7 +392,89 @@ const Index = ({ route, navigation }) => {
   const selectedLabelsContact = selectedContactvalues.map((item) => item.label);
   // console.log("Selected contacts labels:", selectedLabelsContact);
 
+  const getcitylist = async (val = "") => {
+    console.log("search city", val);
+    if (val.length >= 3) {
+      try {
+        const parms = {
+          cityname: val,
+        };
+        const response = await apiCall(
+          "POST",
+          apiEndPoints.GETCITIESLIST,
+          parms
+        );
+        if (response.status === 200) {
+          const formattedCityData = response.data.data.map((city) => ({
+            ...city,
+            formattedLabel: `${city.city || ""}, ${city.state_id || ""}`,
+          }));
+          // setAllCity(response.data.data)
+          console.log("responce City:-", response.data);
+          setAllCity(formattedCityData);
+          console.log("city find:-", response.data);
+        } else {
+          console.log("in else");
+        }
+      } catch (error) {
+        console.error("Error in cityname:", error);
+      }
+    }
+  };
 
+  const searchService = async (item) => {
+    // console.log("search occuption", item);
+    if (item.length >= 3) {
+      try {
+        const params = { servicename: item };
+        console.log("param", params);
+        const response = await apiCall(
+          "POST",
+          apiEndPoints.GETSERVICELIST,
+          params
+        );
+        // console.log("Response:", response.data);
+        if (response.status === 200) {
+          setServiceList(response.data.data);
+          //  console.log("Response in 200:", response.data.data);
+        } else {
+          console.log("in else");
+        }
+      } catch (error) {
+        console.error("Error fetching occupation list:", error);
+      }
+    }
+  };
+
+  const getServiceList = async (service) => {
+    // console.log("search name", service);
+    if (service.length >= 3) {
+      try {
+        const params = { servicename: service };
+        const response = await apiCall(
+          "POST",
+          apiEndPoints.GETINDUSTRYLIST,
+          params
+        );
+        // console.log("Response status:", response.data);
+        if (response.status === 200) {
+          if (
+            response.data &&
+            response.data.data &&
+            Array.isArray(response.data.data)
+          ) {
+            setIndustryList(response.data.data);
+          }
+          setIndustryList(response.data.data);
+          //  console.log("responce industry:-", response);
+        } else {
+          console.log("in else");
+        }
+      } catch (error) {
+        console.error("Error in searchServicebyname:", error);
+      }
+    }
+  };
 
   const bussinessFormUpdate = async () => {
     const valid = validationFrom();
@@ -382,13 +483,12 @@ const Index = ({ route, navigation }) => {
     // console.log("find plantype>>>", plantype);
 
     const result = [];
-    businessDetail?.naics.map((item) => {
-      const foundItem = businessDetail?.naics.find(
-        (ite) => ite.title === item.title
-      );
-      if (foundItem) {
-        result.push(foundItem.naicsid);
-      }
+    selectedOption.map((item, index) => {
+      serviceList.map((ite) => {
+        if (ite.title === item) {
+          result.push(ite.naicsid);
+        }
+      });
     });
     const stringData = result.join(",");
     // console.log("The result ===>>", stringData);
@@ -397,7 +497,7 @@ const Index = ({ route, navigation }) => {
     // console.log("authtoken,,,,", authToken);
 
     if (valid) {
-      setIsLoading(true);
+      // setIsLoading(true);
       let businessData = new FormData();
       businessData.append("businessid", businessDetail?.businessid);
       businessData.append("profileid", businessDetail?.profileid);
@@ -426,8 +526,8 @@ const Index = ({ route, navigation }) => {
       businessData.append("service_area", businessDetail?.service_area);
       businessData.append("county", "1");
       businessData.append("state", "1");
-      businessData.append("industry", businessDetail?.industry);
-      businessData.append("industry_name", businessDetail?.industry_name);
+      businessData.append("industry", businessDetail?.serviceid);
+      businessData.append("industry_name", businessDetail?.servicename);
       businessData.append("year_revenue", businessDetail?.year_revenue);
       businessData.append("plan_type", plantype);
       businessData.append(
@@ -446,15 +546,14 @@ const Index = ({ route, navigation }) => {
       businessData.append("is_minority", businessDetail?.is_minority);
       businessData.append("allinformation", 1);
 
-      console.log("bussiness formdata:---", businessData)
+      console.log("bussiness formdata:---", businessData);
 
       const headers = {
         Authorization: `Bearer ${authToken}`,
-        "content-type": "multipart/form-data"
+        "content-type": "multipart/form-data",
       };
 
       try {
-  
         const responce = await apiCall(
           "POST",
           apiEndPoints.BUSINESSDETAILUPDATE,
@@ -488,6 +587,45 @@ const Index = ({ route, navigation }) => {
     }
   };
 
+  const getVideoList = async (offSet) => {
+    const authToken = await AsyncStorage.getItem("userToken");
+    try {
+      setIsLoading(true);
+      const headers = {
+        Authorization: `Bearer ${authToken}`,
+      };
+      const params = {
+        filetype: "video",
+        limit: itemsPerPage,
+        offset: offSet,
+      };
+      const response = await apiCall(
+        "POST",
+        apiEndPoints.GETVIDEODOCUMENTDATA,
+        params,
+        headers
+      );
+      if (response.status === 200) {
+        setVideoListData(response.data.data);
+        console.log("find video item:-", response.data)
+        const pageCount = response.data.total_data / itemsPerPage;
+        setPageCount(pageCount);
+        setBaseUrl(response.data.base_url);
+        setIsLoading(false);
+      } else {
+        setIsLoading(false);
+        setVideoListData([]);
+      }
+    } catch (error) {
+      console.log("error in catch", error);
+    }
+  };
+
+   useEffect(() => {
+    getVideoList(itemOffset);
+   
+  }, []);
+
   return (
     <Fragment>
       {isLoading && <Loader />}
@@ -517,7 +655,15 @@ const Index = ({ route, navigation }) => {
         handleShowTextCheckbox={handleShowTextCheckbox}
         handleShowPaymentCheckbox={handleShowPaymentCheckbox}
         paymentmethod={paymentmethod}
-       
+        setBusinessDetail={setBusinessDetail}
+        getcitylist={getcitylist}
+        allCity={allCity}
+        searchService={searchService}
+        serviceList={serviceList}
+        setSelectedOption={setSelectedOption}
+        industryList={industryList}
+        getServiceList={getServiceList}
+        videoListData={videoListData}
       />
       {/* <CommingSoon /> */}
     </Fragment>

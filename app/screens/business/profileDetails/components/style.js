@@ -10,6 +10,7 @@ import {
   GRADIENT_COLOR_NEW3,
   BORDERLINE_COLOR,
   GRAY_COLOR,
+  GRADIENT_COLOR_NEW2,
 } from "./../../../../utils/constants";
 import { scale } from "@utils/utils";
 import {
@@ -195,5 +196,49 @@ const style = StyleSheet.create({
   TextInput: {
     height: 50,
   },
+  dropdown: {
+    marginBottom: scale(15),
+    height: scale(45),
+    borderBottomColor: BORDERLINE_COLOR,
+    borderBottomWidth: scale(2),
+},
+placeholderStyle: {
+  fontSize: scale(16),
+  fontFamily: FONT_FAMILY_REGULAR,
+  color: GRAY_COLOR,
+  paddingHorizontal: 5
+},
+selectedTextStyle: {
+  fontSize: scale(16),
+  fontFamily: FONT_FAMILY_REGULAR,
+  color: GRAY_COLOR,
+  paddingHorizontal: scale(5)
+},
+inputSearchStyle: {
+  height: 40,
+  fontSize: 16,
+  borderColor  :GRAY_COLOR,
+  borderRadius : 5
+},
+dropdownContener: {
+  backgroundColor: WHITE_COLOR, 
+  marginTop: -2, 
+  borderBottomRightRadius: 5, 
+  borderBottomLeftRadius: 5, 
+  borderColor: WHITE_COLOR,
+  borderWidth : 1,
+  color: GRAY_COLOR
+},
+selectedTextStylemul: {
+  fontSize: scale(12),
+  fontFamily: FONT_FAMILY_REGULAR,
+  color: WHITE_COLOR
+},
+selectedStyle: {
+  borderRadius: 12,
+  backgroundColor: GRADIENT_COLOR_NEW2,
+  color:WHITE_COLOR,
+  paddingHorizontal: 10
+},
 });
 export default style;

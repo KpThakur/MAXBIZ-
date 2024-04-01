@@ -48,7 +48,8 @@ namevalue :{
   fontSize:scale(18),
   marginHorizontal: scale(30),  
   color  : COMMON_COLOR,
-  height : scale(50)
+  height : scale(70),
+
 },
 namevaluedate : {
   
