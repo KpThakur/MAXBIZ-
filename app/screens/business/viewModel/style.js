@@ -71,6 +71,13 @@ const style = StyleSheet.create({
   input: {
     marginVertical: scale(10),
   },
+  errorText: {
+    fontSize: scale(11),
+    color: "red",
+    fontWeight: "400",
+    fontFamily: FONT_FAMILY_REGULAR,
+    alignSelf: "flex-end",
+  },
 
 
 });

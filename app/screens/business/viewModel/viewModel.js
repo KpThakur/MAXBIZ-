@@ -13,7 +13,12 @@ import {
 const viewModel = ({
   setViewModel,
   viewModel,
-  filetype
+  filetype,
+  editData,
+  setEditData,
+  onPress,
+  inputError,
+  cleanSetEditData
 }) => {
 
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
@@ -72,66 +77,77 @@ const viewModel = ({
             <Text style={style.topheadingtext}>{StringsOfLanguages.ADD_NEW} {filetype === 'video' ? 'Video' : filetype === 'photo' ? 'Photo' : filetype === 'document' ? 'Document' : 'File'}</Text>
             <TouchableOpacity onPress={() => {
               setViewModel(!viewModel);
+              cleanSetEditData();
               ///setVisibleBothModal(0)
             }}>
               <Icon style={style.topheadingtext} name={StringsOfLanguages.REMOVE} ></Icon>
             </TouchableOpacity>
           </View>
+
           <View style={style.midelcontent}>
 
             <View style={{marginRight:15}}>
               <View style={style.input}>
                 <Input
-                  onChangeText={(val) => setVideoData({
-                    ...videoData,
+                
+                  onChangeText={(val) => setEditData({
+                    ...editData,
                     name: val
                   })}
-                  value={videoData.name}
+                  value={editData.name}
                   placeholder={StringsOfLanguages.ENTER_NAME}
 
                 />
+                 <Text style={style.errorText}>
+                    {inputError.errorname}
+                  </Text>
               </View>
 
               <View style={style.input}>
                 <Input
-                  onChangeText={(val) => setVideoData({
-                    ...videoData,
-                    video: val
+                   onChangeText={(val) => setEditData({
+                    ...editData,
+                    youtubeLink: val
                   })}
-                  value={videoData.video}
+                  value={editData.youtubeLink}
                   placeholder={StringsOfLanguages.ENTER_URL}
-
+                  multiline={true}
+                  maxLength={70}
                 />
+                 <Text style={style.errorText}>
+                    {inputError.erroryoutubeLink}
+                  </Text>
               </View>
 
               <View style={style.input}>
                 <Input
-                  onChangeText={(val) => setVideoData({
-                    ...videoData,
+                  onChangeText={(val) => setEditData({
+                    ...editData,
                     description: val
                   })}
-                  value={videoData.description}
+                  value={editData.description}
                   placeholder={StringsOfLanguages.ENTER_DESCRIPTION}
 
                 />
               </View>
               <View style={style.input}>
                 <Input
-                  onChangeText={(val) => setVideoData({
-                    ...videoData,
+                  onChangeText={(val) => setEditData({
+                    ...editData,
                     createddate: val
                   })}
-                  value={videoData.createddate}
+                  value={editData.createddate}
                   placeholder={StringsOfLanguages.ENTER_DATE}
 
                 />
               </View>
             </View>
           </View>
+          
           <View style={style.bottumbutton}>
             <View style={style.buttonview}>
-              <Button onPress={() => updatevideo()}
-                buttonText={filetype === StringsOfLanguages.VIDEO ? StringsOfLanguages.ADD_NEW_VIDEO : filetype === StringsOfLanguages.PHOTO ? StringsOfLanguages.ADD_NEW_PHOTO : filetype === StringsOfLanguages.DOCUMENT ? StringsOfLanguages.ADD_NEW_DOCUMENT : StringsOfLanguages.ADD_NEW_FILE}
+              <Button onPress={() => onPress()}
+                buttonText={filetype === "video" ? StringsOfLanguages.ADD_NEW_VIDEO : filetype === StringsOfLanguages.PHOTO ? StringsOfLanguages.ADD_NEW_PHOTO : filetype === StringsOfLanguages.DOCUMENT ? StringsOfLanguages.ADD_NEW_DOCUMENT : StringsOfLanguages.ADD_NEW_FILE}
               />
             </View>
           </View>

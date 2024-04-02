@@ -497,7 +497,7 @@ const Index = ({ route, navigation }) => {
     // console.log("authtoken,,,,", authToken);
 
     if (valid) {
-      // setIsLoading(true);
+      setIsLoading(true);
       let businessData = new FormData();
       businessData.append("businessid", businessDetail?.businessid);
       businessData.append("profileid", businessDetail?.profileid);
@@ -607,7 +607,7 @@ const Index = ({ route, navigation }) => {
       );
       if (response.status === 200) {
         setVideoListData(response.data.data);
-        console.log("find video item:-", response.data)
+        console.log("find video item:-", response.data.data)
         const pageCount = response.data.total_data / itemsPerPage;
         setPageCount(pageCount);
         setBaseUrl(response.data.base_url);
@@ -664,6 +664,8 @@ const Index = ({ route, navigation }) => {
         industryList={industryList}
         getServiceList={getServiceList}
         videoListData={videoListData}
+        getVideoList={getVideoList}
+        
       />
       {/* <CommingSoon /> */}
     </Fragment>

@@ -71,6 +71,7 @@ const ProfileDetails = (props) => {
     industryList,
     getServiceList,
     videoListData,
+    getVideoList,
   } = props;
 
   // console.log("check value>>>>>", value);
@@ -128,6 +129,7 @@ const ProfileDetails = (props) => {
       />
       <ScrollView
         style={{ flexGrow: 1 }}
+        // nestedScrollEnabled={true}
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl
@@ -598,7 +600,11 @@ const ProfileDetails = (props) => {
             </View>
             {showVideos && (
               <View>
-                <VideoList filetype={"video"} videoListData={videoListData} />
+                <VideoList
+                  filetype={"video"}
+                  videoListData={videoListData}
+                  getVideoList={getVideoList}
+                />
               </View>
             )}
           </View>

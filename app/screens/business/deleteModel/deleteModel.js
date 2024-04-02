@@ -14,6 +14,8 @@ const deleteModel = ({
   setDeleteModel,
   deleteModel,
   filetype,
+  deleteVideo,
+  fileid
 }) => {
 
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
@@ -47,7 +49,7 @@ const deleteModel = ({
 
   const deletecontent = () =>{
     setDeleteModel(!deleteModel);
-
+    deleteVideo(fileid,filetype)
   }
 
 

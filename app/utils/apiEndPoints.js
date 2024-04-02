@@ -24,7 +24,11 @@ export default {
     GETSERVICELIST: "master/getServiceList",
     FORGOTPASSWORD: "userAuth/forgotPassword",
     GETVIDEODOCUMENTDATA: "/business/getVideoDocumentData",
+    ADDVIDEOFILE: "/business/addVideoFile",
+    UPDATEVIDEOFILE: "/business/updateVideoFile",
+    VIDEODOCUMENTDELETE: "/business/videoDocumentDelete",
 
-    
+    GETVALIDATIONLIST: "master/getValidationList",
+
   };
   
