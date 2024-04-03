@@ -23,6 +23,7 @@ import { apiCall } from "../../../utils/httpClient";
 import apiEndPoints from "../../../utils/apiEndPoints";
 import { showMessage } from "react-native-flash-message";
 import Loader from "../../../components/loader";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const Data = [
   {
     fileid: 137,
@@ -50,14 +51,21 @@ const Data = [
   },
 ];
 
-const videoList = ({ filetype, videoListData, getVideoList }) => {
+const videoList = ({
+  filetype,
+  videoListData,
+  getVideoList,
+  photoListData,
+  getPhotoList,
+}) => {
   // console.log("find bussieness :---", videoListData);
   const [viewModel, setViewModel] = useState(false);
   const [deleteModel, setDeleteModel] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [inputError, setinputError] = useState({});
   const [editStatus, setEditStatus] = useState(false);
-
+  const [selectfileid, setSelectFileid] = useState();
+ 
   const [editData, setEditData] = useState({
     name: "",
     youtubeLink: "",
@@ -78,6 +86,7 @@ const videoList = ({ filetype, videoListData, getVideoList }) => {
       const response = await apiCall("GET", apiEndPoints.GETVALIDATIONLIST);
       if (response.status === 200) {
         setValidationData(response.data.data);
+        console.log("check responce in getValidationList ", response.data);
         setVideoNumberValidation(
           response.data.data.find((x) => x.lable == "addvideo")
         );
@@ -85,9 +94,33 @@ const videoList = ({ filetype, videoListData, getVideoList }) => {
         setValidationData([]);
       }
     } catch (error) {
-      console.log(error);
+      console.log("error in catch", error);
     }
   };
+
+  // const getValidationList = async () => {
+  //   try {
+  //     const response = await apiCall("GET", apiEndPoints.GETVALIDATIONLIST);
+  //     if (response.status === 200) {
+  //       if (response.data.data) {
+  //         setValidationData(response.data.data);
+  //         console.log("find response ", response.data)
+  //         const videoNumberValidation = response.data.data.find((x) => x.label === "addvideo");
+  //         if (videoNumberValidation) {
+  //           setVideoNumberValidation(videoNumberValidation);
+  //         } else {
+  //           setValidationData([]);
+  //         }
+  //       } else {
+  //         console.log("responce data undifiend")
+  //       }
+  //     } else {
+  //       setValidationData([]);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   function formValidationvideo() {
     let errorname = "";
@@ -296,15 +329,18 @@ const videoList = ({ filetype, videoListData, getVideoList }) => {
     typecheck === 1 ? setViewModel(!viewModel) : setDeleteModel(!deleteModel);
   };
 
-  const [selectfileid, setSelectFileid] = useState();
-  console.log("find select fileid", selectfileid);
+  console.log("find select fileid in state", selectfileid);
 
   const handleDeleteModal = (fileid, filetype) => {
     setDeleteModel(!deleteModel);
     setSelectFileid(fileid);
 
-    console.log("find select filetype", filetype);
+    console.log("find select fileid", fileid);
   };
+
+ 
+
+ 
 
   const renderItem = ({ item }) => (
     <View style={styles.mainvideo}>
@@ -378,6 +414,8 @@ const videoList = ({ filetype, videoListData, getVideoList }) => {
     </View>
   );
 
+  
+
   return (
     <>
       <View>
@@ -389,7 +427,8 @@ const videoList = ({ filetype, videoListData, getVideoList }) => {
         </TouchableOpacity>
         <FlatList
           // data={Data}
-          data={videoListData}
+           data={videoListData}
+         // data={filetype === "video" ? videoListData : photoListData}
           renderItem={renderItem}
           // keyExtractor={(item) => item.id}
           keyExtractor={(item) => item.fileid.toString()}

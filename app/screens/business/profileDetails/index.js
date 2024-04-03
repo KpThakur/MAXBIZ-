@@ -35,6 +35,7 @@ const Index = ({ route, navigation }) => {
   const [industryList, setIndustryList] = useState([]);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [videoListData, setVideoListData] = useState([]);
+  const [photoListData, setPhotolistData] = useState([]);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
 
@@ -97,6 +98,7 @@ const Index = ({ route, navigation }) => {
       : {};
     setPaymentLists(paydata);
     paymentExtract();
+    getuserData();
   }, []);
 
   const getBusinessdetail = async () => {
@@ -587,6 +589,11 @@ const Index = ({ route, navigation }) => {
     }
   };
 
+  useEffect(() => {
+    getVideoList(itemOffset);
+    getPhotoList(itemOffset)
+  }, []);
+
   const getVideoList = async (offSet) => {
     const authToken = await AsyncStorage.getItem("userToken");
     try {
@@ -621,10 +628,40 @@ const Index = ({ route, navigation }) => {
     }
   };
 
-   useEffect(() => {
-    getVideoList(itemOffset);
-   
-  }, []);
+  const getPhotoList = async (offset) => {
+    const authToken = await AsyncStorage.getItem("userToken");
+    try {
+      setIsLoading(true);
+      const headers = {
+        Authorization: `Bearer ${authToken}`,
+      };
+      const params = {
+        filetype: "photo",
+        limit: itemsPerPage,
+        offset: offset,
+      };
+      const response = await apiCall(
+        "POST",
+        apiEndPoints.GETVIDEODOCUMENTDATA,
+        params,
+        headers
+      );
+      if (response.status === 200) {
+        setPhotolistData(response.data.data);
+        console.log("find photo item:-", response.data.data)
+        const pageCount = response.data.total_data / itemsPerPage;
+        setPageCount(pageCount);
+        setIsLoading(false);
+      } else {
+        setIsLoading(false);
+        setPhotolistData([]);
+      }
+    } catch (error) {
+      console.log("error in catch", error);
+    }
+  };
+
+  
 
   return (
     <Fragment>
@@ -665,7 +702,8 @@ const Index = ({ route, navigation }) => {
         getServiceList={getServiceList}
         videoListData={videoListData}
         getVideoList={getVideoList}
-        
+        getPhotoList={getPhotoList}
+        photoListData={photoListData}
       />
       {/* <CommingSoon /> */}
     </Fragment>

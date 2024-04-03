@@ -105,6 +105,7 @@ const StringsOfLanguages = new LocalizedStrings({
         YOUR_EMAIL_ADDRESS : "Your email Address",
         SUBMIT : "Submit",
         CHOOSE_IMAGE : "Choose Image",
+        IMAGE : "Image",
         CHECK_STATUS : "CHECK STATUS",
         SEND_OTP : "Send OTP",
         CORRECT_EMAIL : "Please enter correct email address",

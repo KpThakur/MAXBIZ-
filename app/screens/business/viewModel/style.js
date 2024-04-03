@@ -8,6 +8,7 @@ import {
   GRADIENT_COLOR,
   GRADIENT_COLOR_NEW2,
   COMMON_COLOR,
+  GRAY_COLOR,
 } from "./../../../utils/constants";
 import { scale } from "@utils/utils";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -78,6 +79,17 @@ const style = StyleSheet.create({
     fontFamily: FONT_FAMILY_REGULAR,
     alignSelf: "flex-end",
   },
+  labelText: {
+    fontFamily: FONT_FAMILY_REGULAR,
+    color: GRAY_COLOR,
+   
+    marginHorizontal: scale(25),
+    fontSize: scale(15),
+},
+photoView:{
+  flex: 3,
+  marginBottom: scale(20)
+}
 
 
 });

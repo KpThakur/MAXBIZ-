@@ -33,6 +33,7 @@ import LinearGradient from "react-native-linear-gradient";
 import StringsOfLanguages from "../../../../utils/translations";
 import { AuthContext } from "../../../../utils/UserContext";
 import { Dropdown, MultiSelect } from "react-native-element-dropdown";
+import PhotoList from "../../photolist/photoList";
 const ProfileDetails = (props) => {
   const {
     businessDetail,
@@ -72,6 +73,8 @@ const ProfileDetails = (props) => {
     getServiceList,
     videoListData,
     getVideoList,
+    getPhotoList,
+    photoListData,
   } = props;
 
   // console.log("check value>>>>>", value);
@@ -622,7 +625,11 @@ const ProfileDetails = (props) => {
             </View>
             {showPhotos && (
               <View>
-                <VideoList filetype={"photo"} />
+                <PhotoList
+                  filetype={"photo"}
+                  photoListData={photoListData}
+                  getPhotoList={getPhotoList}
+                />
               </View>
             )}
           </View>
