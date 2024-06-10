@@ -100,6 +100,7 @@ const style = StyleSheet.create({
   },
   checkbox: {
     flexDirection: "row",
+    paddingHorizontal:5,
   },
   checkboxText: {
     fontFamily: FONT_FAMILY_REGULAR,
@@ -107,7 +108,7 @@ const style = StyleSheet.create({
     color: GRAY_COLOR,
     fontWeight: "400",
     fontSize: scale(15),
-    paddingVertical: scale(15),
+    paddingVertical: scale(5),
   },
   btnContainer: {
     height: 55,

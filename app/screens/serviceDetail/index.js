@@ -19,11 +19,10 @@ const ServiceDetail = ({ route, navigation }) => {
   const [paymentList, setPaymentList] = useState({});
   const [image, setImage] = useState("");
 
- // const [paymentList, setPaymentList] = useContext(PaymentContext);
-
-  
+  // const [paymentList, setPaymentList] = useContext(PaymentContext);
 
   useEffect(() => {
+    console.log("serviceDetaildata changed:", serviceDetaildata);
     const stringData =
       serviceDetaildata?.servicedata &&
       serviceDetaildata?.servicedata.reduce((result, item) => {
@@ -34,8 +33,10 @@ const ServiceDetail = ({ route, navigation }) => {
     const paydata = serviceDetaildata?.payments
       ? JSON.parse(serviceDetaildata?.payments)
       : {};
-   // setPaymentList(paydata);
-    setPaymentList((prevPaymentList) => ({ ...prevPaymentList, ...paydata }));
+      console.log("Parsed paydata:", paydata);
+
+     setPaymentList(paydata);
+   
   }, []);
 
   // useEffect(() => {
@@ -86,7 +87,7 @@ const ServiceDetail = ({ route, navigation }) => {
   };
   useEffect(() => {
     serviceDetaildata?.photofile && getImage(serviceDetaildata.photofile);
-  }, []);
+  }, [navigation, serviceDetaildata]);
 
   const getServicesDetails = async (businessid) => {
     if (businessid > 0) {
@@ -104,7 +105,6 @@ const ServiceDetail = ({ route, navigation }) => {
           setServiceDetail([]);
         }
       } catch (error) {
-        
         setIsLoading(false);
       }
     }

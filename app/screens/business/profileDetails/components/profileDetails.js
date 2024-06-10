@@ -9,8 +9,9 @@ import {
   TextInput,
   RefreshControl,
 } from "react-native";
-import { CheckBox, Icon } from "react-native-elements";
-// import CheckBox from '@react-native-community/checkbox';
+//import { CheckBox, Icon } from "react-native-elements";
+
+import CheckBox from "@react-native-community/checkbox";
 import { SafeAreaView } from "react-native-safe-area-context";
 import commomstyle from "../../../../common/styles";
 import { Button, Input, Header } from "@components";
@@ -42,9 +43,8 @@ const ProfileDetails = (props) => {
     onRefresh,
     handleChange,
     value,
-    paymentCheckbox,
-    toggleCheckbox,
-    contactCheckbox,
+    // paymentCheckbox,
+    //  toggleCheckbox,
     toggleContactCheckbox,
     handleChangenaics,
     bussinessFormUpdate,
@@ -59,8 +59,6 @@ const ProfileDetails = (props) => {
     toggleShowEmail,
     toggleIsNonProfit,
     toggleIsMinority,
-    handleShowTextCheckbox,
-    handleShowPaymentCheckbox,
     paymentmethod,
     paymentselectMethod,
     setBusinessDetail,
@@ -75,6 +73,10 @@ const ProfileDetails = (props) => {
     getVideoList,
     getPhotoList,
     photoListData,
+    paymentMethods,
+    handleCheckBoxChange,
+    contactoption,
+    handleContackCheckBoxChange,
   } = props;
 
   // console.log("check value>>>>>", value);
@@ -428,32 +430,16 @@ const ProfileDetails = (props) => {
                     {inputError.errorwebsiteurl}
                   </Text>
                 </View>
+
                 <View style={styles.input}>
                   <View style={styles.checkboxContainer}>
                     <Text>{StringsOfLanguages.PAYMENT_METHOD}</Text>
 
-                    {/* <View style={styles.checkboxView}>
-                      {paymentCheckbox.map((option, index) => (
-                        <View key={index} style={styles.checkbox}>
-                          <CheckBox
-                            checked={option.isSelected}
-                            onPress={() => toggleCheckbox(index)}
-                          />
-                          <Text style={styles.checkboxText}>
-                            {option.label}
-                          </Text>
-                        </View>
-                      ))}
-                    </View>
-                    <Text style={styles.errorText}>
-                      {inputError.errorpaymentcheckbox}
-                    </Text> */}
-
                     <View style={{ flexDirection: "row" }}>
                       <View style={styles.checkbox}>
                         <CheckBox
-                          onPress={() => handleShowPaymentCheckbox("cash")}
-                          checked={businessDetail.cash === 1 ? true : false}
+                          value={paymentMethods.cash === 1}
+                          onValueChange={handleCheckBoxChange("cash")}
                         />
                         <Text style={styles.checkboxText}>
                           {StringsOfLanguages.CASH}
@@ -461,8 +447,8 @@ const ProfileDetails = (props) => {
                       </View>
                       <View style={styles.checkbox}>
                         <CheckBox
-                          onPress={() => handleShowPaymentCheckbox("cashapp")}
-                          checked={businessDetail.cashapp === 1 ? true : false}
+                          value={paymentMethods.cashapp === 1}
+                          onValueChange={handleCheckBoxChange("cashapp")}
                         />
                         <Text style={styles.checkboxText}>
                           {StringsOfLanguages.Check}
@@ -473,12 +459,8 @@ const ProfileDetails = (props) => {
                     <View style={{ flexDirection: "row" }}>
                       <View style={styles.checkbox}>
                         <CheckBox
-                          onPress={() =>
-                            handleShowPaymentCheckbox("creditcard")
-                          }
-                          checked={
-                            businessDetail.creditcard === 1 ? true : false
-                          }
+                          value={paymentMethods.creditcard === 1}
+                          onValueChange={handleCheckBoxChange("creditcard")}
                         />
                         <Text style={styles.checkboxText}>
                           {StringsOfLanguages.CARD}
@@ -486,8 +468,8 @@ const ProfileDetails = (props) => {
                       </View>
                       <View style={styles.checkbox}>
                         <CheckBox
-                          onPress={() => handleShowPaymentCheckbox("paypal")}
-                          checked={businessDetail.paypal === 1 ? true : false}
+                          value={paymentMethods.paypal === 1}
+                          onValueChange={handleCheckBoxChange("paypal")}
                         />
                         <Text style={styles.checkboxText}>
                           {StringsOfLanguages.PAYPAL}
@@ -497,8 +479,8 @@ const ProfileDetails = (props) => {
                     <View style={{ flexDirection: "row" }}>
                       <View style={styles.checkbox}>
                         <CheckBox
-                          onPress={() => handleShowPaymentCheckbox("zelle")}
-                          checked={businessDetail.zelle === 1 ? true : false}
+                          value={paymentMethods.zelle === 1}
+                          onValueChange={handleCheckBoxChange("zelle")}
                         />
                         <Text style={styles.checkboxText}>
                           {StringsOfLanguages.ZELLE}
@@ -514,25 +496,10 @@ const ProfileDetails = (props) => {
                 <View style={styles.checkboxContainer}>
                   <Text>{StringsOfLanguages.CONTACT_OPTIONS}</Text>
 
-                  {/* <View style={styles.checkboxView}>
-                    {contactCheckbox.map((option, index) => (
-                      <View key={index} style={styles.checkbox}>
-                        <CheckBox
-                          checked={option.isSelected}
-                          onPress={() => toggleContactCheckbox(index)}
-                        />
-                        <Text style={styles.checkboxText}>{option.label}</Text>
-                      </View>
-                    ))}
-                  </View>
-                  <Text style={styles.errorText}>
-                    {inputError.contactOptionsError}
-                  </Text> */}
-
                   <View style={styles.checkbox}>
                     <CheckBox
-                      onPress={() => handleShowTextCheckbox("showcall")}
-                      checked={businessDetail.showcall === 1 ? true : false}
+                      value={contactoption.showcall === 1}
+                      onValueChange={handleContackCheckBoxChange("showcall")}
                     />
                     <Text style={styles.checkboxText}>
                       {StringsOfLanguages.SHOW_CALL_BUTTON}
@@ -540,8 +507,8 @@ const ProfileDetails = (props) => {
                   </View>
                   <View style={styles.checkbox}>
                     <CheckBox
-                      onPress={() => handleShowTextCheckbox("showtext")}
-                      checked={businessDetail.showtext === 1 ? true : false}
+                      value={contactoption.showtext === 1}
+                      onValueChange={handleContackCheckBoxChange("showtext")}
                     />
                     <Text style={styles.checkboxText}>
                       {StringsOfLanguages.SHOW_TEXT_BUTTON}
@@ -549,8 +516,8 @@ const ProfileDetails = (props) => {
                   </View>
                   <View style={styles.checkbox}>
                     <CheckBox
-                      onPress={() => handleShowTextCheckbox("showemail")}
-                      checked={businessDetail.showemail === 1 ? true : false}
+                      value={contactoption.showemail === 1}
+                      onValueChange={handleContackCheckBoxChange("showemail")}
                     />
                     <Text style={styles.checkboxText}>
                       {StringsOfLanguages.SHOW_EMAIL_BUTTON}
@@ -558,8 +525,10 @@ const ProfileDetails = (props) => {
                   </View>
                   <View style={styles.checkbox}>
                     <CheckBox
-                      onPress={() => handleShowTextCheckbox("is_nonprofit")}
-                      checked={businessDetail.is_nonprofit === 1 ? true : false}
+                      value={contactoption.is_nonprofit === 1}
+                      onValueChange={handleContackCheckBoxChange(
+                        "is_nonprofit"
+                      )}
                     />
                     <Text style={styles.checkboxText}>
                       {StringsOfLanguages.NON_PROFIT}
@@ -567,8 +536,8 @@ const ProfileDetails = (props) => {
                   </View>
                   <View style={styles.checkbox}>
                     <CheckBox
-                      onPress={() => handleShowTextCheckbox("is_minority")}
-                      checked={businessDetail.is_minority === 1 ? true : false}
+                      value={contactoption.is_minority === 1}
+                      onValueChange={handleContackCheckBoxChange("is_minority")}
                     />
                     <Text style={styles.checkboxText}>
                       {StringsOfLanguages.MINORITY}

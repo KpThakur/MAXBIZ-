@@ -46,11 +46,10 @@ const ServiceDetailView = (props) => {
     image,
     serviceDetaildata,
   } = props;
-    console.log("🚀 ~ ServiceDetailView ~ paymentList:", paymentList)
+    console.log("🚀 ~ ServiceDetailView ~ paymentList:", serviceDetail)
 
  // const [paymentList, setPaymentList] = useContext(PaymentContext);
-
-
+ 
 
   const [isLoading, setIsLoading] = useState(false);
 

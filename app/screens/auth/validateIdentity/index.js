@@ -103,7 +103,7 @@ const ValidtIdntyView = ({ navigation }) => {
         );
        // console.log('responce:---', response)
         if (response.status === 200) {
-          console.log("Response data:", response.data);
+          console.log(" fin Response in validate email.....:", response.data);
           setIsLoading(false);
           console.log("find validate:-",response.data.data.indentityValidated )
           if (response.data.data.indentityValidated === 0) {
@@ -113,7 +113,7 @@ const ValidtIdntyView = ({ navigation }) => {
             });
             setLoginData(response.data.data);
             showMessage({
-              message: response.data.message.messageSuccess,
+              message: response.data?.message?.messageSuccess || response.data?.message?.message,
               type: "success",
               duration: 3000,
             });
@@ -134,7 +134,7 @@ const ValidtIdntyView = ({ navigation }) => {
               setIsLoading(false);
               navigation.navigate("registrationScreen", {  profileid:  response?.data?.data.profileid });
               showMessage({
-                message: response.data.message.messageTost,
+                message: response.data.message?.messageTost,
                 type: "success",
                 duration: 3000,
               });

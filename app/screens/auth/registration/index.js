@@ -74,7 +74,7 @@ const RegistrationView = ({ route, navigation }) => {
   const [isLoading, setIsLoading] = useContext(LoadingContext);
 
  
-   console.log("find businessDetail:-----", imageData);
+  // console.log("find businessDetail:-----", imageData);
 
  // console.log("servicelist:>>>>>>>>>>-", serviceList);
  // console.log("The selected option ===>>", selectedOption);
@@ -525,7 +525,7 @@ const RegistrationView = ({ route, navigation }) => {
 
         const userToken = await AsyncStorage.getItem("userToken");
 
-        console.log("---", userToken);
+        console.log("send userToken...:", userToken);
 
         console.log("formData>>>>>>>>>>>", formData);
         const header = { "content-type": "multipart/form-data" };
@@ -566,8 +566,8 @@ const RegistrationView = ({ route, navigation }) => {
         }
       } catch (error) {
         setIsLoading(false);
-        console.log("this error is runing ===>>>");
-        console.error("Error:", error);
+        console.log("error in catch", error);
+        
       }
     }
   };

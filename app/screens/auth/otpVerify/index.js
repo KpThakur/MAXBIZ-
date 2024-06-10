@@ -80,13 +80,18 @@ const OtpVerifyView = ({ route, navigation }) => {
           navigation.navigate("registrationScreen", { profileid: profileid });
           setOtp("");
           clearText();
+          showMessage({
+            message: response.data.message?.messageTost,
+            type: "warning",
+            duration: 3000,
+          });
         } else {
           setIsLoading(false);
           console.log("OTP verification failed:");
           //  Alert.alert('Please enter a valid 4-digit OTP')
           console.log("responce not 200:-", response.data);
           showMessage({
-            message: response.data.message.otpmail || response.data.message.messageTost,
+            message: response.data.message?.otpmail || response.data.message?.messageTost,
             type: "warning",
             duration: 3000,
           });

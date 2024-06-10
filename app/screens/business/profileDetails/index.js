@@ -60,22 +60,42 @@ const Index = ({ route, navigation }) => {
     head_count: "",
     hours: "",
     websiteurl: "",
-
-    showcall: "",
-    showtext: "",
-    showemail: "",
-    is_nonprofit: "",
-    is_minority: "",
-
-    cash: "",
-    creditcard: "",
-    cashapp: "",
-    paypal: "",
-    zelle: "",
   });
 
+  const [paymentMethod, setPaymentMethods] = useState({
+    cash: 0,
+    creditcard: 0,
+    cashapp: 0 ,
+    paypal: 0 ,
+    zelle: 0,
+  });
+
+ // console.log("find paymentme......:..." ,JSON.stringify(paymentMethod))
+
+  const handleCheckBoxChange = (method) => (newValue) => {
+    setPaymentMethods((prevState) => ({
+      ...prevState,
+      [method]: newValue ? 1 : 0,
+    }));
+  };
+
+  const [contactoption, setContackOption] = useState({
+    showcall: 0,
+    showtext: 0,
+    showemail: 0,
+    is_nonprofit: 0,
+    is_minority: 0,
+  });
+
+  const handleContackCheckBoxChange = (method) => (newValue) => {
+    setContackOption((prevState) => ({
+      ...prevState,
+      [method]: newValue ? 1 : 0,
+    }));
+  };
+
   // console.log("check city id :-", allCity);
-  // console.log("check city name :-", businessDetail?.servicename)
+   console.log("check contact  option :-", contactoption)
 
   const getuserData = async () => {
     const userToken = await AsyncStorage.getItem("userToken");
@@ -98,8 +118,7 @@ const Index = ({ route, navigation }) => {
       : {};
     setPaymentLists(paydata);
     paymentExtract();
-    getuserData();
-  }, []);
+  }, [navigation]);
 
   const getBusinessdetail = async () => {
     try {
@@ -125,6 +144,7 @@ const Index = ({ route, navigation }) => {
       if (response.status === 200) {
         setIsLoading(false);
         setBusinessDetail(response.data.data);
+        console.log("find bussiness data.....:", response.data.data)
         await AsyncStorage.setItem(
           "allinformation",
           String(response.data.data.allinformation)
@@ -164,15 +184,7 @@ const Index = ({ route, navigation }) => {
     }, 2000);
   }, []);
 
-  const userSelectPayment = {
-    cash: businessDetail?.cash,
-    creditcard: businessDetail?.creditcard,
-    cashapp: businessDetail?.cashapp,
-    paypal: businessDetail?.paypal,
-    zelle: businessDetail?.zelle,
-  };
-
-  // console.log("find  value:",  userSelectPayment )
+ 
 
   function validationFrom() {
     let errorfullname = "";
@@ -280,19 +292,6 @@ const Index = ({ route, navigation }) => {
     });
   };
 
-  const handleShowPaymentCheckbox = (key) => {
-    setBusinessDetail((prevState) => ({
-      ...prevState,
-      [key]: prevState[key] === 0 ? 1 : 0,
-    }));
-  };
-
-  const handleShowTextCheckbox = (key) => {
-    setBusinessDetail((prevState) => ({
-      ...prevState,
-      [key]: prevState[key] === 0 ? 1 : 0,
-    }));
-  };
 
   const paymentExtract = () => {
     const paymentMethods = [];
@@ -353,46 +352,6 @@ const Index = ({ route, navigation }) => {
     }
   };
 
-  const [paymentCheckbox, setPaymentCheckbox] = useState([
-    { label: "Cash", isSelected: false },
-    { label: "Card", isSelected: false },
-    { label: "Check", isSelected: false },
-    { label: "PayPal", isSelected: false },
-    { label: "Zelle", isSelected: false },
-  ]);
-
-  const toggleCheckbox = (index) => {
-    const updatedOptions = [...paymentCheckbox];
-    updatedOptions[index].isSelected = !updatedOptions[index].isSelected;
-    setPaymentCheckbox(updatedOptions);
-  };
-
-  const selectedValues = paymentCheckbox.filter(
-    (item) => item.isSelected === true
-  );
-  const selectedLabels = selectedValues.map((item) => item.label);
-
-  // console.log("Selected payments labels:", selectedLabels);
-
-  const [contactCheckbox, setContactCheckbox] = useState([
-    { label: "Show Call Button", isSelected: false },
-    { label: "Show Text Button", isSelected: false },
-    { label: "Show Email Button", isSelected: false },
-    { label: "Non-Profit", isSelected: false },
-    { label: "Minority", isSelected: false },
-  ]);
-
-  const toggleContactCheckbox = (index) => {
-    const updatedOptions = [...contactCheckbox];
-    updatedOptions[index].isSelected = !updatedOptions[index].isSelected;
-    setContactCheckbox(updatedOptions);
-  };
-
-  const selectedContactvalues = contactCheckbox.filter(
-    (item) => item.isSelected === true
-  );
-  const selectedLabelsContact = selectedContactvalues.map((item) => item.label);
-  // console.log("Selected contacts labels:", selectedLabelsContact);
 
   const getcitylist = async (val = "") => {
     console.log("search city", val);
@@ -517,13 +476,13 @@ const Index = ({ route, navigation }) => {
       businessData.append("pricehour", businessDetail?.pricehour);
       businessData.append("pricemodel", businessDetail?.pricemodel);
       businessData.append("hours", businessDetail?.hours);
-      businessData.append("payments", JSON.stringify(userSelectPayment));
+      businessData.append("payments", JSON.stringify(paymentMethod));
       businessData.append("phone", businessDetail?.phone);
       businessData.append("email", businessDetail?.email);
       businessData.append("websiteurl", businessDetail?.websiteurl);
-      businessData.append("showcall", businessDetail?.showcall);
-      businessData.append("showtext", businessDetail?.showtext);
-      businessData.append("showemail", businessDetail?.showemail);
+      businessData.append("showcall", contactoption?.showcall);
+      businessData.append("showtext", contactoption?.showtext);
+      businessData.append("showemail", contactoption?.showemail);
       businessData.append("service_offer", businessDetail?.service_offer);
       businessData.append("service_area", businessDetail?.service_area);
       businessData.append("county", "1");
@@ -544,8 +503,8 @@ const Index = ({ route, navigation }) => {
       businessData.append("instagramurl", businessDetail?.instagramurl);
       businessData.append("photofile", businessDetail?.photofile);
       businessData.append("certificate", businessDetail?.certificate);
-      businessData.append("is_nonprofit", businessDetail?.is_nonprofit);
-      businessData.append("is_minority", businessDetail?.is_minority);
+      businessData.append("is_nonprofit", contactoption?.is_nonprofit);
+      businessData.append("is_minority", contactoption?.is_minority);
       businessData.append("allinformation", 1);
 
       console.log("bussiness formdata:---", businessData);
@@ -673,10 +632,6 @@ const Index = ({ route, navigation }) => {
         onRefresh={onRefresh}
         handleChange={handleChange}
         value={value}
-        paymentCheckbox={paymentCheckbox}
-        toggleCheckbox={toggleCheckbox}
-        contactCheckbox={contactCheckbox}
-        toggleContactCheckbox={toggleContactCheckbox}
         handleChangenaics={handleChangenaics}
         bussinessFormUpdate={bussinessFormUpdate}
         showCall={showCall}
@@ -689,8 +644,6 @@ const Index = ({ route, navigation }) => {
         toggleShowEmail={toggleShowEmail}
         toggleIsNonProfit={toggleIsNonProfit}
         toggleIsMinority={toggleIsMinority}
-        handleShowTextCheckbox={handleShowTextCheckbox}
-        handleShowPaymentCheckbox={handleShowPaymentCheckbox}
         paymentmethod={paymentmethod}
         setBusinessDetail={setBusinessDetail}
         getcitylist={getcitylist}
@@ -704,6 +657,10 @@ const Index = ({ route, navigation }) => {
         getVideoList={getVideoList}
         getPhotoList={getPhotoList}
         photoListData={photoListData}
+        paymentMethods={paymentMethod}
+        handleCheckBoxChange={handleCheckBoxChange}
+        contactoption={contactoption}
+        handleContackCheckBoxChange={handleContackCheckBoxChange}
       />
       {/* <CommingSoon /> */}
     </Fragment>
