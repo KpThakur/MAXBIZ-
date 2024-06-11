@@ -15,21 +15,22 @@ import { showMessage, hideMessage } from "react-native-flash-message";
 import Loader from "../../../components/loader";
 import { RegisterDataContext } from "../../../utils/searchContext";
 import StringsOfLanguages from "../../../utils/translations";
-import { Alert } from "react-native";
+import ImagePicker from "react-native-image-crop-picker";
+import { Alert, Linking } from "react-native";
 const Index = ({ route, navigation }) => {
   const { profileid } = route?.params || {};
   const [inputError, setinputError] = useState({});
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [paymentLists, setPaymentLists] = useState({});
-  console.log('paymentLists .. : ', paymentLists);
+  // console.log("paymentLists .. : ", paymentLists);
   const [showCall, setShowCall] = useState(false);
   const [showText, setShowText] = useState(false);
   const [showEmail, setShowEmail] = useState(false);
   const [isNonProfit, setIsNonProfit] = useState(false);
   const [isMinority, setIsMinority] = useState(false);
-  const [value, setValue] = useState({});
-  console.log('fin payment value......: ', value);
+  const [paymentvalue, setPaymentValue] = useState("");
+  // console.log("fin payment value......: ", paymentvalue);
   const [allCity, setAllCity] = useState([]);
   const [serviceList, setServiceList] = useState([]);
   const [selectedOption, setSelectedOption] = useState([]);
@@ -41,14 +42,55 @@ const Index = ({ route, navigation }) => {
   const [itemOffset, setItemOffset] = useState(0);
 
   const [bucketcertificate, setBucketcertificate] = useState("");
-  const [bucket_Img_url, setBucket_Img_url] = useState("images/no_image.png");
+  const [extractedCertificate, setExtractedCertificate] = useState("");
+
+  const [bucket_Img_url, setBucket_Img_url] = useState("");
+  const [filepath, setfilepath] = useState("");
+
+  // console.log('extractedCertificate: ', extractedCertificate);
+  // console.log("bucketcertificate: ", bucketcertificate);
+  // console.log("bucket_Img_url: ", bucket_Img_url);
+  //  console.log("filepath: ", filepath);
+
   const [baseUrl, setBaseUrl] = useState("");
+  const [profileLoader, setProfileLoader] = useState("");
+  const [ProfileModal, setProfileModal] = useState(false);
 
   const toggleShowCall = () => setShowCall(!showCall);
   const toggleShowText = () => setShowText(!showText);
   const toggleShowEmail = () => setShowEmail(!showEmail);
   const toggleIsNonProfit = () => setIsNonProfit(!isNonProfit);
   const toggleIsMinority = () => setIsMinority(!isMinority);
+
+  const onLoadProfileStart = () => {
+    setProfileLoader(true);
+  };
+  const onLoadProfileEnd = () => {
+    setProfileLoader(false);
+  };
+
+  const openAlbum = () => {
+    ImagePicker.openPicker({
+      height: 50,
+      width: 50,
+    }).then((image) => {
+      setProfileModal(false);
+      setBucket_Img_url(image.path);
+      setfilepath(image);
+    });
+  };
+  const openMainCamera = () => {
+    ImagePicker.openCamera({
+      width: 300,
+      height: 400,
+      cropping: true,
+    }).then((image) => {
+      setProfileModal(false);
+      setBucket_Img_url(image.path);
+      setfilepath(image);
+      console.log(image);
+    });
+  };
 
   const [businessDetail, setBusinessDetail] = useState({
     fullname: "",
@@ -61,18 +103,19 @@ const Index = ({ route, navigation }) => {
     head_count: "",
     hours: "",
     websiteurl: "",
+    phone:"",
   });
- // console.log("find fullname #####...", businessDetail?.fullname)
+  // console.log("find fullname #####...", businessDetail?.fullname)
 
   const [paymentMethod, setPaymentMethods] = useState({
     cash: 0,
     creditcard: 0,
-    cashapp: 0 ,
-    paypal: 0 ,
+    cashapp: 0,
+    paypal: 0,
     zelle: 0,
   });
 
- // console.log("find paymentme......:..." ,JSON.stringify(paymentMethod))
+  // console.log("find paymentme......:..." ,JSON.stringify(paymentMethod))
 
   const handleCheckBoxChange = (method) => (newValue) => {
     setPaymentMethods((prevState) => ({
@@ -104,41 +147,65 @@ const Index = ({ route, navigation }) => {
       is_nonprofit: response.data.data?.is_nonprofit,
       is_minority: response.data.data?.is_minority,
     });
-  }
- // console.log("find contactoption @@......:...:-", contactoption);
+  };
+  // console.log("find contactoption @@......:...:-", contactoption);
   // console.log("check city id :-", allCity);
   // console.log("check contact  option :-", contactoption)
 
   const getuserData = async () => {
-    const userToken = await AsyncStorage.getItem("userToken");
-    console.log('find userToken......: ', userToken);
-    if (userToken !== null) {
-      const userData = await AsyncStorage.getItem("userData");
-      console.log('find userdata in asyn.....:: ', userData);
-      setUserData(JSON.parse(userData));
-     // getBusinessdetail();
+    try {
+      const userToken = await AsyncStorage.getItem("userToken");
+      console.log("find userToken......: ", userToken);
+      if (userToken !== null) {
+        const userDataString = await AsyncStorage.getItem("userData");
+        console.log("find userdata in asyn.....:: ", userDataString);
+        if (userDataString) {
+          const userData = JSON.parse(userDataString);
+          setUserData(userData);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
     }
   };
 
   useFocusEffect(
     React.useCallback(() => {
       getuserData();
-    }, [navigation])
+    }, [])
   );
+
+  useEffect(() => {
+    if (userData) {
+      getBusinessdetail(userData);
+    }
+  }, [userData]);
 
   useEffect(() => {
     const paydata = businessDetail?.payments
       ? JSON.parse(businessDetail?.payments)
       : {};
     setPaymentLists(paydata);
-    paymentExtract();
-  }, [navigation]);
+  }, [businessDetail]);
 
   useEffect(() => {
-       getBusinessdetail();
-  },[])
+    paymentExtract();
+  }, [paymentLists]);
 
-  const getBusinessdetail = async () => {
+  useEffect(() => {
+    if (bucketcertificate) {
+      const extracted = bucketcertificate.split("attachments/")[1];
+      setExtractedCertificate(extracted);
+    }
+  }, [bucketcertificate]);
+
+  const handlePress = () => {
+    Linking.openURL(bucketcertificate).catch((err) =>
+      console.error("Couldn't load page", err)
+    );
+  };
+
+  const getBusinessdetail = async (userData) => {
     try {
       setIsLoading(true);
       const parms = {
@@ -158,13 +225,13 @@ const Index = ({ route, navigation }) => {
         parms,
         header
       );
-      // console.log(" Api responce:----", response.data);
+      console.log(" Api responce:----", response.data.data);
       if (response.status === 200) {
         setIsLoading(false);
         setBusinessDetail(response.data.data);
-        setPaymentMethods(JSON.parse(response.data.data?.payments))
-        setContactResponse(response)
-        console.log("find bussiness data.....:", response.data.data?.showcall)
+        setPaymentMethods(JSON.parse(response.data.data?.payments));
+        setContactResponse(response);
+        console.log("find bussiness data.....:", response.data.data);
         await AsyncStorage.setItem(
           "allinformation",
           String(response.data.data.allinformation)
@@ -198,16 +265,14 @@ const Index = ({ route, navigation }) => {
     setRefreshing(true);
     setTimeout(() => {
       getuserData();
-      getBusinessdetail();
       setRefreshing(false);
     }, 2000);
   }, []);
 
- 
-
   function validationFrom() {
     let errorfullname = "";
     let erroraddress = "";
+    let errorphone = "";
     let errorcity_name = "";
     let errorservices = "";
     let errorindustry_name = "";
@@ -223,6 +288,9 @@ const Index = ({ route, navigation }) => {
       }
       if (!businessDetail.address) {
         erroraddress = StringsOfLanguages.PLEASE_ENTER_ADDRESS;
+      }
+      if (!businessDetail.phone) {
+        errorphone = StringsOfLanguages.PLEASE_ENTER_MOBILE_NUMBER;
       }
       if (!businessDetail.city_name) {
         errorcity_name = StringsOfLanguages.PLEASE_SELECT_CITY;
@@ -243,11 +311,11 @@ const Index = ({ route, navigation }) => {
       //   errorpaymentcheckbox = "Please select at least one payment method";
       // }
       if (
-        !businessDetail.cash &&
-        !businessDetail.creditcard &&
-        !businessDetail.cashapp &&
-        !businessDetail.paypal &&
-        !businessDetail.zelle
+        !paymentMethod.cash &&
+        !paymentMethod.creditcard &&
+        !paymentMethod.cashapp &&
+        !paymentMethod.paypal &&
+        !paymentMethod.zelle
       ) {
         errorpaymentcheckbox = "Please select at least one payment method";
       }
@@ -255,11 +323,11 @@ const Index = ({ route, navigation }) => {
       //   contactOptionsError = "Please select at least one contact option";
       // }
       if (
-        !businessDetail.showcall &&
-        !businessDetail.showtext &&
-        !businessDetail.showemail &&
-        !businessDetail.is_nonprofit &&
-        !businessDetail.is_minority
+        !contactoption.showcall &&
+        !contactoption.showtext &&
+        !contactoption.showemail &&
+        !contactoption.is_nonprofit &&
+        !contactoption.is_minority
       ) {
         contactOptionsError = "Please select at least one option";
       }
@@ -270,6 +338,7 @@ const Index = ({ route, navigation }) => {
     setinputError({
       errorfullname,
       erroraddress,
+      errorphone,
       errorcity_name,
       errorservices,
       errorindustry_name,
@@ -283,6 +352,7 @@ const Index = ({ route, navigation }) => {
     return (
       !errorfullname &&
       !erroraddress &&
+      !errorphone &&
       !errorcity_name &&
       !errorservices &&
       !errorindustry_name &&
@@ -311,10 +381,9 @@ const Index = ({ route, navigation }) => {
     });
   };
 
-
   const paymentExtract = () => {
     const paymentMethods = [];
-    console.log('paymentMethods in array....: ', paymentMethods);
+    console.log("paymentMethods in array....: ", paymentMethods);
 
     if (paymentLists?.cash === 1) {
       paymentMethods.push("Cash");
@@ -333,7 +402,7 @@ const Index = ({ route, navigation }) => {
     }
 
     const value = paymentMethods.join(", ");
-    setValue(value);
+    setPaymentValue(value);
   };
 
   // console.log("find userData in profileid>>>", businessDetail);
@@ -371,7 +440,6 @@ const Index = ({ route, navigation }) => {
       }
     }
   };
-
 
   const getcitylist = async (val = "") => {
     console.log("search city", val);
@@ -521,7 +589,7 @@ const Index = ({ route, navigation }) => {
       businessData.append("twitterurl", businessDetail?.twitterurl);
       businessData.append("youtubeurl", businessDetail?.youtubeurl);
       businessData.append("instagramurl", businessDetail?.instagramurl);
-      businessData.append("photofile", businessDetail?.photofile);
+      businessData.append("photofile", bucket_Img_url);
       businessData.append("certificate", businessDetail?.certificate);
       businessData.append("is_nonprofit", contactoption?.is_nonprofit);
       businessData.append("is_minority", contactoption?.is_minority);
@@ -570,7 +638,7 @@ const Index = ({ route, navigation }) => {
 
   useEffect(() => {
     getVideoList(itemOffset);
-    getPhotoList(itemOffset)
+    getPhotoList(itemOffset);
   }, []);
 
   const getVideoList = async (offSet) => {
@@ -593,7 +661,7 @@ const Index = ({ route, navigation }) => {
       );
       if (response.status === 200) {
         setVideoListData(response.data.data);
-        console.log("find video item:-", response.data.data)
+        console.log("find video item:-", response.data.data);
         const pageCount = response.data.total_data / itemsPerPage;
         setPageCount(pageCount);
         setBaseUrl(response.data.base_url);
@@ -627,7 +695,7 @@ const Index = ({ route, navigation }) => {
       );
       if (response.status === 200) {
         setPhotolistData(response.data.data);
-        console.log("find photo item:-", response.data.data)
+        console.log("find photo item:-", response.data.data);
         const pageCount = response.data.total_data / itemsPerPage;
         setPageCount(pageCount);
         setIsLoading(false);
@@ -640,8 +708,6 @@ const Index = ({ route, navigation }) => {
     }
   };
 
-  
-
   return (
     <Fragment>
       {isLoading && <Loader />}
@@ -651,7 +717,7 @@ const Index = ({ route, navigation }) => {
         refreshing={refreshing}
         onRefresh={onRefresh}
         handleChange={handleChange}
-        value={value}
+        paymentvalue={paymentvalue}
         handleChangenaics={handleChangenaics}
         bussinessFormUpdate={bussinessFormUpdate}
         showCall={showCall}
@@ -680,6 +746,16 @@ const Index = ({ route, navigation }) => {
         handleCheckBoxChange={handleCheckBoxChange}
         contactoption={contactoption}
         handleContackCheckBoxChange={handleContackCheckBoxChange}
+        onLoadProfileStart={onLoadProfileStart}
+        onLoadProfileEnd={onLoadProfileEnd}
+        profileLoader={profileLoader}
+        bucket_Img_url={bucket_Img_url}
+        setProfileModal={setProfileModal}
+        ProfileModal={ProfileModal}
+        openAlbum={openAlbum}
+        openMainCamera={openMainCamera}
+        extractedCertificate={extractedCertificate}
+        handlePress={handlePress}
       />
       {/* <CommingSoon /> */}
     </Fragment>

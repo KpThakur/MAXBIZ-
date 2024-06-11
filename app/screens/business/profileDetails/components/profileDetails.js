@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import {
   View,
   Text,
@@ -8,6 +8,8 @@ import {
   StatusBar,
   TextInput,
   RefreshControl,
+  ActivityIndicator,
+  Modal,
 } from "react-native";
 //import { CheckBox, Icon } from "react-native-elements";
 
@@ -29,6 +31,9 @@ import {
   GRADIENT_COLOR_NEW4,
   SKY_BLUE,
   AQUA_COLOR,
+  GRAY_COLOR,
+  BLACK_COLOR,
+  FONT_FAMILY_BOLD,
 } from "./../../../../utils/constants";
 import LinearGradient from "react-native-linear-gradient";
 import StringsOfLanguages from "../../../../utils/translations";
@@ -42,7 +47,7 @@ const ProfileDetails = (props) => {
     refreshing,
     onRefresh,
     handleChange,
-    value,
+    paymentvalue,
     // paymentCheckbox,
     //  toggleCheckbox,
     toggleContactCheckbox,
@@ -76,9 +81,19 @@ const ProfileDetails = (props) => {
     handleCheckBoxChange,
     contactoption,
     handleContackCheckBoxChange,
+    onLoadProfileStart,
+    onLoadProfileEnd,
+    profileLoader,
+    bucket_Img_url,
+    ProfileModal,
+    setProfileModal,
+    openAlbum,
+    openMainCamera,
+    extractedCertificate,
+    handlePress
   } = props;
 
-   console.log("check value>>>>>", value);
+   console.log("check extractedCertificate>>>>>",extractedCertificate);
 
   const [showDetails, setShowDetail] = useState(true);
   const [showVideos, setShowVideos] = useState(false);
@@ -105,6 +120,105 @@ const ProfileDetails = (props) => {
   const toggleDocuments = () => {
     return setShowDocuments(!showDocuments);
   };
+
+  const renderFileUri = () => {
+    if (bucket_Img_url !== '') {
+      return (
+        <View>
+          <Fragment>
+            {profileLoader == true ? (
+              <ActivityIndicator
+                style={{
+                  marginTop: 10,
+                  position: 'absolute',
+                  zIndex: 1,
+                  right: 0,
+                  top: 0,
+                  bottom: 0,
+                  left: 0,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+                // animating={props.profileLoader}
+                size="large"
+                color={WHITE_COLOR}
+              />
+            ) : null}
+            <Image
+              onLoadStart={() => onLoadProfileStart()}
+              onLoadEnd={() => onLoadProfileEnd()}
+             // source={{ uri: CameraImage }}
+              source={{uri: `${bucket_Img_url}`}}
+              style={{width: 110, height: 110, borderRadius: 55, resizeMode:'contain'}}
+            />
+          </Fragment>
+          {/* <Image
+            style={{position: 'absolute', bottom: -9, left: -10}}
+            source={require('../../../../assets/images/border.png')}
+          /> */}
+        </View>
+      );
+    } else {
+      return (
+        <Image source={require('../../../../assets/images/profile_select.png')} />
+      );
+    }
+  };
+
+
+  const ShowprofileModal = () => {
+    return(
+      <Modal
+      animationType="slide"
+      hardwareAccelerated={true}
+      transparent={true}
+      visible={ProfileModal}
+      onRequestClose={() => {
+        setProfileModal(false);
+      }}>
+      <View style={styles.alertBackground}>
+        <View style={styles.alertBox}>
+          <TouchableOpacity
+            onPress={() => setProfileModal(false)}
+            style={{
+              position: 'absolute',
+              right: 20,
+              top: 10,
+              width: 40,
+              alignItems: 'flex-end',
+            }}>
+            <Text
+              style={{fontFamily: FONT_FAMILY_BOLD, fontSize: 20}}>
+              X
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.profileModal}
+            onPress={() => openMainCamera()}
+            underlayColor={'#F5F5F5'}>
+            <Image
+              style={{height: 40, width: 40}}
+              source={require('../../../../assets/images/cameraNew.png')}
+            />
+            <Text style={styles.modalItem}>Take Photo</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.profileModal}
+            onPress={() => openAlbum()}
+            underlayColor={'#F5F5F5'}>
+            <Image
+              style={{height: 40, width: 40}}
+              source={require('../../../../assets/images/gallery.png')}
+            />
+            <Text style={styles.modalItem}>Choose Photo</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </Modal>
+    )
+  }
+
+
 
   return (
     <SafeAreaView style={commomstyle.container}>
@@ -161,6 +275,30 @@ const ProfileDetails = (props) => {
             </View>
             {showDetails && (
               <View style={styles.inputWrap}>
+                <View
+                  style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    paddingBottom: 5,
+                  }}
+                >
+                  <TouchableOpacity onPress={() => setProfileModal(true)}>
+                    {renderFileUri()}
+                    <Image
+                      style={{
+                        position: "absolute",
+                        right: 3,
+                        bottom: 5,
+                        height: 15,
+                        width: 15,
+                      }}
+                      source={require("../../../../assets/images/edit.png")}
+                    />
+                  </TouchableOpacity>
+                </View>
+
+                
+
                 <View style={styles.input}>
                   <Input
                     onChangeText={(text) => handleChange("fullname", text)}
@@ -185,6 +323,20 @@ const ProfileDetails = (props) => {
                   />
                   <Text style={styles.errorText}>
                     {inputError.erroraddress}
+                  </Text>
+                </View>
+
+                <View style={styles.input}>
+                  <Input
+                    onChangeText={(text) => handleChange("phone", text)}
+                    image={"noNeed"}
+                    placeholder={StringsOfLanguages.BUSINESS_PHONE}
+                    value={businessDetail?.phone}
+                    labelTxt={styles.labelTxt}
+                    keyboardType={'number-pad'}
+                  />
+                  <Text style={styles.errorText}>
+                    {inputError.errorphone}
                   </Text>
                 </View>
 
@@ -392,8 +544,8 @@ const ProfileDetails = (props) => {
                     image={"noNeed"}
                     placeholder={StringsOfLanguages.PAYMENT_METHOD}
                     labelTxt={styles.labelTxt}
-                   // value={businessDetail?.payments}
-                    value={value}
+                    // value={businessDetail?.payments}
+                    value={paymentvalue}
                     editable={false}
                   />
                 </View>
@@ -428,6 +580,23 @@ const ProfileDetails = (props) => {
                   <Text style={styles.errorText}>
                     {inputError.errorwebsiteurl}
                   </Text>
+                </View>
+
+                <View style={styles.input}>
+                  <Input
+                    image={"noNeed"}
+                    placeholder={''}
+                    labelTxt={styles.labelTxt}
+                    value={extractedCertificate}
+                    editable={false}
+                    maxLength={70}
+                  />
+                  <View style={{display:'flex',flexDirection:'row', justifyContent:'flex-end'}}>
+                  <Text style={styles.lookTxt}>Look at the pdf</Text>
+                  <TouchableOpacity onPress={()=> handlePress()}>
+                  <Image source={require('../../../../assets/images/eye.png')} style={{width:16, height:16, top: 5, right:5}}/>
+                  </TouchableOpacity>
+                  </View>
                 </View>
 
                 <View style={styles.input}>
@@ -664,6 +833,7 @@ const ProfileDetails = (props) => {
           </View>
         </View>
       </ScrollView>
+      <ShowprofileModal/>
       {/* </LinearGradient> */}
     </SafeAreaView>
   );

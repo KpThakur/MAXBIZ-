@@ -280,5 +280,36 @@ buttnText:{
   fontFamily: FONT_FAMILY_REGULAR,
   fontSize: scale(14)
 },
+profileModal: {
+  flex: 1,
+  justifyContent: "center",
+  alignItems: "center",
+},
+alertBackground: {
+  justifyContent: 'center',
+  alignItems: 'center',
+  flex: 1,
+  backgroundColor:"rgba(0,0,0,0.6)"
+},
+alertBox: {
+  borderRadius: 10,
+  width: 280,
+  height: 150,
+  alignItems: 'center',
+  backgroundColor: WHITE_COLOR,
+  borderColor: '#ccc',
+  borderWidth: 0.5,
+  borderStyle: 'solid',
+  elevation: 20,
+  paddingTop: 30,
+  flexDirection: 'row',
+},
+lookTxt: {
+  fontSize: scale(13),
+  fontFamily: FONT_FAMILY_REGULAR,
+  color: COMMON_COLOR,
+  right:12,
+  top: 3
+},
 });
 export default style;
