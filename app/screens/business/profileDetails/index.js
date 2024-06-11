@@ -22,13 +22,14 @@ const Index = ({ route, navigation }) => {
   const [userData, setUserData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [paymentLists, setPaymentLists] = useState({});
-  const [paymentmethod, setPaymentMethod] = useState({});
+  console.log('paymentLists .. : ', paymentLists);
   const [showCall, setShowCall] = useState(false);
   const [showText, setShowText] = useState(false);
   const [showEmail, setShowEmail] = useState(false);
   const [isNonProfit, setIsNonProfit] = useState(false);
   const [isMinority, setIsMinority] = useState(false);
   const [value, setValue] = useState({});
+  console.log('fin payment value......: ', value);
   const [allCity, setAllCity] = useState([]);
   const [serviceList, setServiceList] = useState([]);
   const [selectedOption, setSelectedOption] = useState([]);
@@ -61,6 +62,7 @@ const Index = ({ route, navigation }) => {
     hours: "",
     websiteurl: "",
   });
+ // console.log("find fullname #####...", businessDetail?.fullname)
 
   const [paymentMethod, setPaymentMethods] = useState({
     cash: 0,
@@ -94,15 +96,27 @@ const Index = ({ route, navigation }) => {
     }));
   };
 
+  const setContactResponse = (response) => {
+    setContackOption({
+      showcall: response.data.data?.showcall,
+      showtext: response.data.data?.showtext,
+      showemail: response.data.data?.showemail,
+      is_nonprofit: response.data.data?.is_nonprofit,
+      is_minority: response.data.data?.is_minority,
+    });
+  }
+ // console.log("find contactoption @@......:...:-", contactoption);
   // console.log("check city id :-", allCity);
-   console.log("check contact  option :-", contactoption)
+  // console.log("check contact  option :-", contactoption)
 
   const getuserData = async () => {
     const userToken = await AsyncStorage.getItem("userToken");
+    console.log('find userToken......: ', userToken);
     if (userToken !== null) {
       const userData = await AsyncStorage.getItem("userData");
+      console.log('find userdata in asyn.....:: ', userData);
       setUserData(JSON.parse(userData));
-      getBusinessdetail();
+     // getBusinessdetail();
     }
   };
 
@@ -119,6 +133,10 @@ const Index = ({ route, navigation }) => {
     setPaymentLists(paydata);
     paymentExtract();
   }, [navigation]);
+
+  useEffect(() => {
+       getBusinessdetail();
+  },[])
 
   const getBusinessdetail = async () => {
     try {
@@ -144,12 +162,13 @@ const Index = ({ route, navigation }) => {
       if (response.status === 200) {
         setIsLoading(false);
         setBusinessDetail(response.data.data);
-        console.log("find bussiness data.....:", response.data.data)
+        setPaymentMethods(JSON.parse(response.data.data?.payments))
+        setContactResponse(response)
+        console.log("find bussiness data.....:", response.data.data?.showcall)
         await AsyncStorage.setItem(
           "allinformation",
           String(response.data.data.allinformation)
         );
-        setPaymentMethod(JSON.parse(response.data.data.payments));
         response.data.data?.certificate != ""
           ? getImageCertificate(response.data.data?.certificate)
           : console.log("");
@@ -295,6 +314,7 @@ const Index = ({ route, navigation }) => {
 
   const paymentExtract = () => {
     const paymentMethods = [];
+    console.log('paymentMethods in array....: ', paymentMethods);
 
     if (paymentLists?.cash === 1) {
       paymentMethods.push("Cash");
@@ -644,7 +664,6 @@ const Index = ({ route, navigation }) => {
         toggleShowEmail={toggleShowEmail}
         toggleIsNonProfit={toggleIsNonProfit}
         toggleIsMinority={toggleIsMinority}
-        paymentmethod={paymentmethod}
         setBusinessDetail={setBusinessDetail}
         getcitylist={getcitylist}
         allCity={allCity}

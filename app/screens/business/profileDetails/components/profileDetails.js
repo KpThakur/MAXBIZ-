@@ -59,7 +59,6 @@ const ProfileDetails = (props) => {
     toggleShowEmail,
     toggleIsNonProfit,
     toggleIsMinority,
-    paymentmethod,
     paymentselectMethod,
     setBusinessDetail,
     getcitylist,
@@ -79,7 +78,7 @@ const ProfileDetails = (props) => {
     handleContackCheckBoxChange,
   } = props;
 
-  // console.log("check value>>>>>", value);
+   console.log("check value>>>>>", value);
 
   const [showDetails, setShowDetail] = useState(true);
   const [showVideos, setShowVideos] = useState(false);
@@ -393,7 +392,7 @@ const ProfileDetails = (props) => {
                     image={"noNeed"}
                     placeholder={StringsOfLanguages.PAYMENT_METHOD}
                     labelTxt={styles.labelTxt}
-                    // value={businessDetail?.payments}
+                   // value={businessDetail?.payments}
                     value={value}
                     editable={false}
                   />
