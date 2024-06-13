@@ -467,7 +467,7 @@ const RegistrationView = ({ route, navigation }) => {
         formData.append("hours", register?.hours_operation);
         formData.append("pricehour", 0);
         formData.append("about", register?.introduction);
-        formData.append("annualgrossrevenue", 2000);
+        formData.append("annualgrossrevenue", 0);
         formData.append("numemps", register?.numemps);
         formData.append("county", 0);
         formData.append("state", 0);

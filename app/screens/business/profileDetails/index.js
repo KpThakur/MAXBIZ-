@@ -34,6 +34,7 @@ const Index = ({ route, navigation }) => {
   const [allCity, setAllCity] = useState([]);
   const [serviceList, setServiceList] = useState([]);
   const [selectedOption, setSelectedOption] = useState([]);
+  console.log('selectedOption: ', selectedOption);
   const [industryList, setIndustryList] = useState([]);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [videoListData, setVideoListData] = useState([]);
@@ -49,7 +50,7 @@ const Index = ({ route, navigation }) => {
 
   // console.log('extractedCertificate: ', extractedCertificate);
   // console.log("bucketcertificate: ", bucketcertificate);
-  // console.log("bucket_Img_url: ", bucket_Img_url);
+   console.log("bucket_Img_url: ", bucket_Img_url);
   //  console.log("filepath: ", filepath);
 
   const [baseUrl, setBaseUrl] = useState("");
@@ -99,13 +100,14 @@ const Index = ({ route, navigation }) => {
     city_name: "",
     services: "",
     serviceid: "",
-    servicename: "",
+    industry_name: "",
     head_count: "",
     hours: "",
     websiteurl: "",
     phone:"",
+    email:"",
   });
-  // console.log("find fullname #####...", businessDetail?.fullname)
+   console.log("find businessDetail.servicename #####...", businessDetail?.city_name)
 
   const [paymentMethod, setPaymentMethods] = useState({
     cash: 0,
@@ -117,11 +119,23 @@ const Index = ({ route, navigation }) => {
 
   // console.log("find paymentme......:..." ,JSON.stringify(paymentMethod))
 
+  
   const handleCheckBoxChange = (method) => (newValue) => {
-    setPaymentMethods((prevState) => ({
-      ...prevState,
-      [method]: newValue ? 1 : 0,
-    }));
+    setPaymentMethods((prevState) => {
+      const updatedMethods = {
+        ...prevState,
+        [method]: newValue ? 1 : 0,
+      };
+  
+      if (Object.values(updatedMethods).some((value) => value === 1)) {
+        setinputError((prevState) => ({
+          ...prevState,
+          errorpaymentcheckbox: "",
+        }));
+      }
+  
+      return updatedMethods;
+    });
   };
 
   const [contactoption, setContackOption] = useState({
@@ -132,11 +146,29 @@ const Index = ({ route, navigation }) => {
     is_minority: 0,
   });
 
+  // const handleContackCheckBoxChange = (method) => (newValue) => {
+  //   setContackOption((prevState) => ({
+  //     ...prevState,
+  //     [method]: newValue ? 1 : 0,
+  //   }));
+  // };
+
   const handleContackCheckBoxChange = (method) => (newValue) => {
-    setContackOption((prevState) => ({
-      ...prevState,
-      [method]: newValue ? 1 : 0,
-    }));
+    setContackOption((prevState) => {
+      const updatedOptions = {
+        ...prevState,
+        [method]: newValue ? 1 : 0,
+      };
+  
+      if (Object.values(updatedOptions).some((value) => value === 1)) {
+        setinputError((prevState) => ({
+          ...prevState,
+          contactOptionsError: "",
+        }));
+      }
+  
+      return updatedOptions;
+    });
   };
 
   const setContactResponse = (response) => {
@@ -148,7 +180,7 @@ const Index = ({ route, navigation }) => {
       is_minority: response.data.data?.is_minority,
     });
   };
-  // console.log("find contactoption @@......:...:-", contactoption);
+  // console.log("find contactoption @@......:...:-", contactoption?.showemail);
   // console.log("check city id :-", allCity);
   // console.log("check contact  option :-", contactoption)
 
@@ -225,7 +257,7 @@ const Index = ({ route, navigation }) => {
         parms,
         header
       );
-      console.log(" Api responce:----", response.data.data);
+    //  console.log(" Api responce:----", response.data.data);
       if (response.status === 200) {
         setIsLoading(false);
         setBusinessDetail(response.data.data);
@@ -273,6 +305,7 @@ const Index = ({ route, navigation }) => {
     let errorfullname = "";
     let erroraddress = "";
     let errorphone = "";
+    let erroremail = "" ;
     let errorcity_name = "";
     let errorservices = "";
     let errorindustry_name = "";
@@ -291,6 +324,14 @@ const Index = ({ route, navigation }) => {
       }
       if (!businessDetail.phone) {
         errorphone = StringsOfLanguages.PLEASE_ENTER_MOBILE_NUMBER;
+      } else if (!/^\d{10,15}$/.test(businessDetail.phone)) {
+        errorphone = "Phone number length should be 10 to 15 digit!";
+      }
+      // if (!businessDetail.phone) {
+      //   errorphone = StringsOfLanguages.PLEASE_ENTER_MOBILE_NUMBER;
+      // }
+      if (!businessDetail.email) {
+        erroremail = StringsOfLanguages.PLEASE_ENTER_EMAIL;
       }
       if (!businessDetail.city_name) {
         errorcity_name = StringsOfLanguages.PLEASE_SELECT_CITY;
@@ -298,7 +339,7 @@ const Index = ({ route, navigation }) => {
       if (!businessDetail.services) {
         errorservices = StringsOfLanguages.PLEASE_ENTER_OCCUPTION;
       }
-      if (!businessDetail.servicename) {
+      if (!businessDetail.industry_name) {
         errorindustry_name = StringsOfLanguages.PLEASE_SELECT_INDUSTRY;
       }
       if (!businessDetail.hours) {
@@ -339,6 +380,7 @@ const Index = ({ route, navigation }) => {
       errorfullname,
       erroraddress,
       errorphone,
+      erroremail,
       errorcity_name,
       errorservices,
       errorindustry_name,
@@ -353,6 +395,7 @@ const Index = ({ route, navigation }) => {
       !errorfullname &&
       !erroraddress &&
       !errorphone &&
+      !erroremail &&
       !errorcity_name &&
       !errorservices &&
       !errorindustry_name &&
@@ -369,6 +412,11 @@ const Index = ({ route, navigation }) => {
     setBusinessDetail((prevbusinessDetail) => ({
       ...prevbusinessDetail,
       [field]: value,
+    }));
+
+    setinputError(prevState => ({
+      ...prevState,
+      [`error${field}`]: "",  // Reset the error for the specific field
     }));
   };
 
@@ -454,19 +502,24 @@ const Index = ({ route, navigation }) => {
           parms
         );
         if (response.status === 200) {
-          const formattedCityData = response.data.data.map((city) => ({
-            ...city,
-            formattedLabel: `${city.city || ""}, ${city.state_id || ""}`,
-          }));
-          // setAllCity(response.data.data)
-          console.log("responce City:-", response.data);
-          setAllCity(formattedCityData);
-          console.log("city find:-", response.data);
+          if (Array.isArray(response.data.data)) {
+            const formattedCityData = response.data.data.map((city) => ({
+              ...city,
+              formattedLabel: `${city.city || ""}, ${city.state_id || ""}`,
+            }));
+            setAllCity(formattedCityData);
+          } else {
+            console.error("Error: response.data.data is not an array");
+            setAllCity([]); // Reset the city list in case of invalid data
+          }
+          console.log("response City:", response.data);
         } else {
-          console.log("in else");
+          console.log("Response status not 200");
+          setAllCity([]); // Reset the city list in case of an unsuccessful response
         }
       } catch (error) {
         console.error("Error in cityname:", error);
+        setAllCity([]); // Reset the city list in case of an error
       }
     }
   };
@@ -529,7 +582,7 @@ const Index = ({ route, navigation }) => {
     const valid = validationFrom();
 
     const plantype = await AsyncStorage.getItem("plan_type");
-    // console.log("find plantype>>>", plantype);
+     console.log("find plantype>>>", plantype);
 
     const result = [];
     selectedOption.map((item, index) => {
@@ -540,10 +593,10 @@ const Index = ({ route, navigation }) => {
       });
     });
     const stringData = result.join(",");
-    // console.log("The result ===>>", stringData);
+     console.log("The result ===>>", stringData);
 
     const authToken = await AsyncStorage.getItem("userToken");
-    // console.log("authtoken,,,,", authToken);
+     console.log("authtoken,,,,", authToken);
 
     if (valid) {
       setIsLoading(true);
@@ -576,7 +629,7 @@ const Index = ({ route, navigation }) => {
       businessData.append("county", "1");
       businessData.append("state", "1");
       businessData.append("industry", businessDetail?.serviceid);
-      businessData.append("industry_name", businessDetail?.servicename);
+      businessData.append("industry_name", businessDetail?.industry_name);
       businessData.append("year_revenue", businessDetail?.year_revenue);
       businessData.append("plan_type", plantype);
       businessData.append(
@@ -601,28 +654,28 @@ const Index = ({ route, navigation }) => {
         Authorization: `Bearer ${authToken}`,
         "content-type": "multipart/form-data",
       };
-
+     
       try {
-        const responce = await apiCall(
+        const response = await apiCall(
           "POST",
           apiEndPoints.BUSINESSDETAILUPDATE,
           businessData,
           headers
         );
-
-        if (responce.status === 200) {
+        console.log("submit for update responce >>>>", response);
+        if (response.status === 200) {
           setIsLoading(false);
           getBusinessdetail();
           showMessage({
-            message: responce.data.message,
+            message: response.data.message,
             type: "success",
             duration: 3000,
           });
-          console.log("submit for update >>>>", responce.data);
+          console.log("submit for update 200>>>>", response.data);
         } else {
           setIsLoading(false);
           showMessage({
-            message: responce.data.message,
+            message: response.data.message,
             type: "danger",
             duration: 3000,
           });

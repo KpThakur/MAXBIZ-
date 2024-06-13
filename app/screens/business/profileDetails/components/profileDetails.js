@@ -90,10 +90,10 @@ const ProfileDetails = (props) => {
     openAlbum,
     openMainCamera,
     extractedCertificate,
-    handlePress
+    handlePress,
   } = props;
 
-   console.log("check extractedCertificate>>>>>",extractedCertificate);
+  // console.log("check extractedCertificate>>>>>",extractedCertificate);
 
   const [showDetails, setShowDetail] = useState(true);
   const [showVideos, setShowVideos] = useState(false);
@@ -122,7 +122,7 @@ const ProfileDetails = (props) => {
   };
 
   const renderFileUri = () => {
-    if (bucket_Img_url !== '') {
+    if (bucket_Img_url !== "") {
       return (
         <View>
           <Fragment>
@@ -130,14 +130,14 @@ const ProfileDetails = (props) => {
               <ActivityIndicator
                 style={{
                   marginTop: 10,
-                  position: 'absolute',
+                  position: "absolute",
                   zIndex: 1,
                   right: 0,
                   top: 0,
                   bottom: 0,
                   left: 0,
-                  justifyContent: 'center',
-                  alignItems: 'center',
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
                 // animating={props.profileLoader}
                 size="large"
@@ -147,9 +147,14 @@ const ProfileDetails = (props) => {
             <Image
               onLoadStart={() => onLoadProfileStart()}
               onLoadEnd={() => onLoadProfileEnd()}
-             // source={{ uri: CameraImage }}
-              source={{uri: `${bucket_Img_url}`}}
-              style={{width: 110, height: 110, borderRadius: 55, resizeMode:'contain'}}
+              // source={{ uri: CameraImage }}
+              source={{ uri: `${bucket_Img_url}` }}
+              style={{
+                width: 110,
+                height: 110,
+                borderRadius: 55,
+                resizeMode: "contain",
+              }}
             />
           </Fragment>
           {/* <Image
@@ -160,64 +165,73 @@ const ProfileDetails = (props) => {
       );
     } else {
       return (
-        <Image source={require('../../../../assets/images/profile_select.png')} />
+        <Image
+          source={require("../../../../assets/dummy/no_image.png")}
+          style={{
+            width: 110,
+            height: 110,
+            borderRadius: 55,
+            resizeMode: "contain",
+          }}
+        />
       );
     }
   };
 
-
   const ShowprofileModal = () => {
-    return(
+    return (
       <Modal
-      animationType="slide"
-      hardwareAccelerated={true}
-      transparent={true}
-      visible={ProfileModal}
-      onRequestClose={() => {
-        setProfileModal(false);
-      }}>
-      <View style={styles.alertBackground}>
-        <View style={styles.alertBox}>
-          <TouchableOpacity
-            onPress={() => setProfileModal(false)}
-            style={{
-              position: 'absolute',
-              right: 20,
-              top: 10,
-              width: 40,
-              alignItems: 'flex-end',
-            }}>
-            <Text
-              style={{fontFamily: FONT_FAMILY_BOLD, fontSize: 20}}>
-              X
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.profileModal}
-            onPress={() => openMainCamera()}
-            underlayColor={'#F5F5F5'}>
-            <Image
-              style={{height: 40, width: 40}}
-              source={require('../../../../assets/images/cameraNew.png')}
-            />
-            <Text style={styles.modalItem}>Take Photo</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.profileModal}
-            onPress={() => openAlbum()}
-            underlayColor={'#F5F5F5'}>
-            <Image
-              style={{height: 40, width: 40}}
-              source={require('../../../../assets/images/gallery.png')}
-            />
-            <Text style={styles.modalItem}>Choose Photo</Text>
-          </TouchableOpacity>
+        animationType="slide"
+        hardwareAccelerated={true}
+        transparent={true}
+        visible={ProfileModal}
+        onRequestClose={() => {
+          setProfileModal(false);
+        }}
+      >
+        <View style={styles.alertBackground}>
+          <View style={styles.alertBox}>
+            <TouchableOpacity
+              onPress={() => setProfileModal(false)}
+              style={{
+                position: "absolute",
+                right: 20,
+                top: 10,
+                width: 40,
+                alignItems: "flex-end",
+              }}
+            >
+              <Text style={{ fontFamily: FONT_FAMILY_BOLD, fontSize: 20 }}>
+                X
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.profileModal}
+              onPress={() => openMainCamera()}
+              underlayColor={"#F5F5F5"}
+            >
+              <Image
+                style={{ height: 40, width: 40 }}
+                source={require("../../../../assets/images/cameraNew.png")}
+              />
+              <Text style={styles.modalItem}>Take Photo</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.profileModal}
+              onPress={() => openAlbum()}
+              underlayColor={"#F5F5F5"}
+            >
+              <Image
+                style={{ height: 40, width: 40 }}
+                source={require("../../../../assets/images/gallery.png")}
+              />
+              <Text style={styles.modalItem}>Choose Photo</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </Modal>
-    )
-  }
-
+      </Modal>
+    );
+  };
 
 
   return (
@@ -297,8 +311,6 @@ const ProfileDetails = (props) => {
                   </TouchableOpacity>
                 </View>
 
-                
-
                 <View style={styles.input}>
                   <Input
                     onChangeText={(text) => handleChange("fullname", text)}
@@ -333,11 +345,21 @@ const ProfileDetails = (props) => {
                     placeholder={StringsOfLanguages.BUSINESS_PHONE}
                     value={businessDetail?.phone}
                     labelTxt={styles.labelTxt}
-                    keyboardType={'number-pad'}
+                    keyboardType={"number-pad"}
                   />
-                  <Text style={styles.errorText}>
-                    {inputError.errorphone}
-                  </Text>
+                  <Text style={styles.errorText}>{inputError.errorphone}</Text>
+                </View>
+
+                <View style={styles.input}>
+                  <Input
+                    onChangeText={(text) => handleChange("email", text)}
+                    image={"noNeed"}
+                    placeholder={StringsOfLanguages.EMAIL_ADDRESS}
+                    value={businessDetail?.email}
+                    labelTxt={styles.labelTxt}
+                    keyboardType={"email-address"}
+                  />
+                  <Text style={styles.errorText}>{inputError.erroremail}</Text>
                 </View>
 
                 <View style={styles.input}>
@@ -349,6 +371,9 @@ const ProfileDetails = (props) => {
                     // value={`${businessDetail?.city_name} ${businessDetail?.cityid}`}
                     labelTxt={styles.labelTxt}
                   /> */}
+                  <Text style={styles.droplabelTxt}>
+                    {StringsOfLanguages.CITY_}
+                  </Text>
                   <Dropdown
                     activeColor={SKY_BLUE}
                     showsVerticalScrollIndicator={false}
@@ -397,6 +422,9 @@ const ProfileDetails = (props) => {
                     labelTxt={styles.labelTxt}
                     maxLength={70}
                   /> */}
+                  <Text style={styles.droplabelTxt}>
+                    {StringsOfLanguages.SEARCH_SERVICE}
+                  </Text>
                   <MultiSelect
                     activeColor={AQUA_COLOR}
                     showsVerticalScrollIndicator={false}
@@ -429,7 +457,7 @@ const ProfileDetails = (props) => {
                         services: item,
                       });
                     }}
-                    // maxSelect={1}
+                    maxSelect={4}
                     selectedStyle={styles.selectedStyle}
                   />
 
@@ -449,24 +477,24 @@ const ProfileDetails = (props) => {
                     multiline={true}
                     // inputDsgn={styles.TextInput}
                   /> */}
+                  <Text style={styles.droplabelTxt}>
+                    {StringsOfLanguages.INDUSTRY_}
+                  </Text>
+
                   <Dropdown
                     activeColor={SKY_BLUE}
                     showsVerticalScrollIndicator={false}
                     style={styles.dropdown}
                     placeholderStyle={styles.placeholderStyle}
-                    //  selectedTextStyle={style.selectedTextStyle}
-                    // selectedTextStyle={props.register?.servicename.length > 55 ? commomstyle.selectedTextStylelong : props.register?.servicename.length > 33 ? commomstyle.selectedTextSortlong : commomstyle.selectedTextStyle}
                     selectedTextStyle={
-                      businessDetail &&
-                      businessDetail.servicename &&
-                      (businessDetail.servicename.length > 55
+                      businessDetail?.industry_name?.length > 55
                         ? commomstyle.selectedTextStylelong
-                        : businessDetail.servicename.length > 33
+                        : businessDetail?.industry_name?.length > 33
                         ? commomstyle.selectedTextSortlong
-                        : commomstyle.selectedTextStyle)
+                        : commomstyle.selectedTextStyle
                     }
                     inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
+                   // iconStyle={styles.iconStyle}
                     containerStyle={styles.dropdownContener}
                     onChangeText={getServiceList}
                     // data={data}
@@ -483,12 +511,12 @@ const ProfileDetails = (props) => {
                         : StringsOfLanguages.INDUSTRY_
                     }
                     searchPlaceholder={StringsOfLanguages.SEARCH_INDUSTRY_NAME}
-                    value={businessDetail.servicename}
+                    value={businessDetail.industry_name}
                     onChange={(item) => {
                       setBusinessDetail({
                         ...businessDetail,
                         serviceid: item.naicsid,
-                        servicename: item.title,
+                        industry_name: item.title,
                       });
                     }}
                   />
@@ -539,7 +567,7 @@ const ProfileDetails = (props) => {
                   <Text style={styles.errorText}>{inputError.errorhours}</Text>
                 </View>
 
-                <View style={styles.input}>
+                {/* <View style={styles.input}>
                   <Input
                     image={"noNeed"}
                     placeholder={StringsOfLanguages.PAYMENT_METHOD}
@@ -548,7 +576,7 @@ const ProfileDetails = (props) => {
                     value={paymentvalue}
                     editable={false}
                   />
-                </View>
+                </View> */}
 
                 {/* <View style={styles.addView}>
                   <View style={styles.addViewtext}>
@@ -585,18 +613,29 @@ const ProfileDetails = (props) => {
                 <View style={styles.input}>
                   <Input
                     image={"noNeed"}
-                    placeholder={''}
+                    placeholder={StringsOfLanguages.CERTIFICATE}
                     labelTxt={styles.labelTxt}
                     value={extractedCertificate}
                     editable={false}
                     maxLength={70}
                   />
-                  <View style={{display:'flex',flexDirection:'row', justifyContent:'flex-end'}}>
-                  <Text style={styles.lookTxt}>Look at the pdf</Text>
-                  <TouchableOpacity onPress={()=> handlePress()}>
-                  <Image source={require('../../../../assets/images/eye.png')} style={{width:16, height:16, top: 5, right:5}}/>
-                  </TouchableOpacity>
-                  </View>
+                  {extractedCertificate && (
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "flex-end",
+                      }}
+                    >
+                      <Text style={styles.lookTxt}>Look at the pdf</Text>
+                      <TouchableOpacity onPress={handlePress}>
+                        <Image
+                          source={require("../../../../assets/images/eye.png")}
+                          style={{ width: 16, height: 16, top: 5, right: 5 }}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  )}
                 </View>
 
                 <View style={styles.input}>
@@ -606,7 +645,7 @@ const ProfileDetails = (props) => {
                     <View style={{ flexDirection: "row" }}>
                       <View style={styles.checkbox}>
                         <CheckBox
-                          value={paymentMethods.cash === 1}
+                          value={paymentMethods?.cash === 1}
                           onValueChange={handleCheckBoxChange("cash")}
                         />
                         <Text style={styles.checkboxText}>
@@ -615,7 +654,7 @@ const ProfileDetails = (props) => {
                       </View>
                       <View style={styles.checkbox}>
                         <CheckBox
-                          value={paymentMethods.cashapp === 1}
+                          value={paymentMethods?.cashapp === 1}
                           onValueChange={handleCheckBoxChange("cashapp")}
                         />
                         <Text style={styles.checkboxText}>
@@ -627,7 +666,7 @@ const ProfileDetails = (props) => {
                     <View style={{ flexDirection: "row" }}>
                       <View style={styles.checkbox}>
                         <CheckBox
-                          value={paymentMethods.creditcard === 1}
+                          value={paymentMethods?.creditcard === 1}
                           onValueChange={handleCheckBoxChange("creditcard")}
                         />
                         <Text style={styles.checkboxText}>
@@ -636,18 +675,18 @@ const ProfileDetails = (props) => {
                       </View>
                       <View style={styles.checkbox}>
                         <CheckBox
-                          value={paymentMethods.paypal === 1}
+                          value={paymentMethods?.paypal === 1}
                           onValueChange={handleCheckBoxChange("paypal")}
                         />
                         <Text style={styles.checkboxText}>
-                          {StringsOfLanguages.PAYPAL}
+                          {StringsOfLanguages?.PAYPAL}
                         </Text>
                       </View>
                     </View>
                     <View style={{ flexDirection: "row" }}>
                       <View style={styles.checkbox}>
                         <CheckBox
-                          value={paymentMethods.zelle === 1}
+                          value={paymentMethods?.zelle === 1}
                           onValueChange={handleCheckBoxChange("zelle")}
                         />
                         <Text style={styles.checkboxText}>
@@ -666,7 +705,7 @@ const ProfileDetails = (props) => {
 
                   <View style={styles.checkbox}>
                     <CheckBox
-                      value={contactoption.showcall === 1}
+                      value={contactoption?.showcall === 1}
                       onValueChange={handleContackCheckBoxChange("showcall")}
                     />
                     <Text style={styles.checkboxText}>
@@ -675,7 +714,7 @@ const ProfileDetails = (props) => {
                   </View>
                   <View style={styles.checkbox}>
                     <CheckBox
-                      value={contactoption.showtext === 1}
+                      value={contactoption?.showtext === 1}
                       onValueChange={handleContackCheckBoxChange("showtext")}
                     />
                     <Text style={styles.checkboxText}>
@@ -684,7 +723,7 @@ const ProfileDetails = (props) => {
                   </View>
                   <View style={styles.checkbox}>
                     <CheckBox
-                      value={contactoption.showemail === 1}
+                      value={contactoption?.showemail === 1}
                       onValueChange={handleContackCheckBoxChange("showemail")}
                     />
                     <Text style={styles.checkboxText}>
@@ -693,7 +732,7 @@ const ProfileDetails = (props) => {
                   </View>
                   <View style={styles.checkbox}>
                     <CheckBox
-                      value={contactoption.is_nonprofit === 1}
+                      value={contactoption?.is_nonprofit === 1}
                       onValueChange={handleContackCheckBoxChange(
                         "is_nonprofit"
                       )}
@@ -704,7 +743,7 @@ const ProfileDetails = (props) => {
                   </View>
                   <View style={styles.checkbox}>
                     <CheckBox
-                      value={contactoption.is_minority === 1}
+                      value={contactoption?.is_minority === 1}
                       onValueChange={handleContackCheckBoxChange("is_minority")}
                     />
                     <Text style={styles.checkboxText}>
@@ -833,7 +872,7 @@ const ProfileDetails = (props) => {
           </View>
         </View>
       </ScrollView>
-      <ShowprofileModal/>
+      <ShowprofileModal />
       {/* </LinearGradient> */}
     </SafeAreaView>
   );

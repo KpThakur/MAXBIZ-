@@ -172,9 +172,16 @@ const style = StyleSheet.create({
   },
   labelTxt: {
     // marginHorizontal: scale(3),
-    top: scale(-7),
+    top: scale(-6),
     fontFamily: FONT_FAMILY_REGULAR,
     fontSize: scale(15),
+  },
+  droplabelTxt: {
+    marginHorizontal: scale(5),
+    top: scale(5),
+    fontFamily: FONT_FAMILY_REGULAR,
+    fontSize: scale(15),
+    color: GRAY_COLOR
   },
   checkStyle: {
     tintColor: GRAY_COLOR,
@@ -199,7 +206,7 @@ const style = StyleSheet.create({
   },
   dropdown: {
     marginBottom: scale(15),
-    height: scale(45),
+    height: scale(30),
     borderBottomColor: BORDERLINE_COLOR,
     borderBottomWidth: scale(2),
 },
@@ -311,5 +318,22 @@ lookTxt: {
   right:12,
   top: 3
 },
+selectedTextStylelong: {
+  fontSize: scale(12),
+  height : 55,
+  fontFamily: FONT_FAMILY_REGULAR,
+  color: GRAY_COLOR,
+},
+selectedTextSortlong: {
+  fontSize: scale(16),
+  height : 50,
+  fontFamily: FONT_FAMILY_REGULAR,
+  color: GRAY_COLOR,
+},
+selectedTextStyle: {
+    fontSize: scale(16),
+    fontFamily: FONT_FAMILY_REGULAR,
+    color: GRAY_COLOR,
+  },
 });
 export default style;
