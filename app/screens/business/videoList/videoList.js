@@ -65,7 +65,7 @@ const videoList = ({
   const [inputError, setinputError] = useState({});
   const [editStatus, setEditStatus] = useState(false);
   const [selectfileid, setSelectFileid] = useState();
- 
+
   const [editData, setEditData] = useState({
     name: "",
     youtubeLink: "",
@@ -151,8 +151,8 @@ const videoList = ({
   }
 
   const checkcountvalidation = () => {
+    return true;
     if (videoListData.length < videoNumberValidation?.number) {
-      return true;
     } else {
       Alert.alert(
         "Oops...",
@@ -190,6 +190,7 @@ const videoList = ({
 
   const handleAddVideoFile = async () => {
     if (formValidationvideo() && checkcountvalidation()) {
+      console.log("🚀 ~ handleAddVideoFile ~ editData:", editData);
       try {
         // setIsLoading(true);
         const videoData = new FormData();
@@ -204,6 +205,7 @@ const videoList = ({
           "createddate",
           moment(new Date()).format("MM/DD/YYYY")
         );
+        console.log("🚀 ~ handleAddVideoFile ~ videoData:", videoData);
 
         const headers = {
           "content-type": "multipart/form-data",
@@ -216,6 +218,8 @@ const videoList = ({
           headers
         );
         if (response.status === 200) {
+          getVideoList();
+          console.log("🚀 ~ handleAddVideoFile ~ response:", response);
           setIsLoading(false);
           setEditStatus(false);
           cleanSetEditData();
@@ -338,10 +342,6 @@ const videoList = ({
     console.log("find select fileid", fileid);
   };
 
- 
-
- 
-
   const renderItem = ({ item }) => (
     <View style={styles.mainvideo}>
       <View style={styles.mainvideotop}>
@@ -414,8 +414,6 @@ const videoList = ({
     </View>
   );
 
-  
-
   return (
     <>
       <View>
@@ -427,8 +425,8 @@ const videoList = ({
         </TouchableOpacity>
         <FlatList
           // data={Data}
-           data={videoListData}
-         // data={filetype === "video" ? videoListData : photoListData}
+          data={videoListData}
+          // data={filetype === "video" ? videoListData : photoListData}
           renderItem={renderItem}
           // keyExtractor={(item) => item.id}
           keyExtractor={(item) => item.fileid.toString()}

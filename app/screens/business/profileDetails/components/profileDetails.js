@@ -35,6 +35,9 @@ import StringsOfLanguages from "../../../../utils/translations";
 import { AuthContext } from "../../../../utils/UserContext";
 import { Dropdown, MultiSelect } from "react-native-element-dropdown";
 import PhotoList from "../../photolist/photoList";
+import DocumentList from "../../documentList/documentList";
+import OfferList from "../../offerList/offerList";
+import JobList from "../../jobList/jobList";
 const ProfileDetails = (props) => {
   const {
     businessDetail,
@@ -72,13 +75,20 @@ const ProfileDetails = (props) => {
     getVideoList,
     getPhotoList,
     photoListData,
+    getDocumentList,
+    documentListData,
+    getOfferList,
+    offerListData,
+    jobListData,
+    getJobList,
+    itemOffset,
     paymentMethods,
     handleCheckBoxChange,
     contactoption,
     handleContackCheckBoxChange,
   } = props;
 
-   console.log("check value>>>>>", value);
+  console.log("check value>>>>>", value);
 
   const [showDetails, setShowDetail] = useState(true);
   const [showVideos, setShowVideos] = useState(false);
@@ -392,7 +402,7 @@ const ProfileDetails = (props) => {
                     image={"noNeed"}
                     placeholder={StringsOfLanguages.PAYMENT_METHOD}
                     labelTxt={styles.labelTxt}
-                   // value={businessDetail?.payments}
+                    // value={businessDetail?.payments}
                     value={value}
                     editable={false}
                   />
@@ -594,6 +604,7 @@ const ProfileDetails = (props) => {
             {showPhotos && (
               <View>
                 <PhotoList
+                  itemOffset={itemOffset}
                   filetype={"photo"}
                   photoListData={photoListData}
                   getPhotoList={getPhotoList}
@@ -621,7 +632,12 @@ const ProfileDetails = (props) => {
             </View>
             {showDocuments && (
               <View>
-                <VideoList filetype={"document"} />
+                {/* <VideoList filetype={"document"} /> */}
+                <DocumentList
+                  filetype={"document"}
+                  documentListData={documentListData}
+                  getDocumentList={getDocumentList}
+                />
               </View>
             )}
           </View>
@@ -640,7 +656,11 @@ const ProfileDetails = (props) => {
             </View>
             {showOffers && (
               <View>
-                <VideoList filetype={"offer"} />
+                <OfferList
+                  filetype={"offer"}
+                  offerListData={offerListData}
+                  getOfferList={getOfferList}
+                />
               </View>
             )}
           </View>
@@ -658,7 +678,12 @@ const ProfileDetails = (props) => {
             </View>
             {showJobs && (
               <View>
-                <VideoList />
+                {/* <VideoList /> */}
+                <JobList
+                  filetype={"job"}
+                  getJobList={getJobList}
+                  jobListData={jobListData}
+                />
               </View>
             )}
           </View>

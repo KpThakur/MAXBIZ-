@@ -107,6 +107,10 @@ const viewModel = ({
                 ? "Photo"
                 : filetype === "document"
                 ? "Document"
+                : filetype === "offer"
+                ? "Offer"
+                : filetype === "job"
+                ? "Job"
                 : "File"}
             </Text>
             <TouchableOpacity
@@ -127,48 +131,65 @@ const viewModel = ({
             <View style={{ marginRight: 15 }}>
               <View style={style.input}>
                 <Input
-                  onChangeText={(val) =>
+                  onChangeText={(val) => {
+                    console.log("🚀 ~ val:", val);
                     setEditData({
                       ...editData,
                       name: val,
-                    })
-                  }
+                    });
+                  }}
                   value={editData.name}
-                  placeholder={StringsOfLanguages.ENTER_NAME}
+                  placeholder={
+                    filetype === "video"
+                      ? "Title video"
+                      : filetype === "photo"
+                      ? "Title photo"
+                      : filetype === "document"
+                      ? "Title document"
+                      : filetype === "offer"
+                      ? "Offer Title"
+                      : filetype === "job"
+                      ? "Job Title"
+                      : "file Title"
+                  }
                 />
                 <Text style={style.errorText}>{inputError.errorname}</Text>
               </View>
-
-              <View style={style.input}>
-                <Input
-                  onChangeText={(val) =>
-                    setEditData({
-                      ...editData,
-                      youtubeLink: val,
-                    })
-                  }
-                  value={editData.youtubeLink}
-                  placeholder={StringsOfLanguages.ENTER_URL}
-                  multiline={true}
-                  maxLength={70}
-                />
-                <Text style={style.errorText}>
-                  {inputError.erroryoutubeLink}
-                </Text>
-              </View>
-
-              <View style={style.input}>
-                <Input
-                  onChangeText={(val) =>
-                    setEditData({
-                      ...editData,
-                      description: val,
-                    })
-                  }
-                  value={editData.description}
-                  placeholder={StringsOfLanguages.ENTER_DESCRIPTION}
-                />
-              </View>
+              {filetype === "video" && (
+                <View style={style.input}>
+                  <Input
+                    onChangeText={(val) =>
+                      setEditData({
+                        ...editData,
+                        youtubeLink: val,
+                      })
+                    }
+                    value={editData.youtubeLink}
+                    placeholder={
+                      filetype === "video" ? "Youtube video link" : ""
+                    }
+                    multiline={true}
+                    maxLength={70}
+                  />
+                  <Text style={style.errorText}>
+                    {inputError.erroryoutubeLink}
+                  </Text>
+                </View>
+              )}
+              {filetype !== "photo" && filetype !== "offer" && (
+                <View style={style.input}>
+                  <Input
+                    onChangeText={(val) =>
+                      setEditData({
+                        ...editData,
+                        description: val,
+                      })
+                    }
+                    value={editData.description}
+                    placeholder={StringsOfLanguages.ENTER_DESCRIPTION}
+                  />
+                </View>
+              )}
               <View style={style.input}>
                 <Input
                   onChangeText={(val) =>
@@ -197,7 +218,7 @@ const viewModel = ({
               ]}
             >
               <View style={style.photoView}>
-                <Text style={style.labelText}>Upload photo</Text>
+                <Text style={style.labelText}>Upload {filetype}</Text>
               </View>
               <View style={style.photoView}>
                 <Button
@@ -218,7 +239,7 @@ const viewModel = ({
                     ? StringsOfLanguages.ADD_NEW_VIDEO
                     : filetype === "photo"
                     ? StringsOfLanguages.ADD_NEW_PHOTO
-                    : filetype === StringsOfLanguages.DOCUMENT
+                    : filetype === "document"
                     ? StringsOfLanguages.ADD_NEW_DOCUMENT
                     : StringsOfLanguages.ADD_NEW_FILE
                 }

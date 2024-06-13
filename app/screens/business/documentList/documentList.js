@@ -28,7 +28,8 @@ import deleteModel from "../deleteModel/deleteModel";
 import viewModel from "../viewModel/viewModel";
 import ImagePicker from "react-native-image-crop-picker";
 
-const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
+const DocumentList = ({ filetype, documentListData, getDocumentList }) => {
+  console.log("🚀 ~ DocumentList ~ documentListData:", documentListData);
   const [viewModel, setViewModel] = useState(false);
   const [deleteModel, setDeleteModel] = useState(false);
   const [viewphotoselect, setViewPhotoSelect] = useState(false);
@@ -41,21 +42,20 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
   const [bucket_Img_url_Modal, setBucket_Img_url_Modal] = useState();
   const [title, setTitle] = useState("");
 
-  const [photo, setPhoto] = useState({
-    photo: "",
+  const [document, setDocument] = useState({
+    document: "",
   });
 
-  console.log("find photo", photo);
+  console.log("find document", document);
   const [editData, setEditData] = useState({
     title: "",
-    filetype: "photo",
+    filetype: "document",
     createddate: "",
     fileid: "",
     islogo: false,
   });
 
   function handlePhotoFileSize(e) {
-    console.log("photo e.target.files[0]", e.target.files[0]);
     const validationStatus = validationData.find((x) => x.lable == "photosize");
     console.log("validationstatus", validationStatus);
     var _size = Math.floor(e.target.files[0].size / 1000000); //MB
@@ -66,14 +66,14 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
           validationStatus.number + validationStatus.type
         } file`
       );
-      setPhoto({
-        ...photo,
-        photo: "",
+      setDocument({
+        ...document,
+        document: "",
       });
     } else {
-      setPhoto({
-        ...photo,
-        photo: e.target.files[0],
+      setDocument({
+        ...document,
+        document: e.target.files[0],
       });
       console.log(
         "🚀 ~ file: photoList.js:292 ~ handlePhotoFileSize ~ URL.createObjectURL(e.target.files[0]):",
@@ -92,10 +92,9 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
       compressImageQuality: 1,
       // mediaType:'any',
       // multiple: true
-    }).then((image) => {
-      console.log("🚀 ~ uploaddocument ~ image:", image);
+    }).then((document) => {
       // console.log(image);
-      setPhoto(image);
+      setDocument(document);
     });
   };
 
@@ -106,13 +105,13 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
   }, []);
 
   const [validationData, setValidationData] = useState([]);
-  const [photoNumberValidation, setPhotoNumberValidation] = useState(0);
+  const [documentNumberValidation, setDocumentNumberValidation] = useState(0);
   async function getValidationList() {
     const response = await apiCall("GET", apiEndPoints.GETVALIDATIONLIST);
     if (response.status == 200) {
       setValidationData(response.data.data);
-      setPhotoNumberValidation(
-        response.data.data.find((x) => x.lable == "addphoto")
+      setDocumentNumberValidation(
+        response.data.data.find((x) => x.lable == "addDocument")
       );
     } else {
       setValidationData([]);
@@ -122,6 +121,9 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
   function formValidation() {
     let errorname = "";
     let errordescription = "";
+    let errorcreateddate = "";
+    let errorexpirationdate = "";
+    let erroreditDocument = "";
 
     if (!editData?.name) {
       errorname = "title is required";
@@ -135,34 +137,52 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
     setinputError({
       errorname,
       errordescription,
+      errorcreateddate,
+      errorexpirationdate,
+      erroreditDocument,
     });
 
-    return !errorname && !errordescription;
+    return (
+      !errorname &&
+      !errorcreateddate &&
+      !errordescription &&
+      !errorexpirationdate &&
+      !erroreditDocument
+    );
   }
 
   const checkcountvalidation = () => {
-    return true;
-
-    if (photoListData.length < photoNumberValidation?.number) {
+    if (documentListData.length < documentNumberValidation?.number) {
       return true;
     } else {
       Alert.alert(
         "Oops...",
-        `You have already uploaded ${photoNumberValidation?.number} photos`,
+        `You have already uploaded ${documentNumberValidation?.number} Document`,
         [
           {
             text: "OK",
+            // onPress: () => console.log("OK Pressed"),
           },
         ],
         { cancelable: false }
       );
+      // Swal.fire({
+      //   title: "Oops...",
+      //   text: `You have already uploaded ${videoNumberValidation?.number} videos`,
+      //   icon: "info",
+      //   //showCancelButton: true,
+      //   //confirmButtonColor: "#6258D3",
+      //   cancelButtonColor: "#000",
+      //   cancelButtonText: "OK",
+      //   //confirmButtonText: "Yes, delete it!",
+      // }).then(async (result) => {});
     }
   };
 
   function cleanSetEditData() {
     setEditData({
       title: "",
-      filetype: "photo",
+      filetype: "document",
       createddate: "",
       fileid: "",
       islogo: false,
@@ -202,9 +222,9 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
       );
       if (response.status == 200) {
         setImage(response.data.url);
-        console.log("find image", response.data.url);
+        console.log("find document", response.data.url);
       } else {
-        console.lig("image in else");
+        console.lig("document in else");
       }
     } catch (error) {
       console.log("error in catch", error);
@@ -237,28 +257,25 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
     }
   };
 
-  const handleAddPhoto = async () => {
-    if (!formValidation() && checkcountvalidation()) {
-      const photoData = new FormData();
-      console.log("🚀 ~ handleAddPhoto ~ editData:", editData);
-
-      // setIsLoader(true);
-      photoData.append("name", editData?.name);
-      photoData.append("filetype", "photo");
-      photoData.append("photo", photo?.path);
-      console.log("🚀 ~ handleAddPhoto ~ photo:", photo?.path);
-      photoData.append("createddate", moment(new Date()).format("MM-DD-YYYY"));
-      photoData.append("islogo", editData?.islogo ? editData?.islogo : false);
-      console.log("🚀 ~ handleAddPhoto ~ photoData:", photoData);
+  const handleAddDocument = async () => {
+    if (formValidation() && checkcountvalidation()) {
+      const documentData = new FormData();
+      setIsLoader(true);
+      documentData.append("name", editData.name);
+      documentData.append("filetype", "document");
+      documentData.append("createddate", editData.createddate);
+      documentData.append("expirationdate", editData.expirationdate);
+      documentData.append("description", editData.description);
+      documentData.append("documentfile", editDocument);
+      documentData.append("islicense", editData.islicense ?? false);
 
       try {
-        const { response } = await apiCall(
+        const { data } = await apiCall(
           "POST",
           apiEndPoints.ADDVIDEOFILE,
-          photoData
+          documentData
         );
-        console.log("🚀 ~ handleAddPhoto ~ response:", response);
-        if (response.status === 200) {
+        if (data.status === 200) {
           setIsLoading(false);
           setEditStatus(false);
           cleanSetEditData();
@@ -281,25 +298,28 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
     }
   };
 
-  const updatePhoto = async () => {
-    if (!editFormValidation()) {
+  const updateDocument = async () => {
+    if (!FormValidation()) {
       setIsLoader(true);
-      const photoData = new FormData();
-      photoData.append("name", editData.title);
-      photoData.append("filetype", "photo");
-      photoData.append("photo", photo.photo);
-      photoData.append("createddate", moment(new Date()).format("MM-DD-YYYY"));
-      photoData.append("fileid", editData.fileid);
-      photoData.append("islogo", editData.islogo ? editData.islogo : false);
+      const DocumentData = new FormData();
+      DocumentData.append("name", editData.title);
+      DocumentData.append("filetype", "photo");
+      DocumentData.append("photo", photo.photo);
+      DocumentData.append(
+        "createddate",
+        moment(new Date()).format("MM-DD-YYYY")
+      );
+      DocumentData.append("fileid", editData.fileid);
+      DocumentData.append("islogo", editData.islogo ? editData.islogo : false);
       try {
-        const { response } = await apiCall(
+        const { data } = await apiCall(
           "POST",
           apiEndPoints.UPDATEVIDEOFILE,
-          photoData
+          DocumentData
         );
         if (response.status === 200) {
           setIsLoading(false);
-          getPhotoList();
+          getDocumentList();
           setViewModel(false);
           showMessage({
             message: response.data.message,
@@ -319,7 +339,7 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
     }
   };
 
-  const deletePhoto = async (fileid, filetype) => {
+  const deleteDocument = async (fileid, filetype) => {
     const params = {
       fileid: fileid,
       filetype: filetype,
@@ -336,7 +356,7 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
       );
       // console.log("responce ", response);
       if (response.status === 200) {
-        getPhotoList();
+        getDocumentList();
         showMessage({
           message: response.data.message,
           type: "success",
@@ -371,7 +391,7 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
 
         <View style={styles.addView}>
           <View style={styles.addViewtext}>
-            <Text style={styles.serveTxt}>{StringsOfLanguages.IMAGE}</Text>
+            <Text style={styles.serveTxt}>{StringsOfLanguages.DOCUMENT}</Text>
           </View>
           <View style={styles.addViewcontent}>
             <Text style={styles.addrsTxt}>{item?.filefile}</Text>
@@ -391,9 +411,14 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
       </View>
 
       <View style={styles.mainvideobottum}>
-        <View style={styles.mainvideoview}>
+        {/* <View style={styles.mainvideoview}> */}
+        <TouchableOpacity
+          onPress={() => ViewPhotoSelect()}
+          style={styles.mainvideoview}
+        >
           <Icon name="eye" size={28} color={GRADIENT_COLOR_NEW2} />
-        </View>
+        </TouchableOpacity>
+        {/* </View> */}
         <TouchableOpacity
           onPress={() => Viewmodelshow(1)}
           style={styles.mainvideoview}
@@ -425,7 +450,7 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
         </TouchableOpacity>
         <FlatList
           // data={Data}
-          data={photoListData}
+          data={documentListData}
           renderItem={renderItem}
           // keyExtractor={(item) => item.id}
           keyExtractor={(item) => item.fileid.toString()}
@@ -440,8 +465,8 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
             setEditData={setEditData}
             onPress={() => {
               editData?.fileid && editData?.fileid != ""
-                ? updatePhoto()
-                : handleAddPhoto();
+                ? updateDocument()
+                : handleAddDocument();
             }}
             inputError={inputError}
             cleanSetEditData={cleanSetEditData}
@@ -456,7 +481,7 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
             setDeleteModel={setDeleteModel}
             filetype={filetype}
             fileid={selectfileid}
-            deletePhoto={deletePhoto}
+            deleteDocument={deleteDocument}
           />
         )}
       </View>
@@ -464,4 +489,4 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
   );
 };
 
-export default PhotoList;
+export default DocumentList;

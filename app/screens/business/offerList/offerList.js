@@ -28,7 +28,8 @@ import deleteModel from "../deleteModel/deleteModel";
 import viewModel from "../viewModel/viewModel";
 import ImagePicker from "react-native-image-crop-picker";
 
-const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
+const OfferList = ({ filetype, getOfferList, offerListData }) => {
+  console.log("🚀 ~ OfferList ~ offerListData:", offerListData);
   const [viewModel, setViewModel] = useState(false);
   const [deleteModel, setDeleteModel] = useState(false);
   const [viewphotoselect, setViewPhotoSelect] = useState(false);
@@ -40,22 +41,22 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
   //  console.log("image in state ", image)
   const [bucket_Img_url_Modal, setBucket_Img_url_Modal] = useState();
   const [title, setTitle] = useState("");
+  const [offerId, setOfferId] = useState("");
 
-  const [photo, setPhoto] = useState({
-    photo: "",
+  const [offer, setOffer] = useState({
+    offer: "",
   });
 
-  console.log("find photo", photo);
+  console.log("find offer", offer);
   const [editData, setEditData] = useState({
     title: "",
-    filetype: "photo",
+    filetype: "offer",
     createddate: "",
     fileid: "",
     islogo: false,
   });
 
   function handlePhotoFileSize(e) {
-    console.log("photo e.target.files[0]", e.target.files[0]);
     const validationStatus = validationData.find((x) => x.lable == "photosize");
     console.log("validationstatus", validationStatus);
     var _size = Math.floor(e.target.files[0].size / 1000000); //MB
@@ -66,14 +67,14 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
           validationStatus.number + validationStatus.type
         } file`
       );
-      setPhoto({
-        ...photo,
-        photo: "",
+      setOffer({
+        ...offer,
+        offer: "",
       });
     } else {
-      setPhoto({
-        ...photo,
-        photo: e.target.files[0],
+      setOffer({
+        ...offer,
+        offer: e.target.files[0],
       });
       console.log(
         "🚀 ~ file: photoList.js:292 ~ handlePhotoFileSize ~ URL.createObjectURL(e.target.files[0]):",
@@ -84,7 +85,7 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
     }
   }
 
-  const uploaddocument = () => {
+  const uploadoffer = () => {
     ImagePicker.openPicker({
       width: 300,
       height: 400,
@@ -92,10 +93,9 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
       compressImageQuality: 1,
       // mediaType:'any',
       // multiple: true
-    }).then((image) => {
-      console.log("🚀 ~ uploaddocument ~ image:", image);
+    }).then((offer) => {
       // console.log(image);
-      setPhoto(image);
+      setOffer(offer);
     });
   };
 
@@ -106,12 +106,12 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
   }, []);
 
   const [validationData, setValidationData] = useState([]);
-  const [photoNumberValidation, setPhotoNumberValidation] = useState(0);
+  const [offerNumberValidation, setofferNumberValidation] = useState(0);
   async function getValidationList() {
     const response = await apiCall("GET", apiEndPoints.GETVALIDATIONLIST);
     if (response.status == 200) {
       setValidationData(response.data.data);
-      setPhotoNumberValidation(
+      setofferNumberValidation(
         response.data.data.find((x) => x.lable == "addphoto")
       );
     } else {
@@ -122,6 +122,9 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
   function formValidation() {
     let errorname = "";
     let errordescription = "";
+    let errorcreateddate = "";
+    let errorexpirationdate = "";
+    let erroreditDocument = "";
 
     if (!editData?.name) {
       errorname = "title is required";
@@ -135,34 +138,52 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
     setinputError({
       errorname,
       errordescription,
+      errorcreateddate,
+      errorexpirationdate,
+      erroreditDocument,
     });
 
-    return !errorname && !errordescription;
+    return (
+      !errorname &&
+      !errorcreateddate &&
+      !errordescription &&
+      !errorexpirationdate &&
+      !erroreditDocument
+    );
   }
 
   const checkcountvalidation = () => {
-    return true;
-
-    if (photoListData.length < photoNumberValidation?.number) {
+    if (offerListData.length < offerNumberValidation?.number) {
       return true;
     } else {
       Alert.alert(
         "Oops...",
-        `You have already uploaded ${photoNumberValidation?.number} photos`,
+        `You have already uploaded ${offerNumberValidation?.number} offfers`,
         [
           {
             text: "OK",
+            // onPress: () => console.log("OK Pressed"),
           },
         ],
         { cancelable: false }
       );
+      // Swal.fire({
+      //   title: "Oops...",
+      //   text: `You have already uploaded ${videoNumberValidation?.number} videos`,
+      //   icon: "info",
+      //   //showCancelButton: true,
+      //   //confirmButtonColor: "#6258D3",
+      //   cancelButtonColor: "#000",
+      //   cancelButtonText: "OK",
+      //   //confirmButtonText: "Yes, delete it!",
+      // }).then(async (result) => {});
     }
   };
 
   function cleanSetEditData() {
     setEditData({
       title: "",
-      filetype: "photo",
+      filetype: "offer",
       createddate: "",
       fileid: "",
       islogo: false,
@@ -178,9 +199,10 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
     typecheck === 1 ? setViewModel(!viewModel) : setDeleteModel(!deleteModel);
   };
 
-  const handleDeleteModal = (fileid, filetype) => {
+  const handleDeleteModal = (fileid, filetype, offerId) => {
     setDeleteModel(!deleteModel);
     setSelectFileid(fileid);
+    setOfferId(offerId);
 
     console.log("find select fileid", fileid);
   };
@@ -202,9 +224,9 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
       );
       if (response.status == 200) {
         setImage(response.data.url);
-        console.log("find image", response.data.url);
+        console.log("find offer", response.data.url);
       } else {
-        console.lig("image in else");
+        console.lig("offer in else");
       }
     } catch (error) {
       console.log("error in catch", error);
@@ -237,28 +259,23 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
     }
   };
 
-  const handleAddPhoto = async () => {
-    if (!formValidation() && checkcountvalidation()) {
-      const photoData = new FormData();
-      console.log("🚀 ~ handleAddPhoto ~ editData:", editData);
-
-      // setIsLoader(true);
-      photoData.append("name", editData?.name);
-      photoData.append("filetype", "photo");
-      photoData.append("photo", photo?.path);
-      console.log("🚀 ~ handleAddPhoto ~ photo:", photo?.path);
-      photoData.append("createddate", moment(new Date()).format("MM-DD-YYYY"));
-      photoData.append("islogo", editData?.islogo ? editData?.islogo : false);
-      console.log("🚀 ~ handleAddPhoto ~ photoData:", photoData);
+  const handleAddOffer = async () => {
+    if (formValidation() && checkcountvalidation()) {
+      const offerData = new FormData();
+      setIsLoader(true);
+      offerData.append("name", editData?.name);
+      offerData.append("offerfile", offerfile);
+      offerData.append("expirationdate", editData?.expirationdate);
+      offerData.append("createddate", editData?.createddate);
+      offerData.append("description", editData?.description);
 
       try {
-        const { response } = await apiCall(
+        const { data } = await apiCall(
           "POST",
-          apiEndPoints.ADDVIDEOFILE,
-          photoData
+          apiEndPoints.ADDOFFER,
+          offerData
         );
-        console.log("🚀 ~ handleAddPhoto ~ response:", response);
-        if (response.status === 200) {
+        if (data.status === 200) {
           setIsLoading(false);
           setEditStatus(false);
           cleanSetEditData();
@@ -281,25 +298,31 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
     }
   };
 
-  const updatePhoto = async () => {
-    if (!editFormValidation()) {
+  const updateOffer = async () => {
+    if (!formValidation()) {
       setIsLoader(true);
-      const photoData = new FormData();
-      photoData.append("name", editData.title);
-      photoData.append("filetype", "photo");
-      photoData.append("photo", photo.photo);
-      photoData.append("createddate", moment(new Date()).format("MM-DD-YYYY"));
-      photoData.append("fileid", editData.fileid);
-      photoData.append("islogo", editData.islogo ? editData.islogo : false);
+      const updateData = new FormData();
+      updateData.append("name", editData?.name);
+      updateData.append("offerfile", offerfile);
+      updateData.append(
+        "expirationdate",
+        moment(editData?.expirationdate).format("YYYY-MM-DD")
+      );
+      updateData.append(
+        "createddate",
+        moment(editData?.createddate).format("YYYY-MM-DD")
+      );
+      updateData.append("description", editData?.description);
+      updateData.append("offerid", editData.offerid);
       try {
-        const { response } = await apiCall(
+        const { data } = await apiCall(
           "POST",
-          apiEndPoints.UPDATEVIDEOFILE,
-          photoData
+          apiEndPoints.UPDATEOFFER,
+          offerData
         );
-        if (response.status === 200) {
+        if (data.status === 200) {
           setIsLoading(false);
-          getPhotoList();
+          getOfferList();
           setViewModel(false);
           showMessage({
             message: response.data.message,
@@ -319,7 +342,7 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
     }
   };
 
-  const deletePhoto = async (fileid, filetype) => {
+  const deleteOffer = async (fileid, filetype) => {
     const params = {
       fileid: fileid,
       filetype: filetype,
@@ -329,14 +352,10 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
     console.log("find filetype:-", filetype);
 
     try {
-      const response = await apiCall(
-        "POST",
-        apiEndPoints.VIDEODOCUMENTDELETE,
-        params
-      );
+      const response = await apiCall("POST", apiEndPoints.OFFERDELETE, params);
       // console.log("responce ", response);
       if (response.status === 200) {
-        getPhotoList();
+        getOfferList();
         showMessage({
           message: response.data.message,
           type: "success",
@@ -371,10 +390,10 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
 
         <View style={styles.addView}>
           <View style={styles.addViewtext}>
-            <Text style={styles.serveTxt}>{StringsOfLanguages.IMAGE}</Text>
+            <Text style={styles.serveTxt}>{StringsOfLanguages.OFFER}</Text>
           </View>
           <View style={styles.addViewcontent}>
-            <Text style={styles.addrsTxt}>{item?.filefile}</Text>
+            <Text style={styles.addrsTxt}>{item?.offerfile}</Text>
             {/* <Image source={{uri: `${item?.filefile}`}} style={styles.imgStyle}/> */}
             {/* <Image source={{uri: `${image}`}} style={styles.imgStyle}/> */}
           </View>
@@ -391,9 +410,14 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
       </View>
 
       <View style={styles.mainvideobottum}>
-        <View style={styles.mainvideoview}>
+        {/* <View style={styles.mainvideoview}> */}
+        <TouchableOpacity
+          onPress={() => ViewPhotoSelect()}
+          style={styles.mainvideoview}
+        >
           <Icon name="eye" size={28} color={GRADIENT_COLOR_NEW2} />
-        </View>
+        </TouchableOpacity>
+        {/* </View> */}
         <TouchableOpacity
           onPress={() => Viewmodelshow(1)}
           style={styles.mainvideoview}
@@ -404,7 +428,7 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
         <TouchableOpacity
           onPress={() =>
             // Viewmodelshow(2)
-            handleDeleteModal(item?.fileid, item?.filetype)
+            handleDeleteModal(item?.fileid, item?.filetype, item?.Offerid)
           }
           style={styles.mainvideoview}
         >
@@ -425,10 +449,10 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
         </TouchableOpacity>
         <FlatList
           // data={Data}
-          data={photoListData}
+          data={offerListData}
           renderItem={renderItem}
           // keyExtractor={(item) => item.id}
-          keyExtractor={(item) => item.fileid.toString()}
+          //   keyExtractor={(item) => item.fileid.toString()}
         />
 
         {viewModel && (
@@ -440,13 +464,13 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
             setEditData={setEditData}
             onPress={() => {
               editData?.fileid && editData?.fileid != ""
-                ? updatePhoto()
-                : handleAddPhoto();
+                ? updateOffer()
+                : handleAddOffer();
             }}
             inputError={inputError}
             cleanSetEditData={cleanSetEditData}
             viewphotoselect={true}
-            uploaddocument={uploaddocument}
+            uploadoffer={uploadoffer}
             handlePhotoFileSize={handlePhotoFileSize}
           />
         )}
@@ -456,7 +480,8 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
             setDeleteModel={setDeleteModel}
             filetype={filetype}
             fileid={selectfileid}
-            deletePhoto={deletePhoto}
+            deleteOffer={deleteOffer}
+            offerId={offerId}
           />
         )}
       </View>
@@ -464,4 +489,4 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
   );
 };
 
-export default PhotoList;
+export default OfferList;

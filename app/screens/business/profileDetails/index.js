@@ -19,17 +19,17 @@ import { Alert } from "react-native";
 const Index = ({ route, navigation }) => {
   const { profileid } = route?.params || {};
   const [inputError, setinputError] = useState({});
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [paymentLists, setPaymentLists] = useState({});
-  console.log('paymentLists .. : ', paymentLists);
+  console.log("paymentLists .. : ", paymentLists);
   const [showCall, setShowCall] = useState(false);
   const [showText, setShowText] = useState(false);
   const [showEmail, setShowEmail] = useState(false);
   const [isNonProfit, setIsNonProfit] = useState(false);
   const [isMinority, setIsMinority] = useState(false);
   const [value, setValue] = useState({});
-  console.log('fin payment value......: ', value);
+  console.log("fin payment value......: ", value);
   const [allCity, setAllCity] = useState([]);
   const [serviceList, setServiceList] = useState([]);
   const [selectedOption, setSelectedOption] = useState([]);
@@ -39,6 +39,9 @@ const Index = ({ route, navigation }) => {
   const [photoListData, setPhotolistData] = useState([]);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
+  const [documentListData, setDocumentListData] = useState([]);
+  const [offerListData, setOfferListData] = useState([]);
+  const [jobListData, setJobListData] = useState([]);
 
   const [bucketcertificate, setBucketcertificate] = useState("");
   const [bucket_Img_url, setBucket_Img_url] = useState("images/no_image.png");
@@ -62,17 +65,17 @@ const Index = ({ route, navigation }) => {
     hours: "",
     websiteurl: "",
   });
- // console.log("find fullname #####...", businessDetail?.fullname)
+  // console.log("find fullname #####...", businessDetail?.fullname)
 
   const [paymentMethod, setPaymentMethods] = useState({
     cash: 0,
     creditcard: 0,
-    cashapp: 0 ,
-    paypal: 0 ,
+    cashapp: 0,
+    paypal: 0,
     zelle: 0,
   });
 
- // console.log("find paymentme......:..." ,JSON.stringify(paymentMethod))
+  // console.log("find paymentme......:..." ,JSON.stringify(paymentMethod))
 
   const handleCheckBoxChange = (method) => (newValue) => {
     setPaymentMethods((prevState) => ({
@@ -104,19 +107,19 @@ const Index = ({ route, navigation }) => {
       is_nonprofit: response.data.data?.is_nonprofit,
       is_minority: response.data.data?.is_minority,
     });
-  }
- // console.log("find contactoption @@......:...:-", contactoption);
+  };
+  // console.log("find contactoption @@......:...:-", contactoption);
   // console.log("check city id :-", allCity);
   // console.log("check contact  option :-", contactoption)
 
   const getuserData = async () => {
     const userToken = await AsyncStorage.getItem("userToken");
-    console.log('find userToken......: ', userToken);
+    console.log("find userToken......: ", userToken);
     if (userToken !== null) {
       const userData = await AsyncStorage.getItem("userData");
-      console.log('find userdata in asyn.....:: ', userData);
+      console.log("find userdata in asyn.....:: ", userData);
       setUserData(JSON.parse(userData));
-     // getBusinessdetail();
+      // getBusinessdetail();
     }
   };
 
@@ -135,8 +138,8 @@ const Index = ({ route, navigation }) => {
   }, [navigation]);
 
   useEffect(() => {
-       getBusinessdetail();
-  },[])
+    getBusinessdetail();
+  }, []);
 
   const getBusinessdetail = async () => {
     try {
@@ -162,9 +165,9 @@ const Index = ({ route, navigation }) => {
       if (response.status === 200) {
         setIsLoading(false);
         setBusinessDetail(response.data.data);
-        setPaymentMethods(JSON.parse(response.data.data?.payments))
-        setContactResponse(response)
-        console.log("find bussiness data.....:", response.data.data?.showcall)
+        setPaymentMethods(JSON.parse(response.data.data?.payments));
+        setContactResponse(response);
+        console.log("find bussiness data.....:", response.data.data?.showcall);
         await AsyncStorage.setItem(
           "allinformation",
           String(response.data.data.allinformation)
@@ -202,8 +205,6 @@ const Index = ({ route, navigation }) => {
       setRefreshing(false);
     }, 2000);
   }, []);
-
- 
 
   function validationFrom() {
     let errorfullname = "";
@@ -311,10 +312,9 @@ const Index = ({ route, navigation }) => {
     });
   };
 
-
   const paymentExtract = () => {
     const paymentMethods = [];
-    console.log('paymentMethods in array....: ', paymentMethods);
+    console.log("paymentMethods in array....: ", paymentMethods);
 
     if (paymentLists?.cash === 1) {
       paymentMethods.push("Cash");
@@ -371,7 +371,6 @@ const Index = ({ route, navigation }) => {
       }
     }
   };
-
 
   const getcitylist = async (val = "") => {
     console.log("search city", val);
@@ -570,7 +569,10 @@ const Index = ({ route, navigation }) => {
 
   useEffect(() => {
     getVideoList(itemOffset);
-    getPhotoList(itemOffset)
+    getPhotoList(itemOffset);
+    getDocumentList(itemOffset);
+    getOfferList(itemOffset);
+    getJobList(itemOffset);
   }, []);
 
   const getVideoList = async (offSet) => {
@@ -593,7 +595,7 @@ const Index = ({ route, navigation }) => {
       );
       if (response.status === 200) {
         setVideoListData(response.data.data);
-        console.log("find video item:-", response.data.data)
+        console.log("find video item:-", response.data.data);
         const pageCount = response.data.total_data / itemsPerPage;
         setPageCount(pageCount);
         setBaseUrl(response.data.base_url);
@@ -627,7 +629,7 @@ const Index = ({ route, navigation }) => {
       );
       if (response.status === 200) {
         setPhotolistData(response.data.data);
-        console.log("find photo item:-", response.data.data)
+        console.log("find photo item:-", response.data.data);
         const pageCount = response.data.total_data / itemsPerPage;
         setPageCount(pageCount);
         setIsLoading(false);
@@ -640,7 +642,102 @@ const Index = ({ route, navigation }) => {
     }
   };
 
-  
+  const getDocumentList = async (offset) => {
+    const authToken = await AsyncStorage.getItem("userToken");
+    try {
+      setIsLoading(true);
+      const headers = {
+        Authorization: `Bearer ${authToken}`,
+      };
+      const params = {
+        filetype: "document",
+        limit: itemsPerPage,
+        offset: offset,
+      };
+      const response = await apiCall(
+        "POST",
+        apiEndPoints.GETVIDEODOCUMENTDATA,
+        params,
+        headers
+      );
+      if (response.status === 200) {
+        setDocumentListData(response.data.data);
+        console.log("find document item:-", response.data.data);
+        const pageCount = response.data.total_data / itemsPerPage;
+        setPageCount(pageCount);
+        setIsLoading(false);
+      } else {
+        setIsLoading(false);
+        setDocumentListData([]);
+      }
+    } catch (error) {
+      console.log("error in catch", error);
+    }
+  };
+
+  const getOfferList = async (offset) => {
+    const authToken = await AsyncStorage.getItem("userToken");
+    try {
+      setIsLoading(true);
+      const headers = {
+        Authorization: `Bearer ${authToken}`,
+      };
+      const params = {
+        limit: itemsPerPage,
+        offset: offset,
+      };
+      const response = await apiCall(
+        "POST",
+        apiEndPoints.GETBUSINESSOFFERlIST,
+        params,
+        headers
+      );
+      if (response.status === 200) {
+        setOfferListData(response.data.data);
+        console.log("find offer item:-", response.data.data);
+        const pageCount = response.data.total_data / itemsPerPage;
+        setPageCount(pageCount);
+        setIsLoading(false);
+      } else {
+        setIsLoading(false);
+        setOfferListData([]);
+      }
+    } catch (error) {
+      console.log("error in catch", error);
+    }
+  };
+
+  const getJobList = async (offset) => {
+    const authToken = await AsyncStorage.getItem("userToken");
+    try {
+      setIsLoading(true);
+      const headers = {
+        Authorization: `Bearer ${authToken}`,
+      };
+      const params = {
+        limit: itemsPerPage,
+        offset: offset,
+      };
+      const response = await apiCall(
+        "POST",
+        apiEndPoints.GETBUSINESSJOBLIST,
+        params,
+        headers
+      );
+      if (response.status === 200) {
+        setJobListData(response.data.data);
+        console.log("find job item:-", response.data.data);
+        const pageCount = response.data.total_data / itemsPerPage;
+        setPageCount(pageCount);
+        setIsLoading(false);
+      } else {
+        setIsLoading(false);
+        setJobListData([]);
+      }
+    } catch (error) {
+      console.log("error in catch", error);
+    }
+  };
 
   return (
     <Fragment>
@@ -673,9 +770,16 @@ const Index = ({ route, navigation }) => {
         industryList={industryList}
         getServiceList={getServiceList}
         videoListData={videoListData}
+        itemOffset={itemOffset}
         getVideoList={getVideoList}
         getPhotoList={getPhotoList}
         photoListData={photoListData}
+        getDocumentList={getDocumentList}
+        documentListData={documentListData}
+        getOfferList={getOfferList}
+        offerListData={offerListData}
+        getJobList={getJobList}
+        jobListData={jobListData}
         paymentMethods={paymentMethod}
         handleCheckBoxChange={handleCheckBoxChange}
         contactoption={contactoption}
