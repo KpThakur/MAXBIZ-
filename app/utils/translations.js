@@ -97,6 +97,7 @@ const StringsOfLanguages = new LocalizedStrings({
     ABOUT_YOUR_BUSINESS: "About Your Business",
     ADDRESS: "Address",
     HEAD: "Head Count",
+    CERTIFICATE: "Certificate",
     HOURS_OF_OPERATION: "Hours of operation",
     WEBSITE_URL: "Website URL",
     YOUR_FIRST_NAME: "Your First Name",

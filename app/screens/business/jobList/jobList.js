@@ -41,13 +41,8 @@ const JobList = ({ filetype, getJobList, jobListData }) => {
   //  console.log("image in state ", image)
   const [bucket_Img_url_Modal, setBucket_Img_url_Modal] = useState();
   const [title, setTitle] = useState("");
-  const [offerId, setOfferId] = useState("");
+  const [jobId, setJobId] = useState("");
 
-  const [job, setJob] = useState({
-    job: "",
-  });
-
-  console.log("find job", job);
   const [editData, setEditData] = useState({
     title: "",
     filetype: "job",
@@ -146,12 +141,11 @@ const JobList = ({ filetype, getJobList, jobListData }) => {
     typecheck === 1 ? setViewModel(!viewModel) : setDeleteModel(!deleteModel);
   };
 
-  const handleDeleteModal = (fileid, filetype, offerId) => {
+  const handleDeleteModal = (jobId) => {
     setDeleteModel(!deleteModel);
-    setSelectFileid(fileid);
-    setOfferId(offerId);
+    setJobId(jobId);
 
-    console.log("find select fileid", fileid);
+    console.log("find jobId ", jobId);
   };
 
   const getImage = async (param) => {
@@ -203,6 +197,125 @@ const JobList = ({ filetype, getJobList, jobListData }) => {
       }
     } catch (error) {
       console.log("error in catch getImageModal");
+    }
+  };
+
+  const handleAddJob = async () => {
+    if (formValidation() && checkcountvalidation()) {
+      console.log("🚀 ~ handleAddJob ~ editData:", editData);
+
+      const param = {
+        occupation_id: editData.occupation_id,
+        title: editData.name,
+        createddate: "15-06-2024",
+        expirationdate: "30-06-2024",
+        description: editData.description,
+      };
+      const headers = {
+        "content-type": "multipart/form-data",
+      };
+
+      try {
+        const { data } = await apiCall(
+          "POST",
+          apiEndPoints.ADDJOB,
+          param,
+          headers
+        );
+        console.log("🚀 ~ handleAddOffer ~ data:", data);
+        if (data.status === 200) {
+          setIsLoading(false);
+          setEditStatus(false);
+          cleanSetEditData();
+          setViewModel(false);
+          showMessage({
+            message: data.message,
+            type: "success",
+            duration: 3000,
+          });
+        } else {
+          console.log("api in else handleAddPhoto", data);
+        }
+      } catch (error) {
+        console.log("catch error", error);
+        setIsLoading(false);
+      }
+    } else {
+      setIsLoading(false);
+      console.log("validation failed");
+    }
+  };
+  const updateJob = async () => {
+    if (!formValidation()) {
+      setIsLoader(true);
+      const param = {
+        occupation_id: editData.occupation_id,
+        title: editData.title,
+        createddate: editData.createddate,
+        expirationdate: editData.expirationdate,
+        description: editData.description,
+        jobid: editData.jobid,
+      };
+      try {
+        const { data } = await apiCall("POST", apiEndPoints.UPDATEJOB, param);
+        if (data.status === 200) {
+          setIsLoading(false);
+          getJobList();
+          setViewModel(false);
+          showMessage({
+            message: data.message,
+            type: "success",
+            duration: 3000,
+          });
+          cleanSetEditData();
+        } else {
+          setIsLoading(false);
+          console.log("api in else updateVideo", data);
+        }
+      } catch (error) {
+        setIsLoading(false);
+      }
+    } else {
+      console.log("validation failed");
+    }
+  };
+
+  const deleteJob = async (jobId) => {
+    const params = {
+      jobid: jobId,
+    };
+
+    console.log("jobid: jobid", jobId);
+    const headers = {
+      "content-type": "multipart/form-data",
+    };
+    try {
+      const response = await apiCall(
+        "POST",
+        apiEndPoints.JOBDELETE,
+        params,
+        headers
+      );
+      // console.log("responce ", response);
+      if (response.status === 200) {
+        getJobList();
+        showMessage({
+          message: response.data.message,
+          type: "success",
+          duration: 3000,
+        });
+        setEditData({});
+        cleanSetEditData();
+      } else {
+        showMessage({
+          message: response.data.message,
+          type: "danger",
+          duration: 3000,
+        });
+        console.log("in else ", response.data);
+      }
+    } catch (error) {
+      console.log("error in catch", error);
     }
   };
 
@@ -258,7 +371,7 @@ const JobList = ({ filetype, getJobList, jobListData }) => {
         <TouchableOpacity
           onPress={() =>
             // Viewmodelshow(2)
-            handleDeleteModal(item?.fileid, item?.filetype, item?.Offerid)
+            handleDeleteModal(item?.jobId)
           }
           style={styles.mainvideoview}
         >
@@ -294,8 +407,8 @@ const JobList = ({ filetype, getJobList, jobListData }) => {
             setEditData={setEditData}
             onPress={() => {
               editData?.fileid && editData?.fileid != ""
-                ? updateOffer()
-                : handleAddOffer();
+                ? updateJob()
+                : handleAddJob();
             }}
             inputError={inputError}
             cleanSetEditData={cleanSetEditData}
@@ -310,8 +423,9 @@ const JobList = ({ filetype, getJobList, jobListData }) => {
             setDeleteModel={setDeleteModel}
             filetype={filetype}
             fileid={selectfileid}
-            deleteOffer={deleteOffer}
+            deleteVideo={deleteJob}
             offerId={offerId}
+            jobId={jobId}
           />
         )}
       </View>

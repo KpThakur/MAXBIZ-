@@ -31,6 +31,7 @@ const viewModel = ({
   cleanSetEditData,
   viewphotoselect,
   uploaddocument,
+  fileid,
 }) => {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [videoData, setVideoData] = useState({
@@ -190,18 +191,20 @@ const viewModel = ({
                   />
                 </View>
               )}
-              <View style={style.input}>
-                <Input
-                  onChangeText={(val) =>
-                    setEditData({
-                      ...editData,
-                      createddate: val,
-                    })
-                  }
-                  value={editData.createddate}
-                  placeholder={StringsOfLanguages.ENTER_DATE}
-                />
-              </View>
+              {filetype !== "photo" && filetype !== "video" && (
+                <View style={style.input}>
+                  <Input
+                    onChangeText={(val) =>
+                      setEditData({
+                        ...editData,
+                        createddate: val,
+                      })
+                    }
+                    value={editData.createddate}
+                    placeholder={StringsOfLanguages.ENTER_DATE}
+                  />
+                </View>
+              )}
             </View>
           </View>
 

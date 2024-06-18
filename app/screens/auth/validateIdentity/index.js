@@ -105,7 +105,7 @@ const ValidtIdntyView = ({ navigation }) => {
         if (response.status === 200) {
           console.log(" fin Response in validate email.....:", response.data);
           setIsLoading(false);
-          console.log("find validate:-",response.data.data.indentityValidated )
+        //  console.log("find validate:-",response.data.data.indentityValidated )
           if (response.data.data.indentityValidated === 0) {
             navigation.navigate("otpVerifyScreen", {
               loginData: loginData?.email,

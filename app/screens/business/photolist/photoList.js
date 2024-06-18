@@ -245,34 +245,38 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
       // setIsLoader(true);
       photoData.append("name", editData?.name);
       photoData.append("filetype", "photo");
-      photoData.append("photo", photo?.path);
-      console.log("🚀 ~ handleAddPhoto ~ photo:", photo?.path);
+      photoData.append("photo", photo);
+      console.log("🚀 ~ handleAddPhoto ~ photo:", photo);
       photoData.append("createddate", moment(new Date()).format("MM-DD-YYYY"));
       photoData.append("islogo", editData?.islogo ? editData?.islogo : false);
       console.log("🚀 ~ handleAddPhoto ~ photoData:", photoData);
 
+      const headers = {
+        "content-type": "multipart/form-data",
+      };
       try {
-        const { response } = await apiCall(
+        const { data } = await apiCall(
           "POST",
           apiEndPoints.ADDVIDEOFILE,
-          photoData
+          photoData,
+          headers
         );
-        console.log("🚀 ~ handleAddPhoto ~ response:", response);
-        if (response.status === 200) {
+        console.log("🚀 ~ handleAddPhoto ~ response:", data);
+        if (data.status === 200) {
           setIsLoading(false);
           setEditStatus(false);
           cleanSetEditData();
           setViewModel(false);
           showMessage({
-            message: response.data.message,
+            message: data.message,
             type: "success",
             duration: 3000,
           });
         } else {
-          console.log("api in else handleAddPhoto", response.data);
+          console.log("api in else handleAddPhoto", data);
         }
       } catch (error) {
-        console.log("catch error", error);
+        console.log("🚀 ~ handleAddPhoto ~ error:", error);
         setIsLoading(false);
       }
     } else {
@@ -282,7 +286,7 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
   };
 
   const updatePhoto = async () => {
-    if (!editFormValidation()) {
+    if (formValidation()) {
       setIsLoader(true);
       const photoData = new FormData();
       photoData.append("name", editData.title);
@@ -292,7 +296,7 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
       photoData.append("fileid", editData.fileid);
       photoData.append("islogo", editData.islogo ? editData.islogo : false);
       try {
-        const { response } = await apiCall(
+        const response = await apiCall(
           "POST",
           apiEndPoints.UPDATEVIDEOFILE,
           photoData
@@ -456,7 +460,7 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
             setDeleteModel={setDeleteModel}
             filetype={filetype}
             fileid={selectfileid}
-            deletePhoto={deletePhoto}
+            deleteVideo={deletePhoto}
           />
         )}
       </View>

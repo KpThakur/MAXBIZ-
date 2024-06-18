@@ -27,6 +27,7 @@ const deleteModel = ({
   deleteVideo,
   fileid,
   offerId,
+  jobId,
 }) => {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [videoData, setVideoData] = useState({
@@ -58,8 +59,9 @@ const deleteModel = ({
   }, []);
 
   const deletecontent = () => {
+    console.log("🚀 ~ deletecontent ~ fileid:", fileid);
     setDeleteModel(!deleteModel);
-    deleteVideo(fileid, filetype, offerId);
+    deleteVideo(fileid, filetype, offerId, jobId);
   };
 
   return (

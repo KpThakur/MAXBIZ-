@@ -121,10 +121,10 @@ const OfferList = ({ filetype, getOfferList, offerListData }) => {
 
   function formValidation() {
     let errorname = "";
-    let errordescription = "";
-    let errorcreateddate = "";
-    let errorexpirationdate = "";
-    let erroreditDocument = "";
+    // let errordescription = "";
+    // let errorcreateddate = "";
+    // let errorexpirationdate = "";
+    let erroroffer = "";
 
     if (!editData?.name) {
       errorname = "title is required";
@@ -137,24 +137,18 @@ const OfferList = ({ filetype, getOfferList, offerListData }) => {
 
     setinputError({
       errorname,
-      errordescription,
-      errorcreateddate,
-      errorexpirationdate,
-      erroreditDocument,
+      // errordescription,
+      // errorcreateddate,
+      // errorexpirationdate,
+      erroroffer,
     });
 
-    return (
-      !errorname &&
-      !errorcreateddate &&
-      !errordescription &&
-      !errorexpirationdate &&
-      !erroreditDocument
-    );
+    return !errorname && !erroroffer;
   }
 
   const checkcountvalidation = () => {
+    return true;
     if (offerListData.length < offerNumberValidation?.number) {
-      return true;
     } else {
       Alert.alert(
         "Oops...",
@@ -262,34 +256,45 @@ const OfferList = ({ filetype, getOfferList, offerListData }) => {
   const handleAddOffer = async () => {
     if (formValidation() && checkcountvalidation()) {
       const offerData = new FormData();
-      setIsLoader(true);
+      console.log("🚀 ~ handleAddOffer ~ editData:", editData);
+      // setIsLoading(true);
       offerData.append("name", editData?.name);
-      offerData.append("offerfile", offerfile);
-      offerData.append("expirationdate", editData?.expirationdate);
-      offerData.append("createddate", editData?.createddate);
-      offerData.append("description", editData?.description);
+      offerData.append("offerfile", offer);
+      // offerData.append("createddate", editData?.createddate);
+      offerData.append("createddate", "15-06-2024");
+      // offerData.append("expirationdate", editData?.expirationdate);
+      offerData.append("expirationdate", "30-06-2024");
+      // offerData.append("description", editData?.description);
+      offerData.append("description", "demo offer");
+      console.log("🚀 ~ handleAddOffer ~ offerData:", offerData);
+
+      const headers = {
+        "content-type": "multipart/form-data",
+      };
 
       try {
         const { data } = await apiCall(
           "POST",
           apiEndPoints.ADDOFFER,
-          offerData
+          offerData,
+          headers
         );
+        console.log("🚀 ~ handleAddOffer ~ data:", data);
         if (data.status === 200) {
           setIsLoading(false);
           setEditStatus(false);
           cleanSetEditData();
           setViewModel(false);
           showMessage({
-            message: response.data.message,
+            message: data.message,
             type: "success",
             duration: 3000,
           });
         } else {
-          console.log("api in else handleAddPhoto", response.data);
+          console.log("api in else handleAddPhoto", data);
         }
       } catch (error) {
-        console.log("catch error", error);
+        console.log("🚀 ~ handleAddOffer ~ error:", error);
         setIsLoading(false);
       }
     } else {
@@ -325,14 +330,14 @@ const OfferList = ({ filetype, getOfferList, offerListData }) => {
           getOfferList();
           setViewModel(false);
           showMessage({
-            message: response.data.message,
+            message: data.message,
             type: "success",
             duration: 3000,
           });
           cleanSetEditData();
         } else {
           setIsLoading(false);
-          console.log("api in else updateVideo", response.data);
+          console.log("api in else updateVideo", data);
         }
       } catch (error) {
         setIsLoading(false);
@@ -350,9 +355,16 @@ const OfferList = ({ filetype, getOfferList, offerListData }) => {
 
     console.log("find file id:-", fileid);
     console.log("find filetype:-", filetype);
-
+    const headers = {
+      "content-type": "multipart/form-data",
+    };
     try {
-      const response = await apiCall("POST", apiEndPoints.OFFERDELETE, params);
+      const response = await apiCall(
+        "POST",
+        apiEndPoints.OFFERDELETE,
+        params,
+        headers
+      );
       // console.log("responce ", response);
       if (response.status === 200) {
         getOfferList();
@@ -470,7 +482,7 @@ const OfferList = ({ filetype, getOfferList, offerListData }) => {
             inputError={inputError}
             cleanSetEditData={cleanSetEditData}
             viewphotoselect={true}
-            uploadoffer={uploadoffer}
+            uploaddocument={uploadoffer}
             handlePhotoFileSize={handlePhotoFileSize}
           />
         )}
@@ -480,7 +492,7 @@ const OfferList = ({ filetype, getOfferList, offerListData }) => {
             setDeleteModel={setDeleteModel}
             filetype={filetype}
             fileid={selectfileid}
-            deleteOffer={deleteOffer}
+            deleteVideo={deleteOffer}
             offerId={offerId}
           />
         )}

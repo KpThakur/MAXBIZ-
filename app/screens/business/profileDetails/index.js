@@ -15,24 +15,26 @@ import { showMessage, hideMessage } from "react-native-flash-message";
 import Loader from "../../../components/loader";
 import { RegisterDataContext } from "../../../utils/searchContext";
 import StringsOfLanguages from "../../../utils/translations";
-import { Alert } from "react-native";
+import ImagePicker from "react-native-image-crop-picker";
+import { Alert, Linking } from "react-native";
 const Index = ({ route, navigation }) => {
   const { profileid } = route?.params || {};
   const [inputError, setinputError] = useState({});
   const [userData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [paymentLists, setPaymentLists] = useState({});
-  console.log("paymentLists .. : ", paymentLists);
+  // console.log("paymentLists .. : ", paymentLists);
   const [showCall, setShowCall] = useState(false);
   const [showText, setShowText] = useState(false);
   const [showEmail, setShowEmail] = useState(false);
   const [isNonProfit, setIsNonProfit] = useState(false);
   const [isMinority, setIsMinority] = useState(false);
-  const [value, setValue] = useState({});
-  console.log("fin payment value......: ", value);
+  const [paymentvalue, setPaymentValue] = useState("");
+  // console.log("fin payment value......: ", paymentvalue);
   const [allCity, setAllCity] = useState([]);
   const [serviceList, setServiceList] = useState([]);
   const [selectedOption, setSelectedOption] = useState([]);
+  console.log("selectedOption: ", selectedOption);
   const [industryList, setIndustryList] = useState([]);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [videoListData, setVideoListData] = useState([]);
@@ -44,14 +46,55 @@ const Index = ({ route, navigation }) => {
   const [jobListData, setJobListData] = useState([]);
 
   const [bucketcertificate, setBucketcertificate] = useState("");
-  const [bucket_Img_url, setBucket_Img_url] = useState("images/no_image.png");
+  const [extractedCertificate, setExtractedCertificate] = useState("");
+
+  const [bucket_Img_url, setBucket_Img_url] = useState("");
+  const [filepath, setfilepath] = useState("");
+
+  // console.log('extractedCertificate: ', extractedCertificate);
+  // console.log("bucketcertificate: ", bucketcertificate);
+  console.log("bucket_Img_url: ", bucket_Img_url);
+  //  console.log("filepath: ", filepath);
+
   const [baseUrl, setBaseUrl] = useState("");
+  const [profileLoader, setProfileLoader] = useState("");
+  const [ProfileModal, setProfileModal] = useState(false);
 
   const toggleShowCall = () => setShowCall(!showCall);
   const toggleShowText = () => setShowText(!showText);
   const toggleShowEmail = () => setShowEmail(!showEmail);
   const toggleIsNonProfit = () => setIsNonProfit(!isNonProfit);
   const toggleIsMinority = () => setIsMinority(!isMinority);
+
+  const onLoadProfileStart = () => {
+    setProfileLoader(true);
+  };
+  const onLoadProfileEnd = () => {
+    setProfileLoader(false);
+  };
+
+  const openAlbum = () => {
+    ImagePicker.openPicker({
+      height: 50,
+      width: 50,
+    }).then((image) => {
+      setProfileModal(false);
+      setBucket_Img_url(image.path);
+      setfilepath(image);
+    });
+  };
+  const openMainCamera = () => {
+    ImagePicker.openCamera({
+      width: 300,
+      height: 400,
+      cropping: true,
+    }).then((image) => {
+      setProfileModal(false);
+      setBucket_Img_url(image.path);
+      setfilepath(image);
+      console.log(image);
+    });
+  };
 
   const [businessDetail, setBusinessDetail] = useState({
     fullname: "",
@@ -60,12 +103,17 @@ const Index = ({ route, navigation }) => {
     city_name: "",
     services: "",
     serviceid: "",
-    servicename: "",
+    industry_name: "",
     head_count: "",
     hours: "",
     websiteurl: "",
+    phone: "",
+    email: "",
   });
-  // console.log("find fullname #####...", businessDetail?.fullname)
+  console.log(
+    "find businessDetail.servicename #####...",
+    businessDetail?.city_name
+  );
 
   const [paymentMethod, setPaymentMethods] = useState({
     cash: 0,
@@ -78,10 +126,21 @@ const Index = ({ route, navigation }) => {
   // console.log("find paymentme......:..." ,JSON.stringify(paymentMethod))
 
   const handleCheckBoxChange = (method) => (newValue) => {
-    setPaymentMethods((prevState) => ({
-      ...prevState,
-      [method]: newValue ? 1 : 0,
-    }));
+    setPaymentMethods((prevState) => {
+      const updatedMethods = {
+        ...prevState,
+        [method]: newValue ? 1 : 0,
+      };
+
+      if (Object.values(updatedMethods).some((value) => value === 1)) {
+        setinputError((prevState) => ({
+          ...prevState,
+          errorpaymentcheckbox: "",
+        }));
+      }
+
+      return updatedMethods;
+    });
   };
 
   const [contactoption, setContackOption] = useState({
@@ -92,11 +151,29 @@ const Index = ({ route, navigation }) => {
     is_minority: 0,
   });
 
+  // const handleContackCheckBoxChange = (method) => (newValue) => {
+  //   setContackOption((prevState) => ({
+  //     ...prevState,
+  //     [method]: newValue ? 1 : 0,
+  //   }));
+  // };
+
   const handleContackCheckBoxChange = (method) => (newValue) => {
-    setContackOption((prevState) => ({
-      ...prevState,
-      [method]: newValue ? 1 : 0,
-    }));
+    setContackOption((prevState) => {
+      const updatedOptions = {
+        ...prevState,
+        [method]: newValue ? 1 : 0,
+      };
+
+      if (Object.values(updatedOptions).some((value) => value === 1)) {
+        setinputError((prevState) => ({
+          ...prevState,
+          contactOptionsError: "",
+        }));
+      }
+
+      return updatedOptions;
+    });
   };
 
   const setContactResponse = (response) => {
@@ -108,40 +185,64 @@ const Index = ({ route, navigation }) => {
       is_minority: response.data.data?.is_minority,
     });
   };
-  // console.log("find contactoption @@......:...:-", contactoption);
+  // console.log("find contactoption @@......:...:-", contactoption?.showemail);
   // console.log("check city id :-", allCity);
   // console.log("check contact  option :-", contactoption)
 
   const getuserData = async () => {
-    const userToken = await AsyncStorage.getItem("userToken");
-    console.log("find userToken......: ", userToken);
-    if (userToken !== null) {
-      const userData = await AsyncStorage.getItem("userData");
-      console.log("find userdata in asyn.....:: ", userData);
-      setUserData(JSON.parse(userData));
-      // getBusinessdetail();
+    try {
+      const userToken = await AsyncStorage.getItem("userToken");
+      console.log("find userToken......: ", userToken);
+      if (userToken !== null) {
+        const userDataString = await AsyncStorage.getItem("userData");
+        console.log("find userdata in asyn.....:: ", userDataString);
+        if (userDataString) {
+          const userData = JSON.parse(userDataString);
+          setUserData(userData);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
     }
   };
 
   useFocusEffect(
     React.useCallback(() => {
       getuserData();
-    }, [navigation])
+    }, [])
   );
+
+  useEffect(() => {
+    if (userData) {
+      getBusinessdetail(userData);
+    }
+  }, [userData]);
 
   useEffect(() => {
     const paydata = businessDetail?.payments
       ? JSON.parse(businessDetail?.payments)
       : {};
     setPaymentLists(paydata);
-    paymentExtract();
-  }, [navigation]);
+  }, [businessDetail]);
 
   useEffect(() => {
-    getBusinessdetail();
-  }, []);
+    paymentExtract();
+  }, [paymentLists]);
 
-  const getBusinessdetail = async () => {
+  useEffect(() => {
+    if (bucketcertificate) {
+      const extracted = bucketcertificate.split("attachments/")[1];
+      setExtractedCertificate(extracted);
+    }
+  }, [bucketcertificate]);
+
+  const handlePress = () => {
+    Linking.openURL(bucketcertificate).catch((err) =>
+      console.error("Couldn't load page", err)
+    );
+  };
+
+  const getBusinessdetail = async (userData) => {
     try {
       setIsLoading(true);
       const parms = {
@@ -161,13 +262,13 @@ const Index = ({ route, navigation }) => {
         parms,
         header
       );
-      // console.log(" Api responce:----", response.data);
+      //  console.log(" Api responce:----", response.data.data);
       if (response.status === 200) {
         setIsLoading(false);
         setBusinessDetail(response.data.data);
         setPaymentMethods(JSON.parse(response.data.data?.payments));
         setContactResponse(response);
-        console.log("find bussiness data.....:", response.data.data?.showcall);
+        console.log("find bussiness data.....:", response.data.data);
         await AsyncStorage.setItem(
           "allinformation",
           String(response.data.data.allinformation)
@@ -201,7 +302,6 @@ const Index = ({ route, navigation }) => {
     setRefreshing(true);
     setTimeout(() => {
       getuserData();
-      getBusinessdetail();
       setRefreshing(false);
     }, 2000);
   }, []);
@@ -209,6 +309,8 @@ const Index = ({ route, navigation }) => {
   function validationFrom() {
     let errorfullname = "";
     let erroraddress = "";
+    let errorphone = "";
+    let erroremail = "";
     let errorcity_name = "";
     let errorservices = "";
     let errorindustry_name = "";
@@ -225,13 +327,24 @@ const Index = ({ route, navigation }) => {
       if (!businessDetail.address) {
         erroraddress = StringsOfLanguages.PLEASE_ENTER_ADDRESS;
       }
+      if (!businessDetail.phone) {
+        errorphone = StringsOfLanguages.PLEASE_ENTER_MOBILE_NUMBER;
+      } else if (!/^\d{10,15}$/.test(businessDetail.phone)) {
+        errorphone = "Phone number length should be 10 to 15 digit!";
+      }
+      // if (!businessDetail.phone) {
+      //   errorphone = StringsOfLanguages.PLEASE_ENTER_MOBILE_NUMBER;
+      // }
+      if (!businessDetail.email) {
+        erroremail = StringsOfLanguages.PLEASE_ENTER_EMAIL;
+      }
       if (!businessDetail.city_name) {
         errorcity_name = StringsOfLanguages.PLEASE_SELECT_CITY;
       }
       if (!businessDetail.services) {
         errorservices = StringsOfLanguages.PLEASE_ENTER_OCCUPTION;
       }
-      if (!businessDetail.servicename) {
+      if (!businessDetail.industry_name) {
         errorindustry_name = StringsOfLanguages.PLEASE_SELECT_INDUSTRY;
       }
       if (!businessDetail.hours) {
@@ -244,11 +357,11 @@ const Index = ({ route, navigation }) => {
       //   errorpaymentcheckbox = "Please select at least one payment method";
       // }
       if (
-        !businessDetail.cash &&
-        !businessDetail.creditcard &&
-        !businessDetail.cashapp &&
-        !businessDetail.paypal &&
-        !businessDetail.zelle
+        !paymentMethod.cash &&
+        !paymentMethod.creditcard &&
+        !paymentMethod.cashapp &&
+        !paymentMethod.paypal &&
+        !paymentMethod.zelle
       ) {
         errorpaymentcheckbox = "Please select at least one payment method";
       }
@@ -256,11 +369,11 @@ const Index = ({ route, navigation }) => {
       //   contactOptionsError = "Please select at least one contact option";
       // }
       if (
-        !businessDetail.showcall &&
-        !businessDetail.showtext &&
-        !businessDetail.showemail &&
-        !businessDetail.is_nonprofit &&
-        !businessDetail.is_minority
+        !contactoption.showcall &&
+        !contactoption.showtext &&
+        !contactoption.showemail &&
+        !contactoption.is_nonprofit &&
+        !contactoption.is_minority
       ) {
         contactOptionsError = "Please select at least one option";
       }
@@ -271,6 +384,8 @@ const Index = ({ route, navigation }) => {
     setinputError({
       errorfullname,
       erroraddress,
+      errorphone,
+      erroremail,
       errorcity_name,
       errorservices,
       errorindustry_name,
@@ -284,6 +399,8 @@ const Index = ({ route, navigation }) => {
     return (
       !errorfullname &&
       !erroraddress &&
+      !errorphone &&
+      !erroremail &&
       !errorcity_name &&
       !errorservices &&
       !errorindustry_name &&
@@ -300,6 +417,11 @@ const Index = ({ route, navigation }) => {
     setBusinessDetail((prevbusinessDetail) => ({
       ...prevbusinessDetail,
       [field]: value,
+    }));
+
+    setinputError((prevState) => ({
+      ...prevState,
+      [`error${field}`]: "", // Reset the error for the specific field
     }));
   };
 
@@ -333,7 +455,7 @@ const Index = ({ route, navigation }) => {
     }
 
     const value = paymentMethods.join(", ");
-    setValue(value);
+    setPaymentValue(value);
   };
 
   // console.log("find userData in profileid>>>", businessDetail);
@@ -385,19 +507,24 @@ const Index = ({ route, navigation }) => {
           parms
         );
         if (response.status === 200) {
-          const formattedCityData = response.data.data.map((city) => ({
-            ...city,
-            formattedLabel: `${city.city || ""}, ${city.state_id || ""}`,
-          }));
-          // setAllCity(response.data.data)
-          console.log("responce City:-", response.data);
-          setAllCity(formattedCityData);
-          console.log("city find:-", response.data);
+          if (Array.isArray(response.data.data)) {
+            const formattedCityData = response.data.data.map((city) => ({
+              ...city,
+              formattedLabel: `${city.city || ""}, ${city.state_id || ""}`,
+            }));
+            setAllCity(formattedCityData);
+          } else {
+            console.error("Error: response.data.data is not an array");
+            setAllCity([]); // Reset the city list in case of invalid data
+          }
+          console.log("response City:", response.data);
         } else {
-          console.log("in else");
+          console.log("Response status not 200");
+          setAllCity([]); // Reset the city list in case of an unsuccessful response
         }
       } catch (error) {
         console.error("Error in cityname:", error);
+        setAllCity([]); // Reset the city list in case of an error
       }
     }
   };
@@ -460,7 +587,7 @@ const Index = ({ route, navigation }) => {
     const valid = validationFrom();
 
     const plantype = await AsyncStorage.getItem("plan_type");
-    // console.log("find plantype>>>", plantype);
+    console.log("find plantype>>>", plantype);
 
     const result = [];
     selectedOption.map((item, index) => {
@@ -471,10 +598,10 @@ const Index = ({ route, navigation }) => {
       });
     });
     const stringData = result.join(",");
-    // console.log("The result ===>>", stringData);
+    console.log("The result ===>>", stringData);
 
     const authToken = await AsyncStorage.getItem("userToken");
-    // console.log("authtoken,,,,", authToken);
+    console.log("authtoken,,,,", authToken);
 
     if (valid) {
       setIsLoading(true);
@@ -507,7 +634,7 @@ const Index = ({ route, navigation }) => {
       businessData.append("county", "1");
       businessData.append("state", "1");
       businessData.append("industry", businessDetail?.serviceid);
-      businessData.append("industry_name", businessDetail?.servicename);
+      businessData.append("industry_name", businessDetail?.industry_name);
       businessData.append("year_revenue", businessDetail?.year_revenue);
       businessData.append("plan_type", plantype);
       businessData.append(
@@ -520,7 +647,7 @@ const Index = ({ route, navigation }) => {
       businessData.append("twitterurl", businessDetail?.twitterurl);
       businessData.append("youtubeurl", businessDetail?.youtubeurl);
       businessData.append("instagramurl", businessDetail?.instagramurl);
-      businessData.append("photofile", businessDetail?.photofile);
+      businessData.append("photofile", bucket_Img_url);
       businessData.append("certificate", businessDetail?.certificate);
       businessData.append("is_nonprofit", contactoption?.is_nonprofit);
       businessData.append("is_minority", contactoption?.is_minority);
@@ -534,26 +661,26 @@ const Index = ({ route, navigation }) => {
       };
 
       try {
-        const responce = await apiCall(
+        const response = await apiCall(
           "POST",
           apiEndPoints.BUSINESSDETAILUPDATE,
           businessData,
           headers
         );
-
-        if (responce.status === 200) {
+        console.log("submit for update responce >>>>", response);
+        if (response.status === 200) {
           setIsLoading(false);
           getBusinessdetail();
           showMessage({
-            message: responce.data.message,
+            message: response.data.message,
             type: "success",
             duration: 3000,
           });
-          console.log("submit for update >>>>", responce.data);
+          console.log("submit for update 200>>>>", response.data);
         } else {
           setIsLoading(false);
           showMessage({
-            message: responce.data.message,
+            message: response.data.message,
             type: "danger",
             duration: 3000,
           });
@@ -748,7 +875,7 @@ const Index = ({ route, navigation }) => {
         refreshing={refreshing}
         onRefresh={onRefresh}
         handleChange={handleChange}
-        value={value}
+        paymentvalue={paymentvalue}
         handleChangenaics={handleChangenaics}
         bussinessFormUpdate={bussinessFormUpdate}
         showCall={showCall}
@@ -784,6 +911,16 @@ const Index = ({ route, navigation }) => {
         handleCheckBoxChange={handleCheckBoxChange}
         contactoption={contactoption}
         handleContackCheckBoxChange={handleContackCheckBoxChange}
+        onLoadProfileStart={onLoadProfileStart}
+        onLoadProfileEnd={onLoadProfileEnd}
+        profileLoader={profileLoader}
+        bucket_Img_url={bucket_Img_url}
+        setProfileModal={setProfileModal}
+        ProfileModal={ProfileModal}
+        openAlbum={openAlbum}
+        openMainCamera={openMainCamera}
+        extractedCertificate={extractedCertificate}
+        handlePress={handlePress}
       />
       {/* <CommingSoon /> */}
     </Fragment>

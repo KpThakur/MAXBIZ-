@@ -3,7 +3,11 @@ import { AuthContext } from "../utils/UserContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { DrawerContentScrollView } from "@react-navigation/drawer";
-import { FONT_FAMILY_SEMIBOLD, GRADIENT_COLOR_NEW3, WHITE_COLOR } from "../utils/constants";
+import {
+  FONT_FAMILY_SEMIBOLD,
+  GRADIENT_COLOR_NEW3,
+  WHITE_COLOR,
+} from "../utils/constants";
 import { scale } from "@utils/utils";
 import { Avatar, Text } from "react-native-paper";
 import home from "../assets/images/home.png";
@@ -24,13 +28,13 @@ const customMenu = (props) => {
   const [loginStatus, setloginStatus] = useState(false);
   const [userData, setUserData] = useState({});
 
- // console.log("userdata:-", userData)
+  // console.log("userdata:-", userData)
 
   /* const userToken =  JSON.parse(AsyncStorage.getItem('userToken')); */
 
   const getuserData = async () => {
-    const userToken  = await AsyncStorage.getItem('userToken');
-   
+    const userToken = await AsyncStorage.getItem("userToken");
+
     if (userToken !== null) {
       const userData = await AsyncStorage.getItem("userData");
       setUserData(JSON.parse(userData));
@@ -56,8 +60,13 @@ const customMenu = (props) => {
           >
             <Image
               //  source={require("../assets/images/Vector.png")}
-             source={ICONS.close_New}
-             style={{ width: scale(28), height: scale(28) , tintColor: WHITE_COLOR , resizeMode: "contain"}}
+              source={ICONS.close_New}
+              style={{
+                width: scale(28),
+                height: scale(28),
+                tintColor: WHITE_COLOR,
+                resizeMode: "contain",
+              }}
             />
           </TouchableOpacity>
 
@@ -97,10 +106,15 @@ const customMenu = (props) => {
                 }}
               >
                 <View style={{ flexDirection: "row", padding: scale(10) }}>
-                  <Image 
-                  // source={home}
-                  source={ICONS.homeIcon}
-                  style={{ width: scale(20), height: scale(20) , tintColor: WHITE_COLOR , resizeMode:'contain' }}
+                  <Image
+                    // source={home}
+                    source={ICONS.homeIcon}
+                    style={{
+                      width: scale(20),
+                      height: scale(20),
+                      tintColor: WHITE_COLOR,
+                      resizeMode: "contain",
+                    }}
                   />
                   <Text
                     style={{
@@ -130,11 +144,15 @@ const customMenu = (props) => {
                 }}
               >
                 <View style={{ flexDirection: "row", padding: scale(10) }}>
-                  <Image 
-                  // source={user} 
-                  source={ICONS.joinIcon}
-                  style={{ width: scale(20), height: scale(20) , tintColor: WHITE_COLOR , resizeMode:'contain' }}
-
+                  <Image
+                    // source={user}
+                    source={ICONS.joinIcon}
+                    style={{
+                      width: scale(20),
+                      height: scale(20),
+                      tintColor: WHITE_COLOR,
+                      resizeMode: "contain",
+                    }}
                   />
                   <Text
                     style={{

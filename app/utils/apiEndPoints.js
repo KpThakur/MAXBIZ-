@@ -23,16 +23,19 @@ export default {
   REGISTERBUSINESSDETAIL: "userAuth/registerBusinessDetail",
   GETSERVICELIST: "master/getServiceList",
   FORGOTPASSWORD: "userAuth/forgotPassword",
+
+  GETVALIDATIONLIST: "master/getValidationList",
+
   GETVIDEODOCUMENTDATA: "/business/getVideoDocumentData",
   ADDVIDEOFILE: "/business/addVideoFile",
   UPDATEVIDEOFILE: "/business/updateVideoFile",
   VIDEODOCUMENTDELETE: "/business/videoDocumentDelete",
-
-  GETVALIDATIONLIST: "master/getValidationList",
-
   GETBUSINESSOFFERlIST: "/business/getBusinessOfferList",
   ADDOFFER: "/business/addOffer",
   UPDATEOFFER: "/business/updateOffer",
   OFFERDELETE: "/business/offerDelete",
   GETBUSINESSJOBLIST: "/business/getBusinessJobList",
+  ADDJOB: "/business/addJob",
+  UPDATEJOB: "/business/updateJob",
+  JOBDELETE: "/business/jobDelete",
 };

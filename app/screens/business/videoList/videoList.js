@@ -297,12 +297,15 @@ const videoList = ({
 
     console.log("find file id:-", fileid);
     console.log("find filetype:-", filetype);
-
+    const headers = {
+      "content-type": "multipart/form-data",
+    };
     try {
       const response = await apiCall(
         "POST",
         apiEndPoints.VIDEODOCUMENTDELETE,
-        params
+        params,
+        headers
       );
       // console.log("responce ", response);
       if (response.status === 200) {
