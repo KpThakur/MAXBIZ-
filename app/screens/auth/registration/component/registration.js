@@ -55,7 +55,10 @@ const registration = (props) => {
     extractFileName,
     searchOccupation,
     serviceList,
-    pdfFileName
+    pdfFileName,
+    setinputError,
+    inputError
+    
   } = props;
 
   // console.log("occupation in view", serviceList);
@@ -87,12 +90,22 @@ const registration = (props) => {
 
           <View style={style.firstInput}>
             <Input
-              onChangeText={(val) =>
-                props.setRegister({
+              // onChangeText={(val) =>
+              //   props.setRegister({
+              //     ...register,
+              //     businessusername: val,
+              //   })
+              // }
+              onChangeText={(val) => {
+                setRegister({
                   ...register,
                   businessusername: val,
+                });
+                setinputError({
+                  ...inputError,
+                  errorbusinessusername: "",
                 })
-              }
+              }}
               value={register.businessusername}
               image="noNeed"
               placeholder={StringsOfLanguages.BUSINESS_USERNAME}
@@ -109,12 +122,22 @@ const registration = (props) => {
           <View style={style.firstInput}>
             <Input
               // editable={false}
-              onChangeText={(val) =>
-                props.setRegister({
+              // onChangeText={(val) =>
+              //   props.setRegister({
+              //     ...register,
+              //     businessname: val,
+              //   })
+              // }
+              onChangeText={(val) => {
+                setRegister({
                   ...register,
                   businessname: val,
+                });
+                setinputError({
+                  ...inputError,
+                  errorbusinessname: "",
                 })
-              }
+              }}
               value={register.businessname}
               image="noNeed"
               placeholder={StringsOfLanguages.BUSINESS_NAME}
@@ -130,12 +153,22 @@ const registration = (props) => {
 
           <View style={style.firstInput}>
             <Input
-              onChangeText={(val) =>
-                props.setRegister({
+              // onChangeText={(val) =>
+              //   props.setRegister({
+              //     ...register,
+              //     address: val,
+              //   })
+              // }
+              onChangeText={(val) => {
+                setRegister({
                   ...register,
                   address: val,
+                });
+                setinputError({
+                  ...inputError,
+                  erroraddress: "",
                 })
-              }
+              }}
               value={register.address}
               image="noNeed"
               placeholder={StringsOfLanguages.ADDRESS}

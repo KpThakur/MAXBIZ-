@@ -142,7 +142,7 @@ const RegistrationView = ({ route, navigation }) => {
      
     }, [])
   );
-
+//  console.log("find data.....?", register?.address)
   // useEffect(()=> {
   //   setImageData({
   //     ...imageData,
@@ -606,6 +606,7 @@ const RegistrationView = ({ route, navigation }) => {
         pdfFileName={pdfFileName}
         selectedOption={selectedOption}
         setSelectedOption={setSelectedOption}
+        setinputError={setinputError}
       />
     </>
   );

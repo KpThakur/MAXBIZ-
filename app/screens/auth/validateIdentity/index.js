@@ -193,6 +193,7 @@ const ValidtIdntyView = ({ navigation }) => {
         visible={modalVisible}
         onClose={closeModal}
         message={message}
+        setinputError={setinputError}
       />
     </>
   );

@@ -26,7 +26,7 @@ import { ICONS } from "../../../../utils/imagePath";
 import { Icon } from "react-native-elements";
 
 const validateIdentity = (props) => {
-  const { backscreen, visible, onClose, message } = props;
+  const { backscreen, visible, onClose, message, loginData, setLoginData, toNextPage, inputError, setinputError } = props;
 
   const RegiConfirmModal = ({ visible, onClose }) => {
     return (
@@ -130,12 +130,22 @@ const validateIdentity = (props) => {
                 </View> */}
             <View style={style.secondText}>
               <Input
-                onChangeText={(val) =>
-                  props.setLoginData({
-                    ...props.loginData,
+                // onChangeText={(val) =>
+                //   props.setLoginData({
+                //     ...props.loginData,
+                //     email: val,
+                //   })
+                // }
+                onChangeText={(val) => {
+                  setLoginData({
+                    ...loginData,
                     email: val,
+                  });
+                  setinputError({
+                    ...inputError,
+                    emailaddrError: "",
                   })
-                }
+                }}
                 value={props.loginData.email}
                 image="noNeed"
                 placeholder={StringsOfLanguages.YOUR_EMAIL_ADDRESS}
