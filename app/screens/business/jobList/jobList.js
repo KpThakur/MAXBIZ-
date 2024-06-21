@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -27,6 +27,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import deleteModel from "../deleteModel/deleteModel";
 import viewModel from "../viewModel/viewModel";
 import ImagePicker from "react-native-image-crop-picker";
+import { SearchContext } from "../../../utils/searchContext";
 
 const JobList = ({ filetype, getJobList, jobListData }) => {
   console.log("🚀 ~ Joblist ~ JobListData:", jobListData);
@@ -42,13 +43,18 @@ const JobList = ({ filetype, getJobList, jobListData }) => {
   const [bucket_Img_url_Modal, setBucket_Img_url_Modal] = useState();
   const [title, setTitle] = useState("");
   const [jobId, setJobId] = useState("");
+  const [allServices, setAllServices] = useState([]);
+  const [searchdata, setSearchdata] = useContext(SearchContext);
+  console.log("🚀 ~ JobList ~ searchdata:", searchdata);
 
   const [editData, setEditData] = useState({
     title: "",
-    filetype: "job",
     createddate: "",
-    fileid: "",
-    islogo: false,
+    description: "",
+    expirationdate: "",
+    jobid: "",
+    occupation_id: "",
+    occupation: "",
   });
 
   useEffect(() => {
@@ -77,6 +83,7 @@ const JobList = ({ filetype, getJobList, jobListData }) => {
     let errorcreateddate = "";
     let errorexpirationdate = "";
     let erroreditDocument = "";
+    let errordate = "";
 
     if (!editData?.name) {
       errorname = "title is required";
@@ -86,6 +93,9 @@ const JobList = ({ filetype, getJobList, jobListData }) => {
     if (!editData?.description) {
       errordescription = "description is required";
     }
+    if (!editData?.createddate || !editData?.expirationdate) {
+      errordate = "date is required";
+    }
 
     setinputError({
       errorname,
@@ -93,6 +103,7 @@ const JobList = ({ filetype, getJobList, jobListData }) => {
       errorcreateddate,
       errorexpirationdate,
       erroreditDocument,
+      errordate,
     });
 
     return (
@@ -105,8 +116,8 @@ const JobList = ({ filetype, getJobList, jobListData }) => {
   }
 
   const checkcountvalidation = () => {
+    return true;
     if (jobListData.length < jobNumberValidation?.number) {
-      return true;
     } else {
       Alert.alert(
         "Oops...",
@@ -205,14 +216,18 @@ const JobList = ({ filetype, getJobList, jobListData }) => {
       console.log("🚀 ~ handleAddJob ~ editData:", editData);
 
       const param = {
-        occupation_id: editData.occupation_id,
-        title: editData.name,
-        createddate: "15-06-2024",
-        expirationdate: "30-06-2024",
-        description: editData.description,
+        occupation_id: searchdata?.serviceid,
+        title: editData?.name,
+        createddate: moment(editData?.createddate).format("YYYY-MM-DD"),
+        expirationdate: moment(editData?.expirationdate).format("YYYY-MM-DD"),
+        description: editData?.description,
       };
+      console.log("🚀 ~ handleAddJob ~ param:", param);
+
+      const authToken = await AsyncStorage.getItem("userToken");
       const headers = {
-        "content-type": "multipart/form-data",
+        Authorization: `Bearer ${authToken}`,
+        // "content-type": "multipart/form-data",
       };
 
       try {
@@ -235,6 +250,11 @@ const JobList = ({ filetype, getJobList, jobListData }) => {
           });
         } else {
           console.log("api in else handleAddPhoto", data);
+          showMessage({
+            message: data.message,
+            type: "success",
+            duration: 3000,
+          });
         }
       } catch (error) {
         console.log("catch error", error);
@@ -246,18 +266,28 @@ const JobList = ({ filetype, getJobList, jobListData }) => {
     }
   };
   const updateJob = async () => {
-    if (!formValidation()) {
-      setIsLoader(true);
+    if (formValidation()) {
+      setIsLoading(true);
       const param = {
-        occupation_id: editData.occupation_id,
-        title: editData.title,
-        createddate: editData.createddate,
-        expirationdate: editData.expirationdate,
-        description: editData.description,
-        jobid: editData.jobid,
+        occupation_id: searchdata?.serviceid,
+        title: editData?.name,
+        createddate: moment(editData?.createddate).format("YYYY-MM-DD"),
+        expirationdate: moment(editData?.expirationdate).format("YYYY-MM-DD"),
+        description: editData?.description,
+        jobid: editData?.jobid,
+      };
+      const authToken = await AsyncStorage.getItem("userToken");
+      const headers = {
+        Authorization: `Bearer ${authToken}`,
+        // "content-type": "multipart/form-data",
       };
       try {
-        const { data } = await apiCall("POST", apiEndPoints.UPDATEJOB, param);
+        const { data } = await apiCall(
+          "POST",
+          apiEndPoints.UPDATEJOB,
+          param,
+          headers
+        );
         if (data.status === 200) {
           setIsLoading(false);
           getJobList();
@@ -271,6 +301,11 @@ const JobList = ({ filetype, getJobList, jobListData }) => {
         } else {
           setIsLoading(false);
           console.log("api in else updateVideo", data);
+          showMessage({
+            message: data.message,
+            type: "danger",
+            duration: 3000,
+          });
         }
       } catch (error) {
         setIsLoading(false);
@@ -319,6 +354,34 @@ const JobList = ({ filetype, getJobList, jobListData }) => {
     }
   };
 
+  const searchServicebyname = async (val) => {
+    if (val.length >= 3) {
+      console.log("🚀 ~ searchServicebyname ~ val:", val);
+      const authToken = await AsyncStorage.getItem("userToken");
+      const headers = {
+        Authorization: `Bearer ${authToken}`,
+        // "content-type": "multipart/form-data",
+      };
+      try {
+        const params = {
+          servicename: val,
+        };
+        const response = await apiCall(
+          "POST",
+          apiEndPoints.GETSERVICENAME,
+          params,
+          headers
+        );
+        console.log("🚀 ~ searchServicebyname ~ response:", response.data);
+        if (response.status === 200) {
+          setAllServices(response.data.data);
+        } else {
+        }
+      } catch (error) {
+        console.error("Error in searchServicebyname:", error);
+      }
+    }
+  };
   const renderItem = ({ item }) => (
     <View style={styles.mainvideo}>
       <View style={styles.mainvideotop}>
@@ -415,6 +478,10 @@ const JobList = ({ filetype, getJobList, jobListData }) => {
             viewphotoselect={true}
             // uploadoffer={uploadoffer}
             // handlePhotoFileSize={handlePhotoFileSize}
+            allServices={allServices}
+            setSearchdata={setSearchdata}
+            searchdata={searchdata}
+            searchServicebyname={searchServicebyname}
           />
         )}
         {deleteModel && (

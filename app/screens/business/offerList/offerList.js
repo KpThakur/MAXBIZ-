@@ -42,6 +42,7 @@ const OfferList = ({ filetype, getOfferList, offerListData }) => {
   const [bucket_Img_url_Modal, setBucket_Img_url_Modal] = useState();
   const [title, setTitle] = useState("");
   const [offerId, setOfferId] = useState("");
+  const [imageName, setimageName] = useState("");
 
   const [offer, setOffer] = useState({
     offer: "",
@@ -49,11 +50,11 @@ const OfferList = ({ filetype, getOfferList, offerListData }) => {
 
   console.log("find offer", offer);
   const [editData, setEditData] = useState({
-    title: "",
-    filetype: "offer",
+    name: "",
+    expirationdate: "",
     createddate: "",
-    fileid: "",
-    islogo: false,
+    description: "",
+    offerid: "",
   });
 
   function handlePhotoFileSize(e) {
@@ -94,7 +95,10 @@ const OfferList = ({ filetype, getOfferList, offerListData }) => {
       // mediaType:'any',
       // multiple: true
     }).then((offer) => {
+      console.log("🚀 ~ uploadoffer ~ offer:", offer?.path.substring(68));
       // console.log(image);
+      setimageName(offer?.path.substring(68));
+
       setOffer(offer);
     });
   };
@@ -121,29 +125,26 @@ const OfferList = ({ filetype, getOfferList, offerListData }) => {
 
   function formValidation() {
     let errorname = "";
-    // let errordescription = "";
-    // let errorcreateddate = "";
-    // let errorexpirationdate = "";
-    let erroroffer = "";
+    // let erroroffer = "";
+    let errordate = "";
 
     if (!editData?.name) {
       errorname = "title is required";
     } else if (editData?.name.length < 5) {
       errorname = "title length more than 5!";
     }
-    if (!editData?.description) {
-      errordescription = "description is required";
+    if (!editData?.createddate || !editData?.expirationdate) {
+      errordate = "date is required";
     }
 
     setinputError({
       errorname,
-      // errordescription,
-      // errorcreateddate,
-      // errorexpirationdate,
-      erroroffer,
+      errordate,
+
+      // erroroffer,
     });
 
-    return !errorname && !erroroffer;
+    return !errorname && !errordate;
   }
 
   const checkcountvalidation = () => {
@@ -194,6 +195,7 @@ const OfferList = ({ filetype, getOfferList, offerListData }) => {
   };
 
   const handleDeleteModal = (fileid, filetype, offerId) => {
+    console.log("🚀 ~ handleDeleteModal ~ offerId:", offerId);
     setDeleteModel(!deleteModel);
     setSelectFileid(fileid);
     setOfferId(offerId);
@@ -260,38 +262,47 @@ const OfferList = ({ filetype, getOfferList, offerListData }) => {
       // setIsLoading(true);
       offerData.append("name", editData?.name);
       offerData.append("offerfile", offer);
-      // offerData.append("createddate", editData?.createddate);
-      offerData.append("createddate", "15-06-2024");
-      // offerData.append("expirationdate", editData?.expirationdate);
-      offerData.append("expirationdate", "30-06-2024");
-      // offerData.append("description", editData?.description);
-      offerData.append("description", "demo offer");
+      offerData.append(
+        "createddate",
+        moment(editData?.createddate).format("YYYY-MM-DD")
+      );
+      offerData.append(
+        "expirationdate",
+        moment(editData?.expirationdate).format("YYYY-MM-DD")
+      );
+      offerData.append("description", editData?.description);
       console.log("🚀 ~ handleAddOffer ~ offerData:", offerData);
 
+      const authToken = await AsyncStorage.getItem("userToken");
       const headers = {
+        Authorization: `Bearer ${authToken}`,
         "content-type": "multipart/form-data",
       };
-
       try {
-        const { data } = await apiCall(
+        const response = await apiCall(
           "POST",
           apiEndPoints.ADDOFFER,
           offerData,
           headers
         );
-        console.log("🚀 ~ handleAddOffer ~ data:", data);
-        if (data.status === 200) {
+        console.log("🚀 ~ handleAddOffer ~ data:", response);
+        if (response.status === 200) {
           setIsLoading(false);
           setEditStatus(false);
           cleanSetEditData();
           setViewModel(false);
           showMessage({
-            message: data.message,
+            message: response.data.message,
             type: "success",
             duration: 3000,
           });
         } else {
-          console.log("api in else handleAddPhoto", data);
+          showMessage({
+            message: response.data.message,
+            type: "danger",
+            duration: 3000,
+          });
+          console.log("api in else handleAddOffer", response);
         }
       } catch (error) {
         console.log("🚀 ~ handleAddOffer ~ error:", error);
@@ -304,11 +315,11 @@ const OfferList = ({ filetype, getOfferList, offerListData }) => {
   };
 
   const updateOffer = async () => {
-    if (!formValidation()) {
-      setIsLoader(true);
+    if (formValidation()) {
+      setIsLoading(true);
       const updateData = new FormData();
       updateData.append("name", editData?.name);
-      updateData.append("offerfile", offerfile);
+      updateData.append("offerfile", offer);
       updateData.append(
         "expirationdate",
         moment(editData?.expirationdate).format("YYYY-MM-DD")
@@ -318,13 +329,26 @@ const OfferList = ({ filetype, getOfferList, offerListData }) => {
         moment(editData?.createddate).format("YYYY-MM-DD")
       );
       updateData.append("description", editData?.description);
-      updateData.append("offerid", editData.offerid);
+      updateData.append("offerid", editData?.offerid);
+
+      console.log("🚀 ~ updateOffer ~ updateData:", updateData);
+
+      const authToken = await AsyncStorage.getItem("userToken");
+      const headers = {
+        Authorization: `Bearer ${authToken}`,
+        "content-type": "multipart/form-data",
+      };
       try {
-        const { data } = await apiCall(
+        const response = await apiCall(
           "POST",
           apiEndPoints.UPDATEOFFER,
-          offerData
+          updateData,
+          headers
         );
+        console.log("====================================");
+        console.log("==========>>>>>>>>>>>>>>>>>>>>");
+        console.log("====================================");
+        console.log("🚀 ~ updateOffer ~ data:", response);
         if (data.status === 200) {
           setIsLoading(false);
           getOfferList();
@@ -338,6 +362,11 @@ const OfferList = ({ filetype, getOfferList, offerListData }) => {
         } else {
           setIsLoading(false);
           console.log("api in else updateVideo", data);
+          showMessage({
+            message: data.message,
+            type: "danger",
+            duration: 3000,
+          });
         }
       } catch (error) {
         setIsLoading(false);
@@ -348,15 +377,17 @@ const OfferList = ({ filetype, getOfferList, offerListData }) => {
   };
 
   const deleteOffer = async (fileid, filetype) => {
+    console.log("🚀 ~ deleteOffer ~ offerId:", offerId);
     const params = {
-      fileid: fileid,
-      filetype: filetype,
+      offerid: offerId,
     };
 
     console.log("find file id:-", fileid);
     console.log("find filetype:-", filetype);
+    const authToken = await AsyncStorage.getItem("userToken");
     const headers = {
-      "content-type": "multipart/form-data",
+      Authorization: `Bearer ${authToken}`,
+      // "content-type": "multipart/form-data",
     };
     try {
       const response = await apiCall(
@@ -431,16 +462,23 @@ const OfferList = ({ filetype, getOfferList, offerListData }) => {
         </TouchableOpacity>
         {/* </View> */}
         <TouchableOpacity
-          onPress={() => Viewmodelshow(1)}
+          onPress={() => {
+            Viewmodelshow(1),
+              setEditData({
+                ...item,
+              });
+          }}
           style={styles.mainvideoview}
         >
           <Icon name="edit" size={28} color={GRADIENT_COLOR_NEW2} />
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() =>
-            // Viewmodelshow(2)
-            handleDeleteModal(item?.fileid, item?.filetype, item?.Offerid)
+          onPress={
+            () =>
+              // Viewmodelshow(2)
+              handleDeleteModal(item?.fileid, item?.filetype, item?.offerid)
+            // console.log("item-data", item)
           }
           style={styles.mainvideoview}
         >
@@ -475,7 +513,7 @@ const OfferList = ({ filetype, getOfferList, offerListData }) => {
             editData={editData}
             setEditData={setEditData}
             onPress={() => {
-              editData?.fileid && editData?.fileid != ""
+              editData?.offerid && editData?.offerid
                 ? updateOffer()
                 : handleAddOffer();
             }}
@@ -484,6 +522,7 @@ const OfferList = ({ filetype, getOfferList, offerListData }) => {
             viewphotoselect={true}
             uploaddocument={uploadoffer}
             handlePhotoFileSize={handlePhotoFileSize}
+            fileName={imageName}
           />
         )}
         {deleteModel && (

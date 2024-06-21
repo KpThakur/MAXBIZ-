@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
     width: scale(70),
     height: scale(50),
     marginHorizontal: scale(10),
-   
   },
   containerview: {
     //flex:1,
@@ -36,7 +35,6 @@ const styles = StyleSheet.create({
     //flexGrow:1,
     //paddingVertical: scale(15),
     paddingHorizontal: scale(15),
-   
   },
   regisView: {
     /*  marginVertical:scale(25),
@@ -46,14 +44,14 @@ const styles = StyleSheet.create({
 
   topview: {
     flex: 2.5,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1},
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 10,
     //marginVertical:scale(25),
     borderRadius: 20,
-   // backgroundColor:GRADIENT_COLOR_NEW3,
+    // backgroundColor:GRADIENT_COLOR_NEW3,
     backgroundColor: WHITE_COLOR,
     marginTop: normalize(20),
 
@@ -67,7 +65,6 @@ const styles = StyleSheet.create({
     borderRadius:20, 
     backgroundColor:WHITE_COLOR,
     marginTop:normalize(20) */
-    
   },
   topviewsecond: {
     flex: 3,
@@ -104,8 +101,8 @@ const styles = StyleSheet.create({
     //backgroundColor:'red',
   },
   imgView: {
-    width:'100%',
-    height:200,
+    width: "100%",
+    height: 200,
     alignItems: "center",
     marginTop: normalize(20),
     marginBottom: normalize(50),
@@ -115,7 +112,7 @@ const styles = StyleSheet.create({
   maskImg: {
     //alignItems:'center',
     width: scale(320),
-    resizeMode:'cover',
+    resizeMode: "cover",
     borderRadius: 15,
   },
   toggleView: {
@@ -188,7 +185,7 @@ const styles = StyleSheet.create({
     fontSize: scale(14),
     fontFamily: FONT_FAMILY_REGULAR,
     color: GRAY_COLOR,
-   // color: BLACK_COLOR
+    // color: BLACK_COLOR
   },
 
   selectedTextStyle: {
@@ -198,13 +195,13 @@ const styles = StyleSheet.create({
   },
   selectedTextSortlong: {
     fontSize: scale(16),
-    height : 50,
+    height: 50,
     fontFamily: FONT_FAMILY_REGULAR,
     color: GRAY_COLOR,
   },
   selectedTextStylelong: {
     fontSize: scale(12),
-    height : 55,
+    height: 55,
     fontFamily: FONT_FAMILY_REGULAR,
     color: GRAY_COLOR,
   },
@@ -220,86 +217,85 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     backgroundColor: GRADIENT_COLOR_NEW2,
   },
-   backgroundVideo: {
-    width : '100%',
-    height:'98%'
+  backgroundVideo: {
+    width: "100%",
+    height: "98%",
     /* position: 'absolute',
     top: 0,
     left: 0,
     bottom: 0,
     right: 0, */
-  }, 
-  imageDesignplayicon:{
-    position:'absolute',
-    alignSelf:'center',
-   // top:scale(100),
-    width:scale(50),
-    height:scale(50),
-    bottom: scale(70)
-    
   },
-  timeView:{
-    display:'flex',
-    flexDirection:'row',
-    position:'absolute',
+  imageDesignplayicon: {
+    position: "absolute",
+    alignSelf: "center",
+    // top:scale(100),
+    width: scale(50),
+    height: scale(50),
+    bottom: scale(70),
+  },
+  timeView: {
+    display: "flex",
+    flexDirection: "row",
+    position: "absolute",
     bottom: scale(15),
   },
-  timeStyle:{
-   color:WHITE_COLOR,
-   alignSelf:'flex-start',
-   marginRight: scale(220),
-   fontFamily: FONT_FAMILY_REGULAR
+  timeStyle: {
+    color: WHITE_COLOR,
+    alignSelf: "flex-start",
+    marginRight: scale(220),
+    fontFamily: FONT_FAMILY_REGULAR,
   },
-  muteICON:{
+  muteICON: {
     tintColor: WHITE_COLOR,
   },
-  sliderStyle:{
-   position:'absolute',
-   width: '100%',
-   bottom: scale(-11)
+  sliderStyle: {
+    position: "absolute",
+    width: "100%",
+    bottom: scale(-11),
   },
-  thumbStyle:{
+  thumbStyle: {
     width: scale(10),
     height: scale(10),
   },
-  modalMainView:{
-    flex:1,
-    justifyContent:'center',
-    alignItems:'center',
-    backgroundColor:"rgba(0,0,0,0.6)"
+  modalMainView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.6)",
   },
-  modalContainView:{
+  modalContainView: {
     backgroundColor: WHITE_COLOR,
     paddingHorizontal: scale(15),
     paddingVertical: scale(20),
-    borderRadius: scale(10)
+    borderRadius: scale(10),
   },
-  modalTextHoldStyle:{
+  modalTextHoldStyle: {
     color: COMMON_COLOR,
     fontFamily: FONT_FAMILY_SEMIBOLD,
     fontSize: scale(16),
     paddingLeft: scale(5),
-    paddingTop: scale(3)
+    paddingTop: scale(3),
   },
-  modalTextStyle:{
+  modalTextStyle: {
     color: BLACK_COLOR,
     fontFamily: FONT_FAMILY_REGULAR,
     fontSize: scale(14),
-    paddingLeft: scale(5)
+    paddingLeft: scale(5),
   },
-  buttnView:{
-   // backgroundColor:'red',
-    display:'flex',
-    flexDirection:'row',
-    justifyContent:'flex-end',
+  buttnView: {
+    // backgroundColor:'red',
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-end",
     paddingTop: scale(25),
-    paddingBottom: scale(3)
+    paddingBottom: scale(3),
   },
-  buttnText:{
+  buttnText: {
     color: BLACK_COLOR,
     marginRight: scale(30),
     fontFamily: FONT_FAMILY_REGULAR,
-    fontSize: scale(14)
+    fontSize: scale(14),
   },
 });
 

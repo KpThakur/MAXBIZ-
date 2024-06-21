@@ -34,7 +34,7 @@ const Index = ({ route, navigation }) => {
   const [allCity, setAllCity] = useState([]);
   const [serviceList, setServiceList] = useState([]);
   const [selectedOption, setSelectedOption] = useState([]);
-  console.log("selectedOption: ", selectedOption);
+  // console.log('selectedOption: ', selectedOption);
   const [industryList, setIndustryList] = useState([]);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [videoListData, setVideoListData] = useState([]);
@@ -53,7 +53,7 @@ const Index = ({ route, navigation }) => {
 
   // console.log('extractedCertificate: ', extractedCertificate);
   // console.log("bucketcertificate: ", bucketcertificate);
-  console.log("bucket_Img_url: ", bucket_Img_url);
+  //  console.log("bucket_Img_url: ", bucket_Img_url);
   //  console.log("filepath: ", filepath);
 
   const [baseUrl, setBaseUrl] = useState("");
@@ -110,10 +110,7 @@ const Index = ({ route, navigation }) => {
     phone: "",
     email: "",
   });
-  console.log(
-    "find businessDetail.servicename #####...",
-    businessDetail?.city_name
-  );
+  // console.log("find businessDetail.servicename #####...", businessDetail?.city_name)
 
   const [paymentMethod, setPaymentMethods] = useState({
     cash: 0,
@@ -192,10 +189,10 @@ const Index = ({ route, navigation }) => {
   const getuserData = async () => {
     try {
       const userToken = await AsyncStorage.getItem("userToken");
-      console.log("find userToken......: ", userToken);
+      // console.log("find userToken......: ", userToken);
       if (userToken !== null) {
         const userDataString = await AsyncStorage.getItem("userData");
-        console.log("find userdata in asyn.....:: ", userDataString);
+        //  console.log("find userdata in asyn.....:: ", userDataString);
         if (userDataString) {
           const userData = JSON.parse(userDataString);
           setUserData(userData);
@@ -268,18 +265,17 @@ const Index = ({ route, navigation }) => {
         setBusinessDetail(response.data.data);
         setPaymentMethods(JSON.parse(response.data.data?.payments));
         setContactResponse(response);
-        console.log("find bussiness data.....:", response.data.data);
+        // console.log("find bussiness data.....:", response.data.data);
         await AsyncStorage.setItem(
           "allinformation",
           String(response.data.data.allinformation)
         );
-        response.data.data?.certificate != ""
-          ? getImageCertificate(response.data.data?.certificate)
-          : console.log("");
-
-        response.data.data?.photofile != ""
-          ? getImage(response.data.data?.photofile)
-          : console.log("");
+        if (response.data?.data?.certificate) {
+          getImageCertificate(response.data?.data?.certificate);
+        }
+        if (response.data?.data?.photofile) {
+          getImage(response.data?.data?.photofile);
+        }
         setBaseUrl(response.data.base_url);
         //  console.log(" Api responce in 200 :----", response.data.data);
       } else {
@@ -436,7 +432,7 @@ const Index = ({ route, navigation }) => {
 
   const paymentExtract = () => {
     const paymentMethods = [];
-    console.log("paymentMethods in array....: ", paymentMethods);
+    // console.log("paymentMethods in array....: ", paymentMethods);
 
     if (paymentLists?.cash === 1) {
       paymentMethods.push("Cash");
@@ -463,11 +459,20 @@ const Index = ({ route, navigation }) => {
   // console.log("find userData in businessid>>>", userData.businessid);
 
   const getImageCertificate = async (param) => {
+    const authToken = await AsyncStorage.getItem("userToken");
+    const headers = {
+      Authorization: `Bearer ${authToken}`,
+    };
     try {
       const params = {
         fileName: param,
       };
-      const response = await apiCall("POST", apiEndPoints.GETIMAGE, params);
+      const response = await apiCall(
+        "POST",
+        apiEndPoints.GETIMAGE,
+        params,
+        headers
+      );
       if (response.status === 200) {
         setBucketcertificate(response.data.url);
         setTimeout(() => {}, 1000);
@@ -480,11 +485,22 @@ const Index = ({ route, navigation }) => {
   };
 
   const getImage = async (param) => {
+    const authToken = await AsyncStorage.getItem("userToken");
+    // console.log('authToken: ', authToken);
+
+    const headers = {
+      Authorization: `Bearer ${authToken}`,
+    };
     if (param && param != "") {
       const params = {
         fileName: param,
       };
-      const response = await apiCall("POST", apiEndPoints.GETIMAGE, params);
+      const response = await apiCall(
+        "POST",
+        apiEndPoints.GETIMAGE,
+        params,
+        headers
+      );
       if (response.status === 200) {
         setBucket_Img_url(response.data.url);
         setTimeout(() => {}, 1000);
@@ -496,6 +512,11 @@ const Index = ({ route, navigation }) => {
 
   const getcitylist = async (val = "") => {
     console.log("search city", val);
+    const authToken = await AsyncStorage.getItem("userToken");
+    // console.log('authToken: ', authToken);
+    const headers = {
+      Authorization: `Bearer ${authToken}`,
+    };
     if (val.length >= 3) {
       try {
         const parms = {
@@ -504,8 +525,10 @@ const Index = ({ route, navigation }) => {
         const response = await apiCall(
           "POST",
           apiEndPoints.GETCITIESLIST,
-          parms
+          parms,
+          headers
         );
+        console.log("getcitylist API response:", response);
         if (response.status === 200) {
           if (Array.isArray(response.data.data)) {
             const formattedCityData = response.data.data.map((city) => ({
@@ -531,6 +554,10 @@ const Index = ({ route, navigation }) => {
 
   const searchService = async (item) => {
     // console.log("search occuption", item);
+    const authToken = await AsyncStorage.getItem("userToken");
+    const headers = {
+      Authorization: `Bearer ${authToken}`,
+    };
     if (item.length >= 3) {
       try {
         const params = { servicename: item };
@@ -538,7 +565,8 @@ const Index = ({ route, navigation }) => {
         const response = await apiCall(
           "POST",
           apiEndPoints.GETSERVICELIST,
-          params
+          params,
+          headers
         );
         // console.log("Response:", response.data);
         if (response.status === 200) {
@@ -555,13 +583,18 @@ const Index = ({ route, navigation }) => {
 
   const getServiceList = async (service) => {
     // console.log("search name", service);
+    const authToken = await AsyncStorage.getItem("userToken");
+    const headers = {
+      Authorization: `Bearer ${authToken}`,
+    };
     if (service.length >= 3) {
       try {
         const params = { servicename: service };
         const response = await apiCall(
           "POST",
           apiEndPoints.GETINDUSTRYLIST,
-          params
+          params,
+          headers
         );
         // console.log("Response status:", response.data);
         if (response.status === 200) {
@@ -722,7 +755,7 @@ const Index = ({ route, navigation }) => {
       );
       if (response.status === 200) {
         setVideoListData(response.data.data);
-        console.log("find video item:-", response.data.data);
+        //  console.log("find video item:-", response.data.data);
         const pageCount = response.data.total_data / itemsPerPage;
         setPageCount(pageCount);
         setBaseUrl(response.data.base_url);
@@ -756,7 +789,7 @@ const Index = ({ route, navigation }) => {
       );
       if (response.status === 200) {
         setPhotolistData(response.data.data);
-        console.log("find photo item:-", response.data.data);
+        // console.log("find photo item:-", response.data.data);
         const pageCount = response.data.total_data / itemsPerPage;
         setPageCount(pageCount);
         setIsLoading(false);

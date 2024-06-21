@@ -52,7 +52,6 @@ const input = (props) => {
     maxLength,
     editable,
     multiline,
-    
   } = props;
   const {
     inputDesign,
@@ -101,7 +100,6 @@ const input = (props) => {
           onBlur={_handleBlur}
           editable={editable}
           multiline={multiline}
-          
         />
         <View
           style={[

@@ -9,6 +9,7 @@ import {
   Touchable,
   Alert,
   Modal,
+  Linking,
 } from "react-native";
 
 import { Button, Input, Header } from "@components";
@@ -82,14 +83,26 @@ const videoList = ({
   const [videoNumberValidation, setVideoNumberValidation] = useState(1);
 
   const getValidationList = async () => {
+    const authToken = await AsyncStorage.getItem("userToken");
+    console.log("🚀 ~ getValidationList ~ authToken:", authToken);
+    const headers = {
+      Authorization: `Bearer ${authToken}`,
+    };
+
     try {
-      const response = await apiCall("GET", apiEndPoints.GETVALIDATIONLIST);
-      if (response.status === 200) {
+      const response = await apiCall(
+        "GET",
+        apiEndPoints.GETVALIDATIONLIST,
+        headers
+      );
+      if (response.data.status === 200) {
         setValidationData(response.data.data);
         console.log("check responce in getValidationList ", response.data);
         setVideoNumberValidation(
           response.data.data.find((x) => x.lable == "addvideo")
         );
+      } else if (response.data.status === 201) {
+        console.log("check 201  in getValidationList ", response.data);
       } else {
         setValidationData([]);
       }
@@ -125,6 +138,7 @@ const videoList = ({
   function formValidationvideo() {
     let errorname = "";
     let erroryoutubeLink = "";
+    let errordescription = "";
 
     if (!editData?.name) {
       errorname = "title is required";
@@ -133,6 +147,9 @@ const videoList = ({
     }
     if (!editData?.youtubeLink) {
       erroryoutubeLink = "Youtube Link is required";
+    }
+    if (!editData?.description) {
+      errordescription = "description is required";
     }
     if (editData?.youtubeLink) {
       var regExp =
@@ -145,9 +162,10 @@ const videoList = ({
     setinputError({
       errorname,
       erroryoutubeLink,
+      errordescription,
     });
 
-    return !errorname && !erroryoutubeLink;
+    return !errorname && !erroryoutubeLink && !errordescription;
   }
 
   const checkcountvalidation = () => {
@@ -189,6 +207,7 @@ const videoList = ({
   }
 
   const handleAddVideoFile = async () => {
+    console.log("handleAddVideoFile:====>>>>>>>>");
     if (formValidationvideo() && checkcountvalidation()) {
       console.log("🚀 ~ handleAddVideoFile ~ editData:", editData);
       try {
@@ -203,11 +222,13 @@ const videoList = ({
         //videoData.append("miniature", editData.miniature);
         videoData.append(
           "createddate",
-          moment(new Date()).format("MM/DD/YYYY")
+          moment(new Date()).format("YYYY-MM-DD")
         );
         console.log("🚀 ~ handleAddVideoFile ~ videoData:", videoData);
 
+        const authToken = await AsyncStorage.getItem("userToken");
         const headers = {
+          Authorization: `Bearer ${authToken}`,
           "content-type": "multipart/form-data",
         };
 
@@ -218,8 +239,8 @@ const videoList = ({
           headers
         );
         if (response.status === 200) {
-          getVideoList();
           console.log("🚀 ~ handleAddVideoFile ~ response:", response);
+          getVideoList();
           setIsLoading(false);
           setEditStatus(false);
           cleanSetEditData();
@@ -243,7 +264,7 @@ const videoList = ({
   };
 
   const updateVideo = async () => {
-    if (!formValidationvideo()) {
+    if (formValidationvideo()) {
       try {
         // setIsLoading(true);
         const videoData = new FormData();
@@ -256,8 +277,11 @@ const videoList = ({
           "createddate",
           moment(new Date()).format("MM/DD/YYYY")
         );
+        console.log("🚀 ~ updateVideo ~ videoData:", videoData);
 
+        const authToken = await AsyncStorage.getItem("userToken");
         const headers = {
+          Authorization: `Bearer ${authToken}`,
           "content-type": "multipart/form-data",
         };
 
@@ -297,8 +321,10 @@ const videoList = ({
 
     console.log("find file id:-", fileid);
     console.log("find filetype:-", filetype);
+    const authToken = await AsyncStorage.getItem("userToken");
     const headers = {
-      "content-type": "multipart/form-data",
+      Authorization: `Bearer ${authToken}`,
+      // "content-type": "multipart/form-data",
     };
     try {
       const response = await apiCall(
@@ -394,11 +420,20 @@ const videoList = ({
       </View>
 
       <View style={styles.mainvideobottum}>
-        <View style={styles.mainvideoview}>
-          <Icon name="eye" size={28} color={GRADIENT_COLOR_NEW2} />
-        </View>
         <TouchableOpacity
-          onPress={() => Viewmodelshow(1)}
+          onPress={() => Linking.openURL(item?.youtubeLink)}
+          style={styles.mainvideoview}
+        >
+          <Icon name="eye" size={28} color={GRADIENT_COLOR_NEW2} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            Viewmodelshow(1),
+              console.log("items-data", item?.fileid),
+              setEditData({
+                ...item,
+              });
+          }}
           style={styles.mainvideoview}
         >
           <Icon name="edit" size={28} color={GRADIENT_COLOR_NEW2} />
@@ -443,7 +478,7 @@ const videoList = ({
             editData={editData}
             setEditData={setEditData}
             onPress={() => {
-              editData?.fileid && editData?.fileid != ""
+              editData?.fileid && editData?.fileid
                 ? updateVideo()
                 : handleAddVideoFile();
             }}

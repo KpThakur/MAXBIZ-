@@ -40,6 +40,7 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
   //  console.log("image in state ", image)
   const [bucket_Img_url_Modal, setBucket_Img_url_Modal] = useState();
   const [title, setTitle] = useState("");
+  const [imageName, setimageName] = useState("");
 
   const [photo, setPhoto] = useState({
     photo: "",
@@ -93,8 +94,9 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
       // mediaType:'any',
       // multiple: true
     }).then((image) => {
-      console.log("🚀 ~ uploaddocument ~ image:", image);
+      console.log("🚀 ~ uploaddocument ~ image:", image?.path.substring(68));
       // console.log(image);
+      setimageName(image?.path.substring(68));
       setPhoto(image);
     });
   };
@@ -121,23 +123,18 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
 
   function formValidation() {
     let errorname = "";
-    let errordescription = "";
 
     if (!editData?.name) {
       errorname = "title is required";
     } else if (editData?.name.length < 5) {
       errorname = "title length more than 5!";
     }
-    if (!editData?.description) {
-      errordescription = "description is required";
-    }
 
     setinputError({
       errorname,
-      errordescription,
     });
 
-    return !errorname && !errordescription;
+    return !errorname;
   }
 
   const checkcountvalidation = () => {
@@ -238,11 +235,11 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
   };
 
   const handleAddPhoto = async () => {
-    if (!formValidation() && checkcountvalidation()) {
+    if (formValidation() && checkcountvalidation()) {
       const photoData = new FormData();
       console.log("🚀 ~ handleAddPhoto ~ editData:", editData);
 
-      // setIsLoader(true);
+      setIsLoading(true);
       photoData.append("name", editData?.name);
       photoData.append("filetype", "photo");
       photoData.append("photo", photo);
@@ -251,29 +248,37 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
       photoData.append("islogo", editData?.islogo ? editData?.islogo : false);
       console.log("🚀 ~ handleAddPhoto ~ photoData:", photoData);
 
+      const authToken = await AsyncStorage.getItem("userToken");
       const headers = {
+        Authorization: `Bearer ${authToken}`,
         "content-type": "multipart/form-data",
       };
       try {
-        const { data } = await apiCall(
+        const response = await apiCall(
           "POST",
           apiEndPoints.ADDVIDEOFILE,
           photoData,
           headers
         );
-        console.log("🚀 ~ handleAddPhoto ~ response:", data);
-        if (data.status === 200) {
+
+        console.log("🚀 ~ handleAddPhoto ~ response:", response);
+        if (response.status === 200) {
           setIsLoading(false);
           setEditStatus(false);
           cleanSetEditData();
           setViewModel(false);
           showMessage({
-            message: data.message,
+            message: response.data.message,
             type: "success",
             duration: 3000,
           });
         } else {
-          console.log("api in else handleAddPhoto", data);
+          console.log("api in else handleAddPhoto", response);
+          showMessage({
+            message: response.data.message,
+            type: "danger",
+            duration: 3000,
+          });
         }
       } catch (error) {
         console.log("🚀 ~ handleAddPhoto ~ error:", error);
@@ -295,13 +300,19 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
       photoData.append("createddate", moment(new Date()).format("MM-DD-YYYY"));
       photoData.append("fileid", editData.fileid);
       photoData.append("islogo", editData.islogo ? editData.islogo : false);
+      const authToken = await AsyncStorage.getItem("userToken");
+      const headers = {
+        Authorization: `Bearer ${authToken}`,
+        "content-type": "multipart/form-data",
+      };
       try {
         const response = await apiCall(
           "POST",
           apiEndPoints.UPDATEVIDEOFILE,
-          photoData
+          photoData,
+          headers
         );
-        if (response.status === 200) {
+        if (response.data.status === 200) {
           setIsLoading(false);
           getPhotoList();
           setViewModel(false);
@@ -331,15 +342,21 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
 
     console.log("find file id:-", fileid);
     console.log("find filetype:-", filetype);
+    const authToken = await AsyncStorage.getItem("userToken");
+    const headers = {
+      Authorization: `Bearer ${authToken}`,
+      "content-type": "multipart/form-data",
+    };
 
     try {
       const response = await apiCall(
         "POST",
         apiEndPoints.VIDEODOCUMENTDELETE,
-        params
+        params,
+        headers
       );
       // console.log("responce ", response);
-      if (response.status === 200) {
+      if (response.data.status === 200) {
         getPhotoList();
         showMessage({
           message: response.data.message,
@@ -452,6 +469,7 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
             viewphotoselect={true}
             uploaddocument={uploaddocument}
             handlePhotoFileSize={handlePhotoFileSize}
+            fileName={imageName}
           />
         )}
         {deleteModel && (

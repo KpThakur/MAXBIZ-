@@ -37,6 +37,7 @@ const customMenu = (props) => {
 
     if (userToken !== null) {
       const userData = await AsyncStorage.getItem("userData");
+      console.log("🚀 ~ getuserData ~ userData:", userData);
       setUserData(JSON.parse(userData));
       setloginStatus(true);
     }

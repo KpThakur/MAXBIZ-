@@ -58,15 +58,13 @@ const FindService = (props) => {
     });
   };
 
- 
-
   return (
     <SafeAreaView style={commomstyle.container}>
       <StatusBar
-          animated={true}
-          backgroundColor={WHITE_COLOR}
-          barStyle="dark-content"
-        />
+        animated={true}
+        backgroundColor={WHITE_COLOR}
+        barStyle="dark-content"
+      />
       {/*  <LinearGradient
                 colors={[GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW2, GRADIENT_COLOR_NEW3, GRADIENT_COLOR_NEW4]}
                 angle={83}
@@ -95,8 +93,14 @@ const FindService = (props) => {
                   style={commomstyle.dropdown}
                   placeholderStyle={commomstyle.placeholderStyle}
                   // selectedTextStyle={commomstyle.selectedTextStyle}
-                 // selectedTextStyle={searchdata.servicename.length > 35 ? commomstyle.selectedTextStylelong : commomstyle.selectedTextStyle}
-                  selectedTextStyle={searchdata.servicename.length > 55 ? commomstyle.selectedTextStylelong : searchdata.servicename.length > 33 ? commomstyle.selectedTextSortlong : commomstyle.selectedTextStyle}
+                  // selectedTextStyle={searchdata.servicename.length > 35 ? commomstyle.selectedTextStylelong : commomstyle.selectedTextStyle}
+                  selectedTextStyle={
+                    searchdata.servicename.length > 55
+                      ? commomstyle.selectedTextStylelong
+                      : searchdata.servicename.length > 33
+                      ? commomstyle.selectedTextSortlong
+                      : commomstyle.selectedTextStyle
+                  }
                   inputSearchStyle={commomstyle.inputSearchStyle}
                   iconStyle={commomstyle.iconStyle}
                   containerStyle={commomstyle.dropdownContener}
@@ -166,8 +170,8 @@ const FindService = (props) => {
                   <Button
                     onPress={() => {
                       getAllservices(searchdata.serviceid, searchdata.cityid);
-                     
-                     // handlefilter(searchdata.cityid)
+
+                      // handlefilter(searchdata.cityid)
                     }}
                     buttonText={StringsOfLanguages.SEARCHSERVICE}
                   />

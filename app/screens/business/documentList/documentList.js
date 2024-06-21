@@ -9,6 +9,7 @@ import {
   Touchable,
   Alert,
   Modal,
+  Linking,
 } from "react-native";
 
 import { Button, Input, Header } from "@components";
@@ -42,6 +43,7 @@ const DocumentList = ({ filetype, documentListData, getDocumentList }) => {
   //  console.log("image in state ", image)
   const [bucket_Img_url_Modal, setBucket_Img_url_Modal] = useState();
   const [title, setTitle] = useState("");
+  const [documentName, setdocumentName] = useState("");
 
   const [document, setDocument] = useState({
     document: "",
@@ -88,29 +90,21 @@ const DocumentList = ({ filetype, documentListData, getDocumentList }) => {
   const uploaddocument = async () => {
     try {
       const res = await DocumentPicker.pick({
-        // type: [DocumentPicker.types.pdf],
         type: [types.pdf, types.docx],
-        // presentationStyle:'fullScreen'
       });
-      // console.log("pdf", res)
       console.log(
         "URI: " + res[0].uri,
         "Type: " + res[0].type,
         "Name: " + res[0].name,
         "Size: " + res[0].size
       );
-      // setPdfFileName(res[0].name);
       setDocument(res[0]);
-      // setRegister({ ...register?.certificate, certificate: res[0] });
+      setdocumentName(res[0]?.name);
+
       const uriSegments = res[0].uri.split("/");
       const lastSegment = uriSegments[uriSegments.length - 1];
       setUrilastpath(lastSegment);
       console.log("lastSegment>>>>", lastSegment);
-
-      // const modifiedTimestamp = res[0].lastModified || "";
-      // const modifiedDate = modifiedTimestamp ? new Date(parseInt(modifiedTimestamp, 10)) : "";
-      // console.log("lastModified:", modifiedTimestamp);
-      // console.log("lastModifiedDate:", modifiedDate);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         console.log("User cancelled the picker");
@@ -149,6 +143,7 @@ const DocumentList = ({ filetype, documentListData, getDocumentList }) => {
     // let errorcreateddate = "";
     // let errorexpirationdate = "";
     let errordocument = "";
+    let errordate = "";
 
     if (!editData?.name) {
       errorname = "title is required";
@@ -158,6 +153,12 @@ const DocumentList = ({ filetype, documentListData, getDocumentList }) => {
     if (!editData?.description) {
       errordescription = "description is required";
     }
+    if (!document) {
+      errordocument = "document is required";
+    }
+    if (!editData?.createddate || !editData?.expirationdate) {
+      errordate = "date is required";
+    }
 
     setinputError({
       errorname,
@@ -165,9 +166,10 @@ const DocumentList = ({ filetype, documentListData, getDocumentList }) => {
       // errorcreateddate,
       // errorexpirationdate,
       errordocument,
+      errordate,
     });
 
-    return !errorname && !errordescription && !errordocument;
+    return !errorname && !errordescription && !errordocument && !errordate;
   }
 
   const checkcountvalidation = () => {
@@ -280,41 +282,52 @@ const DocumentList = ({ filetype, documentListData, getDocumentList }) => {
     if (formValidation() && checkcountvalidation()) {
       const documentData = new FormData();
       console.log("🚀 ~ handleAddDocument ~ editData:", editData);
-      // setIsLoader(true);
-      documentData.append("name", editData.name);
+      setIsLoading(true);
+      documentData.append("name", editData?.name);
       documentData.append("filetype", "document");
-      // documentData.append("createddate", editData.createddate);
-      documentData.append("createddate", "15-06-2024");
-      // documentData.append("expirationdate", editData.expirationdate);
-      documentData.append("expirationdate", "30-06-2024");
-      documentData.append("description", editData.description);
+      documentData.append(
+        "createddate",
+        moment(editData?.createddate).format("YYYY-MM-DD")
+      );
+      documentData.append(
+        "expirationdate",
+        moment(editData?.expirationdate).format("YYYY-MM-DD")
+      );
+      documentData.append("description", editData?.description);
       documentData.append("documentfile", document);
-      documentData.append("islicense", editData.islicense ?? false);
+      documentData.append("islicense", editData?.islicense ?? false);
       console.log("🚀 ~ handleAddDocument ~ documentData:", documentData);
 
+      const authToken = await AsyncStorage.getItem("userToken");
       const headers = {
+        Authorization: `Bearer ${authToken}`,
         "content-type": "multipart/form-data",
       };
 
       try {
-        const { data } = await apiCall(
+        const response = await apiCall(
           "POST",
           apiEndPoints.ADDVIDEOFILE,
           documentData,
           headers
         );
-        if (data.status === 200) {
+        if (response.status === 200) {
           setIsLoading(false);
           setEditStatus(false);
           cleanSetEditData();
           setViewModel(false);
           showMessage({
-            message: data.data.message,
+            message: response.data.message,
             type: "success",
             duration: 3000,
           });
         } else {
-          console.log("api in else handleAddPhoto", data);
+          console.log("api in else handleAddPhoto", response);
+          showMessage({
+            message: response.data.message,
+            type: "danger",
+            duration: 3000,
+          });
         }
       } catch (error) {
         console.log("catch error", error);
@@ -327,23 +340,35 @@ const DocumentList = ({ filetype, documentListData, getDocumentList }) => {
   };
 
   const updateDocument = async () => {
-    if (!formValidation()) {
-      // setIsLoader(true);
+    if (formValidation()) {
+      setIsLoading(true);
       const documentData = new FormData();
-      documentData.append("name", editData.name);
+      documentData.append("name", editData?.name);
       documentData.append("filetype", "document");
-      // documentData.append("createddate", editData.createddate);
-      documentData.append("createddate", "15-06-2024");
-      // documentData.append("expirationdate", editData.expirationdate);
-      documentData.append("expirationdate", "30-06-2024");
-      documentData.append("description", editData.description);
+      documentData.append(
+        "createddate",
+        moment(editData?.createddate).format("YYYY-MM-DD")
+      );
+      documentData.append(
+        "expirationdate",
+        moment(editData?.expirationdate).format("YYYY-MM-DD")
+      );
+      documentData.append("description", editData?.description);
       documentData.append("documentfile", document);
-      documentData.append("islicense", editData.islicense ?? false);
+      documentData.append("islicense", editData?.islicense ?? false);
+      documentData.append("fileid", editData?.fileid);
+      console.log("🚀 ~ updateDocument ~ documentData:", documentData);
+      const authToken = await AsyncStorage.getItem("userToken");
+      const headers = {
+        Authorization: `Bearer ${authToken}`,
+        "content-type": "multipart/form-data",
+      };
       try {
         const response = await apiCall(
           "POST",
           apiEndPoints.UPDATEVIDEOFILE,
-          documentData
+          documentData,
+          headers
         );
         if (response.status === 200) {
           setIsLoading(false);
@@ -358,6 +383,11 @@ const DocumentList = ({ filetype, documentListData, getDocumentList }) => {
         } else {
           setIsLoading(false);
           console.log("api in else updateVideo", response.data);
+          showMessage({
+            message: response.data.message,
+            type: "danger",
+            duration: 3000,
+          });
         }
       } catch (error) {
         setIsLoading(false);
@@ -375,15 +405,21 @@ const DocumentList = ({ filetype, documentListData, getDocumentList }) => {
 
     console.log("find file id:-", fileid);
     console.log("find filetype:-", filetype);
+    const authToken = await AsyncStorage.getItem("userToken");
+    const headers = {
+      Authorization: `Bearer ${authToken}`,
+      // "content-type": "multipart/form-data",
+    };
 
     try {
       const response = await apiCall(
         "POST",
         apiEndPoints.VIDEODOCUMENTDELETE,
-        params
+        params,
+        headers
       );
       // console.log("responce ", response);
-      if (response.status === 200) {
+      if (response.data.status === 200) {
         getDocumentList();
         showMessage({
           message: response.data.message,
@@ -441,14 +477,20 @@ const DocumentList = ({ filetype, documentListData, getDocumentList }) => {
       <View style={styles.mainvideobottum}>
         {/* <View style={styles.mainvideoview}> */}
         <TouchableOpacity
-          onPress={() => ViewPhotoSelect()}
+          onPress={() => Linking.openURL(JSON.stringify(document?.uri))}
           style={styles.mainvideoview}
         >
           <Icon name="eye" size={28} color={GRADIENT_COLOR_NEW2} />
         </TouchableOpacity>
         {/* </View> */}
         <TouchableOpacity
-          onPress={() => Viewmodelshow(1)}
+          onPress={() => {
+            Viewmodelshow(1),
+              console.log("items-data", item.filefile),
+              setEditData({
+                ...item,
+              });
+          }}
           style={styles.mainvideoview}
         >
           <Icon name="edit" size={28} color={GRADIENT_COLOR_NEW2} />
@@ -492,7 +534,7 @@ const DocumentList = ({ filetype, documentListData, getDocumentList }) => {
             editData={editData}
             setEditData={setEditData}
             onPress={() => {
-              editData?.fileid && editData?.fileid != ""
+              editData?.fileid && editData?.fileid
                 ? updateDocument()
                 : handleAddDocument();
             }}
@@ -501,6 +543,7 @@ const DocumentList = ({ filetype, documentListData, getDocumentList }) => {
             viewphotoselect={true}
             uploaddocument={uploaddocument}
             handlePhotoFileSize={handlePhotoFileSize}
+            fileName={documentName}
           />
         )}
         {deleteModel && (
