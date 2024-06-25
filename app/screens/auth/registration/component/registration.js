@@ -281,12 +281,23 @@ const registration = (props) => {
               placeholder={StringsOfLanguages.SEARCH_CITY}
               searchPlaceholder={StringsOfLanguages.SEARCH_CITY_NAME}
               value={register.cityid}
+              // onChange={(item) => {
+              //   props.setRegister({
+              //     ...register,
+              //     // city: item.value,
+              //     cityid: item.id,
+              //     cityname: item.city,
+              //   });
+              // }}
               onChange={(item) => {
-                props.setRegister({
+                setRegister({
                   ...register,
-                  // city: item.value,
                   cityid: item.id,
                   cityname: item.city,
+                });
+                setinputError({
+                  ...inputError,
+                  errorcity: "", 
                 });
               }}
               /*  renderLeftIcon={() => (
@@ -328,11 +339,22 @@ const registration = (props) => {
               placeholder={StringsOfLanguages.INDUSTRY_}
               searchPlaceholder={StringsOfLanguages.SEARCH_INDUSTRY_NAME}
               value={register.servicename}
+              // onChange={(item) => {
+              //   props.setRegister({
+              //     ...register,
+              //     serviceid: item.naicsid,
+              //     servicename: item.title,
+              //   });
+              // }}
               onChange={(item) => {
-                props.setRegister({
+                setRegister({
                   ...register,
                   serviceid: item.naicsid,
                   servicename: item.title,
+                });
+                setinputError({
+                  ...inputError,
+                  errorindustry: "", 
                 });
               }}
 
@@ -460,13 +482,25 @@ const registration = (props) => {
               placeholder={StringsOfLanguages.SEARCH_SERVICE}
               searchPlaceholder={StringsOfLanguages.SEARCH}
               value={props.register.services}
+              // onChange={(item) => {
+              //   console.log("item===>>>", item)
+              //   props.setSelectedOption(item)
+              //   props.setRegister({
+              //     ...props.register,
+              //     // servicesid: item.naicsid,
+              //     services: item
+              //   });
+              // }}
               onChange={(item) => {
                 console.log("item===>>>", item)
                 props.setSelectedOption(item)
-                props.setRegister({
-                  ...props.register,
-                  // servicesid: item.naicsid,
+                setRegister({
+                  ...register,
                   services: item
+                });
+                setinputError({
+                  ...inputError,
+                  erroroccuption: "", 
                 });
               }}
               maxSelect={1}

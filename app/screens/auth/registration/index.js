@@ -209,10 +209,16 @@ const RegistrationView = ({ route, navigation }) => {
       setUrilastpath(lastSegment);
       console.log("lastSegment>>>>", lastSegment);
 
+      setinputError({
+        ...inputError,
+        errorbusiness_photo_url: "",
+      });
+
       // const modifiedTimestamp = res[0].lastModified || "";
       // const modifiedDate = modifiedTimestamp ? new Date(parseInt(modifiedTimestamp, 10)) : "";
       // console.log("lastModified:", modifiedTimestamp);
       // console.log("lastModifiedDate:", modifiedDate);
+
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         console.log("User cancelled the picker");
