@@ -28,7 +28,7 @@ import deleteModel from "../deleteModel/deleteModel";
 import viewModel from "../viewModel/viewModel";
 import ImagePicker from "react-native-image-crop-picker";
 
-const OfferList = ({ filetype, getOfferList, offerListData }) => {
+const OfferList = ({ filetype, getOfferList, offerListData, itemOffset }) => {
   console.log("🚀 ~ OfferList ~ offerListData:", offerListData);
   const [viewModel, setViewModel] = useState(false);
   const [deleteModel, setDeleteModel] = useState(false);
@@ -276,7 +276,7 @@ const OfferList = ({ filetype, getOfferList, offerListData }) => {
       const authToken = await AsyncStorage.getItem("userToken");
       const headers = {
         Authorization: `Bearer ${authToken}`,
-        "content-type": "multipart/form-data",
+        // "content-type": "multipart/form-data",
       };
       try {
         const response = await apiCall(
@@ -287,6 +287,7 @@ const OfferList = ({ filetype, getOfferList, offerListData }) => {
         );
         console.log("🚀 ~ handleAddOffer ~ data:", response);
         if (response.status === 200) {
+          getOfferList(itemOffset);
           setIsLoading(false);
           setEditStatus(false);
           cleanSetEditData();
@@ -351,7 +352,7 @@ const OfferList = ({ filetype, getOfferList, offerListData }) => {
         console.log("🚀 ~ updateOffer ~ data:", response);
         if (data.status === 200) {
           setIsLoading(false);
-          getOfferList();
+          getOfferList(itemOffset);
           setViewModel(false);
           showMessage({
             message: data.message,
@@ -398,7 +399,7 @@ const OfferList = ({ filetype, getOfferList, offerListData }) => {
       );
       // console.log("responce ", response);
       if (response.status === 200) {
-        getOfferList();
+        getOfferList(itemOffset);
         showMessage({
           message: response.data.message,
           type: "success",

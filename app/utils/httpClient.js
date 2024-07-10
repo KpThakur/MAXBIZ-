@@ -9,17 +9,19 @@ const httpClient = axios.create({
 
 export function setDefaultHeader(header, value) {
   //httpClient.defaults.headers.common[header] = value;
-  httpClient.defaults.headers.common = {'Authorization': `Bearer ${value}`}
+  httpClient.defaults.headers.common = { Authorization: `Bearer ${value}` };
 }
-
 
 export async function apiCall(
   method,
   url,
   data,
-  header = { "Content-Type": "application/json", "access-control-allow-origin": "*" }
+  header = {
+    "Content-Type": "application/json",
+    "access-control-allow-origin": "*",
+  }
 ) {
- /*  const { response } = configureStore().store.getState().login;
+  /*  const { response } = configureStore().store.getState().login;
   const generatedToken = await AsyncStorage.getItem("token");
   let headers = {
     ...header,
@@ -56,8 +58,3 @@ export async function apiCall(
     return error.response;
   }
 }
-
-
-
-
-

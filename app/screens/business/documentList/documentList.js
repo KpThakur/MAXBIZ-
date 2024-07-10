@@ -30,7 +30,12 @@ import viewModel from "../viewModel/viewModel";
 import ImagePicker from "react-native-image-crop-picker";
 import DocumentPicker, { types } from "react-native-document-picker";
 
-const DocumentList = ({ filetype, documentListData, getDocumentList }) => {
+const DocumentList = ({
+  filetype,
+  documentListData,
+  getDocumentList,
+  itemOffset,
+}) => {
   console.log("🚀 ~ DocumentList ~ documentListData:", documentListData);
   const [viewModel, setViewModel] = useState(false);
   const [deleteModel, setDeleteModel] = useState(false);
@@ -312,6 +317,7 @@ const DocumentList = ({ filetype, documentListData, getDocumentList }) => {
           headers
         );
         if (response.status === 200) {
+          await getDocumentList(itemOffset);
           setIsLoading(false);
           setEditStatus(false);
           cleanSetEditData();
@@ -371,8 +377,8 @@ const DocumentList = ({ filetype, documentListData, getDocumentList }) => {
           headers
         );
         if (response.status === 200) {
+          await getDocumentList(itemOffset);
           setIsLoading(false);
-          getDocumentList();
           setViewModel(false);
           showMessage({
             message: response.data.message,
@@ -420,7 +426,7 @@ const DocumentList = ({ filetype, documentListData, getDocumentList }) => {
       );
       // console.log("responce ", response);
       if (response.data.status === 200) {
-        getDocumentList();
+        await getDocumentList(itemOffset);
         showMessage({
           message: response.data.message,
           type: "success",
@@ -477,7 +483,11 @@ const DocumentList = ({ filetype, documentListData, getDocumentList }) => {
       <View style={styles.mainvideobottum}>
         {/* <View style={styles.mainvideoview}> */}
         <TouchableOpacity
-          onPress={() => Linking.openURL(JSON.stringify(document?.uri))}
+          onPress={() =>
+            Linking.openURL(
+              `https://smbmblobtest.blob.core.windows.net/attachments/${item.filefile}`
+            )
+          }
           style={styles.mainvideoview}
         >
           <Icon name="eye" size={28} color={GRADIENT_COLOR_NEW2} />

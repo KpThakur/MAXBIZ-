@@ -251,7 +251,7 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
       const authToken = await AsyncStorage.getItem("userToken");
       const headers = {
         Authorization: `Bearer ${authToken}`,
-        "content-type": "multipart/form-data",
+        // "content-type": "multipart/form-data",
       };
       try {
         const response = await apiCall(
@@ -263,6 +263,7 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
 
         console.log("🚀 ~ handleAddPhoto ~ response:", response);
         if (response.status === 200) {
+          getPhotoList(itemOffset);
           setIsLoading(false);
           setEditStatus(false);
           cleanSetEditData();
@@ -314,7 +315,7 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
         );
         if (response.data.status === 200) {
           setIsLoading(false);
-          getPhotoList();
+          getPhotoList(itemOffset);
           setViewModel(false);
           showMessage({
             message: response.data.message,
@@ -357,7 +358,7 @@ const PhotoList = ({ filetype, photoListData, getPhotoList, itemOffset }) => {
       );
       // console.log("responce ", response);
       if (response.data.status === 200) {
-        getPhotoList();
+        getPhotoList(itemOffset);
         showMessage({
           message: response.data.message,
           type: "success",

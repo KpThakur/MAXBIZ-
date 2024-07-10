@@ -13,9 +13,13 @@ import commomstyle from "../../../../common/styles";
 import { Button, Input, Header } from "@components";
 import { ICONS } from "../../../../utils/imagePath";
 import {
-  GRADIENT_COLOR_NEW1, WHITE_COLOR,GRADIENT_COLOR_NEW2, GRADIENT_COLOR_NEW3, GRADIENT_COLOR_NEW4
+  GRADIENT_COLOR_NEW1,
+  WHITE_COLOR,
+  GRADIENT_COLOR_NEW2,
+  GRADIENT_COLOR_NEW3,
+  GRADIENT_COLOR_NEW4,
 } from "../../../../utils/constants";
-import LinearGradient from 'react-native-linear-gradient';
+import LinearGradient from "react-native-linear-gradient";
 import StringsOfLanguages from "../../../../utils/translations";
 // import { ICONS } from "@utils";
 
@@ -23,6 +27,7 @@ const account = () => {
   const [showAccountDetails, setShowAccountDetail] = useState(true);
   const [showChangePassword, setShowChangePassword] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
+  const [userDetails, setuserDetails] = useState([]);
 
   const toggleAccountDetails = () => {
     return setShowAccountDetail(!showAccountDetails);
@@ -36,11 +41,11 @@ const account = () => {
   return (
     <SafeAreaView style={commomstyle.container}>
       <StatusBar
-          animated={true}
-          backgroundColor={WHITE_COLOR}
-          barStyle="dark-content"
-        />
-       {/* <LinearGradient
+        animated={true}
+        backgroundColor={WHITE_COLOR}
+        barStyle="dark-content"
+      />
+      {/* <LinearGradient
                 colors={[GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW2, GRADIENT_COLOR_NEW3, GRADIENT_COLOR_NEW4]}
                 angle={83}
                 locations={[0.24, 0.63, 0.87, 0.99]}
@@ -49,7 +54,7 @@ const account = () => {
         headertxt={styles.headerTxt}
         rightImg={true}
         headerText="Accounts"
-        rightImgStyl={{  }}
+        rightImgStyl={{}}
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
@@ -59,7 +64,9 @@ const account = () => {
                 onPress={toggleAccountDetails}
                 style={styles.dropDown}
               >
-                <Text style={styles.headingTxt}>{StringsOfLanguages.ACCOUNT_DETAILS}</Text>
+                <Text style={styles.headingTxt}>
+                  {StringsOfLanguages.ACCOUNT_DETAILS}
+                </Text>
                 <View>
                   <Image
                     style={styles.dropdownImg}
@@ -73,16 +80,58 @@ const account = () => {
             {showAccountDetails && (
               <View style={styles.inputWrap}>
                 <View style={styles.input}>
-                  <Input image={"noNeed"} placeholder={StringsOfLanguages.FIRST_NAME} />
+                  <Input
+                    image={"noNeed"}
+                    placeholder={StringsOfLanguages.FIRST_NAME}
+                    onChangeText={(val) => {
+                      setuserDetails({
+                        ...userDetails,
+                        firstName: val,
+                      });
+                    }}
+                    value={userDetails.firstName}
+                  />
                 </View>
                 <View style={styles.input}>
-                  <Input image={"noNeed"} placeholder={StringsOfLanguages.LAST_NAME} />
+                  <Input
+                    image={"noNeed"}
+                    placeholder={StringsOfLanguages.LAST_NAME}
+                    onChangeText={(val) => {
+                      setuserDetails({
+                        ...userDetails,
+                        lastName: val,
+                      });
+                    }}
+                    value={userDetails.lastName}
+                  />
                 </View>
                 <View style={styles.input}>
-                  <Input image={"noNeed"} placeholder={StringsOfLanguages.EMAIL_ADDRESS} />
+                  <Input
+                    image={"noNeed"}
+                    placeholder={StringsOfLanguages.EMAIL_ADDRESS}
+                    onChangeText={(val) => {
+                      setuserDetails({
+                        ...userDetails,
+                        email: val,
+                      });
+                    }}
+                    keyboardType={"email-address"}
+                    value={userDetails.email}
+                  />
                 </View>
                 <View style={styles.input}>
-                  <Input image={"noNeed"} placeholder={StringsOfLanguages.PHONE_NUMBER} />
+                  <Input
+                    image={"noNeed"}
+                    placeholder={StringsOfLanguages.PHONE_NUMBER}
+                    onChangeText={(val) => {
+                      setuserDetails({
+                        ...userDetails,
+                        phoneNumber: val,
+                      });
+                    }}
+                    keyboardType={"number-pad"}
+                    value={userDetails.phoneNumber}
+                  />
                 </View>
                 <View style={styles.saveButton}>
                   <Button buttonText={StringsOfLanguages.SAVE_CHANGES} />
@@ -96,7 +145,9 @@ const account = () => {
                 onPress={toggleChangePassword}
                 style={styles.dropDown}
               >
-                <Text style={styles.headingTxt}>{StringsOfLanguages.CHANGE_PASSWORD}</Text>
+                <Text style={styles.headingTxt}>
+                  {StringsOfLanguages.CHANGE_PASSWORD}
+                </Text>
                 <View>
                   <Image
                     style={styles.dropdownImg}
@@ -110,15 +161,42 @@ const account = () => {
             {showChangePassword && (
               <View style={styles.inputWrap}>
                 <View style={styles.input}>
-                  <Input image={"noNeed"} placeholder={StringsOfLanguages.OLD_PASSWORD} />
+                  <Input
+                    image={"noNeed"}
+                    placeholder={StringsOfLanguages.OLD_PASSWORD}
+                    onChangeText={(val) => {
+                      setuserDetails({
+                        ...userDetails,
+                        oldPassword: val,
+                      });
+                    }}
+                    value={userDetails.oldPassword}
+                  />
                 </View>
                 <View style={styles.input}>
-                  <Input image={"noNeed"} placeholder={StringsOfLanguages.NEW_PASSWORD} />
+                  <Input
+                    image={"noNeed"}
+                    placeholder={StringsOfLanguages.NEW_PASSWORD}
+                    onChangeText={(val) => {
+                      setuserDetails({
+                        ...userDetails,
+                        newPassword: val,
+                      });
+                    }}
+                    value={userDetails.newPassword}
+                  />
                 </View>
                 <View style={styles.input}>
                   <Input
                     image={"noNeed"}
                     placeholder={StringsOfLanguages.CONFIRM_NEW_PASSWORD}
+                    onChangeText={(val) => {
+                      setuserDetails({
+                        ...userDetails,
+                        confirmPassword: val,
+                      });
+                    }}
+                    value={userDetails.confirmPassword}
                   />
                 </View>
                 <View style={styles.saveButton}>
@@ -151,7 +229,7 @@ const account = () => {
                 </View>
                 <View style={styles.buttonView}>
                   <Button
-                   // buttonColor={[LINEAR_GRAD_GRAY_COLOR, GRADIENT_GRAY_COLOR]}
+                    // buttonColor={[LINEAR_GRAD_GRAY_COLOR, GRADIENT_GRAY_COLOR]}
                     buttonText={"NO"}
                   />
                 </View>

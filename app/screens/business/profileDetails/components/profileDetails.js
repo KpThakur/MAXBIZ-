@@ -789,6 +789,7 @@ const ProfileDetails = (props) => {
             {showVideos && (
               <View>
                 <VideoList
+                  itemOffset={itemOffset}
                   filetype={"video"}
                   videoListData={videoListData}
                   getVideoList={getVideoList}
@@ -841,6 +842,7 @@ const ProfileDetails = (props) => {
               <View>
                 {/* <VideoList filetype={"document"} /> */}
                 <DocumentList
+                  itemOffset={itemOffset}
                   filetype={"document"}
                   documentListData={documentListData}
                   getDocumentList={getDocumentList}
@@ -864,6 +866,7 @@ const ProfileDetails = (props) => {
             {showOffers && (
               <View>
                 <OfferList
+                  itemOffset={itemOffset}
                   filetype={"offer"}
                   offerListData={offerListData}
                   getOfferList={getOfferList}
@@ -887,6 +890,7 @@ const ProfileDetails = (props) => {
               <View>
                 {/* <VideoList /> */}
                 <JobList
+                  itemOffset={itemOffset}
                   filetype={"job"}
                   getJobList={getJobList}
                   jobListData={jobListData}

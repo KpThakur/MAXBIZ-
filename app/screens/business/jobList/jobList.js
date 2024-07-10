@@ -29,7 +29,7 @@ import viewModel from "../viewModel/viewModel";
 import ImagePicker from "react-native-image-crop-picker";
 import { SearchContext } from "../../../utils/searchContext";
 
-const JobList = ({ filetype, getJobList, jobListData }) => {
+const JobList = ({ filetype, getJobList, jobListData, itemOffset }) => {
   console.log("🚀 ~ Joblist ~ JobListData:", jobListData);
   const [viewModel, setViewModel] = useState(false);
   const [deleteModel, setDeleteModel] = useState(false);
@@ -153,6 +153,7 @@ const JobList = ({ filetype, getJobList, jobListData }) => {
   };
 
   const handleDeleteModal = (jobId) => {
+    console.log("🚀 ~ handleDeleteModal ~ jobId:", jobId);
     setDeleteModel(!deleteModel);
     setJobId(jobId);
 
@@ -239,6 +240,7 @@ const JobList = ({ filetype, getJobList, jobListData }) => {
         );
         console.log("🚀 ~ handleAddOffer ~ data:", data);
         if (data.status === 200) {
+          getJobList(itemOffset);
           setIsLoading(false);
           setEditStatus(false);
           cleanSetEditData();
@@ -290,7 +292,7 @@ const JobList = ({ filetype, getJobList, jobListData }) => {
         );
         if (data.status === 200) {
           setIsLoading(false);
-          getJobList();
+          getJobList(itemOffset);
           setViewModel(false);
           showMessage({
             message: data.message,
@@ -315,14 +317,16 @@ const JobList = ({ filetype, getJobList, jobListData }) => {
     }
   };
 
-  const deleteJob = async (jobId) => {
+  const deleteJob = async () => {
     const params = {
       jobid: jobId,
     };
 
     console.log("jobid: jobid", jobId);
+    const authToken = await AsyncStorage.getItem("userToken");
     const headers = {
-      "content-type": "multipart/form-data",
+      Authorization: `Bearer ${authToken}`,
+      // "content-type": "multipart/form-data",
     };
     try {
       const response = await apiCall(
@@ -333,7 +337,7 @@ const JobList = ({ filetype, getJobList, jobListData }) => {
       );
       // console.log("responce ", response);
       if (response.status === 200) {
-        getJobList();
+        getJobList(itemOffset);
         showMessage({
           message: response.data.message,
           type: "success",
@@ -425,16 +429,24 @@ const JobList = ({ filetype, getJobList, jobListData }) => {
         </TouchableOpacity>
         {/* </View> */}
         <TouchableOpacity
-          onPress={() => Viewmodelshow(1)}
+          onPress={() => {
+            Viewmodelshow(1),
+              console.log("items-data", item),
+              setEditData({
+                ...item,
+              });
+          }}
           style={styles.mainvideoview}
         >
           <Icon name="edit" size={28} color={GRADIENT_COLOR_NEW2} />
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() =>
-            // Viewmodelshow(2)
-            handleDeleteModal(item?.jobId)
+          onPress={
+            () =>
+              // Viewmodelshow(2)
+              handleDeleteModal(item?.jobid)
+            // console.log("🚀 ~ JobList ~ item:", item?.jobid)
           }
           style={styles.mainvideoview}
         >
@@ -491,7 +503,7 @@ const JobList = ({ filetype, getJobList, jobListData }) => {
             filetype={filetype}
             fileid={selectfileid}
             deleteVideo={deleteJob}
-            offerId={offerId}
+            // offerId={offerId}
             jobId={jobId}
           />
         )}

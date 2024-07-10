@@ -26,7 +26,7 @@ const style = StyleSheet.create({
     height: hp("80%"),
     backgroundColor: WHITE_COLOR,
 
-    //padding: scale(10),
+    // padding: scale(10),
     borderTopRightRadius: scale(30),
     borderTopLeftRadius: scale(30),
     shadowColor: BLACK_COLOR,

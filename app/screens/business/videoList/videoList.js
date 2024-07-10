@@ -52,13 +52,7 @@ const Data = [
   },
 ];
 
-const videoList = ({
-  filetype,
-  videoListData,
-  getVideoList,
-  photoListData,
-  getPhotoList,
-}) => {
+const videoList = ({ filetype, videoListData, getVideoList, itemOffset }) => {
   // console.log("find bussieness :---", videoListData);
   const [viewModel, setViewModel] = useState(false);
   const [deleteModel, setDeleteModel] = useState(false);
@@ -240,7 +234,7 @@ const videoList = ({
         );
         if (response.status === 200) {
           console.log("🚀 ~ handleAddVideoFile ~ response:", response);
-          getVideoList();
+          getVideoList(itemOffset);
           setIsLoading(false);
           setEditStatus(false);
           cleanSetEditData();
@@ -293,7 +287,7 @@ const videoList = ({
         );
         if (response.status === 200) {
           setIsLoading(false);
-          getVideoList();
+          getVideoList(itemOffset);
           setViewModel(false);
           showMessage({
             message: response.data.message,
@@ -335,7 +329,7 @@ const videoList = ({
       );
       // console.log("responce ", response);
       if (response.status === 200) {
-        getVideoList();
+        getVideoList(itemOffset);
         showMessage({
           message: response.data.message,
           type: "success",

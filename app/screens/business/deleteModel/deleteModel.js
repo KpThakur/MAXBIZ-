@@ -60,6 +60,7 @@ const deleteModel = ({
 
   const deletecontent = () => {
     console.log("🚀 ~ deletecontent ~ fileid:", fileid);
+    console.log("🚀 ~ deletecontent ~ jobId:", jobId);
     setDeleteModel(!deleteModel);
     deleteVideo(fileid, filetype, offerId, jobId);
   };

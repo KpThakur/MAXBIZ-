@@ -241,7 +241,7 @@ const Index = ({ route, navigation }) => {
 
   const getBusinessdetail = async (userData) => {
     try {
-      setIsLoading(true);
+      // setIsLoading(true);
       const parms = {
         profileid: userData?.profileid,
         businessid: userData?.businessid,
@@ -809,17 +809,20 @@ const Index = ({ route, navigation }) => {
       const headers = {
         Authorization: `Bearer ${authToken}`,
       };
+      console.log("🚀 ~ getDocumentList ~ headers:", headers);
       const params = {
         filetype: "document",
         limit: itemsPerPage,
         offset: offset,
       };
+
       const response = await apiCall(
         "POST",
         apiEndPoints.GETVIDEODOCUMENTDATA,
         params,
         headers
       );
+
       if (response.status === 200) {
         setDocumentListData(response.data.data);
         console.log("find document item:-", response.data.data);
@@ -829,6 +832,7 @@ const Index = ({ route, navigation }) => {
       } else {
         setIsLoading(false);
         setDocumentListData([]);
+        console.error(response.data.message);
       }
     } catch (error) {
       console.log("error in catch", error);

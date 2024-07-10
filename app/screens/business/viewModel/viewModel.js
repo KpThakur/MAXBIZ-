@@ -30,6 +30,7 @@ import RNDateTimePicker, {
 } from "@react-native-community/datetimepicker";
 import moment from "moment";
 import { Dropdown } from "react-native-element-dropdown";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const viewModel = ({
   setViewModel,
@@ -124,350 +125,364 @@ const viewModel = ({
         ///setVisibleBothModal(0)
       }}
     >
-      <View
-        //activeOpacity={0.5}
-        onPress={() => {
-          setViewModel(!viewModel);
-          ///setVisibleBothModal(0)
+      <KeyboardAwareScrollView
+        style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+        resetScrollToCoords={{ x: 0, y: 0 }}
+        contentContainerStyle={{
+          marginTop: hp("20%"),
+          backgroundColor: "#fff",
         }}
-        style={[
-          style.modalContainermain,
-          {
-            flex: 2,
-            justifyContent:
-              Platform.OS == "ios"
-                ? isKeyboardVisible
-                  ? "center"
-                  : "flex-end"
-                : "flex-end",
-            bottom:
-              Platform.OS == "ios"
-                ? isKeyboardVisible
-                  ? wp("13%")
-                  : wp("19%")
-                : wp("00%"),
-          },
-        ]}
+        scrollEnabled={true}
+        showsVerticalScrollIndicator={false}
       >
-        <View style={[style.modalContainer]}>
-          <View style={style.topheading}>
-            <Text style={style.topheadingtext}>
-              {editData?.fileid
-                ? StringsOfLanguages.UPDATE
-                : StringsOfLanguages.ADD_NEW}{" "}
-              {filetype === "video"
-                ? "Video"
-                : filetype === "photo"
-                ? "Photo"
-                : filetype === "document"
-                ? "Document"
-                : filetype === "offer"
-                ? "Offer"
-                : filetype === "job"
-                ? "Job"
-                : "File"}
-            </Text>
-            <TouchableOpacity
-              onPress={() => {
-                setViewModel(!viewModel);
-                cleanSetEditData();
-                ///setVisibleBothModal(0)
-              }}
-            >
-              <Icon
-                style={style.topheadingtext}
-                name={StringsOfLanguages.REMOVE}
-              ></Icon>
-            </TouchableOpacity>
-          </View>
-          <View style={style.midelcontent}>
-            <View style={{ marginRight: 15 }}>
-              {filetype === "job" && (
-                <View style={style.input}>
-                  <Dropdown
-                    showsVerticalScrollIndicator={false}
-                    style={[styles.dropdown, { marginLeft: "7%" }]}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={
-                      searchdata.servicename.length > 55
-                        ? styles.selectedTextStylelong
-                        : searchdata.servicename.length > 33
-                        ? styles.selectedTextSortlong
-                        : styles.selectedTextStyle
-                    }
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    containerStyle={styles.dropdownContener}
-                    data={allServices ? allServices : []}
-                    search
-                    onChangeText={searchServicebyname}
-                    maxHeight={300}
-                    labelField="title"
-                    valueField="naicsid"
-                    placeholder={StringsOfLanguages.SELECT_YOUR_SERVICE}
-                    searchPlaceholder={StringsOfLanguages.SEARCH_SERVICE}
-                    value={searchdata.serviceid}
-                    onChange={(val) =>
-                      setSearchdata({
-                        ...searchdata,
-                        serviceid: val.naicsid,
-                        servicename: val.title,
-                      })
-                    }
-                  />
-                </View>
-              )}
-              <View style={style.input}>
-                <Input
-                  onChangeText={(val) => {
-                    console.log("🚀 ~ val:", val);
-                    setEditData({
-                      ...editData,
-                      name: val,
-                    });
-                  }}
-                  value={editData.name}
-                  placeholder={
-                    !editData?.name &&
-                    (filetype === "video"
-                      ? "Title video"
-                      : filetype === "photo"
-                      ? "Title photo"
-                      : filetype === "document"
-                      ? "Title document"
-                      : filetype === "offer"
-                      ? "Offer Title"
-                      : filetype === "job"
-                      ? "Job Title"
-                      : "file Title")
-                  }
-                />
-                <Text style={[style.errorText, { marginTop: "-4%" }]}>
-                  {inputError.errorname}
-                </Text>
-              </View>
-              {filetype === "video" && (
-                <View style={style.input}>
-                  <Input
-                    onChangeText={(val) =>
-                      setEditData({
-                        ...editData,
-                        youtubeLink: val,
-                      })
-                    }
-                    value={editData.youtubeLink}
-                    placeholder={
-                      !editData.youtubeLink &&
-                      (filetype === "video" ? "Youtube video link" : "")
-                    }
-                    multiline={true}
-                    maxLength={70}
-                  />
-                  <Text style={style.errorText}>
-                    {inputError.erroryoutubeLink}
-                  </Text>
-                </View>
-              )}
-              {filetype !== "photo" && filetype !== "offer" && (
+        <View
+          //activeOpacity={0.5}
+          onPress={() => {
+            setViewModel(!viewModel);
+            ///setVisibleBothModal(0)
+          }}
+          style={[
+            style.modalContainermain,
+            {
+              flex: 2,
+              justifyContent:
+                Platform.OS == "ios"
+                  ? isKeyboardVisible
+                    ? "center"
+                    : "flex-end"
+                  : "flex-end",
+              bottom:
+                Platform.OS == "ios"
+                  ? isKeyboardVisible
+                    ? wp("13%")
+                    : wp("19%")
+                  : wp("00%"),
+            },
+          ]}
+        >
+          <View style={[style.modalContainer]}>
+            <View style={style.topheading}>
+              <Text style={style.topheadingtext}>
+                {editData?.fileid || editData?.jobid
+                  ? StringsOfLanguages.UPDATE
+                  : StringsOfLanguages.ADD_NEW}{" "}
+                {filetype === "video"
+                  ? "Video"
+                  : filetype === "photo"
+                  ? "Photo"
+                  : filetype === "document"
+                  ? "Document"
+                  : filetype === "offer"
+                  ? "Offer"
+                  : filetype === "job"
+                  ? "Job"
+                  : "File"}
+              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  setViewModel(!viewModel);
+                  cleanSetEditData();
+                  ///setVisibleBothModal(0)
+                }}
+              >
+                <Icon
+                  style={style.topheadingtext}
+                  name={StringsOfLanguages.REMOVE}
+                ></Icon>
+              </TouchableOpacity>
+            </View>
+            <View style={style.midelcontent}>
+              <View style={{ marginRight: 15 }}>
+                {filetype === "job" && (
+                  <View style={style.input}>
+                    <Dropdown
+                      showsVerticalScrollIndicator={false}
+                      style={[styles.dropdown, { marginLeft: "7%" }]}
+                      placeholderStyle={styles.placeholderStyle}
+                      selectedTextStyle={
+                        searchdata.servicename.length > 55
+                          ? styles.selectedTextStylelong
+                          : searchdata.servicename.length > 33
+                          ? styles.selectedTextSortlong
+                          : styles.selectedTextStyle
+                      }
+                      inputSearchStyle={styles.inputSearchStyle}
+                      iconStyle={styles.iconStyle}
+                      containerStyle={styles.dropdownContener}
+                      data={allServices ? allServices : []}
+                      search
+                      onChangeText={searchServicebyname}
+                      maxHeight={300}
+                      labelField="title"
+                      valueField="naicsid"
+                      placeholder={StringsOfLanguages.SELECT_YOUR_SERVICE}
+                      searchPlaceholder={StringsOfLanguages.SEARCH_SERVICE}
+                      value={
+                        editData?.jobid
+                          ? editData?.occupation_id
+                          : searchdata.serviceid
+                      }
+                      onChange={(val) =>
+                        setSearchdata({
+                          ...searchdata,
+                          serviceid: val.naicsid,
+                          servicename: val.title,
+                        })
+                      }
+                    />
+                  </View>
+                )}
                 <View style={style.input}>
                   <Input
-                    onChangeText={(val) =>
+                    onChangeText={(val) => {
+                      console.log("🚀 ~ val:", val);
                       setEditData({
                         ...editData,
-                        description: val,
-                      })
-                    }
-                    value={editData.description}
+                        name: val,
+                      });
+                    }}
+                    value={editData.name ? editData.name : editData.title}
                     placeholder={
-                      !editData?.description &&
-                      StringsOfLanguages.ENTER_DESCRIPTION
+                      !editData?.name &&
+                      (filetype === "video"
+                        ? "Title video"
+                        : filetype === "photo"
+                        ? "Title photo"
+                        : filetype === "document"
+                        ? "Title document"
+                        : filetype === "offer"
+                        ? "Offer Title"
+                        : filetype === "job"
+                        ? !editData?.title && "Job Title"
+                        : "file Title")
                     }
                   />
                   <Text style={[style.errorText, { marginTop: "-4%" }]}>
-                    {inputError.errordescription}
+                    {inputError.errorname}
                   </Text>
                 </View>
-              )}
-              {filetype !== "photo" && filetype !== "video" && (
-                <View>
-                  <View
-                    style={{
-                      marginHorizontal: "7%",
-                      marginTop: "5%",
-                      marginBottom: -8,
-                    }}
-                  >
-                    <Text style={{ fontSize: 16, color: GRAY_COLOR }}>
-                      Effective Date
+                {filetype === "video" && (
+                  <View style={style.input}>
+                    <Input
+                      onChangeText={(val) =>
+                        setEditData({
+                          ...editData,
+                          youtubeLink: val,
+                        })
+                      }
+                      value={editData.youtubeLink}
+                      placeholder={
+                        !editData.youtubeLink &&
+                        (filetype === "video" ? "Youtube video link" : "")
+                      }
+                      multiline={true}
+                      maxLength={70}
+                    />
+                    <Text style={style.errorText}>
+                      {inputError.erroryoutubeLink}
                     </Text>
                   </View>
-                  <View
-                    style={[
-                      style.input,
-                      {
-                        // width: "90%",
-                        // alignSelf: "center",
-                        borderBottomWidth: 2,
-                        borderColor: BORDERLINE_COLOR,
-                        marginLeft: "7%",
-                        // marginVertical: 20,
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        // paddingHorizontal: 22,
-                        alignItems: "center",
-                      },
-                    ]}
-                  >
-                    <Text
+                )}
+                {filetype !== "photo" && filetype !== "offer" && (
+                  <View style={style.input}>
+                    <Input
+                      onChangeText={(val) =>
+                        setEditData({
+                          ...editData,
+                          description: val,
+                        })
+                      }
+                      value={editData.description}
+                      placeholder={
+                        !editData?.description &&
+                        StringsOfLanguages.ENTER_DESCRIPTION
+                      }
+                    />
+                    <Text style={[style.errorText, { marginTop: "-4%" }]}>
+                      {inputError.errordescription}
+                    </Text>
+                  </View>
+                )}
+                {filetype !== "photo" && filetype !== "video" && (
+                  <View>
+                    <View
                       style={{
-                        fontSize: 16,
-                        color: GRAY_COLOR,
+                        marginHorizontal: "7%",
+                        marginTop: "5%",
+                        marginBottom: -8,
                       }}
                     >
-                      {editData?.createddate
-                        ? moment(editData?.createddate).format("DD-MM-YYYY")
-                        : "DD-MM-YYYY"}
-                    </Text>
-                    <TouchableOpacity
-                      style={[style.mainvideoview]}
-                      onPress={() => setShow_1(true)}
+                      <Text style={{ fontSize: 16, color: GRAY_COLOR }}>
+                        Effective Date
+                      </Text>
+                    </View>
+                    <View
+                      style={[
+                        style.input,
+                        {
+                          // width: "90%",
+                          // alignSelf: "center",
+                          borderBottomWidth: 2,
+                          borderColor: BORDERLINE_COLOR,
+                          marginLeft: "7%",
+                          // marginVertical: 20,
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          // paddingHorizontal: 22,
+                          alignItems: "center",
+                        },
+                      ]}
                     >
-                      <Icon
-                        name="calendar"
-                        size={25}
-                        color={GRADIENT_COLOR_NEW2}
-                      />
-                    </TouchableOpacity>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          color: GRAY_COLOR,
+                        }}
+                      >
+                        {editData?.createddate
+                          ? moment(editData?.createddate).format("DD-MM-YYYY")
+                          : "DD-MM-YYYY"}
+                      </Text>
+                      <TouchableOpacity
+                        style={[style.mainvideoview]}
+                        onPress={() => setShow_1(true)}
+                      >
+                        <Icon
+                          name="calendar"
+                          size={25}
+                          color={GRADIENT_COLOR_NEW2}
+                        />
+                      </TouchableOpacity>
 
-                    {show_1 && (
-                      <RNDateTimePicker
-                        testID="dateTimePicker"
-                        value={
-                          editData?.createddate
-                            ? new Date(editData?.createddate)
-                            : today
-                        }
-                        minimumDate={today}
-                        maximumDate={
-                          editData?.expirationdate
-                            ? new Date(editData?.expirationdate)
-                            : maximumDate
-                        }
-                        mode="date"
-                        onChange={SetCreateDate}
-                      />
-                    )}
-                  </View>
-                  <Text style={style.errorText}>{inputError.errordate}</Text>
-                  <View
-                    style={{
-                      marginHorizontal: "7%",
-                      marginTop: "5%",
-                      marginBottom: -8,
-                    }}
-                  >
-                    <Text style={{ fontSize: 16, color: GRAY_COLOR }}>
-                      Expiration Date
-                    </Text>
-                  </View>
-                  <View
-                    style={[
-                      style.input,
-                      {
-                        // width: "90%",
-                        // alignSelf: "center",
-                        borderBottomWidth: 2,
-                        borderColor: BORDERLINE_COLOR,
-                        marginLeft: "7%",
-                        // marginVertical: 20,
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        // paddingHorizontal: 22,
-                        alignItems: "center",
-                      },
-                    ]}
-                  >
-                    <Text
+                      {show_1 && (
+                        <RNDateTimePicker
+                          testID="dateTimePicker"
+                          value={
+                            editData?.createddate
+                              ? new Date(editData?.createddate)
+                              : today
+                          }
+                          minimumDate={today}
+                          maximumDate={
+                            editData?.expirationdate
+                              ? new Date(editData?.expirationdate)
+                              : maximumDate
+                          }
+                          mode="date"
+                          onChange={SetCreateDate}
+                        />
+                      )}
+                    </View>
+                    <Text style={style.errorText}>{inputError.errordate}</Text>
+                    <View
                       style={{
-                        fontSize: 16,
-                        color: GRAY_COLOR,
+                        marginHorizontal: "7%",
+                        marginTop: "5%",
+                        marginBottom: -8,
                       }}
                     >
-                      {editData?.expirationdate
-                        ? moment(editData.expirationdate).format("DD-MM-YYYY")
-                        : "DD-MM-YYYY"}
-                    </Text>
-                    <TouchableOpacity
-                      style={[style.mainvideoview]}
-                      onPress={() => setShow_2(true)}
+                      <Text style={{ fontSize: 16, color: GRAY_COLOR }}>
+                        Expiration Date
+                      </Text>
+                    </View>
+                    <View
+                      style={[
+                        style.input,
+                        {
+                          // width: "90%",
+                          // alignSelf: "center",
+                          borderBottomWidth: 2,
+                          borderColor: BORDERLINE_COLOR,
+                          marginLeft: "7%",
+                          // marginVertical: 20,
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          // paddingHorizontal: 22,
+                          alignItems: "center",
+                        },
+                      ]}
                     >
-                      <Icon
-                        name="calendar"
-                        size={25}
-                        color={GRADIENT_COLOR_NEW2}
-                      />
-                    </TouchableOpacity>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          color: GRAY_COLOR,
+                        }}
+                      >
+                        {editData?.expirationdate
+                          ? moment(editData.expirationdate).format("DD-MM-YYYY")
+                          : "DD-MM-YYYY"}
+                      </Text>
+                      <TouchableOpacity
+                        style={[style.mainvideoview]}
+                        onPress={() => setShow_2(true)}
+                      >
+                        <Icon
+                          name="calendar"
+                          size={25}
+                          color={GRADIENT_COLOR_NEW2}
+                        />
+                      </TouchableOpacity>
 
-                    {show_2 && (
-                      <RNDateTimePicker
-                        testID="dateTimePicker"
-                        value={
-                          editData?.expirationdate
-                            ? new Date(editData?.expirationdate)
-                            : today
-                        }
-                        minimumDate={
-                          editData?.createddate
-                            ? new Date(editData?.createddate)
-                            : today
-                        }
-                        mode="date"
-                        onChange={SetExpirationDate}
-                      />
-                    )}
+                      {show_2 && (
+                        <RNDateTimePicker
+                          testID="dateTimePicker"
+                          value={
+                            editData?.expirationdate
+                              ? new Date(editData?.expirationdate)
+                              : today
+                          }
+                          minimumDate={
+                            editData?.createddate
+                              ? new Date(editData?.createddate)
+                              : today
+                          }
+                          mode="date"
+                          onChange={SetExpirationDate}
+                        />
+                      )}
+                    </View>
+                    <Text style={style.errorText}>{inputError.errordate}</Text>
                   </View>
-                  <Text style={style.errorText}>{inputError.errordate}</Text>
-                </View>
-              )}
+                )}
+              </View>
             </View>
-          </View>
 
-          {viewphotoselect && filetype !== "job" && (
-            <View
-              style={[
-                style.secondText,
-                {
-                  flex: 1,
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                },
-              ]}
-            >
-              <View style={style.photoView}>
-                <Text style={style.labelText}>Upload {filetype}</Text>
-              </View>
-              <View style={style.photoView}>
-                <Button
-                  buttonText={StringsOfLanguages.BROWSE}
-                  onPress={() => uploaddocument()}
-                />
-              </View>
-              <Text
+            {viewphotoselect && filetype !== "job" && (
+              <View
                 style={[
-                  style.errorText,
+                  style.secondText,
                   {
-                    color: COMMON_COLOR,
-                    position: "absolute",
-                    right: "4%",
-                    bottom: "4%",
+                    flex: 1,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
                   },
                 ]}
               >
-                {fileName}
-              </Text>
-              <Text style={style.errorText}>{inputError.errordocument}</Text>
-              {/* <Text style={style.errorText}>
+                <View style={style.photoView}>
+                  <Text style={style.labelText}>Upload {filetype}</Text>
+                </View>
+                <View style={style.photoView}>
+                  <Button
+                    buttonText={StringsOfLanguages.BROWSE}
+                    onPress={() => uploaddocument()}
+                  />
+                </View>
+                <Text
+                  style={[
+                    style.errorText,
+                    {
+                      color: COMMON_COLOR,
+                      position: "absolute",
+                      right: "4%",
+                      bottom: "4%",
+                    },
+                  ]}
+                >
+                  {fileName}
+                </Text>
+                <Text style={style.errorText}>{inputError.errordocument}</Text>
+                {/* <Text style={style.errorText}>
                 {filetype === "photo"
                   ? inputError.errorPhoto
                   : filetype === "document"
@@ -478,43 +493,44 @@ const viewModel = ({
                   ? errorJob
                   : errorfile}
               </Text> */}
-            </View>
-          )}
+              </View>
+            )}
 
-          <View style={style.bottumbutton}>
-            <View style={style.buttonview}>
-              <Button
-                onPress={() => onPress()}
-                buttonText={
-                  editData?.fileid
-                    ? filetype === "video"
-                      ? StringsOfLanguages.UPDATE_VIDEO
+            <View style={style.bottumbutton}>
+              <View style={style.buttonview}>
+                <Button
+                  onPress={() => onPress()}
+                  buttonText={
+                    editData?.fileid || editData?.jobid
+                      ? filetype === "video"
+                        ? StringsOfLanguages.UPDATE_VIDEO
+                        : filetype === "photo"
+                        ? StringsOfLanguages.UPDATE_PHOTO
+                        : filetype === "document"
+                        ? StringsOfLanguages.UPDATE_DOCUMENT
+                        : filetype === "offer"
+                        ? StringsOfLanguages.UPDATE_OFFER
+                        : filetype === "job"
+                        ? StringsOfLanguages.UPDATE_JOB
+                        : StringsOfLanguages.ADD_NEW_FILE
+                      : filetype === "video"
+                      ? StringsOfLanguages.ADD_NEW_VIDEO
                       : filetype === "photo"
-                      ? StringsOfLanguages.UPDATE_PHOTO
+                      ? StringsOfLanguages.ADD_NEW_PHOTO
                       : filetype === "document"
-                      ? StringsOfLanguages.UPDATE_DOCUMENT
+                      ? StringsOfLanguages.ADD_NEW_DOCUMENT
                       : filetype === "offer"
-                      ? StringsOfLanguages.UPDATE_OFFER
+                      ? StringsOfLanguages.ADD_NEW_OFFER
                       : filetype === "job"
-                      ? StringsOfLanguages.UPDATE_JOB
+                      ? StringsOfLanguages.ADD_NEW_JOB
                       : StringsOfLanguages.ADD_NEW_FILE
-                    : filetype === "video"
-                    ? StringsOfLanguages.ADD_NEW_VIDEO
-                    : filetype === "photo"
-                    ? StringsOfLanguages.ADD_NEW_PHOTO
-                    : filetype === "document"
-                    ? StringsOfLanguages.ADD_NEW_DOCUMENT
-                    : filetype === "offer"
-                    ? StringsOfLanguages.ADD_NEW_OFFER
-                    : filetype === "job"
-                    ? StringsOfLanguages.ADD_NEW_JOB
-                    : StringsOfLanguages.ADD_NEW_FILE
-                }
-              />
+                  }
+                />
+              </View>
             </View>
           </View>
         </View>
-      </View>
+      </KeyboardAwareScrollView>
     </Modal>
   );
 };
