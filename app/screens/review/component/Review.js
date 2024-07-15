@@ -63,8 +63,10 @@ const Review = (props) => {
                   disabled={false}
                   maxStars={5}
                   rating={item?.ranting}
-                 /*   fullStar={ICONS.starIcon}
-                  emptyStar={ICONS.starBlackIcon} */
+                  fullStar={ICONS.starIcon}
+                  emptyStar={ICONS.emptystarIcon}
+                  halfStar={ICONS.halfstarIcon}
+                //  emptyStar={ICONS.starBlackIcon} 
                   starSize={15}
                   fullStarColor = {GOLDEN_COLOR}
                 />

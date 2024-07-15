@@ -118,7 +118,7 @@ const ServiceItem = (props) => {
                 emptyStar={ICONS.emptystarIcon}
                 halfStar={ICONS.halfstarIcon}
                 starStyle={styles.starStyle}
-              //  starSize={20}
+               // starSize={20}
                 fullStarColor={GOLDEN_COLOR}
               />
             </View>
