@@ -237,8 +237,8 @@ const VideoListView = (props) => {
                 <ActivityIndicator size={"large"} style={styles.midelcontent} />
               ) : (
                 <YoutubePlayer
-                  width={350}
-                  height={400}
+                  width={'100%'}
+                  height={'100%'}
                   // play={playing}
                   videoId={playvideoId ? playvideoId : "iee2TATGMyI"}
                   // onChangeState={() => onStateChange()}

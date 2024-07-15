@@ -12,8 +12,8 @@ const style = StyleSheet.create({
       },
       leftContainer: {
         flex:1,
-        paddingHorizontal: 2,
-       
+       // paddingHorizontal: 2,
+        alignSelf:'center',
       },
       containerjob: {
         padding: 10,
@@ -115,9 +115,10 @@ const style = StyleSheet.create({
         },
       modalContainer: {
         width: wp('100%'),
-        height: hp('40%'),
+        height: wp('75%'),
         backgroundColor: WHITE_COLOR,
         padding: scale(5),
+        borderRadius:10
         
        /*  borderTopRightRadius: scale(30),
         borderTopLeftRadius: scale(30), */
@@ -178,7 +179,8 @@ const style = StyleSheet.create({
       midelcontent :{
          flex:3,
          //width:'90%',
-         alignSelf:'center'
+         alignSelf:'center',
+         flexDirection:"row"
        },
        container_Document: {
         flex: 1,
