@@ -1,6 +1,6 @@
 import { View, StyleSheet, Dimensions } from "react-native";
 import { scale } from "../../../utils/utils";
-import { FONT_FAMILY_SEMIBOLD, FONT_FAMILY_LIGHT, BORDERLINE_COLOR, GRAY_COLOR, WHITE_COLOR, BLACK_COLOR, COMMON_COLOR, GRADIENT_COLOR_NEW1 } from "../../../utils/constants";
+import { FONT_FAMILY_SEMIBOLD, FONT_FAMILY_LIGHT, BORDERLINE_COLOR, GRAY_COLOR, WHITE_COLOR, BLACK_COLOR, COMMON_COLOR, GRADIENT_COLOR_NEW1, FONT_FAMILY_BOLD } from "../../../utils/constants";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 const style = StyleSheet.create({
     container: {
@@ -162,6 +162,12 @@ const style = StyleSheet.create({
         fontWeight:"700",
         fontSize:scale(20),
         color : GRAY_COLOR
+      },
+      crossStyle : {
+        height: 18,
+        width:18,
+        tintColor:GRAY_COLOR,
+        top:5
       },
       confirmtxt : {
         fontWeight:"700",

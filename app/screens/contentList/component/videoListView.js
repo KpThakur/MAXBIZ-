@@ -225,10 +225,11 @@ const VideoListView = (props) => {
                   ///setVisibleBothModal(0)
                 }}
               >
-                <Icon
+                 <Image style={styles.crossStyle} source={ICONS.cross_Icon} />
+                {/* <Icon
                   style={styles.topheadingtext}
                   name={StringsOfLanguages.REMOVE}
-                ></Icon>
+                ></Icon> */}
               </TouchableOpacity>
             </View>
             <View style={styles.midelcontent}>

@@ -26,7 +26,7 @@ import {
 } from "react-native";
 import commomstyle from "../../../common/styles";
 import { Header } from "../../../components";
-import { ICONS } from "../../../utils/utils";
+import { ICONS } from "../../../utils/imagePath";
 import LinearGradient from "react-native-linear-gradient";
 import {
   WHITE_COLOR,
@@ -244,10 +244,11 @@ const PhotoListView = (props) => {
                   ///setVisibleBothModal(0)
                 }}
               >
-                <Icon
+                {/* <Icon
                   style={styles.topheadingtext}
                   name={StringsOfLanguages.REMOVE}
-                ></Icon>
+                ></Icon> */}
+                 <Image style={styles.crossStyle} source={ICONS.cross_Icon} />
               </TouchableOpacity>
             </View>
             {imgeurl ? (
