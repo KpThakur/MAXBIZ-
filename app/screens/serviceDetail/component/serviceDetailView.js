@@ -45,6 +45,8 @@ const ServiceDetailView = (props) => {
     paymentList,
     image,
     serviceDetaildata,
+    refreshing,
+    onRefresh
   } = props;
     console.log("🚀 ~ ServiceDetailView ~ paymentList:", paymentList)
 
@@ -54,14 +56,7 @@ const ServiceDetailView = (props) => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [refreshing, setRefreshing] = useState(false);
-
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
-  }, []);
+ 
 
   const initialLoadRef = useRef(true);
 
@@ -112,7 +107,7 @@ const ServiceDetailView = (props) => {
         }
       >
         <View style={styles.container}>
-          <TouchableOpacity style={styles.top}>
+          <View style={styles.top}>
             <View style={styles.activeView}>
               {isLoading && (
                 <ActivityIndicator
@@ -157,7 +152,7 @@ const ServiceDetailView = (props) => {
               </View>
               {/* <Text style={styles.hour}>{serviceDetail?.pricemodel}</Text> */}
             </View>
-          </TouchableOpacity>
+          </View>
 
           <View style={styles.bottom}>
             <View style={styles.addView}>
