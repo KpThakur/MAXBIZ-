@@ -23,20 +23,23 @@ const ServiceDetail = ({ route, navigation }) => {
 
   
 
-  useEffect(() => {
-    const stringData =
-      serviceDetaildata?.servicedata &&
-      serviceDetaildata?.servicedata.reduce((result, item) => {
-        return `${result}${item.title},`;
-      }, "");
-    setServiceDetail(stringData);
+ useEffect(() => {
+  console.log("serviceDetaildata changed:", serviceDetaildata);
+  const stringData =
+    serviceDetaildata?.servicedata &&
+    serviceDetaildata?.servicedata.reduce((result, item) => {
+      return `${result}${item.title},`;
+    }, "");
+  setServiceDetail(stringData);
 
-    const paydata = serviceDetaildata?.payments
-      ? JSON.parse(serviceDetaildata?.payments)
-      : {};
-   // setPaymentList(paydata);
-    setPaymentList((prevPaymentList) => ({ ...prevPaymentList, ...paydata }));
-  }, []);
+  const paydata = serviceDetaildata?.payments
+    ? JSON.parse(serviceDetaildata?.payments)
+    : {};
+    console.log("Parsed paydata:", paydata);
+
+   setPaymentList(paydata);
+ 
+}, []);
 
   // useEffect(() => {
   //   if (serviceDetaildata?.payments) {
@@ -86,7 +89,7 @@ const ServiceDetail = ({ route, navigation }) => {
   };
   useEffect(() => {
     serviceDetaildata?.photofile && getImage(serviceDetaildata.photofile);
-  }, []);
+  }, [navigation, serviceDetaildata]);
 
   const getServicesDetails = async (businessid) => {
     if (businessid > 0) {

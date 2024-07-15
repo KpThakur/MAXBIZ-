@@ -115,8 +115,10 @@ const ServiceItem = (props) => {
                 // rating={rating}
                 rating={parseFloat(rating)}
                 fullStar={ICONS.starIcon}
-                //emptyStar={ICONS.starBlackIcon}
-                starSize={20}
+                emptyStar={ICONS.emptystarIcon}
+                halfStar={ICONS.halfstarIcon}
+                starStyle={styles.starStyle}
+              //  starSize={20}
                 fullStarColor={GOLDEN_COLOR}
               />
             </View>
@@ -422,4 +424,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     zIndex: 1,
   },
+  starStyle: {
+    width:20,
+    height:18,
+  }
 });

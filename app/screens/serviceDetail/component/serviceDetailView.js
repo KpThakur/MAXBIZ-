@@ -147,9 +147,12 @@ const ServiceDetailView = (props) => {
                   rating={parseFloat(serviceDetail?.avg_rating)}
                     fullStar={ICONS.starIcon}
                   // emptyStar={ICONS.starBlackIcon} 
-                  starSize={20}
+                  emptyStar={ICONS.emptystarIcon}
+                  halfStar={ICONS.halfstarIcon}
+                  starStyle={styles.starStyle}
+                 // starSize={20}
                   fullStarColor={GOLDEN_COLOR}
-                  starStyle={{}}
+                 // starStyle={{}}
                 />
               </View>
               {/* <Text style={styles.hour}>{serviceDetail?.pricemodel}</Text> */}

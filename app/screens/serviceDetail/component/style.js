@@ -175,6 +175,10 @@ const styles = StyleSheet.create({
         position: 'absolute',
         zIndex: 1,
       },
+      starStyle: {
+        width:20,
+        height:18,
+      }
     
 })
 
