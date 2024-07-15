@@ -1,4 +1,4 @@
-package com.maxbiz
+package com.MaxBiz
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

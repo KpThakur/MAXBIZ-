@@ -84,13 +84,13 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.maxbiz"
+    namespace "com.MaxBiz"
     defaultConfig {
-        applicationId "com.maxbiz"
+        applicationId "com.MaxBiz"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.2"
     }
      splits {
         abi {
