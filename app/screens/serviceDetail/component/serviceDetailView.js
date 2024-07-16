@@ -1,4 +1,10 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import {
   SafeAreaView,
   Text,
@@ -11,20 +17,22 @@ import {
   ActivityIndicator,
   StatusBar,
   RefreshControl,
-} from "react-native";
+} from 'react-native';
 import {
   GRADIENT_COLOR_NEW1,
   GRADIENT_COLOR_NEW2,
   GRADIENT_COLOR_NEW3,
   GRADIENT_COLOR_NEW4,
-} from "../../utils/constants";
-import styles from "./style";
-import commomstyle from "../../../common/styles";
-import { Button, Input, Header } from "../../../components";
-import { ICONS } from "./../../../utils/imagePath";
+} from '../../utils/constants';
+import styles from './style';
+import commomstyle from '../../../common/styles';
+import {Button, Input, Header} from '../../../components';
+import {ICONS} from './../../../utils/imagePath';
 
-import StarRating from "react-native-star-rating";
-import LinearGradient from "react-native-linear-gradient";
+// import StarRating from "react-native-star-rating";
+import {StarRatingDisplay} from 'react-native-star-rating-widget';
+
+import LinearGradient from 'react-native-linear-gradient';
 import {
   BLACK_COLOR,
   COMMON_COLOR,
@@ -32,11 +40,11 @@ import {
   GRAY_COLOR,
   WHITE_COLOR,
   YELLOW_COLOR,
-} from "../../../utils/constants";
-import { scale } from "../utils/utils";
-import StringsOfLanguages from "../../../utils/translations";
-import { PaymentContext } from "../../../utils/searchContext";
-const ServiceDetailView = (props) => {
+} from '../../../utils/constants';
+import {scale} from '../utils/utils';
+import StringsOfLanguages from '../../../utils/translations';
+import {PaymentContext} from '../../../utils/searchContext';
+const ServiceDetailView = props => {
   const {
     toggleShowSearch,
     serviceDetail,
@@ -46,17 +54,13 @@ const ServiceDetailView = (props) => {
     image,
     serviceDetaildata,
     refreshing,
-    onRefresh
+    onRefresh,
   } = props;
-    console.log("🚀 ~ ServiceDetailView ~ paymentList:", paymentList)
+  console.log('🚀 ~ ServiceDetailView ~ paymentList:', paymentList);
 
- // const [paymentList, setPaymentList] = useContext(PaymentContext);
-
-
+  // const [paymentList, setPaymentList] = useContext(PaymentContext);
 
   const [isLoading, setIsLoading] = useState(false);
-
- 
 
   const initialLoadRef = useRef(true);
 
@@ -86,10 +90,10 @@ const ServiceDetailView = (props) => {
         onPressLeft={toggleShowSearch}
         onPressRight={props.drawerOpen()}
         //headerType={'other'}
-        rightImgStyl={{ tintColor: BLACK_COLOR }}
+        rightImgStyl={{tintColor: BLACK_COLOR}}
         rightImg={true}
         // headerText={serviceDetail?.fullname}
-        headerText={""}
+        headerText={''}
         headertxt={styles.headerTxt}
         backscreen={backscreen}
         showFindServiceOnBack={true}
@@ -104,14 +108,13 @@ const ServiceDetailView = (props) => {
             tintColor={COMMON_COLOR}
             colors={[COMMON_COLOR]}
           />
-        }
-      >
+        }>
         <View style={styles.container}>
           <View style={styles.top}>
             <View style={styles.activeView}>
               {isLoading && (
                 <ActivityIndicator
-                  size={"large"}
+                  size={'large'}
                   style={styles.activityIndicator}
                 />
               )}
@@ -121,21 +124,21 @@ const ServiceDetailView = (props) => {
                   // source={{ uri: image ? image : null }}
                   source={
                     image
-                      ? { uri: image }
-                      : require("../../../assets/dummy/no_image.png")
+                      ? {uri: image}
+                      : require('../../../assets/dummy/no_image.png')
                   }
                   style={styles.serviceImg}
                   onLoadStart={onLoadStarts}
                   onLoadEnd={onLoadEnds}
-                  alt={"No image found"}
+                  alt={'No image found'}
                 />
               }
             </View>
             <View style={styles.dataView}>
               <Text style={styles.name}>{serviceDetail?.fullname}</Text>
               {/* <Text style={styles.review}>{serviceDetail?.hours}</Text> */}
-              <View style={{ width: 130 }}>
-                <StarRating
+              <View style={{width: 130}}>
+                {/* <StarRating
                   disabled={false}
                   maxStars={5}
                   // rating={serviceDetail?.avg_rating}
@@ -148,6 +151,14 @@ const ServiceDetailView = (props) => {
                  // starSize={20}
                   fullStarColor={GOLDEN_COLOR}
                  // starStyle={{}}
+                /> */}
+                <StarRatingDisplay
+                  rating={parseFloat(serviceDetail?.avg_rating)}
+                  maxStars={5}
+                  starSize={20}
+                  color={GOLDEN_COLOR}
+                  emptyColor={GRAY_COLOR}
+                  starStyle={styles.starStyle}
                 />
               </View>
               {/* <Text style={styles.hour}>{serviceDetail?.pricemodel}</Text> */}
@@ -195,9 +206,9 @@ const ServiceDetailView = (props) => {
                 <Text style={styles.addrsTxt}>
                   {serviceDetail?.servicedata
                     ? serviceDetail?.servicedata
-                        .map((item) => item.title)
-                        .join(", ")
-                    : ""}
+                        .map(item => item.title)
+                        .join(', ')
+                    : ''}
                 </Text>
               </View>
             </View>
@@ -255,14 +266,12 @@ const ServiceDetailView = (props) => {
               <View style={styles.addViewcontent}>
                 <Text style={styles.addrsTxt}>
                   {/* {"Cash | Credit card | Cash app | Paypal"} */}
-                  {paymentList?.cash == 1 ? "Cash, " : null}
-                  {paymentList?.creditcard == 1 ? "Card, " : null}
+                  {paymentList?.cash == 1 ? 'Cash, ' : null}
+                  {paymentList?.creditcard == 1 ? 'Card, ' : null}
                   {/* {paymentList?.cashapp == 1 ? "Cash app, " : null} */}
-                  {paymentList?.cashapp == 1 ? "Check, " : null}
-                  {paymentList?.paypal == 1 ? "Paypal, " : null}
-                  {paymentList?.zelle == 1
-                    ? "Zelle"
-                    : null}
+                  {paymentList?.cashapp == 1 ? 'Check, ' : null}
+                  {paymentList?.paypal == 1 ? 'Paypal, ' : null}
+                  {paymentList?.zelle == 1 ? 'Zelle' : null}
                 </Text>
               </View>
             </View>
@@ -292,8 +301,8 @@ const ServiceDetailView = (props) => {
                 <Text style={styles.serveTxt}>{StringsOfLanguages.ABOUT}</Text>
               </View>
               <View style={styles.addViewcontent}>
-                <Text style={[styles.addrsTxt, { flex: 1 }]}>
-                  {""}
+                <Text style={[styles.addrsTxt, {flex: 1}]}>
+                  {''}
                   {serviceDetail?.about}
                 </Text>
               </View>
@@ -307,13 +316,12 @@ const ServiceDetailView = (props) => {
               <TouchableOpacity
                 onPress={() =>
                   showDetailContent(
-                    "contentListScreen",
-                    "Video",
-                    serviceDetail?.video
+                    'contentListScreen',
+                    'Video',
+                    serviceDetail?.video,
                   )
                 }
-                style={styles.contactvideo}
-              >
+                style={styles.contactvideo}>
                 <Image
                   source={ICONS.videoIcon}
                   style={styles.contactImgvideo}
@@ -323,13 +331,12 @@ const ServiceDetailView = (props) => {
               <TouchableOpacity
                 onPress={() =>
                   showDetailContent(
-                    "contentListScreen",
-                    "Photo",
-                    serviceDetail?.photo
+                    'contentListScreen',
+                    'Photo',
+                    serviceDetail?.photo,
                   )
                 }
-                style={styles.contactvideo}
-              >
+                style={styles.contactvideo}>
                 <Image
                   source={ICONS.photoIcon}
                   style={styles.contactImgvideo}
@@ -344,13 +351,12 @@ const ServiceDetailView = (props) => {
               <TouchableOpacity
                 onPress={() =>
                   showDetailContent(
-                    "contentListScreen",
-                    "Document",
-                    serviceDetail?.documents
+                    'contentListScreen',
+                    'Document',
+                    serviceDetail?.documents,
                   )
                 }
-                style={styles.contactvideo}
-              >
+                style={styles.contactvideo}>
                 <Image
                   source={ICONS.documentIcon}
                   style={styles.contactImgvideo}
@@ -361,13 +367,12 @@ const ServiceDetailView = (props) => {
               <TouchableOpacity
                 onPress={() =>
                   showDetailContent(
-                    "contentListScreen",
-                    "Jobs",
-                    serviceDetail?.jobs
+                    'contentListScreen',
+                    'Jobs',
+                    serviceDetail?.jobs,
                   )
                 }
-                style={styles.contactvideo}
-              >
+                style={styles.contactvideo}>
                 <Image source={ICONS.jobsIcon} style={styles.contactImgvideo} />
                 <Text style={styles.contacttext}>Jobs</Text>
               </TouchableOpacity>
@@ -377,13 +382,12 @@ const ServiceDetailView = (props) => {
               <TouchableOpacity
                 onPress={() =>
                   showDetailContent(
-                    "contentListScreen",
-                    "Offers",
-                    serviceDetail?.offers
+                    'contentListScreen',
+                    'Offers',
+                    serviceDetail?.offers,
                   )
                 }
-                style={styles.contactvideo}
-              >
+                style={styles.contactvideo}>
                 <Image
                   source={ICONS.offersIcon}
                   style={styles.contactImgvideo}
@@ -394,13 +398,12 @@ const ServiceDetailView = (props) => {
               <TouchableOpacity
                 onPress={() =>
                   showDetailContent(
-                    "reviewScreen",
-                    "review",
-                    serviceDetail?.reviews
+                    'reviewScreen',
+                    'review',
+                    serviceDetail?.reviews,
                   )
                 }
-                style={styles.contactvideo}
-              >
+                style={styles.contactvideo}>
                 <Image
                   source={ICONS.reviewsIcon}
                   style={styles.contactImgvideo}
@@ -419,8 +422,9 @@ const ServiceDetailView = (props) => {
               <>
                 <TouchableOpacity
                   style={styles.contact}
-                  onPress={() => Linking.openURL(`sms:${serviceDetail?.phone}`)}
-                >
+                  onPress={() =>
+                    Linking.openURL(`sms:${serviceDetail?.phone}`)
+                  }>
                   <Image source={ICONS.adthereIcon} style={styles.contactImg} />
                 </TouchableOpacity>
               </>
@@ -430,8 +434,9 @@ const ServiceDetailView = (props) => {
               <>
                 <TouchableOpacity
                   style={styles.contact}
-                  onPress={() => Linking.openURL(`tel:${serviceDetail?.phone}`)}
-                >
+                  onPress={() =>
+                    Linking.openURL(`tel:${serviceDetail?.phone}`)
+                  }>
                   <Image source={ICONS.dialIcon} style={styles.contactImg} />
                 </TouchableOpacity>
               </>
@@ -443,8 +448,7 @@ const ServiceDetailView = (props) => {
                   style={styles.contact}
                   onPress={() =>
                     Linking.openURL(`mailto:${serviceDetail?.email}`)
-                  }
-                >
+                  }>
                   <Image source={ICONS.emailIcon} style={styles.contactImg} />
                 </TouchableOpacity>
               </>
@@ -452,8 +456,7 @@ const ServiceDetailView = (props) => {
 
             <TouchableOpacity
               style={styles.contact}
-              onPress={() => Linking.openURL(`${serviceDetail?.websiteurl}`)}
-            >
+              onPress={() => Linking.openURL(`${serviceDetail?.websiteurl}`)}>
               <Image source={ICONS.website_Icon} style={styles.contactImg} />
             </TouchableOpacity>
 
@@ -464,11 +467,10 @@ const ServiceDetailView = (props) => {
               onPress={() =>
                 Linking.openURL(
                   `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                    serviceDetail?.address
-                  )}`
+                    serviceDetail?.address,
+                  )}`,
                 )
-              }
-            >
+              }>
               <Image source={ICONS.map_Icon} style={styles.contactImg} />
             </TouchableOpacity>
           </View>

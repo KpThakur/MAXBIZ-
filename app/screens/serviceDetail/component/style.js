@@ -176,8 +176,7 @@ const styles = StyleSheet.create({
         zIndex: 1,
       },
       starStyle: {
-        width:20,
-        height:18,
+       marginHorizontal: 3
       }
     
 })

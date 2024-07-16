@@ -77,5 +77,8 @@ const style = StyleSheet.create({
         marginRight: scale(10),
         marginLeft: scale(10),
       },
+      starStyle: {
+       marginHorizontal: 1
+      },
 });
 export default style;
