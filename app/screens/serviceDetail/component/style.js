@@ -174,6 +174,13 @@ const styles = StyleSheet.create({
       activityIndicator: {
         position: 'absolute',
         zIndex: 1,
+        marginTop: 10,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        left: 0,
+        justifyContent: 'center',
+        alignItems: 'center',
       },
       starStyle: {
        marginHorizontal: 3

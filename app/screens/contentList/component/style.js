@@ -199,6 +199,17 @@ const style = StyleSheet.create({
       top: scale(25)
     
     },
+    activityIndicatorImg: {
+      position: 'absolute',
+      zIndex: 1,
+      marginTop: 10,
+      right: 0,
+      top: 0,
+      bottom: 0,
+      left: 0,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
 
 });
 export default style;

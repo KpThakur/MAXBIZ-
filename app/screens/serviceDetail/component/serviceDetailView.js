@@ -1,4 +1,5 @@
 import React, {
+  Fragment,
   useCallback,
   useContext,
   useEffect,
@@ -60,23 +61,44 @@ const ServiceDetailView = props => {
 
   // const [paymentList, setPaymentList] = useContext(PaymentContext);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [profileLoader, setProfileLoader] = useState('');
 
-  const initialLoadRef = useRef(true);
-
-  const onLoadStarts = () => {
-    if (!initialLoadRef.current) {
-      return;
-    }
-    setIsLoading(true);
+  const onLoadProfileStart = () => {
+    setProfileLoader(true);
+  };
+  const onLoadProfileEnd = () => {
+    setProfileLoader(false);
   };
 
-  const onLoadEnds = () => {
-    if (!initialLoadRef.current) {
-      return;
+  const renderFileUri = () => {
+    if (image !== '') {
+      return (
+        <View>
+          <Fragment>
+            {profileLoader == true ? (
+              <ActivityIndicator
+                style={styles.activityIndicator}
+                // animating={props.profileLoader}
+                size={'large'}
+              />
+            ) : null}
+            <Image
+              onLoadStart={() => onLoadProfileStart()}
+              onLoadEnd={() => onLoadProfileEnd()}
+              source={{uri: `${image}`}}
+              style={styles.serviceImg}
+            />
+          </Fragment>
+        </View>
+      );
+    } else {
+      return (
+        <Image
+          source={require('../../../assets/dummy/no_image.png')}
+          style={styles.serviceImg}
+        />
+      );
     }
-    setIsLoading(false);
-    initialLoadRef.current = false;
   };
 
   return (
@@ -111,29 +133,7 @@ const ServiceDetailView = props => {
         }>
         <View style={styles.container}>
           <View style={styles.top}>
-            <View style={styles.activeView}>
-              {isLoading && (
-                <ActivityIndicator
-                  size={'large'}
-                  style={styles.activityIndicator}
-                />
-              )}
-              {
-                <Image
-                  // source={{uri: `${image}`}}
-                  // source={{ uri: image ? image : null }}
-                  source={
-                    image
-                      ? {uri: image}
-                      : require('../../../assets/dummy/no_image.png')
-                  }
-                  style={styles.serviceImg}
-                  onLoadStart={onLoadStarts}
-                  onLoadEnd={onLoadEnds}
-                  alt={'No image found'}
-                />
-              }
-            </View>
+            <View style={styles.activeView}>{renderFileUri()}</View>
             <View style={styles.dataView}>
               <Text style={styles.name}>{serviceDetail?.fullname}</Text>
               {/* <Text style={styles.review}>{serviceDetail?.hours}</Text> */}

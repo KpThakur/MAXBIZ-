@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {Fragment, useRef, useState} from 'react';
 
 import {
   Text,
@@ -38,7 +38,7 @@ import {
 } from '../utils/constants';
 import {normalize} from './scaleFontSize';
 
- import {StarRatingDisplay} from 'react-native-star-rating-widget';
+import {StarRatingDisplay} from 'react-native-star-rating-widget';
 const ServiceItem = props => {
   const {
     img,
@@ -54,23 +54,44 @@ const ServiceItem = props => {
     city,
   } = props;
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [profileLoader, setProfileLoader] = useState('');
 
-  const initialLoadRef = useRef(true);
-
-  const onLoadStarts = () => {
-    if (!initialLoadRef.current) {
-      return;
-    }
-    setIsLoading(true);
+  const onLoadProfileStart = () => {
+    setProfileLoader(true);
+  };
+  const onLoadProfileEnd = () => {
+    setProfileLoader(false);
   };
 
-  const onLoadEnds = () => {
-    if (!initialLoadRef.current) {
-      return;
+  const renderFileUri = () => {
+    if (img !== '') {
+      return (
+        <View>
+          <Fragment>
+            {profileLoader == true ? (
+              <ActivityIndicator
+                style={styles.activityIndicator}
+                // animating={props.profileLoader}
+                size={'large'}
+              />
+            ) : null}
+            <Image
+              onLoadStart={() => onLoadProfileStart()}
+              onLoadEnd={() => onLoadProfileEnd()}
+              source={{uri: `${img}`}}
+              style={styles.serviceImg}
+            />
+          </Fragment>
+        </View>
+      );
+    } else {
+      return (
+        <Image
+          source={require('../assets/dummy/no_image.png')}
+          style={styles.serviceImg}
+        />
+      );
     }
-    setIsLoading(false);
-    initialLoadRef.current = false;
   };
 
   return (
@@ -82,30 +103,7 @@ const ServiceItem = props => {
             props.showDetail(serviceDetail);
           }}
           style={styles.top}>
-          <View style={styles.activeView}>
-            {isLoading && (
-              <ActivityIndicator
-                size={'large'}
-                style={styles.activityIndicator}
-              />
-            )}
-            {
-              <Image
-                // source={{ uri: `${img}` }}
-                // source={{ uri: img ? img : null }}
-                // source={{
-                //   uri: serviceDetail?.aws_url ? serviceDetail?.aws_url : null,
-                // }}
-                source={
-                  img ? {uri: img} : require('../assets/dummy/no_image.png')
-                }
-                style={styles.serviceImg}
-                onLoadStart={onLoadStarts}
-                onLoadEnd={onLoadEnds}
-                alt={'No image found'}
-              />
-            }
-          </View>
+          <View style={styles.activeView}>{renderFileUri()}</View>
 
           <View style={styles.dataView}>
             <Text style={styles.name}>{name}</Text>
@@ -130,9 +128,7 @@ const ServiceItem = props => {
                 color={GOLDEN_COLOR}
                 emptyColor={GRAY_COLOR}
                 starStyle={styles.starStyle}
-
               />
-            
             </View>
             <Text style={styles.hour}>{pricemodel}</Text>
           </View>
@@ -430,8 +426,15 @@ const styles = StyleSheet.create({
   activityIndicator: {
     position: 'absolute',
     zIndex: 1,
+    marginTop: 10,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    left: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   starStyle: {
-    marginHorizontal: 3
+    marginHorizontal: 3,
   },
 });
