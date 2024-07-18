@@ -5,7 +5,7 @@ import OTPTextInput from "react-native-otp-textinput";
 import { ICONS } from "./../../../../utils/imagePath";
 
 import styles from "./style";
-import { Header, Button } from "@components";
+import { Header, Button } from "../../../../components";
 import { COMMON_COLOR,GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW3,GRADIENT_COLOR_NEW2, WHITE_COLOR } from "../../../../utils/constants";
 import { SafeAreaView } from 'react-native';
 import commomstyle from '../../../../common/styles';

@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from "react-native";
-import { scale } from "@utils/utils";
+import { scale } from "../utils/utils";
 import {
   BLACK_COLOR,
   FONT_FAMILY_REGULAR,
@@ -7,7 +7,7 @@ import {
   FONT_FAMILY_SEMIBOLD,
   PLACEHOLDER_COLOR,
   COMMON_COLOR,
-} from "@utils/constants";
+} from "../../../../utils/constants";
 import { GRAY_COLOR, WHITE_COLOR } from "../../../../utils/constants";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;

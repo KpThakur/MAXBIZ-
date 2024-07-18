@@ -4,7 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { DrawerContentScrollView } from "@react-navigation/drawer";
 import { FONT_FAMILY_SEMIBOLD, GRADIENT_COLOR_NEW3, WHITE_COLOR } from "../utils/constants";
-import { scale } from "@utils/utils";
+import { scale } from "../utils/utils";
 import { Avatar, Text } from "react-native-paper";
 import home from "../assets/images/home.png";
 import user from "../assets/images/join.png";

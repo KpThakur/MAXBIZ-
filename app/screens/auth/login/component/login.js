@@ -10,10 +10,10 @@ import {
 } from "react-native";
 import style from "./style";
 import commomstyle from "../../../../common/styles";
-import { Button, Input, Logo } from "@components";
+import { Button, Input, Logo } from "../../../../components";
 
-import { ICONS, LOGOIMAGE } from "@utils/imagePath";
-import { Header } from "@components";
+import { ICONS, LOGOIMAGE } from "../../../../utils/imagePath";
+import { Header } from "../../../../components";
 import {
   WHITE_COLOR,
   GRADIENT_COLOR_NEW1,
@@ -26,7 +26,7 @@ import StringsOfLanguages from "../../../../utils/translations";
 import { useFocusEffect } from "@react-navigation/native";
 
 const login = (props) => {
-  const { inputError } = props;
+  const { inputError, setInputError } = props;
 
   useFocusEffect(
     useCallback(() => {
@@ -34,6 +34,11 @@ const login = (props) => {
         ...props.loginData,
         email: "",
         password: "",
+      });
+      setInputError({
+        ...inputError,
+        emailerror: "",
+        passworderror: "",
       });
     }, [])
   );
@@ -68,12 +73,16 @@ const login = (props) => {
           <View style={style.topContainer}>
             <View>
               <Input
-                onChangeText={(val) =>
+                onChangeText={(val) => {
                   props.setLoginData({
                     ...props.loginData,
                     email: val,
                   })
-                }
+                 setInputError({
+                    ...inputError,
+                    emailerror: "",
+                  })
+                }}
                 value={props.loginData.email}
                 placeholder={StringsOfLanguages.ENTER_YOUR_EMAIL_ID}
                 leftImage={ICONS.emailIcon}
@@ -83,12 +92,16 @@ const login = (props) => {
             </View>
             <View style={style.secondInput}>
               <Input
-                onChangeText={(val) =>
+                onChangeText={(val) => {
                   props.setLoginData({
                     ...props.loginData,
                     password: val,
                   })
-                }
+                 setInputError({
+                    ...inputError,
+                    passworderror: "",
+                  })
+                }}
                 secureTextEntry={true}
                 value={props.loginData.password}
                 placeholder={StringsOfLanguages.PASSWORD}

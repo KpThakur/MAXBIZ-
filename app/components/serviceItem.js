@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, {Fragment, useRef, useState} from 'react';
 
 import {
   Text,
@@ -11,11 +11,11 @@ import {
   ActivityIndicator,
   SafeAreaView,
   ScrollView,
-} from "react-native";
-import StarRating from "react-native-star-rating";
-import StringsOfLanguages from "../utils/translations";
+} from 'react-native';
+// import StarRating from 'react-native-star-rating';
+import StringsOfLanguages from '../utils/translations';
 
-import { scale } from "@utils/utils";
+import {scale} from '../utils/utils';
 import {
   COMMON_COLOR,
   FONT_FAMILY_REGULAR,
@@ -24,9 +24,9 @@ import {
   GRAY_COLOR,
   WHITE_COLOR,
   BLACK_COLOR,
-} from "@utils/constants";
-//import { ICONS } from "@utils/imagePath";
-import { ICONS } from "../utils/imagePath";
+} from '../utils/constants';
+//import { ICONS } from "../utils/imagePath";
+import {ICONS} from '../utils/imagePath';
 import {
   BORDERLINE_COLOR,
   FONT_FAMILY_LIGHT,
@@ -35,10 +35,11 @@ import {
   GRADIENT_COLOR_NEW2,
   GRADIENT_COLOR_NEW3,
   GRADIENT_COLOR_NEW4,
-} from "../utils/constants";
-import { normalize } from "./scaleFontSize";
+} from '../utils/constants';
+import {normalize} from './scaleFontSize';
 
-const ServiceItem = (props) => {
+import {StarRatingDisplay} from 'react-native-star-rating-widget';
+const ServiceItem = props => {
   const {
     img,
     name,
@@ -53,23 +54,44 @@ const ServiceItem = (props) => {
     city,
   } = props;
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [profileLoader, setProfileLoader] = useState('');
 
-  const initialLoadRef = useRef(true);
-
-  const onLoadStarts = () => {
-    if (!initialLoadRef.current) {
-      return;
-    }
-    setIsLoading(true);
+  const onLoadProfileStart = () => {
+    setProfileLoader(true);
+  };
+  const onLoadProfileEnd = () => {
+    setProfileLoader(false);
   };
 
-  const onLoadEnds = () => {
-    if (!initialLoadRef.current) {
-      return;
+  const renderFileUri = () => {
+    if (img !== '') {
+      return (
+        <View>
+          <Fragment>
+            {profileLoader == true ? (
+              <ActivityIndicator
+                style={styles.activityIndicator}
+                // animating={props.profileLoader}
+                size={'large'}
+              />
+            ) : null}
+            <Image
+              onLoadStart={() => onLoadProfileStart()}
+              onLoadEnd={() => onLoadProfileEnd()}
+              source={{uri: `${img}`}}
+              style={styles.serviceImg}
+            />
+          </Fragment>
+        </View>
+      );
+    } else {
+      return (
+        <Image
+          source={require('../assets/dummy/no_image.png')}
+          style={styles.serviceImg}
+        />
+      );
     }
-    setIsLoading(false);
-    initialLoadRef.current = false;
   };
 
   return (
@@ -80,44 +102,32 @@ const ServiceItem = (props) => {
           onPress={() => {
             props.showDetail(serviceDetail);
           }}
-          style={styles.top}
-        >
-          <View style={styles.activeView}>
-            {isLoading && (
-              <ActivityIndicator
-                size={"large"}
-                style={styles.activityIndicator}
-              />
-            )}
-            {
-              <Image
-                // source={{ uri: `${img}` }}
-                // source={{ uri: img ? img : null }}
-                // source={{
-                //   uri: serviceDetail?.aws_url ? serviceDetail?.aws_url : null,
-                // }}
-                source={img ? { uri: img } : require("../assets/dummy/no_image.png")}
-                style={styles.serviceImg}
-                onLoadStart={onLoadStarts}
-                onLoadEnd={onLoadEnds}
-                alt={"No image found"}
-              />
-            }
-          </View>
+          style={styles.top}>
+          <View style={styles.activeView}>{renderFileUri()}</View>
 
           <View style={styles.dataView}>
             <Text style={styles.name}>{name}</Text>
             {/* <Text style={styles.review}>{hours}</Text> */}
-            <View style={{ width: 130 }}>
-              <StarRating
+            <View style={{width: 130}}>
+              {/* <StarRating
                 disabled={false}
                 maxStars={5}
                 // rating={rating}
                 rating={parseFloat(rating)}
-                //fullStar={ICONS.starIcon}
-                //emptyStar={ICONS.starBlackIcon}
-                starSize={20}
+                fullStar={ICONS.starIcon}
+                emptyStar={ICONS.emptystarIcon}
+                halfStar={ICONS.halfstarIcon}
+                starStyle={styles.starStyle}
+               // starSize={20}
                 fullStarColor={GOLDEN_COLOR}
+              /> */}
+              <StarRatingDisplay
+                rating={parseFloat(rating)}
+                maxStars={5}
+                starSize={20}
+                color={GOLDEN_COLOR}
+                emptyColor={GRAY_COLOR}
+                starStyle={styles.starStyle}
               />
             </View>
             <Text style={styles.hour}>{pricemodel}</Text>
@@ -152,13 +162,15 @@ const ServiceItem = (props) => {
 
           <View style={styles.addView}>
             <View style={styles.addViewtext}>
-              <Text style={styles.serveTxt}>{StringsOfLanguages.SEARCH_SERVICE}:</Text>
+              <Text style={styles.serveTxt}>
+                {StringsOfLanguages.SEARCH_SERVICE}:
+              </Text>
             </View>
             <View style={styles.addViewcontent}>
               <Text style={styles.addrsTxt}>
                 {service_name
-                  ? service_name.map((item) => item.title).join(", ")
-                  : ""}
+                  ? service_name.map(item => item.title).join(', ')
+                  : ''}
               </Text>
             </View>
           </View>
@@ -192,8 +204,7 @@ const ServiceItem = (props) => {
             <View style={styles.addViewcontent}>
               <Text
                 // style={[styles.addrsTxtadd, { bottom: scale(2.5) }]}
-                style={[styles.addrsTxt]}
-              >
+                style={[styles.addrsTxt]}>
                 {city}, {serviceDetail?.state_name}
               </Text>
             </View>
@@ -207,8 +218,7 @@ const ServiceItem = (props) => {
             <View style={styles.addViewcontent}>
               <Text
                 // style={[styles.addrsTxtadd, { bottom: scale(2.5) }]}
-                style={[styles.addrsTxt]}
-              >
+                style={[styles.addrsTxt]}>
                 {serviceDetail?.hours}
               </Text>
             </View>
@@ -220,8 +230,7 @@ const ServiceItem = (props) => {
             <>
               <TouchableOpacity
                 style={styles.contact}
-                onPress={() => Linking.openURL(`sms:${serviceDetail?.phone}`)}
-              >
+                onPress={() => Linking.openURL(`sms:${serviceDetail?.phone}`)}>
                 <Image source={ICONS.adthereIcon} style={styles.contactImg} />
               </TouchableOpacity>
             </>
@@ -231,8 +240,7 @@ const ServiceItem = (props) => {
             <>
               <TouchableOpacity
                 style={styles.contact}
-                onPress={() => Linking.openURL(`tel:${serviceDetail?.phone}`)}
-              >
+                onPress={() => Linking.openURL(`tel:${serviceDetail?.phone}`)}>
                 <Image source={ICONS.dialIcon} style={styles.contactImg} />
               </TouchableOpacity>
             </>
@@ -244,8 +252,7 @@ const ServiceItem = (props) => {
                 style={styles.contact}
                 onPress={() =>
                   Linking.openURL(`mailto:${serviceDetail?.email}`)
-                }
-              >
+                }>
                 <Image source={ICONS.emailIcon} style={styles.contactImg} />
               </TouchableOpacity>
             </>
@@ -253,8 +260,7 @@ const ServiceItem = (props) => {
 
           <TouchableOpacity
             style={styles.contact}
-            onPress={() => Linking.openURL(`${serviceDetail?.websiteurl}`)}
-          >
+            onPress={() => Linking.openURL(`${serviceDetail?.websiteurl}`)}>
             <Image source={ICONS.website_Icon} style={styles.contactImg} />
           </TouchableOpacity>
 
@@ -265,11 +271,10 @@ const ServiceItem = (props) => {
             onPress={() =>
               Linking.openURL(
                 `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                  serviceDetail?.address
-                )}`
+                  serviceDetail?.address,
+                )}`,
               )
-            }
-          >
+            }>
             <Image source={ICONS.map_Icon} style={styles.contactImg} />
           </TouchableOpacity>
         </View>
@@ -291,13 +296,13 @@ const styles = StyleSheet.create({
     borderRadius: scale(10),
     backgroundColor: WHITE_COLOR,
     shadowColor: BLACK_COLOR,
-    shadowOffset: { width: 0, height: 1 },
+    shadowOffset: {width: 0, height: 1},
     shadowOpacity: 0.3,
     shadowRadius: 3,
     elevation: 10,
   },
   top: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   serviceImg: {
     height: 100,
@@ -339,7 +344,7 @@ const styles = StyleSheet.create({
     // marginLeft:scale(1)
   },
   addView: {
-    flexDirection: "row",
+    flexDirection: 'row',
     // borderBottomWidth:1,
     //  borderBottomColor:BORDERLINE_COLOR,
     marginBottom: scale(5),
@@ -355,7 +360,7 @@ const styles = StyleSheet.create({
     fontSize: scale(15),
     fontFamily: FONT_FAMILY_SEMIBOLD,
     color: GRAY_COLOR,
-    marginTop: Platform.OS === "ios" ? normalize(-2) : 3,
+    marginTop: Platform.OS === 'ios' ? normalize(-2) : 3,
     marginLeft: 8,
   },
   serviceImgicon: {
@@ -389,13 +394,13 @@ const styles = StyleSheet.create({
     fontSize: scale(13),
   },
   contactView: {
-    flexDirection: "row",
-    position: "absolute",
+    flexDirection: 'row',
+    position: 'absolute',
     bottom: scale(-20),
     left: scale(0),
     right: scale(0),
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   contact: {
     padding: scale(10),
@@ -403,7 +408,7 @@ const styles = StyleSheet.create({
     borderRadius: scale(8),
     backgroundColor: GRADIENT_COLOR_NEW2,
     shadowColor: BLACK_COLOR,
-    shadowOffset: { width: 0, height: 1 },
+    shadowOffset: {width: 0, height: 1},
     shadowOpacity: 0.3,
     shadowRadius: 1,
     elevation: 10,
@@ -415,11 +420,21 @@ const styles = StyleSheet.create({
   },
   activeView: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   activityIndicator: {
-    position: "absolute",
+    position: 'absolute',
     zIndex: 1,
+    marginTop: 10,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    left: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  starStyle: {
+    marginHorizontal: 3,
   },
 });

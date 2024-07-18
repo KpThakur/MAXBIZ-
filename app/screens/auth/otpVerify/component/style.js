@@ -9,7 +9,7 @@ import {
   GRAY_COLOR,
   WHITE_COLOR,
 } from "../../../../utils/constants";
-import { scale } from "@utils/utils";
+import { scale } from "../../../../utils/utils";
 
 const styles = StyleSheet.create({
   container: {

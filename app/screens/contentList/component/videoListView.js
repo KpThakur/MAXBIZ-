@@ -23,8 +23,8 @@ import {
 } from "react-native";
 
 import commomstyles from "../../../common/styles";
-import { Header } from "@components";
-import { ICONS } from "@utils/imagePath";
+import { Header } from "../../../components";
+import { ICONS } from "../../../utils/imagePath";
 import Icon from "react-native-vector-icons/FontAwesome";
 import {
   WHITE_COLOR,
@@ -225,10 +225,11 @@ const VideoListView = (props) => {
                   ///setVisibleBothModal(0)
                 }}
               >
-                <Icon
+                 <Image style={styles.crossStyle} source={ICONS.cross_Icon} />
+                {/* <Icon
                   style={styles.topheadingtext}
                   name={StringsOfLanguages.REMOVE}
-                ></Icon>
+                ></Icon> */}
               </TouchableOpacity>
             </View>
             <View style={styles.midelcontent}>
@@ -236,8 +237,8 @@ const VideoListView = (props) => {
                 <ActivityIndicator size={"large"} style={styles.midelcontent} />
               ) : (
                 <YoutubePlayer
-                  width={350}
-                  height={400}
+                  width={'100%'}
+                  height={'100%'}
                   // play={playing}
                   videoId={playvideoId ? playvideoId : "iee2TATGMyI"}
                   // onChangeState={() => onStateChange()}

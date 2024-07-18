@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import {  WHITE_COLOR,FONT_FAMILY_SEMIBOLD, COMMON_COLOR, FONT_FAMILY_REGULAR, GRADIENT_COLOR_NEW3} from './../../../utils/constants';
-import { scale } from '@utils/utils';
+import { scale } from '../../../utils/utils';
 
 const styles = StyleSheet.create({
     headerTxt:{

@@ -15,7 +15,7 @@ import {
   WHITE_COLOR,
 } from "../utils/constants";
 import LinearGradient from "react-native-linear-gradient";
-import { scale } from "@utils/utils";
+import { scale } from "../utils/utils";
 
 const button = (props) => {
   const { buttonText, style, leftImg, rightImg, buttontxt, onPress } = props;
@@ -23,7 +23,7 @@ const button = (props) => {
   const { container, btnText } = styles;
 
   return (
-    <TouchableOpacity onPress={onPress} style={{ paddingHorizontal: scale(5) }}>
+    <TouchableOpacity onPress={onPress} style={{ paddingHorizontal: scale(5)  }}>
       <LinearGradient
         //  colors={['rgba(135, 125, 242, 1)', 'rgba(67, 55, 190, 1)']}
         colors={[GRADIENT_COLOR, LINEAR_GRAD_COLOR]}
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 5,
     flexDirection: "row",
-    paddingHorizontal: scale(5),
+    paddingHorizontal: scale(5) ,
   },
   btnText: {
     color: WHITE_COLOR,

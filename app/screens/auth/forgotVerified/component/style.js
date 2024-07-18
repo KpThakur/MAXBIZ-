@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
-import { scale } from '@utils/utils';
+import { scale } from '../../../../utils/utils';
 import {
     BLACK_COLOR, FONT_FAMILY_REGULAR, GRADIENT_COLOR,
     FONT_FAMILY_MEDIUM, PLACEHOLDER_COLOR, COMMON_COLOR,FONT_FAMILY_SEMIBOLD
-} from '@utils/constants';
+} from '../../../../utils/constants';
 
 
 const style = StyleSheet.create({

@@ -13,7 +13,7 @@ import {
 import {
   FONT_FAMILY_SEMIBOLD,
 } from "../utils/constants";
-import { scale } from "@utils/utils";
+import { scale } from "../utils/utils";
 import {
   Avatar,
   Text,

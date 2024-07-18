@@ -11,7 +11,7 @@ import {
   BORDERLINE_COLOR,
   FONT_FAMILY_MEDIUM,
 } from "./../../../utils/constants";
-import { scale } from "@utils/utils";
+import { scale } from "../../../utils/utils";
 import {
   normalize,
   normalizeHeight,

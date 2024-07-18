@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { FlatList, View,Text, RefreshControl } from "react-native";
 import ServiceItem from "../../../components/serviceItem";
-import { ICONS } from "../../../../utils/imagePath";
+import { ICONS } from "../../../utils/imagePath";
 import Notfound from '../../../components/notfound'
 import { COMMON_COLOR } from "../../../utils/constants";
 

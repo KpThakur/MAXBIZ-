@@ -1,6 +1,6 @@
 import React from "react";
 import { Image, View } from "react-native";
-import { LOGOIMAGE } from "@utils/imagePath";
+import { LOGOIMAGE } from "../utils/imagePath";
 
 const logo = (props) => {
   const { style } = props;

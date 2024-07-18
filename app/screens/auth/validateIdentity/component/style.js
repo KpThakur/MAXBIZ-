@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { scale } from '@utils/utils';
-import { BLACK_COLOR, GRAY_COLOR,FONT_FAMILY_SEMIBOLD,FONT_FAMILY_REGULAR } from '@utils/constants';
+import { scale } from '../../../../utils/utils';
+import { BLACK_COLOR, GRAY_COLOR,FONT_FAMILY_SEMIBOLD,FONT_FAMILY_REGULAR } from '../../../../utils/constants';
 
 const style = StyleSheet.create({
     container: {

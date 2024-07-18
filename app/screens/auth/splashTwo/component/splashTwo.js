@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { View, SafeAreaView, StatusBar } from "react-native";
 import commomstyle from "../../../../common/styles";
 import style from "./style";
-import { Logo } from "@components";
+import { Logo } from "../../../../components";
 import {
   BLACK_COLOR,
   GRADIENT_COLOR,
@@ -10,7 +10,7 @@ import {
   WHITE_COLOR,
   GRADIENT_COLOR_NEW,
   LINEAR_GRAD_COLOR_NEW,
-} from "@utils/constants";
+} from "../../../../utils/constants";
 import LinearGradient from "react-native-linear-gradient";
 import { COMMON_COLOR } from "../../../../utils/constants";
 

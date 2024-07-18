@@ -1,5 +1,5 @@
 import { View, StyleSheet } from "react-native";
-import { scale } from "@utils/utils";
+import { scale } from "../../../utils/utils";
 import { FONT_FAMILY_SEMIBOLD, FONT_FAMILY_LIGHT, BORDERLINE_COLOR, GRAY_COLOR, WHITE_COLOR } from "../../../utils/constants";
 
 const style = StyleSheet.create({
@@ -76,6 +76,9 @@ const style = StyleSheet.create({
         height: 1,
         marginRight: scale(10),
         marginLeft: scale(10),
+      },
+      starStyle: {
+       marginHorizontal: 1
       },
 });
 export default style;

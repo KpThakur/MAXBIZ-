@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { View, Text, SafeAreaView, ScrollView, StatusBar } from 'react-native';
 import style from './style';
 import commomstyle from '../../../../common/styles';
-import { Button, Input, Header } from '@components';
+import { Button, Input, Header } from '../../../../components';
 import { GRADIENT_COLOR_NEW1, GRADIENT_COLOR_NEW3,GRADIENT_COLOR_NEW2, WHITE_COLOR } from '../../../../utils/constants';
 import LinearGradient from 'react-native-linear-gradient';
 import StringsOfLanguages from '../../../../utils/translations';

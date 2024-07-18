@@ -18,7 +18,9 @@ export const ICONS = {
     searchIcon: require('../assets/images/search.png'),
     servicesIcon: require('../assets/images/constructor.png'),
     crossIcon: require('../assets/images/cross.png'),
-    starIcon: require('../assets/images/star.png'),
+    starIcon: require('../assets/images/star3x.png'),
+    emptystarIcon: require('../assets/images/startheme3x.png'),
+    halfstarIcon: require('../assets/images/star_half_.png'),
     adthereIcon: require('../assets/images/message3x.png'),
     locationIcon: require('../assets/images/location3x.png'),
     videoIcon: require('../assets/images/video3x.png'),
@@ -47,5 +49,6 @@ export const ICONS = {
     city_Icon: require('../assets/images/city_ICON.png'),
     map_Icon: require('../assets/images/map_Icon3x.png'),
     search_New: require('../assets/images/search_new.png'),
-    close_New: require('../assets/images/close_New.png')
+    close_New: require('../assets/images/close_New.png'),
+    cross_Icon: require('../assets/images/cross3x.png')
 }

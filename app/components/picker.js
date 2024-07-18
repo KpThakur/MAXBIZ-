@@ -6,8 +6,8 @@ import {
   BORDERLINE_COLOR,
   PLACEHOLDER_COLOR,
   FONT_FAMILY_REGULAR,
-} from "@utils/constants";
-import { scale } from "@utils/utils";
+} from "../utils/constants";
+import { scale } from "../utils/utils";
 import { GRAY_COLOR } from "../utils/constants";
 const picker = (props) => {
   const [selectedData, setSelectedData] = useState({});

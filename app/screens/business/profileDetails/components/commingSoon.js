@@ -5,7 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import commomstyle from "../../../../common/styles";
 import { AuthContext } from "../../../../utils/UserContext";
 import styles from "./style";
-import { Button, Input, Header } from "@components";
+import { Button, Input, Header } from "../../../../components";
 import StringsOfLanguages from "../../../../utils/translations";
 import { WHITE_COLOR } from "../../../../utils/constants";
 

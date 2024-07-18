@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, SafeAreaView, Image, ScrollView, StatusBar } from "react-native";
 import style from "./style";
 import commomstyle from "../../../../common/styles";
-import { Button, Input, Header } from "@components";
+import { Button, Input, Header } from "../../../../components";
 import ImagePicker from "react-native-image-crop-picker";
 import StringsOfLanguages from '../../../../utils/translations';
 import { WHITE_COLOR } from "../../../../utils/constants";

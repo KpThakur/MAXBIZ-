@@ -12,8 +12,8 @@ import {
   BORDERLINE_COLOR,
   PLACEHOLDER_COLOR,
   FONT_FAMILY_REGULAR,
-} from "@utils/constants";
-import { scale } from "@utils/utils";
+} from "../utils/constants";
+import { scale } from "../utils/utils";
 import { color } from "react-native-elements/dist/helpers";
 import { GRADIENT_COLOR, GRAY_COLOR } from "../utils/constants";
 import { normalize, normalizeHeight, normalizeSpacing } from "./scaleFontSize";

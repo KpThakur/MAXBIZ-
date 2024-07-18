@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
-import { scale } from '@utils/utils';
+import { scale } from '../../../../utils/utils';
 import {
     BLACK_COLOR, FONT_FAMILY_LIGHT, COMMON_COLOR,
     PLACEHOLDER_COLOR, WHITE_COLOR, FONT_FAMILY_SEMIBOLD,BORDERLINE_COLOR
-} from '@utils/constants';
+} from '../../../../utils/constants';
 
 const style = StyleSheet.create({
     firstContainer: {

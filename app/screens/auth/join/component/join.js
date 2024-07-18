@@ -10,10 +10,10 @@ import {
 } from 'react-native';
 import style from './style';
 import commomstyle from '../../../../common/styles';
-import { WHITE_COLOR } from '@utils/constants';
-import { Header } from '@components';
-import { scale } from '@utils/utils';
-import { ICONS } from '@utils/imagePath';
+import { WHITE_COLOR } from '../../../../utils/constants';
+import { Header } from '../../../../components';
+import { scale } from '../../../../utils/utils';
+import { ICONS } from '../../../../utils/imagePath';
 import StringsOfLanguages from '../../../../utils/translations';
 
 const join = (props) => {

@@ -1,6 +1,6 @@
 import React from "react";
 import { Rating, AirbnbRating } from "react-native-ratings";
-import { scale } from "@utils/utils";
+import { scale } from "../utils/utils";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import tickMark from "../assets/images/tickMark.png";
 import StringsOfLanguages from "../utils/translations";
@@ -8,7 +8,7 @@ import {
     FONT_FAMILY_LIGHT,
     FONT_FAMILY_SEMIBOLD,
     BORDERLINE_COLOR,
-  } from "@utils/constants";
+  } from "../utils/constants";
 
 const reviews = (props) => {
   const { profileImage, userName, comment, date } = props;

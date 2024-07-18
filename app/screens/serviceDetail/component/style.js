@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import {  FONT_FAMILY_SEMIBOLD, COMMON_COLOR, FONT_FAMILY_REGULAR, WHITE_COLOR, BLACK_COLOR,GRAY_COLOR,BORDERLINE_COLOR, GRADIENT_COLOR_NEW2, GRADIENT_COLOR_NEW3} from './../../../utils/constants';
-import { scale } from '@utils/utils';
+import { scale } from '../../../utils/utils';
 
 const styles = StyleSheet.create({
     headerTxt:{
@@ -174,7 +174,17 @@ const styles = StyleSheet.create({
       activityIndicator: {
         position: 'absolute',
         zIndex: 1,
+        marginTop: 10,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        left: 0,
+        justifyContent: 'center',
+        alignItems: 'center',
       },
+      starStyle: {
+       marginHorizontal: 3
+      }
     
 })
 

@@ -7,7 +7,7 @@ import {
   FONT_FAMILY_MEDIUM,
   GRADIENT_COLOR_NEW2,
 } from "./../../../utils/constants";
-import { scale } from "@utils/utils";
+import { scale } from "../../../utils/utils";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const style = StyleSheet.create({

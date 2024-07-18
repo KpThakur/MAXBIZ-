@@ -4,10 +4,10 @@ import { CheckBox, Icon } from "react-native-elements";
 // import CheckBox from '@react-native-community/checkbox';
 import { SafeAreaView } from "react-native-safe-area-context";
 import commomstyle from "../../../../common/styles";
-import { Button, Input, Header } from "@components";
+import { Button, Input, Header } from "../../../../components";
 import styles from "./style";
 import { ICONS } from "../../../../utils/imagePath";
-import { scale } from '@utils/utils';
+import { scale } from '../utils/utils';
 import VideoList from '../../videoList/videoList'
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
 import {

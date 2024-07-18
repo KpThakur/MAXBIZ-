@@ -6,8 +6,8 @@ import {
   GRADIENT_COLOR_NEW3,
   GRADIENT_COLOR_NEW2,
   GRAY_COLOR,
-} from "@utils/constants";
-import { scale } from "@utils/utils";
+} from "../../utils/constants";
+import { scale } from "../../utils/utils";
 import { BORDERLINE_COLOR } from "../../utils/constants";
 
 const style = StyleSheet.create({

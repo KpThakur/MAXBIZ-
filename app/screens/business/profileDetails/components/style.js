@@ -9,7 +9,7 @@ import {
   WHITE_COLOR,
   GRADIENT_COLOR_NEW3
 } from "./../../../../utils/constants";
-import { scale } from "@utils/utils";
+import { scale } from "../../../../utils/utils";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const style = StyleSheet.create({

@@ -1,5 +1,5 @@
 import { View, StyleSheet } from "react-native";
-import { scale } from "@utils/utils";
+import { scale } from "../../../../utils/utils";
 import {
   COMMON_COLOR,
   FONT_FAMILY_SEMIBOLD,

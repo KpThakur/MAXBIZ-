@@ -10,7 +10,7 @@ import {
   StatusBar,
 } from "react-native";
 import commomstyle from "../../../../common/styles";
-import { Button, Input, Header } from "@components";
+import { Button, Input, Header } from "../../../../components";
 import { ICONS } from "../../../../utils/imagePath";
 import {
   GRADIENT_COLOR_NEW1, WHITE_COLOR,GRADIENT_COLOR_NEW2, GRADIENT_COLOR_NEW3, GRADIENT_COLOR_NEW4

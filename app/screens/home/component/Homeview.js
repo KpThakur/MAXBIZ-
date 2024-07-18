@@ -16,7 +16,7 @@ import {
 
 import styles from "./style";
 import commomstyle from "../../../common/styles";
-import { Button, Input, Header } from "@components";
+import { Button, Input, Header } from "../../../components";
 import { ICONS, LOGOIMAGE } from "../../../utils/imagePath";
 import LinearGradient from "react-native-linear-gradient";
 import {

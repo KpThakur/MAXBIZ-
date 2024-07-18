@@ -1,6 +1,6 @@
 import { View, StyleSheet, Dimensions } from "react-native";
-import { scale } from "@utils/utils";
-import { FONT_FAMILY_SEMIBOLD, FONT_FAMILY_LIGHT, BORDERLINE_COLOR, GRAY_COLOR, WHITE_COLOR, BLACK_COLOR, COMMON_COLOR, GRADIENT_COLOR_NEW1 } from "../../../utils/constants";
+import { scale } from "../../../utils/utils";
+import { FONT_FAMILY_SEMIBOLD, FONT_FAMILY_LIGHT, BORDERLINE_COLOR, GRAY_COLOR, WHITE_COLOR, BLACK_COLOR, COMMON_COLOR, GRADIENT_COLOR_NEW1, FONT_FAMILY_BOLD } from "../../../utils/constants";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 const style = StyleSheet.create({
     container: {
@@ -12,8 +12,8 @@ const style = StyleSheet.create({
       },
       leftContainer: {
         flex:1,
-        paddingHorizontal: 2,
-       
+       // paddingHorizontal: 2,
+        alignSelf:'center',
       },
       containerjob: {
         padding: 10,
@@ -115,9 +115,10 @@ const style = StyleSheet.create({
         },
       modalContainer: {
         width: wp('100%'),
-        height: hp('40%'),
+        height: wp('75%'),
         backgroundColor: WHITE_COLOR,
         padding: scale(5),
+        borderRadius:10
         
        /*  borderTopRightRadius: scale(30),
         borderTopLeftRadius: scale(30), */
@@ -163,6 +164,12 @@ const style = StyleSheet.create({
         fontSize:scale(20),
         color : GRAY_COLOR
       },
+      crossStyle : {
+        height: 18,
+        width:18,
+        tintColor:GRAY_COLOR,
+        top:5
+      },
       confirmtxt : {
         fontWeight:"700",
         fontSize:scale(20),
@@ -172,7 +179,8 @@ const style = StyleSheet.create({
       midelcontent :{
          flex:3,
          //width:'90%',
-         alignSelf:'center'
+         alignSelf:'center',
+         flexDirection:"row"
        },
        container_Document: {
         flex: 1,
@@ -190,6 +198,17 @@ const style = StyleSheet.create({
       zIndex: 1,
       top: scale(25)
     
+    },
+    activityIndicatorImg: {
+      position: 'absolute',
+      zIndex: 1,
+      marginTop: 10,
+      right: 0,
+      top: 0,
+      bottom: 0,
+      left: 0,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
 
 });

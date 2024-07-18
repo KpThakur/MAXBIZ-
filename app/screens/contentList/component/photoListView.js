@@ -5,11 +5,11 @@ import React, {
   useEffect,
   useRef,
   useState,
-} from "react";
-import styles from "./style";
-import profile_img from "../../../assets/images/review-img-01.png";
-import profile_img2 from "../../../assets/images/review-img-02.png";
-import profile_img3 from "../../../assets/images/review-img-03.png";
+} from 'react';
+import styles from './style';
+import profile_img from '../../../assets/images/review-img-01.png';
+import profile_img2 from '../../../assets/images/review-img-02.png';
+import profile_img3 from '../../../assets/images/review-img-03.png';
 import {
   View,
   Text,
@@ -23,11 +23,11 @@ import {
   ActivityIndicator,
   StatusBar,
   RefreshControl,
-} from "react-native";
-import commomstyle from "../../../common/styles";
-import { Header } from "@components";
-import { ICONS } from "@utils/imagePath";
-import LinearGradient from "react-native-linear-gradient";
+} from 'react-native';
+import commomstyle from '../../../common/styles';
+import {Header} from '../../../components';
+import {ICONS} from '../../../utils/imagePath';
+import LinearGradient from 'react-native-linear-gradient';
 import {
   WHITE_COLOR,
   GRADIENT_COLOR_NEW1,
@@ -35,72 +35,87 @@ import {
   GRADIENT_COLOR_NEW3,
   GRADIENT_COLOR_NEW4,
   COMMON_COLOR,
-} from "../../../utils/constants";
-import Notfound from "../../../components/notfound";
-import Icon from "react-native-vector-icons/FontAwesome";
-import StringsOfLanguages from "../../../utils/translations";
+} from '../../../utils/constants';
+import Notfound from '../../../components/notfound';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import StringsOfLanguages from '../../../utils/translations';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
+} from 'react-native-responsive-screen';
 
 const DATA = [
   {
-    id: "1",
-    aws_url: require("../../../assets/dummy/construction2.jpg"),
+    id: '1',
+    aws_url: require('../../../assets/dummy/construction2.jpg'),
   },
   {
-    id: "2",
-    aws_url: require("../../../assets/dummy/construction2.jpg"),
+    id: '2',
+    aws_url: require('../../../assets/dummy/construction2.jpg'),
   },
   {
-    id: "3",
-    aws_url: require("../../../assets/dummy/construction2.jpg"),
+    id: '3',
+    aws_url: require('../../../assets/dummy/construction2.jpg'),
   },
   {
-    id: "4",
-    aws_url: require("../../../assets/dummy/construction2.jpg"),
+    id: '4',
+    aws_url: require('../../../assets/dummy/construction2.jpg'),
   },
   {
-    id: "5",
-    aws_url: require("../../../assets/dummy/profile2.jpg"),
+    id: '5',
+    aws_url: require('../../../assets/dummy/profile2.jpg'),
   },
   {
-    id: "6",
-    aws_url: require("../../../assets/dummy/profile2.jpg"),
+    id: '6',
+    aws_url: require('../../../assets/dummy/profile2.jpg'),
   },
 ];
 const YourComponent = React.memo(() => {
   // ... your component logic
 });
 
-const PhotoListView = (props) => {
-  const { type, contentdata, backscreen } = props;
+const PhotoListView = props => {
+  const {type, contentdata, backscreen} = props;
   const [photoModel, setPhotoModel] = useState(false);
-  const [imgeurl, setImageUrl] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [imgeurl, setImageUrl] = useState('');
+  const [profileLoader, setProfileLoader] = useState('');
 
-  const imageViewr = (item) => {
+  const imageViewr = item => {
     //const imgsrc = [{ uri: `${(item?.aws_url)}` }];
     setImageUrl(item);
     setPhotoModel(!photoModel);
   };
 
-  const initialLoadRef = useRef(true);
-
-  const onLoadStarts = () => {
-    if (!initialLoadRef.current) {
-      return;
-    }
-    setLoading(true);
+  const onLoadProfileStart = () => {
+    setProfileLoader(true);
+  };
+  const onLoadProfileEnd = () => {
+    setProfileLoader(false);
   };
 
-  const onLoadEnds = () => {
-    if (!initialLoadRef.current) {
-      return;
+  const renderFileUri = item => {
+    if (item?.aws_url !== '') {
+      return (
+        <View>
+          <Fragment>
+            {profileLoader == true ? (
+              <ActivityIndicator
+                style={styles.activityIndicatorImg}
+                // animating={props.profileLoader}
+                size={'large'}
+              />
+            ) : null}
+            <Image
+              onLoadStart={() => onLoadProfileStart()}
+              onLoadEnd={() => onLoadProfileEnd()}
+              source={{uri: `${item?.aws_url}`}}
+              style={styles.imageDesign}
+              alt={'No image found'}
+            />
+          </Fragment>
+        </View>
+      );
     }
-    setLoading(false);
-    initialLoadRef.current = false;
   };
 
   const [refreshing, setRefreshing] = useState(false);
@@ -112,7 +127,7 @@ const PhotoListView = (props) => {
     }, 2000);
   }, []);
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({item}) => (
     <View>
       <View style={styles.container}>
         <View style={styles.leftContainer}>
@@ -121,53 +136,8 @@ const PhotoListView = (props) => {
           <TouchableOpacity
             onPress={() => {
               imageViewr(item?.aws_url);
-            }}
-          >
-            <View style={styles.imageDesign}>
-              {loading && (
-                <View
-                  style={{
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: 285,
-                    height: 350,
-                  }}
-                >
-                  <ActivityIndicator size={"large"} />
-                </View>
-              )}
-
-              {
-                <Image
-                  style={styles.imageDesign}
-                  source={{ uri: `${item?.aws_url}` }}
-                  alt={"No image found"}
-                  //onLoadStart={() => onLoading(true, "onLoadStart")}
-                  //onLoadEnd={() => onLoading(false, "onLoadStart")}
-                  onLoadStart={onLoadStarts}
-                  onLoadEnd={onLoadEnds}
-                />
-              }
-            </View>
-
-            {/* {item?.aws_url ? (
-              <Image
-                style={styles.imageDesign}
-                source={{ uri: `${item?.aws_url}` }}
-                alt={"No image found"}
-                onLoadEnd={()=> onLoadEnd()}
-              />
-            ) : (
-              <View
-                style={{
-                  ...styles.imageDesign,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <ActivityIndicator size="large" />
-              </View>
-            )} */}
+            }}>
+            <View style={styles.imageDesign}>{renderFileUri(item)}</View>
           </TouchableOpacity>
         </View>
       </View>
@@ -189,7 +159,7 @@ const PhotoListView = (props) => {
         style={commomstyle.gradientstyle}> */}
       <Header
         rightImg={true}
-        rightImgStyl={{ tintColor: WHITE_COLOR }}
+        rightImgStyl={{tintColor: WHITE_COLOR}}
         headerText={type}
         backscreen={backscreen}
         showFindServiceOnBack={true}
@@ -197,13 +167,18 @@ const PhotoListView = (props) => {
 
       <FlatList
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={COMMON_COLOR} colors={[COMMON_COLOR]} />
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={COMMON_COLOR}
+            colors={[COMMON_COLOR]}
+          />
         }
         showsVerticalScrollIndicator={false}
         data={contentdata}
         renderItem={renderItem}
         ListEmptyComponent={<Notfound textnotfound="Photo" />}
-        keyExtractor={(item) => item.fileid}
+        keyExtractor={item => item.fileid}
       />
 
       <Modal
@@ -213,8 +188,7 @@ const PhotoListView = (props) => {
         onRequestClose={() => {
           setPhotoModel(!photoModel);
           ///setVisibleBothModal(0)
-        }}
-      >
+        }}>
         <View
           activeOpacity={1}
           onPress={() => {
@@ -226,15 +200,14 @@ const PhotoListView = (props) => {
             {
               flex: 1,
 
-              justifyContent: "center",
+              justifyContent: 'center',
               // Platform.OS == "ios"
               //   ? isKeyboardVisible
               //     ? "flex-start"
               //     : "flex-start"
               //   : "flex-start",
             },
-          ]}
-        >
+          ]}>
           <View style={[styles.modalContainerphoto]}>
             <View style={styles.topheading}>
               <Text style={styles.topheadingtext}>View Photos</Text>
@@ -242,27 +215,26 @@ const PhotoListView = (props) => {
                 onPress={() => {
                   setPhotoModel(!photoModel);
                   ///setVisibleBothModal(0)
-                }}
-              >
-                <Icon
+                }}>
+                {/* <Icon
                   style={styles.topheadingtext}
                   name={StringsOfLanguages.REMOVE}
-                ></Icon>
+                ></Icon> */}
+                <Image style={styles.crossStyle} source={ICONS.cross_Icon} />
               </TouchableOpacity>
             </View>
             {imgeurl ? (
               <Image
                 style={[styles.imageDesignphoto]}
-                source={{ uri: `${imgeurl}` }}
+                source={{uri: `${imgeurl}`}}
               />
             ) : (
               <View
                 style={{
                   ...styles.imageDesignphoto,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
                 <ActivityIndicator size="large" />
               </View>
             )}

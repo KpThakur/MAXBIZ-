@@ -15,9 +15,9 @@ import {
   WHITE_COLOR,
   THEME_GRAD_COLOR,
   FONT_FAMILY_SEMIBOLD,
-} from "@utils/constants";
-import { scale } from "@utils/utils";
-import { ICONS } from "@utils/imagePath";
+} from "../utils/constants";
+import { scale } from "../utils/utils";
+import { ICONS } from "../utils/imagePath";
 import { useNavigation } from "@react-navigation/native";
 import { DrawerActions } from "@react-navigation/native";
 

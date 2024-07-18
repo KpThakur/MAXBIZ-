@@ -15,7 +15,7 @@ import {
 } from "./../../../../utils/constants";
 import styles from "./style";
 import commomstyle from "../../../common/styles";
-import { Button, Input, Header } from "@components";
+import { Button, Input, Header } from "../../../components";
 import { ICONS } from "./../../../utils/imagePath";
 import ServiceList from "./serviceList";
 import {
@@ -26,7 +26,7 @@ import {
   WHITE_COLOR,
 } from "../../../utils/constants";
 import LinearGradient from "react-native-linear-gradient";
-import { scale } from "@utils/utils";
+import { scale } from "../../../utils/utils";
 import { Dropdown } from "react-native-element-dropdown";
 import StringsOfLanguages from "../../../utils/translations";
 

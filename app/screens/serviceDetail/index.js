@@ -1,12 +1,12 @@
-import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
-import ServiceDetailView from "./component/serviceDetailView";
-import apiEndPoints from "../../utils/apiEndPoints";
-import Loader from "../../components/loader";
-import { apiCall } from "../../utils/httpClient";
-import { useFocusEffect } from "@react-navigation/native";
-import { PaymentContext } from "../../utils/searchContext";
-const ServiceDetail = ({ route, navigation }) => {
-  const { serviceDetaildata, searchdata } = route?.params || {};
+import React, {useCallback, useContext, useEffect, useLayoutEffect, useState} from 'react';
+import ServiceDetailView from './component/serviceDetailView';
+import apiEndPoints from '../../utils/apiEndPoints';
+import Loader from '../../components/loader';
+import {apiCall} from '../../utils/httpClient';
+import {useFocusEffect} from '@react-navigation/native';
+import {PaymentContext} from '../../utils/searchContext';
+const ServiceDetail = ({route, navigation}) => {
+  const {serviceDetaildata, searchdata} = route?.params || {};
   const [showSearch, setShowSearch] = useState(true);
   const [serviceDetail, setServiceDetail] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -17,26 +17,37 @@ const ServiceDetail = ({ route, navigation }) => {
   const [servicelist, setServicelist] = useState({});
 
   const [paymentList, setPaymentList] = useState({});
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState('');
 
- // const [paymentList, setPaymentList] = useContext(PaymentContext);
+  // const [paymentList, setPaymentList] = useContext(PaymentContext);
 
-  
+  const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
-    const stringData =
-      serviceDetaildata?.servicedata &&
-      serviceDetaildata?.servicedata.reduce((result, item) => {
-        return `${result}${item.title},`;
-      }, "");
-    setServiceDetail(stringData);
-
-    const paydata = serviceDetaildata?.payments
-      ? JSON.parse(serviceDetaildata?.payments)
-      : {};
-   // setPaymentList(paydata);
-    setPaymentList((prevPaymentList) => ({ ...prevPaymentList, ...paydata }));
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
   }, []);
+ 
+    const paymentExtrct = () => {
+      console.log('serviceDetaildata changed:', serviceDetaildata);
+      const stringData =
+        serviceDetaildata?.servicedata &&
+        serviceDetaildata?.servicedata.reduce((result, item) => {
+          return `${result}${item.title},`;
+        }, '');
+      setServiceDetail(stringData);
+
+      const paydata = serviceDetaildata?.payments
+        ? JSON.parse(serviceDetaildata?.payments)
+        : {};
+      console.log('Parsed paydata:', paydata);
+
+      setPaymentList(paydata);
+    };
+   
+  
 
   // useEffect(() => {
   //   if (serviceDetaildata?.payments) {
@@ -63,21 +74,22 @@ const ServiceDetail = ({ route, navigation }) => {
     React.useCallback(() => {
       getServicesDetails(
         serviceDetaildata?.businessid,
-        serviceDetaildata?.photofile
+        serviceDetaildata?.photofile,
       );
-    }, [navigation, serviceDetaildata])
+    //  paymentExtrct();
+    }, [navigation, serviceDetaildata]),
   );
 
   /* useEffect(() => {
         getServicesDetails()
     }, []); */
 
-  const getImage = async (param) => {
+  const getImage = async param => {
     setIsLoading(true);
     const params = {
       fileName: param,
     };
-    const { data } = await apiCall("POST", apiEndPoints.GETIMAGE, params);
+    const {data} = await apiCall('POST', apiEndPoints.GETIMAGE, params);
     if (data.status == 200) {
       setImage(data.url);
       setIsLoading(false);
@@ -86,39 +98,44 @@ const ServiceDetail = ({ route, navigation }) => {
   };
   useEffect(() => {
     serviceDetaildata?.photofile && getImage(serviceDetaildata.photofile);
-  }, []);
+  }, [navigation, serviceDetaildata]);
 
-  const getServicesDetails = async (businessid) => {
+  const getServicesDetails = async businessid => {
     if (businessid > 0) {
       try {
-        setIsLoading(true);
-        const response = await apiCall("POST", apiEndPoints.GETSERVICEDETAIL, {
+      // setIsLoading(true);
+        const response = await apiCall('POST', apiEndPoints.GETSERVICEDETAIL, {
           businessid: businessid,
         });
 
         if (response.status === 200) {
           setIsLoading(false);
           setServiceDetail(response.data.data);
+          const paydata = serviceDetaildata?.payments
+          ? JSON.parse(serviceDetaildata?.payments)
+          : {};
+        console.log('Parsed paydata:', paydata);
+  
+        setPaymentList(paydata);
         } else {
           setIsLoading(false);
           setServiceDetail([]);
         }
       } catch (error) {
-        
         setIsLoading(false);
       }
     }
   };
 
   const backscreen = () => {
-    navigation.navigate("findServiceScreen", searchdata);
+    navigation.navigate('findServiceScreen', searchdata);
   };
   const drawerOpen = () => {
     //navigation.navigate("drawerNavigation");
   };
-  const showDetailContent = (screenName, type = "", data) => {
-    navigation.navigate(screenName, { type: type, contentdata: data });
-    // navigation.navigate(screenName, { type: type, contentdata: data ,searchdata: searchdata,});
+  const showDetailContent = (screenName, type = '', data) => {
+   // navigation.navigate(screenName, {type: type, contentdata: data});
+     navigation.navigate(screenName, { type: type, contentdata: data ,serviceDetaildata: serviceDetaildata, });
   };
   return (
     <>
@@ -137,6 +154,8 @@ const ServiceDetail = ({ route, navigation }) => {
         paymentList={paymentList}
         image={image}
         serviceDetaildata={serviceDetaildata}
+        refreshing={refreshing}
+        onRefresh={onRefresh}
       />
     </>
   );

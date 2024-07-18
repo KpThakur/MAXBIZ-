@@ -21,8 +21,8 @@ import {
   RefreshControl,
 } from "react-native";
 import commomstyle from "../../../common/styles";
-import { Header } from "@components";
-import { ICONS } from "@utils/imagePath";
+import { Header } from "../../../components";
+import { ICONS } from "../../../utils/imagePath";
 import LinearGradient from "react-native-linear-gradient";
 import {
   WHITE_COLOR,

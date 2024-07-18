@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import Login from './component/login';
 import { AuthContext } from "../../../utils/UserContext";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -7,6 +7,8 @@ import { apiCall, setDefaultHeader } from '../../../utils/httpClient';
 import Loader from '../../../components/loader';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import StringsOfLanguages from '../../../utils/translations';
+import { useFocusEffect } from "@react-navigation/native";
+
 //const AuthContext = React.createContext();
 const LoginView = ({ navigation }) => {
     const { signIn } = React.useContext(AuthContext);
@@ -18,6 +20,16 @@ const LoginView = ({ navigation }) => {
         "password": '',
         "token": '123'
     })
+
+    useFocusEffect(
+        useCallback(() => {
+          setInputError({
+            ...inputError,
+            emailerror: "",
+            passworderror: "",
+          });
+        }, [])
+      );
     //const { signIn } = React.useContext(AuthContext);
     const Remember = () => {
         setCheck(!check)
@@ -106,6 +118,7 @@ const LoginView = ({ navigation }) => {
             toRegistration={toRegistration}
             forgotPassword={forgotPassword}
             inputError={inputError}
+            setInputError={setInputError}
         />
     </>
     )

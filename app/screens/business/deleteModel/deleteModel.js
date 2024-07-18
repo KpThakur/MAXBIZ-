@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Modal, Text, ScrollView, TouchableOpacity, Image, FlatList, Touchable, Keyboard } from "react-native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { Button, Input, Header } from "@components";
+import { Button, Input, Header } from "../../../components";
 import style from "./style"
 import Icon from 'react-native-vector-icons/FontAwesome';
 import StringsOfLanguages from "../../../utils/translations";

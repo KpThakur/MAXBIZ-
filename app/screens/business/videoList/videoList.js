@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, ScrollView, TouchableOpacity, Image, FlatList, Touchable } from "react-native";
 
-import { Button, Input, Header } from "@components";
+import { Button, Input, Header } from "../../../components";
 import styles from "./style";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {
