@@ -168,13 +168,13 @@ const ServiceDetailView = props => {
 
           <View style={styles.bottom}>
             <View style={styles.addView}>
-              {/* <Text style={styles.serveTxticon}>
-                <Image
+              <Text>
+                {/* <Image
                   // source={require("./../../../assets/images/location.png")}
                   source={ICONS.locationIcon}
                   style={styles.serviceImgicon}
-                />
-              </Text> */}
+                /> */}
+              </Text>
               {/* <Text style={styles.addrsTxtadd}>{serviceDetail?.address}</Text> */}
             </View>
 
