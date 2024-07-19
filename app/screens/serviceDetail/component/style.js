@@ -167,7 +167,8 @@ const styles = StyleSheet.create({
 
      },
      activeView: {
-        flex: 1,
+        // flex: 1,
+        flex: Platform.OS === 'ios' ? 0 : 1,
         justifyContent: 'center',
         alignItems: 'center',
       },
