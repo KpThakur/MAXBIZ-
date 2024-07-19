@@ -179,7 +179,7 @@ const PhotoListView = props => {
         data={contentdata}
         renderItem={renderItem}
         ListEmptyComponent={<Notfound textnotfound="Photo" />}
-        keyExtractor={item => item.fileid}
+        keyExtractor={item => item?.fileid}
       />
 
       <Modal

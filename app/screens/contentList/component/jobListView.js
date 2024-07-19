@@ -160,7 +160,7 @@ const JobListView = (props) => {
         renderItem={renderItem}
         ListEmptyComponent={<Notfound textnotfound="Jobs" />}
         // keyExtractor={(item) => item.fileid}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item, index) => index?.toString()}
       />
       {/* </LinearGradient> */}
     </SafeAreaView>

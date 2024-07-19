@@ -168,13 +168,13 @@ const ServiceDetailView = props => {
 
           <View style={styles.bottom}>
             <View style={styles.addView}>
-              <Text style={styles.serveTxticon}>
-                {/* <Image
+              {/* <Text style={styles.serveTxticon}>
+                <Image
                   // source={require("./../../../assets/images/location.png")}
                   source={ICONS.locationIcon}
                   style={styles.serviceImgicon}
-                /> */}
-              </Text>
+                />
+              </Text> */}
               {/* <Text style={styles.addrsTxtadd}>{serviceDetail?.address}</Text> */}
             </View>
 
@@ -207,7 +207,7 @@ const ServiceDetailView = props => {
                 <Text style={styles.addrsTxt}>
                   {serviceDetail?.servicedata
                     ? serviceDetail?.servicedata
-                        .map(item => item.title)
+                        .map(item => item?.title)
                         .join(', ')
                     : ''}
                 </Text>

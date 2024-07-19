@@ -90,7 +90,7 @@ const Review = props => {
             <Text style={styles.detailText}>{item?.description}</Text>
             <View style={styles.section3}>
               <Text style={styles.dateText}>
-                {moment(item.createddate).format('MM/DD/YYYY h:mm:ss A')}
+                {moment(item?.createddate).format('MM/DD/YYYY h:mm:ss A')}
               </Text>
               <View style={styles.button}>
                 <Text style={styles.buttonText}>
@@ -141,7 +141,7 @@ const Review = props => {
         renderItem={renderItem}
         ListEmptyComponent={<Notfound textnotfound="Review" />}
         // keyExtractor={item => item.contentdata}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item, index) => index?.toString()}
       />
       {/* </LinearGradient> */}
     </SafeAreaView>
