@@ -128,7 +128,7 @@ const offerListView = (props) => {
         renderItem={renderItem}
         ListEmptyComponent={<Notfound textnotfound="Offers" />}
        // keyExtractor={(item) => item.fileid}
-        keyExtractor={(item, index, ) => item.id || index.toString()}
+        keyExtractor={(item, index, ) => item?.id || index?.toString()}
 
       />
       {/* </LinearGradient> */}

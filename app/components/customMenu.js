@@ -76,7 +76,7 @@ const customMenu = (props) => {
                     fontWeight: "600",
                   }}
                 >
-                  {`Welcome! ${userData.firstname} ${userData.lastname}`}
+                  {`Welcome! ${userData?.firstname} ${userData?.lastname}`}
                 </Text>
               </View>
             </View>

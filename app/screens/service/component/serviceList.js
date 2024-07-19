@@ -29,16 +29,16 @@ const ServiceList = (props) => {
    
     return (
       <ServiceItem
-        img={item.aws_url}
-        name={item.business_name}
-        hours={item.hours}
-        rating={item.ranting}
-        pricemodel={item.pricemodel}
-        address={item.address}
-        phone={item.phone}
-        email={item.email}
-        service_name={item.service_name}
-        city={item.city}
+        img={item?.aws_url}
+        name={item?.business_name}
+        hours={item?.hours}
+        rating={item?.ranting}
+        pricemodel={item?.pricemodel}
+        address={item?.address}
+        phone={item?.phone}
+        email={item?.email}
+        service_name={item?.service_name}
+        city={item?.city}
         serviceDetail={item}
         showDetail={(serviceDetail)=>showDetail(serviceDetail)}
       />

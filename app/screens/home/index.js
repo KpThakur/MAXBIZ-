@@ -67,7 +67,7 @@ const Home = ({ navigation }) => {
         if (response.status === 200) {
           const formattedCityData = response.data.data.map((city) => ({
             ...city,
-            formattedLabel: `${city.city || ""}, ${city.state_id || ""}`,
+            formattedLabel: `${city?.city || ""}, ${city?.state_id || ""}`,
           }));
           // setAllCity(response.data.data)
           setAllCity(formattedCityData);
@@ -95,7 +95,7 @@ const Home = ({ navigation }) => {
 
   const searchService = () => {
     setShowSearch(!showSearch);
-    if (searchdata.serviceid != "" && searchdata.cityid != "") {
+    if (searchdata?.serviceid != "" && searchdata?.cityid != "") {
       navigation.navigate("findServiceScreen", searchdata);
     } else {
       showMessage({
