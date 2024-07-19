@@ -1,10 +1,10 @@
 import React, { Fragment } from 'react'
 import Account from './componets/account'
-const index = () => {
+const Index = () => {
     return (
         <Fragment>
             <Account/>
         </Fragment>
     )
 }
-export default index
+export default Index
