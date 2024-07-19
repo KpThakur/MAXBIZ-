@@ -194,7 +194,7 @@ const customMenu = (props) => {
               />
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate("accountScreen");
+                  navigation.navigate("profileDetailsScreen");
                 }}
               >
                 <View style={{ flexDirection: "row", padding: scale(10) }}>

@@ -7,7 +7,7 @@ import apiEndPoints from '../../../utils/apiEndPoints';
 import { apiCall } from '../../../utils/httpClient';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import Loader from '../../../components/loader';
-const index = ({ navigation }) => {
+const Index = ({ navigation }) => {
 
     const [userData, setUserData] = useState({})
     const [isLoading, setIsLoading] = useState(false)
@@ -64,4 +64,4 @@ const index = ({ navigation }) => {
        </Fragment>
     )
 }
-export default index
+export default Index
