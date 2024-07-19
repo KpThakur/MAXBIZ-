@@ -80,6 +80,7 @@ const ServiceDetailView = props => {
                 style={styles.activityIndicator}
                 // animating={props.profileLoader}
                 size={'large'}
+                color={COMMON_COLOR}
               />
             ) : null}
             <Image

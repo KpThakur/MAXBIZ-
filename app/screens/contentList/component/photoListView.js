@@ -103,6 +103,7 @@ const PhotoListView = props => {
                 style={styles.activityIndicatorImg}
                 // animating={props.profileLoader}
                 size={'large'}
+                color={COMMON_COLOR}
               />
             ) : null}
             <Image
